@@ -18,12 +18,13 @@ uses LUX.Code.C;
 const VK_VERSION_1_0 = 1;
 ////#include "vk_platform.h"
 
-type VK_DEFINE_HANDLE_T = record end; VK_DEFINE_HANDLE = ^VK_DEFINE_HANDLE_T;
-
+type VK_DEFINE_HANDLE_T = record end;
+     VK_DEFINE_HANDLE   = ^VK_DEFINE_HANDLE_T;
 
 {$IF not Defined( VK_DEFINE_NON_DISPATCHABLE_HANDLE ) }
 {$IF Defined( __LP64__ ) or Defined( _WIN64 ) or ( Defined( __x86_64__ ) and not Defined( __ILP32__ ) ) or Defined( _M_X64 ) or Defined( __ia64 ) or Defined( _M_IA64 ) or Defined( __aarch64__ ) or Defined( __powerpc64__ ) }
-        type VK_DEFINE_NON_DISPATCHABLE_HANDLE_T = record end; VK_DEFINE_NON_DISPATCHABLE_HANDLE = ^VK_DEFINE_NON_DISPATCHABLE_HANDLE_T;
+        type VK_DEFINE_NON_DISPATCHABLE_HANDLE_T = record end;
+             VK_DEFINE_NON_DISPATCHABLE_HANDLE   = ^VK_DEFINE_NON_DISPATCHABLE_HANDLE_T;
 {$ELSE}
         type VK_DEFINE_NON_DISPATCHABLE_HANDLE = T_uint64_t;
 {$ENDIF}
@@ -49,45 +50,45 @@ function VK_VERSION_PATCH( const version_:T_uint32_t ) :T_uint32_t; inline;
 
 const VK_NULL_HANDLE = 0;
 
-type VkBool32        = T_uint32_t;
-type VkDeviceAddress = T_uint64_t;
-type VkDeviceSize    = T_uint64_t;
-type VkFlags         = T_uint32_t;
-type VkSampleMask    = T_uint32_t;
-type VkBuffer = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkImage = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkInstance = VK_DEFINE_HANDLE;
-type VkPhysicalDevice = VK_DEFINE_HANDLE;
-type VkDevice = VK_DEFINE_HANDLE;
-type VkQueue = VK_DEFINE_HANDLE;
-type VkSemaphore = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkCommandBuffer = VK_DEFINE_HANDLE;
-type VkFence = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkDeviceMemory = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkEvent = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkQueryPool = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkBufferView = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkImageView = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkShaderModule = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkPipelineCache = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkPipelineLayout = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkPipeline = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkRenderPass = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkBool32              = T_uint32_t;
+type VkDeviceAddress       = T_uint64_t;
+type VkDeviceSize          = T_uint64_t;
+type VkFlags               = T_uint32_t;
+type VkSampleMask          = T_uint32_t;
+type VkBuffer              = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkImage               = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkInstance            = VK_DEFINE_HANDLE;
+type VkPhysicalDevice      = VK_DEFINE_HANDLE;
+type VkDevice              = VK_DEFINE_HANDLE;
+type VkQueue               = VK_DEFINE_HANDLE;
+type VkSemaphore           = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkCommandBuffer       = VK_DEFINE_HANDLE;
+type VkFence               = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkDeviceMemory        = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkEvent               = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkQueryPool           = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkBufferView          = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkImageView           = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkShaderModule        = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkPipelineCache       = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkPipelineLayout      = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkPipeline            = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkRenderPass          = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 type VkDescriptorSetLayout = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkSampler = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkDescriptorSet = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkDescriptorPool = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkFramebuffer = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkCommandPool = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-const VK_ATTACHMENT_UNUSED              = (~0U);
+type VkSampler             = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkDescriptorSet       = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkDescriptorPool      = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkFramebuffer         = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkCommandPool         = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+const VK_ATTACHMENT_UNUSED              = UInt32( $FFFFFFFF ); {(~0U)}
 const VK_FALSE                          = 0;
-const VK_LOD_CLAMP_NONE                 = 1000.0f;
-const VK_QUEUE_FAMILY_IGNORED           = (~0U);
-const VK_REMAINING_ARRAY_LAYERS         = (~0U);
-const VK_REMAINING_MIP_LEVELS           = (~0U);
-const VK_SUBPASS_EXTERNAL               = (~0U);
+const VK_LOD_CLAMP_NONE                 = T_float( 1000.0 );
+const VK_QUEUE_FAMILY_IGNORED           = UInt32( $FFFFFFFF ); {(~0U)}
+const VK_REMAINING_ARRAY_LAYERS         = UInt32( $FFFFFFFF ); {(~0U)}
+const VK_REMAINING_MIP_LEVELS           = UInt32( $FFFFFFFF ); {(~0U)}
+const VK_SUBPASS_EXTERNAL               = UInt32( $FFFFFFFF ); {(~0U)}
 const VK_TRUE                           = 1;
-const VK_WHOLE_SIZE                     = (~0ULL);
+const VK_WHOLE_SIZE                     = UInt64( $FFFFFFFFFFFFFFFF ); {(~0ULL)}
 const VK_MAX_MEMORY_TYPES               = 32;
 const VK_MAX_MEMORY_HEAPS               = 16;
 const VK_MAX_PHYSICAL_DEVICE_NAME_SIZE  = 256;
