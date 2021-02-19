@@ -54,31 +54,31 @@ type VkDeviceAddress = T_uint64_t;
 type VkDeviceSize    = T_uint64_t;
 type VkFlags         = T_uint32_t;
 type VkSampleMask    = T_uint32_t;
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkBuffer)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkImage)
-VK_DEFINE_HANDLE(VkInstance)
-VK_DEFINE_HANDLE(VkPhysicalDevice)
-VK_DEFINE_HANDLE(VkDevice)
-VK_DEFINE_HANDLE(VkQueue)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkSemaphore)
-VK_DEFINE_HANDLE(VkCommandBuffer)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkFence)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkDeviceMemory)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkEvent)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkQueryPool)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkBufferView)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkImageView)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkShaderModule)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkPipelineCache)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkPipelineLayout)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkPipeline)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkRenderPass)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkDescriptorSetLayout)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkSampler)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkDescriptorSet)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkDescriptorPool)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkFramebuffer)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkCommandPool)
+type VkBuffer = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkImage = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkInstance = VK_DEFINE_HANDLE;
+type VkPhysicalDevice = VK_DEFINE_HANDLE;
+type VkDevice = VK_DEFINE_HANDLE;
+type VkQueue = VK_DEFINE_HANDLE;
+type VkSemaphore = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkCommandBuffer = VK_DEFINE_HANDLE;
+type VkFence = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkDeviceMemory = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkEvent = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkQueryPool = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkBufferView = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkImageView = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkShaderModule = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkPipelineCache = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkPipelineLayout = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkPipeline = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkRenderPass = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkDescriptorSetLayout = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkSampler = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkDescriptorSet = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkDescriptorPool = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkFramebuffer = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkCommandPool = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_ATTACHMENT_UNUSED              = (~0U);
 const VK_FALSE                          = 0;
 const VK_LOD_CLAMP_NONE                 = 1000.0f;
@@ -4078,8 +4078,8 @@ const VK_VERSION_1_1 = 1;
 // Vulkan 1.1 version number
 #define VK_API_VERSION_1_1 VK_MAKE_VERSION(1, 1, 0)// Patch version should always be set to 0
 
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkSamplerYcbcrConversion)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkDescriptorUpdateTemplate)
+type VkSamplerYcbcrConversion = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkDescriptorUpdateTemplate = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_MAX_DEVICE_GROUP_SIZE          = 32;
 const VK_LUID_SIZE                      = 8;
 const VK_QUEUE_FAMILY_EXTERNAL          = (~0U-1);
@@ -5680,7 +5680,7 @@ function vkGetDeviceMemoryOpaqueCaptureAddress(
 
 
 const VK_KHR_surface = 1;
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkSurfaceKHR)
+type VkSurfaceKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_KHR_SURFACE_SPEC_VERSION       = 25;
 const VK_KHR_SURFACE_EXTENSION_NAME = 'VK_KHR_surface';
 
@@ -5794,7 +5794,7 @@ function vkGetPhysicalDeviceSurfacePresentModesKHR(
 
 
 const VK_KHR_swapchain = 1;
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkSwapchainKHR)
+type VkSwapchainKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_KHR_SWAPCHAIN_SPEC_VERSION     = 70;
 const VK_KHR_SWAPCHAIN_EXTENSION_NAME = 'VK_KHR_swapchain';
 
@@ -5953,8 +5953,8 @@ function vkAcquireNextImage2KHR(
 
 
 const VK_KHR_display = 1;
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkDisplayKHR)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkDisplayModeKHR)
+type VkDisplayKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkDisplayModeKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_KHR_DISPLAY_SPEC_VERSION       = 23;
 const VK_KHR_DISPLAY_EXTENSION_NAME = 'VK_KHR_display';
 type VkDisplayModeCreateFlagsKHR = VkFlags;
@@ -7397,7 +7397,7 @@ function vkGetDeviceMemoryOpaqueCaptureAddressKHR(
 
 
 const VK_KHR_deferred_host_operations = 1;
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkDeferredOperationKHR)
+type VkDeferredOperationKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_KHR_DEFERRED_HOST_OPERATIONS_SPEC_VERSION = 4;
 const VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME = 'VK_KHR_deferred_host_operations';
 type PFN_vkCreateDeferredOperationKHR = function( device_:VkDevice; const pAllocator_:P_VkAllocationCallbacks; pDeferredOperation_:P_VkDeferredOperationKHR ) :VkResult;
@@ -7957,7 +7957,7 @@ procedure vkCmdResolveImage2KHR(
 
 
 const VK_EXT_debug_report = 1;
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkDebugReportCallbackEXT)
+type VkDebugReportCallbackEXT = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_EXT_DEBUG_REPORT_SPEC_VERSION  = 9;
 const VK_EXT_DEBUG_REPORT_EXTENSION_NAME = 'VK_EXT_debug_report';
 
@@ -8973,7 +8973,7 @@ const VK_QUEUE_FAMILY_FOREIGN_EXT       = (~0U-2);
 
 
 const VK_EXT_debug_utils = 1;
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkDebugUtilsMessengerEXT)
+type VkDebugUtilsMessengerEXT = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_EXT_DEBUG_UTILS_SPEC_VERSION   = 2;
 const VK_EXT_DEBUG_UTILS_EXTENSION_NAME = 'VK_EXT_debug_utils';
 type VkDebugUtilsMessengerCallbackDataFlagsEXT = VkFlags;
@@ -9413,7 +9413,7 @@ function vkGetImageDrmFormatModifierPropertiesEXT(
 
 
 const VK_EXT_validation_cache = 1;
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkValidationCacheEXT)
+type VkValidationCacheEXT = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_EXT_VALIDATION_CACHE_SPEC_VERSION = 1;
 const VK_EXT_VALIDATION_CACHE_EXTENSION_NAME = 'VK_EXT_validation_cache';
 
@@ -9592,7 +9592,7 @@ procedure vkCmdSetCoarseSampleOrderNV(
 
 
 const VK_NV_ray_tracing = 1;
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkAccelerationStructureNV)
+type VkAccelerationStructureNV = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_NV_RAY_TRACING_SPEC_VERSION    = 3;
 const VK_NV_RAY_TRACING_EXTENSION_NAME = 'VK_NV_ray_tracing';
 const VK_SHADER_UNUSED_KHR              = (~0U);
@@ -10384,7 +10384,7 @@ type VkPhysicalDeviceShaderIntegerFunctions2FeaturesINTEL = record
 
 
 const VK_INTEL_performance_query = 1;
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkPerformanceConfigurationINTEL)
+type VkPerformanceConfigurationINTEL = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_INTEL_PERFORMANCE_QUERY_SPEC_VERSION = 2;
 const VK_INTEL_PERFORMANCE_QUERY_EXTENSION_NAME = 'VK_INTEL_performance_query';
 
@@ -11159,7 +11159,7 @@ type VkPhysicalDeviceShaderDemoteToHelperInvocationFeaturesEXT = record
 
 
 const VK_NV_device_generated_commands = 1;
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkIndirectCommandsLayoutNV)
+type VkIndirectCommandsLayoutNV = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_NV_DEVICE_GENERATED_COMMANDS_SPEC_VERSION = 3;
 const VK_NV_DEVICE_GENERATED_COMMANDS_EXTENSION_NAME = 'VK_NV_device_generated_commands';
 
@@ -11482,7 +11482,7 @@ const VK_GOOGLE_USER_TYPE_EXTENSION_NAME = 'VK_GOOGLE_user_type';
 
 
 const VK_EXT_private_data = 1;
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkPrivateDataSlotEXT)
+type VkPrivateDataSlotEXT = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_EXT_PRIVATE_DATA_SPEC_VERSION  = 1;
 const VK_EXT_PRIVATE_DATA_EXTENSION_NAME = 'VK_EXT_private_data';
 
@@ -11735,7 +11735,7 @@ type VkMutableDescriptorTypeCreateInfoVALVE = record
 
 
 const VK_KHR_acceleration_structure = 1;
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkAccelerationStructureKHR)
+type VkAccelerationStructureKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_KHR_ACCELERATION_STRUCTURE_SPEC_VERSION = 11;
 const VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME = 'VK_KHR_acceleration_structure';
 
