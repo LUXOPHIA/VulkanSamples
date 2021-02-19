@@ -3375,11 +3375,11 @@ function vkQueueSubmit(
     pSubmits_:P_VkSubmitInfo;
     fence_:VkFence ) :VkResult; stdcall; external DLLNAME;
 
-VKAPI_ATTR VkResult VKAPI_CALL vkQueueWaitIdle(
-    queue_:VkQueue );
+function vkQueueWaitIdle(
+    queue_:VkQueue ) :VkResult; stdcall; external DLLNAME;
 
-VKAPI_ATTR VkResult VKAPI_CALL vkDeviceWaitIdle(
-    device_:VkDevice );
+function vkDeviceWaitIdle(
+    device_:VkDevice ) :VkResult; stdcall; external DLLNAME;
 
 function vkAllocateMemory(
     device_:VkDevice;
@@ -3775,8 +3775,8 @@ function vkBeginCommandBuffer(
     commandBuffer_:VkCommandBuffer;
     pBeginInfo_:P_VkCommandBufferBeginInfo ) :VkResult; stdcall; external DLLNAME;
 
-VKAPI_ATTR VkResult VKAPI_CALL vkEndCommandBuffer(
-    commandBuffer_:VkCommandBuffer );
+function vkEndCommandBuffer(
+    commandBuffer_:VkCommandBuffer ) :VkResult; stdcall; external DLLNAME;
 
 function vkResetCommandBuffer(
     commandBuffer_:VkCommandBuffer;
@@ -4069,8 +4069,8 @@ procedure vkCmdNextSubpass(
     commandBuffer_:VkCommandBuffer;
     contents_:VkSubpassContents ); stdcall; external DLLNAME;
 
-VKAPI_ATTR void VKAPI_CALL vkCmdEndRenderPass(
-    commandBuffer_:VkCommandBuffer );
+procedure vkCmdEndRenderPass(
+    commandBuffer_:VkCommandBuffer ); stdcall; external DLLNAME;
 
 procedure vkCmdExecuteCommands(
     commandBuffer_:VkCommandBuffer;
@@ -4794,8 +4794,8 @@ type PFN_vkGetPhysicalDeviceExternalSemaphoreProperties = procedure( physicalDev
 type PFN_vkGetDescriptorSetLayoutSupport = procedure( device_:VkDevice; const pCreateInfo_:P_VkDescriptorSetLayoutCreateInfo; pSupport_:P_VkDescriptorSetLayoutSupport );
 
 {$IFNDEF VK_NO_PROTOTYPES }
-VKAPI_ATTR VkResult VKAPI_CALL vkEnumerateInstanceVersion(
-    pApiVersion_:P_uint32_t );
+function vkEnumerateInstanceVersion(
+    pApiVersion_:P_uint32_t ) :VkResult; stdcall; external DLLNAME;
 
 function vkBindBufferMemory2(
     device_:VkDevice;
@@ -6820,8 +6820,8 @@ function vkAcquireProfilingLockKHR(
     device_:VkDevice;
     pInfo_:P_VkAcquireProfilingLockInfoKHR ) :VkResult; stdcall; external DLLNAME;
 
-VKAPI_ATTR void VKAPI_CALL vkReleaseProfilingLockKHR(
-    device_:VkDevice );
+procedure vkReleaseProfilingLockKHR(
+    device_:VkDevice ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
@@ -8154,8 +8154,8 @@ procedure vkCmdDebugMarkerBeginEXT(
     commandBuffer_:VkCommandBuffer;
     pMarkerInfo_:P_VkDebugMarkerMarkerInfoEXT ); stdcall; external DLLNAME;
 
-VKAPI_ATTR void VKAPI_CALL vkCmdDebugMarkerEndEXT(
-    commandBuffer_:VkCommandBuffer );
+procedure vkCmdDebugMarkerEndEXT(
+    commandBuffer_:VkCommandBuffer ); stdcall; external DLLNAME;
 
 procedure vkCmdDebugMarkerInsertEXT(
     commandBuffer_:VkCommandBuffer;
@@ -8580,8 +8580,8 @@ procedure vkCmdBeginConditionalRenderingEXT(
     commandBuffer_:VkCommandBuffer;
     pConditionalRenderingBegin_:P_VkConditionalRenderingBeginInfoEXT ); stdcall; external DLLNAME;
 
-VKAPI_ATTR void VKAPI_CALL vkCmdEndConditionalRenderingEXT(
-    commandBuffer_:VkCommandBuffer );
+procedure vkCmdEndConditionalRenderingEXT(
+    commandBuffer_:VkCommandBuffer ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
@@ -9081,8 +9081,8 @@ procedure vkQueueBeginDebugUtilsLabelEXT(
     queue_:VkQueue;
     pLabelInfo_:P_VkDebugUtilsLabelEXT ); stdcall; external DLLNAME;
 
-VKAPI_ATTR void VKAPI_CALL vkQueueEndDebugUtilsLabelEXT(
-    queue_:VkQueue );
+procedure vkQueueEndDebugUtilsLabelEXT(
+    queue_:VkQueue ); stdcall; external DLLNAME;
 
 procedure vkQueueInsertDebugUtilsLabelEXT(
     queue_:VkQueue;
@@ -9092,8 +9092,8 @@ procedure vkCmdBeginDebugUtilsLabelEXT(
     commandBuffer_:VkCommandBuffer;
     pLabelInfo_:P_VkDebugUtilsLabelEXT ); stdcall; external DLLNAME;
 
-VKAPI_ATTR void VKAPI_CALL vkCmdEndDebugUtilsLabelEXT(
-    commandBuffer_:VkCommandBuffer );
+procedure vkCmdEndDebugUtilsLabelEXT(
+    commandBuffer_:VkCommandBuffer ); stdcall; external DLLNAME;
 
 procedure vkCmdInsertDebugUtilsLabelEXT(
     commandBuffer_:VkCommandBuffer;
@@ -10492,8 +10492,8 @@ function vkInitializePerformanceApiINTEL(
     device_:VkDevice;
     pInitializeInfo_:P_VkInitializePerformanceApiInfoINTEL ) :VkResult; stdcall; external DLLNAME;
 
-VKAPI_ATTR void VKAPI_CALL vkUninitializePerformanceApiINTEL(
-    device_:VkDevice );
+procedure vkUninitializePerformanceApiINTEL(
+    device_:VkDevice ); stdcall; external DLLNAME;
 
 function vkCmdSetPerformanceMarkerINTEL(
     commandBuffer_:VkCommandBuffer;
