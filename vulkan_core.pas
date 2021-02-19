@@ -2123,35 +2123,35 @@ type VkMemoryBarrier = record
      end;
 
 type PFN_vkAllocationFunction = function(
-    P_void                                      pUserData,
-    size_t                                      size,
-    size_t                                      alignment,
-    VkSystemAllocationScope                     allocationScope) :P_void;
+    pUserData_:P_void;
+    size_:size_t;
+    alignment_:size_t;
+    allocationScope_:VkSystemAllocationScope ) :P_void;
 
 type PFN_vkFreeFunction = procedure(
-    P_void                                      pUserData,
-    P_void                                      pMemory);
+    pUserData_:P_void;
+    pMemory_:P_void );
 
 type PFN_vkInternalAllocationNotification = procedure(
-    P_void                                      pUserData,
-    size_t                                      size,
-    VkInternalAllocationType                    allocationType,
-    VkSystemAllocationScope                     allocationScope);
+    pUserData_:P_void;
+    size_:size_t;
+    allocationType_:VkInternalAllocationType;
+    allocationScope_:VkSystemAllocationScope );
 
 type PFN_vkInternalFreeNotification = procedure(
-    P_void                                      pUserData,
-    size_t                                      size,
-    VkInternalAllocationType                    allocationType,
-    VkSystemAllocationScope                     allocationScope);
+    pUserData_:P_void;
+    size_:size_t;
+    allocationType_:VkInternalAllocationType;
+    allocationScope_:VkSystemAllocationScope );
 
 type PFN_vkReallocationFunction = function(
-    P_void                                      pUserData,
-    P_void                                      pOriginal,
-    size_t                                      size,
-    size_t                                      alignment,
-    VkSystemAllocationScope                     allocationScope) :P_void;
+    pUserData_:P_void;
+    pOriginal_:P_void;
+    size_:size_t;
+    alignment_:size_t;
+    allocationScope_:VkSystemAllocationScope ) :P_void;
 
-type PFN_vkVoidFunction = procedure(void);
+type PFN_vkVoidFunction = procedure;
 type VkAllocationCallbacks = record
        pUserData :P_void;
        pfnAllocation :PFN_vkAllocationFunction;
@@ -3141,941 +3141,941 @@ type VkRenderPassBeginInfo = record
        pClearValues :P_VkClearValue;
      end;
 
-type PFN_vkCreateInstance = function(const P_VkInstanceCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkInstance pInstance) :VkResult;
-type PFN_vkDestroyInstance = procedure(VkInstance instance, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkEnumeratePhysicalDevices = function(VkInstance instance, P_uint32_t pPhysicalDeviceCount, P_VkPhysicalDevice pPhysicalDevices) :VkResult;
-type PFN_vkGetPhysicalDeviceFeatures = procedure(VkPhysicalDevice physicalDevice, P_VkPhysicalDeviceFeatures pFeatures);
-type PFN_vkGetPhysicalDeviceFormatProperties = procedure(VkPhysicalDevice physicalDevice, VkFormat format, P_VkFormatProperties pFormatProperties);
-type PFN_vkGetPhysicalDeviceImageFormatProperties = function(VkPhysicalDevice physicalDevice, VkFormat format, VkImageType type, VkImageTiling tiling, VkImageUsageFlags usage, VkImageCreateFlags flags, P_VkImageFormatProperties pImageFormatProperties) :VkResult;
-type PFN_vkGetPhysicalDeviceProperties = procedure(VkPhysicalDevice physicalDevice, P_VkPhysicalDeviceProperties pProperties);
-type PFN_vkGetPhysicalDeviceQueueFamilyProperties = procedure(VkPhysicalDevice physicalDevice, P_uint32_t pQueueFamilyPropertyCount, P_VkQueueFamilyProperties pQueueFamilyProperties);
-type PFN_vkGetPhysicalDeviceMemoryProperties = procedure(VkPhysicalDevice physicalDevice, P_VkPhysicalDeviceMemoryProperties pMemoryProperties);
-type PFN_vkGetInstanceProcAddr = function(VkInstance instance, const P_char pName) :PFN_vkVoidFunction;
-type PFN_vkGetDeviceProcAddr = function(VkDevice device, const P_char pName) :PFN_vkVoidFunction;
-type PFN_vkCreateDevice = function(VkPhysicalDevice physicalDevice, const P_VkDeviceCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkDevice pDevice) :VkResult;
-type PFN_vkDestroyDevice = procedure(VkDevice device, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkEnumerateInstanceExtensionProperties = function(const P_char pLayerName, P_uint32_t pPropertyCount, P_VkExtensionProperties pProperties) :VkResult;
-type PFN_vkEnumerateDeviceExtensionProperties = function(VkPhysicalDevice physicalDevice, const P_char pLayerName, P_uint32_t pPropertyCount, P_VkExtensionProperties pProperties) :VkResult;
-type PFN_vkEnumerateInstanceLayerProperties = function(P_uint32_t pPropertyCount, P_VkLayerProperties pProperties) :VkResult;
-type PFN_vkEnumerateDeviceLayerProperties = function(VkPhysicalDevice physicalDevice, P_uint32_t pPropertyCount, P_VkLayerProperties pProperties) :VkResult;
-type PFN_vkGetDeviceQueue = procedure(VkDevice device, uint32_t queueFamilyIndex, uint32_t queueIndex, P_VkQueue pQueue);
-type PFN_vkQueueSubmit = function(VkQueue queue, uint32_t submitCount, const P_VkSubmitInfo pSubmits, VkFence fence) :VkResult;
-type PFN_vkQueueWaitIdle = function(VkQueue queue) :VkResult;
-type PFN_vkDeviceWaitIdle = function(VkDevice device) :VkResult;
-type PFN_vkAllocateMemory = function(VkDevice device, const P_VkMemoryAllocateInfo pAllocateInfo, const P_VkAllocationCallbacks pAllocator, P_VkDeviceMemory pMemory) :VkResult;
-type PFN_vkFreeMemory = procedure(VkDevice device, VkDeviceMemory memory, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkMapMemory = function(VkDevice device, VkDeviceMemory memory, VkDeviceSize offset, VkDeviceSize size, VkMemoryMapFlags flags, PP_void ppData) :VkResult;
-type PFN_vkUnmapMemory = procedure(VkDevice device, VkDeviceMemory memory);
-type PFN_vkFlushMappedMemoryRanges = function(VkDevice device, uint32_t memoryRangeCount, const P_VkMappedMemoryRange pMemoryRanges) :VkResult;
-type PFN_vkInvalidateMappedMemoryRanges = function(VkDevice device, uint32_t memoryRangeCount, const P_VkMappedMemoryRange pMemoryRanges) :VkResult;
-type PFN_vkGetDeviceMemoryCommitment = procedure(VkDevice device, VkDeviceMemory memory, P_VkDeviceSize pCommittedMemoryInBytes);
-type PFN_vkBindBufferMemory = function(VkDevice device, VkBuffer buffer, VkDeviceMemory memory, VkDeviceSize memoryOffset) :VkResult;
-type PFN_vkBindImageMemory = function(VkDevice device, VkImage image, VkDeviceMemory memory, VkDeviceSize memoryOffset) :VkResult;
-type PFN_vkGetBufferMemoryRequirements = procedure(VkDevice device, VkBuffer buffer, P_VkMemoryRequirements pMemoryRequirements);
-type PFN_vkGetImageMemoryRequirements = procedure(VkDevice device, VkImage image, P_VkMemoryRequirements pMemoryRequirements);
-type PFN_vkGetImageSparseMemoryRequirements = procedure(VkDevice device, VkImage image, P_uint32_t pSparseMemoryRequirementCount, P_VkSparseImageMemoryRequirements pSparseMemoryRequirements);
-type PFN_vkGetPhysicalDeviceSparseImageFormatProperties = procedure(VkPhysicalDevice physicalDevice, VkFormat format, VkImageType type, VkSampleCountFlagBits samples, VkImageUsageFlags usage, VkImageTiling tiling, P_uint32_t pPropertyCount, P_VkSparseImageFormatProperties pProperties);
-type PFN_vkQueueBindSparse = function(VkQueue queue, uint32_t bindInfoCount, const P_VkBindSparseInfo pBindInfo, VkFence fence) :VkResult;
-type PFN_vkCreateFence = function(VkDevice device, const P_VkFenceCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkFence pFence) :VkResult;
-type PFN_vkDestroyFence = procedure(VkDevice device, VkFence fence, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkResetFences = function(VkDevice device, uint32_t fenceCount, const P_VkFence pFences) :VkResult;
-type PFN_vkGetFenceStatus = function(VkDevice device, VkFence fence) :VkResult;
-type PFN_vkWaitForFences = function(VkDevice device, uint32_t fenceCount, const P_VkFence pFences, VkBool32 waitAll, uint64_t timeout) :VkResult;
-type PFN_vkCreateSemaphore = function(VkDevice device, const P_VkSemaphoreCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkSemaphore pSemaphore) :VkResult;
-type PFN_vkDestroySemaphore = procedure(VkDevice device, VkSemaphore semaphore, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkCreateEvent = function(VkDevice device, const P_VkEventCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkEvent pEvent) :VkResult;
-type PFN_vkDestroyEvent = procedure(VkDevice device, VkEvent event, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkGetEventStatus = function(VkDevice device, VkEvent event) :VkResult;
-type PFN_vkSetEvent = function(VkDevice device, VkEvent event) :VkResult;
-type PFN_vkResetEvent = function(VkDevice device, VkEvent event) :VkResult;
-type PFN_vkCreateQueryPool = function(VkDevice device, const P_VkQueryPoolCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkQueryPool pQueryPool) :VkResult;
-type PFN_vkDestroyQueryPool = procedure(VkDevice device, VkQueryPool queryPool, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkGetQueryPoolResults = function(VkDevice device, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount, size_t dataSize, P_void pData, VkDeviceSize stride, VkQueryResultFlags flags) :VkResult;
-type PFN_vkCreateBuffer = function(VkDevice device, const P_VkBufferCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkBuffer pBuffer) :VkResult;
-type PFN_vkDestroyBuffer = procedure(VkDevice device, VkBuffer buffer, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkCreateBufferView = function(VkDevice device, const P_VkBufferViewCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkBufferView pView) :VkResult;
-type PFN_vkDestroyBufferView = procedure(VkDevice device, VkBufferView bufferView, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkCreateImage = function(VkDevice device, const P_VkImageCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkImage pImage) :VkResult;
-type PFN_vkDestroyImage = procedure(VkDevice device, VkImage image, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkGetImageSubresourceLayout = procedure(VkDevice device, VkImage image, const P_VkImageSubresource pSubresource, P_VkSubresourceLayout pLayout);
-type PFN_vkCreateImageView = function(VkDevice device, const P_VkImageViewCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkImageView pView) :VkResult;
-type PFN_vkDestroyImageView = procedure(VkDevice device, VkImageView imageView, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkCreateShaderModule = function(VkDevice device, const P_VkShaderModuleCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkShaderModule pShaderModule) :VkResult;
-type PFN_vkDestroyShaderModule = procedure(VkDevice device, VkShaderModule shaderModule, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkCreatePipelineCache = function(VkDevice device, const P_VkPipelineCacheCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkPipelineCache pPipelineCache) :VkResult;
-type PFN_vkDestroyPipelineCache = procedure(VkDevice device, VkPipelineCache pipelineCache, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkGetPipelineCacheData = function(VkDevice device, VkPipelineCache pipelineCache, P_size_t pDataSize, P_void pData) :VkResult;
-type PFN_vkMergePipelineCaches = function(VkDevice device, VkPipelineCache dstCache, uint32_t srcCacheCount, const P_VkPipelineCache pSrcCaches) :VkResult;
-type PFN_vkCreateGraphicsPipelines = function(VkDevice device, VkPipelineCache pipelineCache, uint32_t createInfoCount, const P_VkGraphicsPipelineCreateInfo pCreateInfos, const P_VkAllocationCallbacks pAllocator, P_VkPipeline pPipelines) :VkResult;
-type PFN_vkCreateComputePipelines = function(VkDevice device, VkPipelineCache pipelineCache, uint32_t createInfoCount, const P_VkComputePipelineCreateInfo pCreateInfos, const P_VkAllocationCallbacks pAllocator, P_VkPipeline pPipelines) :VkResult;
-type PFN_vkDestroyPipeline = procedure(VkDevice device, VkPipeline pipeline, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkCreatePipelineLayout = function(VkDevice device, const P_VkPipelineLayoutCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkPipelineLayout pPipelineLayout) :VkResult;
-type PFN_vkDestroyPipelineLayout = procedure(VkDevice device, VkPipelineLayout pipelineLayout, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkCreateSampler = function(VkDevice device, const P_VkSamplerCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkSampler pSampler) :VkResult;
-type PFN_vkDestroySampler = procedure(VkDevice device, VkSampler sampler, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkCreateDescriptorSetLayout = function(VkDevice device, const P_VkDescriptorSetLayoutCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkDescriptorSetLayout pSetLayout) :VkResult;
-type PFN_vkDestroyDescriptorSetLayout = procedure(VkDevice device, VkDescriptorSetLayout descriptorSetLayout, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkCreateDescriptorPool = function(VkDevice device, const P_VkDescriptorPoolCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkDescriptorPool pDescriptorPool) :VkResult;
-type PFN_vkDestroyDescriptorPool = procedure(VkDevice device, VkDescriptorPool descriptorPool, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkResetDescriptorPool = function(VkDevice device, VkDescriptorPool descriptorPool, VkDescriptorPoolResetFlags flags) :VkResult;
-type PFN_vkAllocateDescriptorSets = function(VkDevice device, const P_VkDescriptorSetAllocateInfo pAllocateInfo, P_VkDescriptorSet pDescriptorSets) :VkResult;
-type PFN_vkFreeDescriptorSets = function(VkDevice device, VkDescriptorPool descriptorPool, uint32_t descriptorSetCount, const P_VkDescriptorSet pDescriptorSets) :VkResult;
-type PFN_vkUpdateDescriptorSets = procedure(VkDevice device, uint32_t descriptorWriteCount, const P_VkWriteDescriptorSet pDescriptorWrites, uint32_t descriptorCopyCount, const P_VkCopyDescriptorSet pDescriptorCopies);
-type PFN_vkCreateFramebuffer = function(VkDevice device, const P_VkFramebufferCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkFramebuffer pFramebuffer) :VkResult;
-type PFN_vkDestroyFramebuffer = procedure(VkDevice device, VkFramebuffer framebuffer, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkCreateRenderPass = function(VkDevice device, const P_VkRenderPassCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkRenderPass pRenderPass) :VkResult;
-type PFN_vkDestroyRenderPass = procedure(VkDevice device, VkRenderPass renderPass, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkGetRenderAreaGranularity = procedure(VkDevice device, VkRenderPass renderPass, P_VkExtent2D pGranularity);
-type PFN_vkCreateCommandPool = function(VkDevice device, const P_VkCommandPoolCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkCommandPool pCommandPool) :VkResult;
-type PFN_vkDestroyCommandPool = procedure(VkDevice device, VkCommandPool commandPool, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkResetCommandPool = function(VkDevice device, VkCommandPool commandPool, VkCommandPoolResetFlags flags) :VkResult;
-type PFN_vkAllocateCommandBuffers = function(VkDevice device, const P_VkCommandBufferAllocateInfo pAllocateInfo, P_VkCommandBuffer pCommandBuffers) :VkResult;
-type PFN_vkFreeCommandBuffers = procedure(VkDevice device, VkCommandPool commandPool, uint32_t commandBufferCount, const P_VkCommandBuffer pCommandBuffers);
-type PFN_vkBeginCommandBuffer = function(VkCommandBuffer commandBuffer, const P_VkCommandBufferBeginInfo pBeginInfo) :VkResult;
-type PFN_vkEndCommandBuffer = function(VkCommandBuffer commandBuffer) :VkResult;
-type PFN_vkResetCommandBuffer = function(VkCommandBuffer commandBuffer, VkCommandBufferResetFlags flags) :VkResult;
-type PFN_vkCmdBindPipeline = procedure(VkCommandBuffer commandBuffer, VkPipelineBindPoint pipelineBindPoint, VkPipeline pipeline);
-type PFN_vkCmdSetViewport = procedure(VkCommandBuffer commandBuffer, uint32_t firstViewport, uint32_t viewportCount, const P_VkViewport pViewports);
-type PFN_vkCmdSetScissor = procedure(VkCommandBuffer commandBuffer, uint32_t firstScissor, uint32_t scissorCount, const P_VkRect2D pScissors);
-type PFN_vkCmdSetLineWidth = procedure(VkCommandBuffer commandBuffer, float lineWidth);
-type PFN_vkCmdSetDepthBias = procedure(VkCommandBuffer commandBuffer, float depthBiasConstantFactor, float depthBiasClamp, float depthBiasSlopeFactor);
-type PFN_vkCmdSetBlendConstants = procedure(VkCommandBuffer commandBuffer, const float blendConstants[4]);
-type PFN_vkCmdSetDepthBounds = procedure(VkCommandBuffer commandBuffer, float minDepthBounds, float maxDepthBounds);
-type PFN_vkCmdSetStencilCompareMask = procedure(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, uint32_t compareMask);
-type PFN_vkCmdSetStencilWriteMask = procedure(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, uint32_t writeMask);
-type PFN_vkCmdSetStencilReference = procedure(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, uint32_t reference);
-type PFN_vkCmdBindDescriptorSets = procedure(VkCommandBuffer commandBuffer, VkPipelineBindPoint pipelineBindPoint, VkPipelineLayout layout, uint32_t firstSet, uint32_t descriptorSetCount, const P_VkDescriptorSet pDescriptorSets, uint32_t dynamicOffsetCount, const P_uint32_t pDynamicOffsets);
-type PFN_vkCmdBindIndexBuffer = procedure(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType);
-type PFN_vkCmdBindVertexBuffers = procedure(VkCommandBuffer commandBuffer, uint32_t firstBinding, uint32_t bindingCount, const P_VkBuffer pBuffers, const P_VkDeviceSize pOffsets);
-type PFN_vkCmdDraw = procedure(VkCommandBuffer commandBuffer, uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance);
-type PFN_vkCmdDrawIndexed = procedure(VkCommandBuffer commandBuffer, uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance);
-type PFN_vkCmdDrawIndirect = procedure(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride);
-type PFN_vkCmdDrawIndexedIndirect = procedure(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride);
-type PFN_vkCmdDispatch = procedure(VkCommandBuffer commandBuffer, uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ);
-type PFN_vkCmdDispatchIndirect = procedure(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset);
-type PFN_vkCmdCopyBuffer = procedure(VkCommandBuffer commandBuffer, VkBuffer srcBuffer, VkBuffer dstBuffer, uint32_t regionCount, const P_VkBufferCopy pRegions);
-type PFN_vkCmdCopyImage = procedure(VkCommandBuffer commandBuffer, VkImage srcImage, VkImageLayout srcImageLayout, VkImage dstImage, VkImageLayout dstImageLayout, uint32_t regionCount, const P_VkImageCopy pRegions);
-type PFN_vkCmdBlitImage = procedure(VkCommandBuffer commandBuffer, VkImage srcImage, VkImageLayout srcImageLayout, VkImage dstImage, VkImageLayout dstImageLayout, uint32_t regionCount, const P_VkImageBlit pRegions, VkFilter filter);
-type PFN_vkCmdCopyBufferToImage = procedure(VkCommandBuffer commandBuffer, VkBuffer srcBuffer, VkImage dstImage, VkImageLayout dstImageLayout, uint32_t regionCount, const P_VkBufferImageCopy pRegions);
-type PFN_vkCmdCopyImageToBuffer = procedure(VkCommandBuffer commandBuffer, VkImage srcImage, VkImageLayout srcImageLayout, VkBuffer dstBuffer, uint32_t regionCount, const P_VkBufferImageCopy pRegions);
-type PFN_vkCmdUpdateBuffer = procedure(VkCommandBuffer commandBuffer, VkBuffer dstBuffer, VkDeviceSize dstOffset, VkDeviceSize dataSize, const P_void pData);
-type PFN_vkCmdFillBuffer = procedure(VkCommandBuffer commandBuffer, VkBuffer dstBuffer, VkDeviceSize dstOffset, VkDeviceSize size, uint32_t data);
-type PFN_vkCmdClearColorImage = procedure(VkCommandBuffer commandBuffer, VkImage image, VkImageLayout imageLayout, const P_VkClearColorValue pColor, uint32_t rangeCount, const P_VkImageSubresourceRange pRanges);
-type PFN_vkCmdClearDepthStencilImage = procedure(VkCommandBuffer commandBuffer, VkImage image, VkImageLayout imageLayout, const P_VkClearDepthStencilValue pDepthStencil, uint32_t rangeCount, const P_VkImageSubresourceRange pRanges);
-type PFN_vkCmdClearAttachments = procedure(VkCommandBuffer commandBuffer, uint32_t attachmentCount, const P_VkClearAttachment pAttachments, uint32_t rectCount, const P_VkClearRect pRects);
-type PFN_vkCmdResolveImage = procedure(VkCommandBuffer commandBuffer, VkImage srcImage, VkImageLayout srcImageLayout, VkImage dstImage, VkImageLayout dstImageLayout, uint32_t regionCount, const P_VkImageResolve pRegions);
-type PFN_vkCmdSetEvent = procedure(VkCommandBuffer commandBuffer, VkEvent event, VkPipelineStageFlags stageMask);
-type PFN_vkCmdResetEvent = procedure(VkCommandBuffer commandBuffer, VkEvent event, VkPipelineStageFlags stageMask);
-type PFN_vkCmdWaitEvents = procedure(VkCommandBuffer commandBuffer, uint32_t eventCount, const P_VkEvent pEvents, VkPipelineStageFlags srcStageMask, VkPipelineStageFlags dstStageMask, uint32_t memoryBarrierCount, const P_VkMemoryBarrier pMemoryBarriers, uint32_t bufferMemoryBarrierCount, const P_VkBufferMemoryBarrier pBufferMemoryBarriers, uint32_t imageMemoryBarrierCount, const P_VkImageMemoryBarrier pImageMemoryBarriers);
-type PFN_vkCmdPipelineBarrier = procedure(VkCommandBuffer commandBuffer, VkPipelineStageFlags srcStageMask, VkPipelineStageFlags dstStageMask, VkDependencyFlags dependencyFlags, uint32_t memoryBarrierCount, const P_VkMemoryBarrier pMemoryBarriers, uint32_t bufferMemoryBarrierCount, const P_VkBufferMemoryBarrier pBufferMemoryBarriers, uint32_t imageMemoryBarrierCount, const P_VkImageMemoryBarrier pImageMemoryBarriers);
-type PFN_vkCmdBeginQuery = procedure(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t query, VkQueryControlFlags flags);
-type PFN_vkCmdEndQuery = procedure(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t query);
-type PFN_vkCmdResetQueryPool = procedure(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount);
-type PFN_vkCmdWriteTimestamp = procedure(VkCommandBuffer commandBuffer, VkPipelineStageFlagBits pipelineStage, VkQueryPool queryPool, uint32_t query);
-type PFN_vkCmdCopyQueryPoolResults = procedure(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount, VkBuffer dstBuffer, VkDeviceSize dstOffset, VkDeviceSize stride, VkQueryResultFlags flags);
-type PFN_vkCmdPushConstants = procedure(VkCommandBuffer commandBuffer, VkPipelineLayout layout, VkShaderStageFlags stageFlags, uint32_t offset, uint32_t size, const P_void pValues);
-type PFN_vkCmdBeginRenderPass = procedure(VkCommandBuffer commandBuffer, const P_VkRenderPassBeginInfo pRenderPassBegin, VkSubpassContents contents);
-type PFN_vkCmdNextSubpass = procedure(VkCommandBuffer commandBuffer, VkSubpassContents contents);
-type PFN_vkCmdEndRenderPass = procedure(VkCommandBuffer commandBuffer);
-type PFN_vkCmdExecuteCommands = procedure(VkCommandBuffer commandBuffer, uint32_t commandBufferCount, const P_VkCommandBuffer pCommandBuffers);
+type PFN_vkCreateInstance = function( const pCreateInfo_:P_VkInstanceCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pInstance_:P_VkInstance ) :VkResult;
+type PFN_vkDestroyInstance = procedure( instance_:VkInstance; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkEnumeratePhysicalDevices = function( instance_:VkInstance; pPhysicalDeviceCount_:P_uint32_t; pPhysicalDevices_:P_VkPhysicalDevice ) :VkResult;
+type PFN_vkGetPhysicalDeviceFeatures = procedure( physicalDevice_:VkPhysicalDevice; pFeatures_:P_VkPhysicalDeviceFeatures );
+type PFN_vkGetPhysicalDeviceFormatProperties = procedure( physicalDevice_:VkPhysicalDevice; format_:VkFormat; pFormatProperties_:P_VkFormatProperties );
+type PFN_vkGetPhysicalDeviceImageFormatProperties = function( physicalDevice_:VkPhysicalDevice; format_:VkFormat; type_:VkImageType; tiling_:VkImageTiling; usage_:VkImageUsageFlags; flags_:VkImageCreateFlags; pImageFormatProperties_:P_VkImageFormatProperties ) :VkResult;
+type PFN_vkGetPhysicalDeviceProperties = procedure( physicalDevice_:VkPhysicalDevice; pProperties_:P_VkPhysicalDeviceProperties );
+type PFN_vkGetPhysicalDeviceQueueFamilyProperties = procedure( physicalDevice_:VkPhysicalDevice; pQueueFamilyPropertyCount_:P_uint32_t; pQueueFamilyProperties_:P_VkQueueFamilyProperties );
+type PFN_vkGetPhysicalDeviceMemoryProperties = procedure( physicalDevice_:VkPhysicalDevice; pMemoryProperties_:P_VkPhysicalDeviceMemoryProperties );
+type PFN_vkGetInstanceProcAddr = function( instance_:VkInstance; const pName_:P_char ) :PFN_vkVoidFunction;
+type PFN_vkGetDeviceProcAddr = function( device_:VkDevice; const pName_:P_char ) :PFN_vkVoidFunction;
+type PFN_vkCreateDevice = function( physicalDevice_:VkPhysicalDevice; const pCreateInfo_:P_VkDeviceCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pDevice_:P_VkDevice ) :VkResult;
+type PFN_vkDestroyDevice = procedure( device_:VkDevice; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkEnumerateInstanceExtensionProperties = function( const pLayerName_:P_char; pPropertyCount_:P_uint32_t; pProperties_:P_VkExtensionProperties ) :VkResult;
+type PFN_vkEnumerateDeviceExtensionProperties = function( physicalDevice_:VkPhysicalDevice; const pLayerName_:P_char; pPropertyCount_:P_uint32_t; pProperties_:P_VkExtensionProperties ) :VkResult;
+type PFN_vkEnumerateInstanceLayerProperties = function( pPropertyCount_:P_uint32_t; pProperties_:P_VkLayerProperties ) :VkResult;
+type PFN_vkEnumerateDeviceLayerProperties = function( physicalDevice_:VkPhysicalDevice; pPropertyCount_:P_uint32_t; pProperties_:P_VkLayerProperties ) :VkResult;
+type PFN_vkGetDeviceQueue = procedure( device_:VkDevice; queueFamilyIndex_:uint32_t; queueIndex_:uint32_t; pQueue_:P_VkQueue );
+type PFN_vkQueueSubmit = function( queue_:VkQueue; submitCount_:uint32_t; const pSubmits_:P_VkSubmitInfo; fence_:VkFence ) :VkResult;
+type PFN_vkQueueWaitIdle = function( queue_:VkQueue ) :VkResult;
+type PFN_vkDeviceWaitIdle = function( device_:VkDevice ) :VkResult;
+type PFN_vkAllocateMemory = function( device_:VkDevice; const pAllocateInfo_:P_VkMemoryAllocateInfo; const pAllocator_:P_VkAllocationCallbacks; pMemory_:P_VkDeviceMemory ) :VkResult;
+type PFN_vkFreeMemory = procedure( device_:VkDevice; memory_:VkDeviceMemory; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkMapMemory = function( device_:VkDevice; memory_:VkDeviceMemory; offset_:VkDeviceSize; size_:VkDeviceSize; flags_:VkMemoryMapFlags; ppData_:PP_void ) :VkResult;
+type PFN_vkUnmapMemory = procedure( device_:VkDevice; memory_:VkDeviceMemory );
+type PFN_vkFlushMappedMemoryRanges = function( device_:VkDevice; memoryRangeCount_:uint32_t; const pMemoryRanges_:P_VkMappedMemoryRange ) :VkResult;
+type PFN_vkInvalidateMappedMemoryRanges = function( device_:VkDevice; memoryRangeCount_:uint32_t; const pMemoryRanges_:P_VkMappedMemoryRange ) :VkResult;
+type PFN_vkGetDeviceMemoryCommitment = procedure( device_:VkDevice; memory_:VkDeviceMemory; pCommittedMemoryInBytes_:P_VkDeviceSize );
+type PFN_vkBindBufferMemory = function( device_:VkDevice; buffer_:VkBuffer; memory_:VkDeviceMemory; memoryOffset_:VkDeviceSize ) :VkResult;
+type PFN_vkBindImageMemory = function( device_:VkDevice; image_:VkImage; memory_:VkDeviceMemory; memoryOffset_:VkDeviceSize ) :VkResult;
+type PFN_vkGetBufferMemoryRequirements = procedure( device_:VkDevice; buffer_:VkBuffer; pMemoryRequirements_:P_VkMemoryRequirements );
+type PFN_vkGetImageMemoryRequirements = procedure( device_:VkDevice; image_:VkImage; pMemoryRequirements_:P_VkMemoryRequirements );
+type PFN_vkGetImageSparseMemoryRequirements = procedure( device_:VkDevice; image_:VkImage; pSparseMemoryRequirementCount_:P_uint32_t; pSparseMemoryRequirements_:P_VkSparseImageMemoryRequirements );
+type PFN_vkGetPhysicalDeviceSparseImageFormatProperties = procedure( physicalDevice_:VkPhysicalDevice; format_:VkFormat; type_:VkImageType; samples_:VkSampleCountFlagBits; usage_:VkImageUsageFlags; tiling_:VkImageTiling; pPropertyCount_:P_uint32_t; pProperties_:P_VkSparseImageFormatProperties );
+type PFN_vkQueueBindSparse = function( queue_:VkQueue; bindInfoCount_:uint32_t; const pBindInfo_:P_VkBindSparseInfo; fence_:VkFence ) :VkResult;
+type PFN_vkCreateFence = function( device_:VkDevice; const pCreateInfo_:P_VkFenceCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pFence_:P_VkFence ) :VkResult;
+type PFN_vkDestroyFence = procedure( device_:VkDevice; fence_:VkFence; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkResetFences = function( device_:VkDevice; fenceCount_:uint32_t; const pFences_:P_VkFence ) :VkResult;
+type PFN_vkGetFenceStatus = function( device_:VkDevice; fence_:VkFence ) :VkResult;
+type PFN_vkWaitForFences = function( device_:VkDevice; fenceCount_:uint32_t; const pFences_:P_VkFence; waitAll_:VkBool32; timeout_:uint64_t ) :VkResult;
+type PFN_vkCreateSemaphore = function( device_:VkDevice; const pCreateInfo_:P_VkSemaphoreCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pSemaphore_:P_VkSemaphore ) :VkResult;
+type PFN_vkDestroySemaphore = procedure( device_:VkDevice; semaphore_:VkSemaphore; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCreateEvent = function( device_:VkDevice; const pCreateInfo_:P_VkEventCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pEvent_:P_VkEvent ) :VkResult;
+type PFN_vkDestroyEvent = procedure( device_:VkDevice; event_:VkEvent; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkGetEventStatus = function( device_:VkDevice; event_:VkEvent ) :VkResult;
+type PFN_vkSetEvent = function( device_:VkDevice; event_:VkEvent ) :VkResult;
+type PFN_vkResetEvent = function( device_:VkDevice; event_:VkEvent ) :VkResult;
+type PFN_vkCreateQueryPool = function( device_:VkDevice; const pCreateInfo_:P_VkQueryPoolCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pQueryPool_:P_VkQueryPool ) :VkResult;
+type PFN_vkDestroyQueryPool = procedure( device_:VkDevice; queryPool_:VkQueryPool; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkGetQueryPoolResults = function( device_:VkDevice; queryPool_:VkQueryPool; firstQuery_:uint32_t; queryCount_:uint32_t; dataSize_:size_t; pData_:P_void; stride_:VkDeviceSize; flags_:VkQueryResultFlags ) :VkResult;
+type PFN_vkCreateBuffer = function( device_:VkDevice; const pCreateInfo_:P_VkBufferCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pBuffer_:P_VkBuffer ) :VkResult;
+type PFN_vkDestroyBuffer = procedure( device_:VkDevice; buffer_:VkBuffer; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCreateBufferView = function( device_:VkDevice; const pCreateInfo_:P_VkBufferViewCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pView_:P_VkBufferView ) :VkResult;
+type PFN_vkDestroyBufferView = procedure( device_:VkDevice; bufferView_:VkBufferView; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCreateImage = function( device_:VkDevice; const pCreateInfo_:P_VkImageCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pImage_:P_VkImage ) :VkResult;
+type PFN_vkDestroyImage = procedure( device_:VkDevice; image_:VkImage; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkGetImageSubresourceLayout = procedure( device_:VkDevice; image_:VkImage; const pSubresource_:P_VkImageSubresource; pLayout_:P_VkSubresourceLayout );
+type PFN_vkCreateImageView = function( device_:VkDevice; const pCreateInfo_:P_VkImageViewCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pView_:P_VkImageView ) :VkResult;
+type PFN_vkDestroyImageView = procedure( device_:VkDevice; imageView_:VkImageView; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCreateShaderModule = function( device_:VkDevice; const pCreateInfo_:P_VkShaderModuleCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pShaderModule_:P_VkShaderModule ) :VkResult;
+type PFN_vkDestroyShaderModule = procedure( device_:VkDevice; shaderModule_:VkShaderModule; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCreatePipelineCache = function( device_:VkDevice; const pCreateInfo_:P_VkPipelineCacheCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pPipelineCache_:P_VkPipelineCache ) :VkResult;
+type PFN_vkDestroyPipelineCache = procedure( device_:VkDevice; pipelineCache_:VkPipelineCache; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkGetPipelineCacheData = function( device_:VkDevice; pipelineCache_:VkPipelineCache; pDataSize_:P_size_t; pData_:P_void ) :VkResult;
+type PFN_vkMergePipelineCaches = function( device_:VkDevice; dstCache_:VkPipelineCache; srcCacheCount_:uint32_t; const pSrcCaches_:P_VkPipelineCache ) :VkResult;
+type PFN_vkCreateGraphicsPipelines = function( device_:VkDevice; pipelineCache_:VkPipelineCache; createInfoCount_:uint32_t; const pCreateInfos_:P_VkGraphicsPipelineCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pPipelines_:P_VkPipeline ) :VkResult;
+type PFN_vkCreateComputePipelines = function( device_:VkDevice; pipelineCache_:VkPipelineCache; createInfoCount_:uint32_t; const pCreateInfos_:P_VkComputePipelineCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pPipelines_:P_VkPipeline ) :VkResult;
+type PFN_vkDestroyPipeline = procedure( device_:VkDevice; pipeline_:VkPipeline; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCreatePipelineLayout = function( device_:VkDevice; const pCreateInfo_:P_VkPipelineLayoutCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pPipelineLayout_:P_VkPipelineLayout ) :VkResult;
+type PFN_vkDestroyPipelineLayout = procedure( device_:VkDevice; pipelineLayout_:VkPipelineLayout; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCreateSampler = function( device_:VkDevice; const pCreateInfo_:P_VkSamplerCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pSampler_:P_VkSampler ) :VkResult;
+type PFN_vkDestroySampler = procedure( device_:VkDevice; sampler_:VkSampler; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCreateDescriptorSetLayout = function( device_:VkDevice; const pCreateInfo_:P_VkDescriptorSetLayoutCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pSetLayout_:P_VkDescriptorSetLayout ) :VkResult;
+type PFN_vkDestroyDescriptorSetLayout = procedure( device_:VkDevice; descriptorSetLayout_:VkDescriptorSetLayout; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCreateDescriptorPool = function( device_:VkDevice; const pCreateInfo_:P_VkDescriptorPoolCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pDescriptorPool_:P_VkDescriptorPool ) :VkResult;
+type PFN_vkDestroyDescriptorPool = procedure( device_:VkDevice; descriptorPool_:VkDescriptorPool; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkResetDescriptorPool = function( device_:VkDevice; descriptorPool_:VkDescriptorPool; flags_:VkDescriptorPoolResetFlags ) :VkResult;
+type PFN_vkAllocateDescriptorSets = function( device_:VkDevice; const pAllocateInfo_:P_VkDescriptorSetAllocateInfo; pDescriptorSets_:P_VkDescriptorSet ) :VkResult;
+type PFN_vkFreeDescriptorSets = function( device_:VkDevice; descriptorPool_:VkDescriptorPool; descriptorSetCount_:uint32_t; const pDescriptorSets_:P_VkDescriptorSet ) :VkResult;
+type PFN_vkUpdateDescriptorSets = procedure( device_:VkDevice; descriptorWriteCount_:uint32_t; const pDescriptorWrites_:P_VkWriteDescriptorSet; descriptorCopyCount_:uint32_t; const pDescriptorCopies_:P_VkCopyDescriptorSet );
+type PFN_vkCreateFramebuffer = function( device_:VkDevice; const pCreateInfo_:P_VkFramebufferCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pFramebuffer_:P_VkFramebuffer ) :VkResult;
+type PFN_vkDestroyFramebuffer = procedure( device_:VkDevice; framebuffer_:VkFramebuffer; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCreateRenderPass = function( device_:VkDevice; const pCreateInfo_:P_VkRenderPassCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pRenderPass_:P_VkRenderPass ) :VkResult;
+type PFN_vkDestroyRenderPass = procedure( device_:VkDevice; renderPass_:VkRenderPass; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkGetRenderAreaGranularity = procedure( device_:VkDevice; renderPass_:VkRenderPass; pGranularity_:P_VkExtent2D );
+type PFN_vkCreateCommandPool = function( device_:VkDevice; const pCreateInfo_:P_VkCommandPoolCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pCommandPool_:P_VkCommandPool ) :VkResult;
+type PFN_vkDestroyCommandPool = procedure( device_:VkDevice; commandPool_:VkCommandPool; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkResetCommandPool = function( device_:VkDevice; commandPool_:VkCommandPool; flags_:VkCommandPoolResetFlags ) :VkResult;
+type PFN_vkAllocateCommandBuffers = function( device_:VkDevice; const pAllocateInfo_:P_VkCommandBufferAllocateInfo; pCommandBuffers_:P_VkCommandBuffer ) :VkResult;
+type PFN_vkFreeCommandBuffers = procedure( device_:VkDevice; commandPool_:VkCommandPool; commandBufferCount_:uint32_t; const pCommandBuffers_:P_VkCommandBuffer );
+type PFN_vkBeginCommandBuffer = function( commandBuffer_:VkCommandBuffer; const pBeginInfo_:P_VkCommandBufferBeginInfo ) :VkResult;
+type PFN_vkEndCommandBuffer = function( commandBuffer_:VkCommandBuffer ) :VkResult;
+type PFN_vkResetCommandBuffer = function( commandBuffer_:VkCommandBuffer; flags_:VkCommandBufferResetFlags ) :VkResult;
+type PFN_vkCmdBindPipeline = procedure( commandBuffer_:VkCommandBuffer; pipelineBindPoint_:VkPipelineBindPoint; pipeline_:VkPipeline );
+type PFN_vkCmdSetViewport = procedure( commandBuffer_:VkCommandBuffer; firstViewport_:uint32_t; viewportCount_:uint32_t; const pViewports_:P_VkViewport );
+type PFN_vkCmdSetScissor = procedure( commandBuffer_:VkCommandBuffer; firstScissor_:uint32_t; scissorCount_:uint32_t; const pScissors_:P_VkRect2D );
+type PFN_vkCmdSetLineWidth = procedure( commandBuffer_:VkCommandBuffer; lineWidth_:float );
+type PFN_vkCmdSetDepthBias = procedure( commandBuffer_:VkCommandBuffer; depthBiasConstantFactor_:float; depthBiasClamp_:float; depthBiasSlopeFactor_:float );
+type PFN_vkCmdSetBlendConstants = procedure( commandBuffer_:VkCommandBuffer; const blendConstants_:array [ 0..4-1 ] of float );
+type PFN_vkCmdSetDepthBounds = procedure( commandBuffer_:VkCommandBuffer; minDepthBounds_:float; maxDepthBounds_:float );
+type PFN_vkCmdSetStencilCompareMask = procedure( commandBuffer_:VkCommandBuffer; faceMask_:VkStencilFaceFlags; compareMask_:uint32_t );
+type PFN_vkCmdSetStencilWriteMask = procedure( commandBuffer_:VkCommandBuffer; faceMask_:VkStencilFaceFlags; writeMask_:uint32_t );
+type PFN_vkCmdSetStencilReference = procedure( commandBuffer_:VkCommandBuffer; faceMask_:VkStencilFaceFlags; reference_:uint32_t );
+type PFN_vkCmdBindDescriptorSets = procedure( commandBuffer_:VkCommandBuffer; pipelineBindPoint_:VkPipelineBindPoint; layout_:VkPipelineLayout; firstSet_:uint32_t; descriptorSetCount_:uint32_t; const pDescriptorSets_:P_VkDescriptorSet; dynamicOffsetCount_:uint32_t; const pDynamicOffsets_:P_uint32_t );
+type PFN_vkCmdBindIndexBuffer = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; indexType_:VkIndexType );
+type PFN_vkCmdBindVertexBuffers = procedure( commandBuffer_:VkCommandBuffer; firstBinding_:uint32_t; bindingCount_:uint32_t; const pBuffers_:P_VkBuffer; const pOffsets_:P_VkDeviceSize );
+type PFN_vkCmdDraw = procedure( commandBuffer_:VkCommandBuffer; vertexCount_:uint32_t; instanceCount_:uint32_t; firstVertex_:uint32_t; firstInstance_:uint32_t );
+type PFN_vkCmdDrawIndexed = procedure( commandBuffer_:VkCommandBuffer; indexCount_:uint32_t; instanceCount_:uint32_t; firstIndex_:uint32_t; vertexOffset_:int32_t; firstInstance_:uint32_t );
+type PFN_vkCmdDrawIndirect = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; drawCount_:uint32_t; stride_:uint32_t );
+type PFN_vkCmdDrawIndexedIndirect = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; drawCount_:uint32_t; stride_:uint32_t );
+type PFN_vkCmdDispatch = procedure( commandBuffer_:VkCommandBuffer; groupCountX_:uint32_t; groupCountY_:uint32_t; groupCountZ_:uint32_t );
+type PFN_vkCmdDispatchIndirect = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize );
+type PFN_vkCmdCopyBuffer = procedure( commandBuffer_:VkCommandBuffer; srcBuffer_:VkBuffer; dstBuffer_:VkBuffer; regionCount_:uint32_t; const pRegions_:P_VkBufferCopy );
+type PFN_vkCmdCopyImage = procedure( commandBuffer_:VkCommandBuffer; srcImage_:VkImage; srcImageLayout_:VkImageLayout; dstImage_:VkImage; dstImageLayout_:VkImageLayout; regionCount_:uint32_t; const pRegions_:P_VkImageCopy );
+type PFN_vkCmdBlitImage = procedure( commandBuffer_:VkCommandBuffer; srcImage_:VkImage; srcImageLayout_:VkImageLayout; dstImage_:VkImage; dstImageLayout_:VkImageLayout; regionCount_:uint32_t; const pRegions_:P_VkImageBlit; filter_:VkFilter );
+type PFN_vkCmdCopyBufferToImage = procedure( commandBuffer_:VkCommandBuffer; srcBuffer_:VkBuffer; dstImage_:VkImage; dstImageLayout_:VkImageLayout; regionCount_:uint32_t; const pRegions_:P_VkBufferImageCopy );
+type PFN_vkCmdCopyImageToBuffer = procedure( commandBuffer_:VkCommandBuffer; srcImage_:VkImage; srcImageLayout_:VkImageLayout; dstBuffer_:VkBuffer; regionCount_:uint32_t; const pRegions_:P_VkBufferImageCopy );
+type PFN_vkCmdUpdateBuffer = procedure( commandBuffer_:VkCommandBuffer; dstBuffer_:VkBuffer; dstOffset_:VkDeviceSize; dataSize_:VkDeviceSize; const pData_:P_void );
+type PFN_vkCmdFillBuffer = procedure( commandBuffer_:VkCommandBuffer; dstBuffer_:VkBuffer; dstOffset_:VkDeviceSize; size_:VkDeviceSize; data_:uint32_t );
+type PFN_vkCmdClearColorImage = procedure( commandBuffer_:VkCommandBuffer; image_:VkImage; imageLayout_:VkImageLayout; const pColor_:P_VkClearColorValue; rangeCount_:uint32_t; const pRanges_:P_VkImageSubresourceRange );
+type PFN_vkCmdClearDepthStencilImage = procedure( commandBuffer_:VkCommandBuffer; image_:VkImage; imageLayout_:VkImageLayout; const pDepthStencil_:P_VkClearDepthStencilValue; rangeCount_:uint32_t; const pRanges_:P_VkImageSubresourceRange );
+type PFN_vkCmdClearAttachments = procedure( commandBuffer_:VkCommandBuffer; attachmentCount_:uint32_t; const pAttachments_:P_VkClearAttachment; rectCount_:uint32_t; const pRects_:P_VkClearRect );
+type PFN_vkCmdResolveImage = procedure( commandBuffer_:VkCommandBuffer; srcImage_:VkImage; srcImageLayout_:VkImageLayout; dstImage_:VkImage; dstImageLayout_:VkImageLayout; regionCount_:uint32_t; const pRegions_:P_VkImageResolve );
+type PFN_vkCmdSetEvent = procedure( commandBuffer_:VkCommandBuffer; event_:VkEvent; stageMask_:VkPipelineStageFlags );
+type PFN_vkCmdResetEvent = procedure( commandBuffer_:VkCommandBuffer; event_:VkEvent; stageMask_:VkPipelineStageFlags );
+type PFN_vkCmdWaitEvents = procedure( commandBuffer_:VkCommandBuffer; eventCount_:uint32_t; const pEvents_:P_VkEvent; srcStageMask_:VkPipelineStageFlags; dstStageMask_:VkPipelineStageFlags; memoryBarrierCount_:uint32_t; const pMemoryBarriers_:P_VkMemoryBarrier; bufferMemoryBarrierCount_:uint32_t; const pBufferMemoryBarriers_:P_VkBufferMemoryBarrier; imageMemoryBarrierCount_:uint32_t; const pImageMemoryBarriers_:P_VkImageMemoryBarrier );
+type PFN_vkCmdPipelineBarrier = procedure( commandBuffer_:VkCommandBuffer; srcStageMask_:VkPipelineStageFlags; dstStageMask_:VkPipelineStageFlags; dependencyFlags_:VkDependencyFlags; memoryBarrierCount_:uint32_t; const pMemoryBarriers_:P_VkMemoryBarrier; bufferMemoryBarrierCount_:uint32_t; const pBufferMemoryBarriers_:P_VkBufferMemoryBarrier; imageMemoryBarrierCount_:uint32_t; const pImageMemoryBarriers_:P_VkImageMemoryBarrier );
+type PFN_vkCmdBeginQuery = procedure( commandBuffer_:VkCommandBuffer; queryPool_:VkQueryPool; query_:uint32_t; flags_:VkQueryControlFlags );
+type PFN_vkCmdEndQuery = procedure( commandBuffer_:VkCommandBuffer; queryPool_:VkQueryPool; query_:uint32_t );
+type PFN_vkCmdResetQueryPool = procedure( commandBuffer_:VkCommandBuffer; queryPool_:VkQueryPool; firstQuery_:uint32_t; queryCount_:uint32_t );
+type PFN_vkCmdWriteTimestamp = procedure( commandBuffer_:VkCommandBuffer; pipelineStage_:VkPipelineStageFlagBits; queryPool_:VkQueryPool; query_:uint32_t );
+type PFN_vkCmdCopyQueryPoolResults = procedure( commandBuffer_:VkCommandBuffer; queryPool_:VkQueryPool; firstQuery_:uint32_t; queryCount_:uint32_t; dstBuffer_:VkBuffer; dstOffset_:VkDeviceSize; stride_:VkDeviceSize; flags_:VkQueryResultFlags );
+type PFN_vkCmdPushConstants = procedure( commandBuffer_:VkCommandBuffer; layout_:VkPipelineLayout; stageFlags_:VkShaderStageFlags; offset_:uint32_t; size_:uint32_t; const pValues_:P_void );
+type PFN_vkCmdBeginRenderPass = procedure( commandBuffer_:VkCommandBuffer; const pRenderPassBegin_:P_VkRenderPassBeginInfo; contents_:VkSubpassContents );
+type PFN_vkCmdNextSubpass = procedure( commandBuffer_:VkCommandBuffer; contents_:VkSubpassContents );
+type PFN_vkCmdEndRenderPass = procedure( commandBuffer_:VkCommandBuffer );
+type PFN_vkCmdExecuteCommands = procedure( commandBuffer_:VkCommandBuffer; commandBufferCount_:uint32_t; const pCommandBuffers_:P_VkCommandBuffer );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateInstance(
-    P_VkInstanceCreateInfo                      pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkInstance                                pInstance);
+    pCreateInfo_:P_VkInstanceCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pInstance_:P_VkInstance );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyInstance(
-    VkInstance                                  instance,
-    P_VkAllocationCallbacks                     pAllocator);
+    instance_:VkInstance;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkEnumeratePhysicalDevices(
-    VkInstance                                  instance,
-    P_uint32_t                                  pPhysicalDeviceCount,
-    P_VkPhysicalDevice                          pPhysicalDevices);
+    instance_:VkInstance;
+    pPhysicalDeviceCount_:P_uint32_t;
+    pPhysicalDevices_:P_VkPhysicalDevice );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceFeatures(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceFeatures                  pFeatures);
+    physicalDevice_:VkPhysicalDevice;
+    pFeatures_:P_VkPhysicalDeviceFeatures );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceFormatProperties(
-    VkPhysicalDevice                            physicalDevice,
-    VkFormat                                    format,
-    P_VkFormatProperties                        pFormatProperties);
+    physicalDevice_:VkPhysicalDevice;
+    format_:VkFormat;
+    pFormatProperties_:P_VkFormatProperties );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceImageFormatProperties(
-    VkPhysicalDevice                            physicalDevice,
-    VkFormat                                    format,
-    VkImageType                                 type,
-    VkImageTiling                               tiling,
-    VkImageUsageFlags                           usage,
-    VkImageCreateFlags                          flags,
-    P_VkImageFormatProperties                   pImageFormatProperties);
+    physicalDevice_:VkPhysicalDevice;
+    format_:VkFormat;
+    type_:VkImageType;
+    tiling_:VkImageTiling;
+    usage_:VkImageUsageFlags;
+    flags_:VkImageCreateFlags;
+    pImageFormatProperties_:P_VkImageFormatProperties );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceProperties(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceProperties                pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pProperties_:P_VkPhysicalDeviceProperties );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceQueueFamilyProperties(
-    VkPhysicalDevice                            physicalDevice,
-    P_uint32_t                                  pQueueFamilyPropertyCount,
-    P_VkQueueFamilyProperties                   pQueueFamilyProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pQueueFamilyPropertyCount_:P_uint32_t;
+    pQueueFamilyProperties_:P_VkQueueFamilyProperties );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceMemoryProperties(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceMemoryProperties          pMemoryProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pMemoryProperties_:P_VkPhysicalDeviceMemoryProperties );
 
 VKAPI_ATTR PFN_vkVoidFunction VKAPI_CALL vkGetInstanceProcAddr(
-    VkInstance                                  instance,
-    P_char                                      pName);
+    instance_:VkInstance;
+    pName_:P_char );
 
 VKAPI_ATTR PFN_vkVoidFunction VKAPI_CALL vkGetDeviceProcAddr(
-    VkDevice                                    device,
-    P_char                                      pName);
+    device_:VkDevice;
+    pName_:P_char );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateDevice(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkDeviceCreateInfo                        pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkDevice                                  pDevice);
+    physicalDevice_:VkPhysicalDevice;
+    pCreateInfo_:P_VkDeviceCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pDevice_:P_VkDevice );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyDevice(
-    VkDevice                                    device,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkEnumerateInstanceExtensionProperties(
-    P_char                                      pLayerName,
-    P_uint32_t                                  pPropertyCount,
-    P_VkExtensionProperties                     pProperties);
+    pLayerName_:P_char;
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkExtensionProperties );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkEnumerateDeviceExtensionProperties(
-    VkPhysicalDevice                            physicalDevice,
-    P_char                                      pLayerName,
-    P_uint32_t                                  pPropertyCount,
-    P_VkExtensionProperties                     pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pLayerName_:P_char;
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkExtensionProperties );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkEnumerateInstanceLayerProperties(
-    P_uint32_t                                  pPropertyCount,
-    P_VkLayerProperties                         pProperties);
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkLayerProperties );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkEnumerateDeviceLayerProperties(
-    VkPhysicalDevice                            physicalDevice,
-    P_uint32_t                                  pPropertyCount,
-    P_VkLayerProperties                         pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkLayerProperties );
 
 VKAPI_ATTR void VKAPI_CALL vkGetDeviceQueue(
-    VkDevice                                    device,
-    uint32_t                                    queueFamilyIndex,
-    uint32_t                                    queueIndex,
-    P_VkQueue                                   pQueue);
+    device_:VkDevice;
+    queueFamilyIndex_:uint32_t;
+    queueIndex_:uint32_t;
+    pQueue_:P_VkQueue );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkQueueSubmit(
-    VkQueue                                     queue,
-    uint32_t                                    submitCount,
-    P_VkSubmitInfo                              pSubmits,
-    VkFence                                     fence);
+    queue_:VkQueue;
+    submitCount_:uint32_t;
+    pSubmits_:P_VkSubmitInfo;
+    fence_:VkFence );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkQueueWaitIdle(
-    VkQueue                                     queue);
+    queue_:VkQueue );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkDeviceWaitIdle(
-    VkDevice                                    device);
+    device_:VkDevice );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkAllocateMemory(
-    VkDevice                                    device,
-    P_VkMemoryAllocateInfo                      pAllocateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkDeviceMemory                            pMemory);
+    device_:VkDevice;
+    pAllocateInfo_:P_VkMemoryAllocateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pMemory_:P_VkDeviceMemory );
 
 VKAPI_ATTR void VKAPI_CALL vkFreeMemory(
-    VkDevice                                    device,
-    VkDeviceMemory                              memory,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    memory_:VkDeviceMemory;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkMapMemory(
-    VkDevice                                    device,
-    VkDeviceMemory                              memory,
-    VkDeviceSize                                offset,
-    VkDeviceSize                                size,
-    VkMemoryMapFlags                            flags,
-    PP_void                                     ppData);
+    device_:VkDevice;
+    memory_:VkDeviceMemory;
+    offset_:VkDeviceSize;
+    size_:VkDeviceSize;
+    flags_:VkMemoryMapFlags;
+    ppData_:PP_void );
 
 VKAPI_ATTR void VKAPI_CALL vkUnmapMemory(
-    VkDevice                                    device,
-    VkDeviceMemory                              memory);
+    device_:VkDevice;
+    memory_:VkDeviceMemory );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkFlushMappedMemoryRanges(
-    VkDevice                                    device,
-    uint32_t                                    memoryRangeCount,
-    P_VkMappedMemoryRange                       pMemoryRanges);
+    device_:VkDevice;
+    memoryRangeCount_:uint32_t;
+    pMemoryRanges_:P_VkMappedMemoryRange );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkInvalidateMappedMemoryRanges(
-    VkDevice                                    device,
-    uint32_t                                    memoryRangeCount,
-    P_VkMappedMemoryRange                       pMemoryRanges);
+    device_:VkDevice;
+    memoryRangeCount_:uint32_t;
+    pMemoryRanges_:P_VkMappedMemoryRange );
 
 VKAPI_ATTR void VKAPI_CALL vkGetDeviceMemoryCommitment(
-    VkDevice                                    device,
-    VkDeviceMemory                              memory,
-    P_VkDeviceSize                              pCommittedMemoryInBytes);
+    device_:VkDevice;
+    memory_:VkDeviceMemory;
+    pCommittedMemoryInBytes_:P_VkDeviceSize );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkBindBufferMemory(
-    VkDevice                                    device,
-    VkBuffer                                    buffer,
-    VkDeviceMemory                              memory,
-    VkDeviceSize                                memoryOffset);
+    device_:VkDevice;
+    buffer_:VkBuffer;
+    memory_:VkDeviceMemory;
+    memoryOffset_:VkDeviceSize );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkBindImageMemory(
-    VkDevice                                    device,
-    VkImage                                     image,
-    VkDeviceMemory                              memory,
-    VkDeviceSize                                memoryOffset);
+    device_:VkDevice;
+    image_:VkImage;
+    memory_:VkDeviceMemory;
+    memoryOffset_:VkDeviceSize );
 
 VKAPI_ATTR void VKAPI_CALL vkGetBufferMemoryRequirements(
-    VkDevice                                    device,
-    VkBuffer                                    buffer,
-    P_VkMemoryRequirements                      pMemoryRequirements);
+    device_:VkDevice;
+    buffer_:VkBuffer;
+    pMemoryRequirements_:P_VkMemoryRequirements );
 
 VKAPI_ATTR void VKAPI_CALL vkGetImageMemoryRequirements(
-    VkDevice                                    device,
-    VkImage                                     image,
-    P_VkMemoryRequirements                      pMemoryRequirements);
+    device_:VkDevice;
+    image_:VkImage;
+    pMemoryRequirements_:P_VkMemoryRequirements );
 
 VKAPI_ATTR void VKAPI_CALL vkGetImageSparseMemoryRequirements(
-    VkDevice                                    device,
-    VkImage                                     image,
-    P_uint32_t                                  pSparseMemoryRequirementCount,
-    P_VkSparseImageMemoryRequirements           pSparseMemoryRequirements);
+    device_:VkDevice;
+    image_:VkImage;
+    pSparseMemoryRequirementCount_:P_uint32_t;
+    pSparseMemoryRequirements_:P_VkSparseImageMemoryRequirements );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceSparseImageFormatProperties(
-    VkPhysicalDevice                            physicalDevice,
-    VkFormat                                    format,
-    VkImageType                                 type,
-    VkSampleCountFlagBits                       samples,
-    VkImageUsageFlags                           usage,
-    VkImageTiling                               tiling,
-    P_uint32_t                                  pPropertyCount,
-    P_VkSparseImageFormatProperties             pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    format_:VkFormat;
+    type_:VkImageType;
+    samples_:VkSampleCountFlagBits;
+    usage_:VkImageUsageFlags;
+    tiling_:VkImageTiling;
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkSparseImageFormatProperties );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkQueueBindSparse(
-    VkQueue                                     queue,
-    uint32_t                                    bindInfoCount,
-    P_VkBindSparseInfo                          pBindInfo,
-    VkFence                                     fence);
+    queue_:VkQueue;
+    bindInfoCount_:uint32_t;
+    pBindInfo_:P_VkBindSparseInfo;
+    fence_:VkFence );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateFence(
-    VkDevice                                    device,
-    P_VkFenceCreateInfo                         pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkFence                                   pFence);
+    device_:VkDevice;
+    pCreateInfo_:P_VkFenceCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pFence_:P_VkFence );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyFence(
-    VkDevice                                    device,
-    VkFence                                     fence,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    fence_:VkFence;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkResetFences(
-    VkDevice                                    device,
-    uint32_t                                    fenceCount,
-    P_VkFence                                   pFences);
+    device_:VkDevice;
+    fenceCount_:uint32_t;
+    pFences_:P_VkFence );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetFenceStatus(
-    VkDevice                                    device,
-    VkFence                                     fence);
+    device_:VkDevice;
+    fence_:VkFence );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkWaitForFences(
-    VkDevice                                    device,
-    uint32_t                                    fenceCount,
-    P_VkFence                                   pFences,
-    VkBool32                                    waitAll,
-    uint64_t                                    timeout);
+    device_:VkDevice;
+    fenceCount_:uint32_t;
+    pFences_:P_VkFence;
+    waitAll_:VkBool32;
+    timeout_:uint64_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateSemaphore(
-    VkDevice                                    device,
-    P_VkSemaphoreCreateInfo                     pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkSemaphore                               pSemaphore);
+    device_:VkDevice;
+    pCreateInfo_:P_VkSemaphoreCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pSemaphore_:P_VkSemaphore );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroySemaphore(
-    VkDevice                                    device,
-    VkSemaphore                                 semaphore,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    semaphore_:VkSemaphore;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateEvent(
-    VkDevice                                    device,
-    P_VkEventCreateInfo                         pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkEvent                                   pEvent);
+    device_:VkDevice;
+    pCreateInfo_:P_VkEventCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pEvent_:P_VkEvent );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyEvent(
-    VkDevice                                    device,
-    VkEvent                                     event,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    event_:VkEvent;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetEventStatus(
-    VkDevice                                    device,
-    VkEvent                                     event);
+    device_:VkDevice;
+    event_:VkEvent );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkSetEvent(
-    VkDevice                                    device,
-    VkEvent                                     event);
+    device_:VkDevice;
+    event_:VkEvent );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkResetEvent(
-    VkDevice                                    device,
-    VkEvent                                     event);
+    device_:VkDevice;
+    event_:VkEvent );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateQueryPool(
-    VkDevice                                    device,
-    P_VkQueryPoolCreateInfo                     pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkQueryPool                               pQueryPool);
+    device_:VkDevice;
+    pCreateInfo_:P_VkQueryPoolCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pQueryPool_:P_VkQueryPool );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyQueryPool(
-    VkDevice                                    device,
-    VkQueryPool                                 queryPool,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    queryPool_:VkQueryPool;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetQueryPoolResults(
-    VkDevice                                    device,
-    VkQueryPool                                 queryPool,
-    uint32_t                                    firstQuery,
-    uint32_t                                    queryCount,
-    size_t                                      dataSize,
-    P_void                                      pData,
-    VkDeviceSize                                stride,
-    VkQueryResultFlags                          flags);
+    device_:VkDevice;
+    queryPool_:VkQueryPool;
+    firstQuery_:uint32_t;
+    queryCount_:uint32_t;
+    dataSize_:size_t;
+    pData_:P_void;
+    stride_:VkDeviceSize;
+    flags_:VkQueryResultFlags );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateBuffer(
-    VkDevice                                    device,
-    P_VkBufferCreateInfo                        pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkBuffer                                  pBuffer);
+    device_:VkDevice;
+    pCreateInfo_:P_VkBufferCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pBuffer_:P_VkBuffer );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyBuffer(
-    VkDevice                                    device,
-    VkBuffer                                    buffer,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    buffer_:VkBuffer;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateBufferView(
-    VkDevice                                    device,
-    P_VkBufferViewCreateInfo                    pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkBufferView                              pView);
+    device_:VkDevice;
+    pCreateInfo_:P_VkBufferViewCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pView_:P_VkBufferView );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyBufferView(
-    VkDevice                                    device,
-    VkBufferView                                bufferView,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    bufferView_:VkBufferView;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateImage(
-    VkDevice                                    device,
-    P_VkImageCreateInfo                         pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkImage                                   pImage);
+    device_:VkDevice;
+    pCreateInfo_:P_VkImageCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pImage_:P_VkImage );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyImage(
-    VkDevice                                    device,
-    VkImage                                     image,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    image_:VkImage;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR void VKAPI_CALL vkGetImageSubresourceLayout(
-    VkDevice                                    device,
-    VkImage                                     image,
-    P_VkImageSubresource                        pSubresource,
-    P_VkSubresourceLayout                       pLayout);
+    device_:VkDevice;
+    image_:VkImage;
+    pSubresource_:P_VkImageSubresource;
+    pLayout_:P_VkSubresourceLayout );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateImageView(
-    VkDevice                                    device,
-    P_VkImageViewCreateInfo                     pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkImageView                               pView);
+    device_:VkDevice;
+    pCreateInfo_:P_VkImageViewCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pView_:P_VkImageView );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyImageView(
-    VkDevice                                    device,
-    VkImageView                                 imageView,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    imageView_:VkImageView;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateShaderModule(
-    VkDevice                                    device,
-    P_VkShaderModuleCreateInfo                  pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkShaderModule                            pShaderModule);
+    device_:VkDevice;
+    pCreateInfo_:P_VkShaderModuleCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pShaderModule_:P_VkShaderModule );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyShaderModule(
-    VkDevice                                    device,
-    VkShaderModule                              shaderModule,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    shaderModule_:VkShaderModule;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreatePipelineCache(
-    VkDevice                                    device,
-    P_VkPipelineCacheCreateInfo                 pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkPipelineCache                           pPipelineCache);
+    device_:VkDevice;
+    pCreateInfo_:P_VkPipelineCacheCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pPipelineCache_:P_VkPipelineCache );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyPipelineCache(
-    VkDevice                                    device,
-    VkPipelineCache                             pipelineCache,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    pipelineCache_:VkPipelineCache;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPipelineCacheData(
-    VkDevice                                    device,
-    VkPipelineCache                             pipelineCache,
-    P_size_t                                    pDataSize,
-    P_void                                      pData);
+    device_:VkDevice;
+    pipelineCache_:VkPipelineCache;
+    pDataSize_:P_size_t;
+    pData_:P_void );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkMergePipelineCaches(
-    VkDevice                                    device,
-    VkPipelineCache                             dstCache,
-    uint32_t                                    srcCacheCount,
-    P_VkPipelineCache                           pSrcCaches);
+    device_:VkDevice;
+    dstCache_:VkPipelineCache;
+    srcCacheCount_:uint32_t;
+    pSrcCaches_:P_VkPipelineCache );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateGraphicsPipelines(
-    VkDevice                                    device,
-    VkPipelineCache                             pipelineCache,
-    uint32_t                                    createInfoCount,
-    P_VkGraphicsPipelineCreateInfo              pCreateInfos,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkPipeline                                pPipelines);
+    device_:VkDevice;
+    pipelineCache_:VkPipelineCache;
+    createInfoCount_:uint32_t;
+    pCreateInfos_:P_VkGraphicsPipelineCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pPipelines_:P_VkPipeline );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateComputePipelines(
-    VkDevice                                    device,
-    VkPipelineCache                             pipelineCache,
-    uint32_t                                    createInfoCount,
-    P_VkComputePipelineCreateInfo               pCreateInfos,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkPipeline                                pPipelines);
+    device_:VkDevice;
+    pipelineCache_:VkPipelineCache;
+    createInfoCount_:uint32_t;
+    pCreateInfos_:P_VkComputePipelineCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pPipelines_:P_VkPipeline );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyPipeline(
-    VkDevice                                    device,
-    VkPipeline                                  pipeline,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    pipeline_:VkPipeline;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreatePipelineLayout(
-    VkDevice                                    device,
-    P_VkPipelineLayoutCreateInfo                pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkPipelineLayout                          pPipelineLayout);
+    device_:VkDevice;
+    pCreateInfo_:P_VkPipelineLayoutCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pPipelineLayout_:P_VkPipelineLayout );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyPipelineLayout(
-    VkDevice                                    device,
-    VkPipelineLayout                            pipelineLayout,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    pipelineLayout_:VkPipelineLayout;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateSampler(
-    VkDevice                                    device,
-    P_VkSamplerCreateInfo                       pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkSampler                                 pSampler);
+    device_:VkDevice;
+    pCreateInfo_:P_VkSamplerCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pSampler_:P_VkSampler );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroySampler(
-    VkDevice                                    device,
-    VkSampler                                   sampler,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    sampler_:VkSampler;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateDescriptorSetLayout(
-    VkDevice                                    device,
-    P_VkDescriptorSetLayoutCreateInfo           pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkDescriptorSetLayout                     pSetLayout);
+    device_:VkDevice;
+    pCreateInfo_:P_VkDescriptorSetLayoutCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pSetLayout_:P_VkDescriptorSetLayout );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyDescriptorSetLayout(
-    VkDevice                                    device,
-    VkDescriptorSetLayout                       descriptorSetLayout,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    descriptorSetLayout_:VkDescriptorSetLayout;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateDescriptorPool(
-    VkDevice                                    device,
-    P_VkDescriptorPoolCreateInfo                pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkDescriptorPool                          pDescriptorPool);
+    device_:VkDevice;
+    pCreateInfo_:P_VkDescriptorPoolCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pDescriptorPool_:P_VkDescriptorPool );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyDescriptorPool(
-    VkDevice                                    device,
-    VkDescriptorPool                            descriptorPool,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    descriptorPool_:VkDescriptorPool;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkResetDescriptorPool(
-    VkDevice                                    device,
-    VkDescriptorPool                            descriptorPool,
-    VkDescriptorPoolResetFlags                  flags);
+    device_:VkDevice;
+    descriptorPool_:VkDescriptorPool;
+    flags_:VkDescriptorPoolResetFlags );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkAllocateDescriptorSets(
-    VkDevice                                    device,
-    P_VkDescriptorSetAllocateInfo               pAllocateInfo,
-    P_VkDescriptorSet                           pDescriptorSets);
+    device_:VkDevice;
+    pAllocateInfo_:P_VkDescriptorSetAllocateInfo;
+    pDescriptorSets_:P_VkDescriptorSet );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkFreeDescriptorSets(
-    VkDevice                                    device,
-    VkDescriptorPool                            descriptorPool,
-    uint32_t                                    descriptorSetCount,
-    P_VkDescriptorSet                           pDescriptorSets);
+    device_:VkDevice;
+    descriptorPool_:VkDescriptorPool;
+    descriptorSetCount_:uint32_t;
+    pDescriptorSets_:P_VkDescriptorSet );
 
 VKAPI_ATTR void VKAPI_CALL vkUpdateDescriptorSets(
-    VkDevice                                    device,
-    uint32_t                                    descriptorWriteCount,
-    P_VkWriteDescriptorSet                      pDescriptorWrites,
-    uint32_t                                    descriptorCopyCount,
-    P_VkCopyDescriptorSet                       pDescriptorCopies);
+    device_:VkDevice;
+    descriptorWriteCount_:uint32_t;
+    pDescriptorWrites_:P_VkWriteDescriptorSet;
+    descriptorCopyCount_:uint32_t;
+    pDescriptorCopies_:P_VkCopyDescriptorSet );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateFramebuffer(
-    VkDevice                                    device,
-    P_VkFramebufferCreateInfo                   pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkFramebuffer                             pFramebuffer);
+    device_:VkDevice;
+    pCreateInfo_:P_VkFramebufferCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pFramebuffer_:P_VkFramebuffer );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyFramebuffer(
-    VkDevice                                    device,
-    VkFramebuffer                               framebuffer,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    framebuffer_:VkFramebuffer;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateRenderPass(
-    VkDevice                                    device,
-    P_VkRenderPassCreateInfo                    pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkRenderPass                              pRenderPass);
+    device_:VkDevice;
+    pCreateInfo_:P_VkRenderPassCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pRenderPass_:P_VkRenderPass );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyRenderPass(
-    VkDevice                                    device,
-    VkRenderPass                                renderPass,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    renderPass_:VkRenderPass;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR void VKAPI_CALL vkGetRenderAreaGranularity(
-    VkDevice                                    device,
-    VkRenderPass                                renderPass,
-    P_VkExtent2D                                pGranularity);
+    device_:VkDevice;
+    renderPass_:VkRenderPass;
+    pGranularity_:P_VkExtent2D );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateCommandPool(
-    VkDevice                                    device,
-    P_VkCommandPoolCreateInfo                   pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkCommandPool                             pCommandPool);
+    device_:VkDevice;
+    pCreateInfo_:P_VkCommandPoolCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pCommandPool_:P_VkCommandPool );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyCommandPool(
-    VkDevice                                    device,
-    VkCommandPool                               commandPool,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    commandPool_:VkCommandPool;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkResetCommandPool(
-    VkDevice                                    device,
-    VkCommandPool                               commandPool,
-    VkCommandPoolResetFlags                     flags);
+    device_:VkDevice;
+    commandPool_:VkCommandPool;
+    flags_:VkCommandPoolResetFlags );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkAllocateCommandBuffers(
-    VkDevice                                    device,
-    P_VkCommandBufferAllocateInfo               pAllocateInfo,
-    P_VkCommandBuffer                           pCommandBuffers);
+    device_:VkDevice;
+    pAllocateInfo_:P_VkCommandBufferAllocateInfo;
+    pCommandBuffers_:P_VkCommandBuffer );
 
 VKAPI_ATTR void VKAPI_CALL vkFreeCommandBuffers(
-    VkDevice                                    device,
-    VkCommandPool                               commandPool,
-    uint32_t                                    commandBufferCount,
-    P_VkCommandBuffer                           pCommandBuffers);
+    device_:VkDevice;
+    commandPool_:VkCommandPool;
+    commandBufferCount_:uint32_t;
+    pCommandBuffers_:P_VkCommandBuffer );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkBeginCommandBuffer(
-    VkCommandBuffer                             commandBuffer,
-    P_VkCommandBufferBeginInfo                  pBeginInfo);
+    commandBuffer_:VkCommandBuffer;
+    pBeginInfo_:P_VkCommandBufferBeginInfo );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkEndCommandBuffer(
-    VkCommandBuffer                             commandBuffer);
+    commandBuffer_:VkCommandBuffer );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkResetCommandBuffer(
-    VkCommandBuffer                             commandBuffer,
-    VkCommandBufferResetFlags                   flags);
+    commandBuffer_:VkCommandBuffer;
+    flags_:VkCommandBufferResetFlags );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBindPipeline(
-    VkCommandBuffer                             commandBuffer,
-    VkPipelineBindPoint                         pipelineBindPoint,
-    VkPipeline                                  pipeline);
+    commandBuffer_:VkCommandBuffer;
+    pipelineBindPoint_:VkPipelineBindPoint;
+    pipeline_:VkPipeline );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetViewport(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    firstViewport,
-    uint32_t                                    viewportCount,
-    P_VkViewport                                pViewports);
+    commandBuffer_:VkCommandBuffer;
+    firstViewport_:uint32_t;
+    viewportCount_:uint32_t;
+    pViewports_:P_VkViewport );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetScissor(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    firstScissor,
-    uint32_t                                    scissorCount,
-    P_VkRect2D                                  pScissors);
+    commandBuffer_:VkCommandBuffer;
+    firstScissor_:uint32_t;
+    scissorCount_:uint32_t;
+    pScissors_:P_VkRect2D );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetLineWidth(
-    VkCommandBuffer                             commandBuffer,
-    float                                       lineWidth);
+    commandBuffer_:VkCommandBuffer;
+    lineWidth_:float );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetDepthBias(
-    VkCommandBuffer                             commandBuffer,
-    float                                       depthBiasConstantFactor,
-    float                                       depthBiasClamp,
-    float                                       depthBiasSlopeFactor);
+    commandBuffer_:VkCommandBuffer;
+    depthBiasConstantFactor_:float;
+    depthBiasClamp_:float;
+    depthBiasSlopeFactor_:float );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetBlendConstants(
-    VkCommandBuffer                             commandBuffer,
-    const float                                 blendConstants[4]);
+    commandBuffer_:VkCommandBuffer;
+    const blendConstants_:array [ 0..4-1 ] of float );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetDepthBounds(
-    VkCommandBuffer                             commandBuffer,
-    float                                       minDepthBounds,
-    float                                       maxDepthBounds);
+    commandBuffer_:VkCommandBuffer;
+    minDepthBounds_:float;
+    maxDepthBounds_:float );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetStencilCompareMask(
-    VkCommandBuffer                             commandBuffer,
-    VkStencilFaceFlags                          faceMask,
-    uint32_t                                    compareMask);
+    commandBuffer_:VkCommandBuffer;
+    faceMask_:VkStencilFaceFlags;
+    compareMask_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetStencilWriteMask(
-    VkCommandBuffer                             commandBuffer,
-    VkStencilFaceFlags                          faceMask,
-    uint32_t                                    writeMask);
+    commandBuffer_:VkCommandBuffer;
+    faceMask_:VkStencilFaceFlags;
+    writeMask_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetStencilReference(
-    VkCommandBuffer                             commandBuffer,
-    VkStencilFaceFlags                          faceMask,
-    uint32_t                                    reference);
+    commandBuffer_:VkCommandBuffer;
+    faceMask_:VkStencilFaceFlags;
+    reference_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBindDescriptorSets(
-    VkCommandBuffer                             commandBuffer,
-    VkPipelineBindPoint                         pipelineBindPoint,
-    VkPipelineLayout                            layout,
-    uint32_t                                    firstSet,
-    uint32_t                                    descriptorSetCount,
-    P_VkDescriptorSet                           pDescriptorSets,
-    uint32_t                                    dynamicOffsetCount,
-    P_uint32_t                                  pDynamicOffsets);
+    commandBuffer_:VkCommandBuffer;
+    pipelineBindPoint_:VkPipelineBindPoint;
+    layout_:VkPipelineLayout;
+    firstSet_:uint32_t;
+    descriptorSetCount_:uint32_t;
+    pDescriptorSets_:P_VkDescriptorSet;
+    dynamicOffsetCount_:uint32_t;
+    pDynamicOffsets_:P_uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBindIndexBuffer(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    buffer,
-    VkDeviceSize                                offset,
-    VkIndexType                                 indexType);
+    commandBuffer_:VkCommandBuffer;
+    buffer_:VkBuffer;
+    offset_:VkDeviceSize;
+    indexType_:VkIndexType );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBindVertexBuffers(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    firstBinding,
-    uint32_t                                    bindingCount,
-    P_VkBuffer                                  pBuffers,
-    P_VkDeviceSize                              pOffsets);
+    commandBuffer_:VkCommandBuffer;
+    firstBinding_:uint32_t;
+    bindingCount_:uint32_t;
+    pBuffers_:P_VkBuffer;
+    pOffsets_:P_VkDeviceSize );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDraw(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    vertexCount,
-    uint32_t                                    instanceCount,
-    uint32_t                                    firstVertex,
-    uint32_t                                    firstInstance);
+    commandBuffer_:VkCommandBuffer;
+    vertexCount_:uint32_t;
+    instanceCount_:uint32_t;
+    firstVertex_:uint32_t;
+    firstInstance_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDrawIndexed(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    indexCount,
-    uint32_t                                    instanceCount,
-    uint32_t                                    firstIndex,
-    int32_t                                     vertexOffset,
-    uint32_t                                    firstInstance);
+    commandBuffer_:VkCommandBuffer;
+    indexCount_:uint32_t;
+    instanceCount_:uint32_t;
+    firstIndex_:uint32_t;
+    vertexOffset_:int32_t;
+    firstInstance_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDrawIndirect(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    buffer,
-    VkDeviceSize                                offset,
-    uint32_t                                    drawCount,
-    uint32_t                                    stride);
+    commandBuffer_:VkCommandBuffer;
+    buffer_:VkBuffer;
+    offset_:VkDeviceSize;
+    drawCount_:uint32_t;
+    stride_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDrawIndexedIndirect(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    buffer,
-    VkDeviceSize                                offset,
-    uint32_t                                    drawCount,
-    uint32_t                                    stride);
+    commandBuffer_:VkCommandBuffer;
+    buffer_:VkBuffer;
+    offset_:VkDeviceSize;
+    drawCount_:uint32_t;
+    stride_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDispatch(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    groupCountX,
-    uint32_t                                    groupCountY,
-    uint32_t                                    groupCountZ);
+    commandBuffer_:VkCommandBuffer;
+    groupCountX_:uint32_t;
+    groupCountY_:uint32_t;
+    groupCountZ_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDispatchIndirect(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    buffer,
-    VkDeviceSize                                offset);
+    commandBuffer_:VkCommandBuffer;
+    buffer_:VkBuffer;
+    offset_:VkDeviceSize );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdCopyBuffer(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    srcBuffer,
-    VkBuffer                                    dstBuffer,
-    uint32_t                                    regionCount,
-    P_VkBufferCopy                              pRegions);
+    commandBuffer_:VkCommandBuffer;
+    srcBuffer_:VkBuffer;
+    dstBuffer_:VkBuffer;
+    regionCount_:uint32_t;
+    pRegions_:P_VkBufferCopy );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdCopyImage(
-    VkCommandBuffer                             commandBuffer,
-    VkImage                                     srcImage,
-    VkImageLayout                               srcImageLayout,
-    VkImage                                     dstImage,
-    VkImageLayout                               dstImageLayout,
-    uint32_t                                    regionCount,
-    P_VkImageCopy                               pRegions);
+    commandBuffer_:VkCommandBuffer;
+    srcImage_:VkImage;
+    srcImageLayout_:VkImageLayout;
+    dstImage_:VkImage;
+    dstImageLayout_:VkImageLayout;
+    regionCount_:uint32_t;
+    pRegions_:P_VkImageCopy );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBlitImage(
-    VkCommandBuffer                             commandBuffer,
-    VkImage                                     srcImage,
-    VkImageLayout                               srcImageLayout,
-    VkImage                                     dstImage,
-    VkImageLayout                               dstImageLayout,
-    uint32_t                                    regionCount,
-    P_VkImageBlit                               pRegions,
-    VkFilter                                    filter);
+    commandBuffer_:VkCommandBuffer;
+    srcImage_:VkImage;
+    srcImageLayout_:VkImageLayout;
+    dstImage_:VkImage;
+    dstImageLayout_:VkImageLayout;
+    regionCount_:uint32_t;
+    pRegions_:P_VkImageBlit;
+    filter_:VkFilter );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdCopyBufferToImage(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    srcBuffer,
-    VkImage                                     dstImage,
-    VkImageLayout                               dstImageLayout,
-    uint32_t                                    regionCount,
-    P_VkBufferImageCopy                         pRegions);
+    commandBuffer_:VkCommandBuffer;
+    srcBuffer_:VkBuffer;
+    dstImage_:VkImage;
+    dstImageLayout_:VkImageLayout;
+    regionCount_:uint32_t;
+    pRegions_:P_VkBufferImageCopy );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdCopyImageToBuffer(
-    VkCommandBuffer                             commandBuffer,
-    VkImage                                     srcImage,
-    VkImageLayout                               srcImageLayout,
-    VkBuffer                                    dstBuffer,
-    uint32_t                                    regionCount,
-    P_VkBufferImageCopy                         pRegions);
+    commandBuffer_:VkCommandBuffer;
+    srcImage_:VkImage;
+    srcImageLayout_:VkImageLayout;
+    dstBuffer_:VkBuffer;
+    regionCount_:uint32_t;
+    pRegions_:P_VkBufferImageCopy );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdUpdateBuffer(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    dstBuffer,
-    VkDeviceSize                                dstOffset,
-    VkDeviceSize                                dataSize,
-    P_void                                      pData);
+    commandBuffer_:VkCommandBuffer;
+    dstBuffer_:VkBuffer;
+    dstOffset_:VkDeviceSize;
+    dataSize_:VkDeviceSize;
+    pData_:P_void );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdFillBuffer(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    dstBuffer,
-    VkDeviceSize                                dstOffset,
-    VkDeviceSize                                size,
-    uint32_t                                    data);
+    commandBuffer_:VkCommandBuffer;
+    dstBuffer_:VkBuffer;
+    dstOffset_:VkDeviceSize;
+    size_:VkDeviceSize;
+    data_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdClearColorImage(
-    VkCommandBuffer                             commandBuffer,
-    VkImage                                     image,
-    VkImageLayout                               imageLayout,
-    P_VkClearColorValue                         pColor,
-    uint32_t                                    rangeCount,
-    P_VkImageSubresourceRange                   pRanges);
+    commandBuffer_:VkCommandBuffer;
+    image_:VkImage;
+    imageLayout_:VkImageLayout;
+    pColor_:P_VkClearColorValue;
+    rangeCount_:uint32_t;
+    pRanges_:P_VkImageSubresourceRange );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdClearDepthStencilImage(
-    VkCommandBuffer                             commandBuffer,
-    VkImage                                     image,
-    VkImageLayout                               imageLayout,
-    P_VkClearDepthStencilValue                  pDepthStencil,
-    uint32_t                                    rangeCount,
-    P_VkImageSubresourceRange                   pRanges);
+    commandBuffer_:VkCommandBuffer;
+    image_:VkImage;
+    imageLayout_:VkImageLayout;
+    pDepthStencil_:P_VkClearDepthStencilValue;
+    rangeCount_:uint32_t;
+    pRanges_:P_VkImageSubresourceRange );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdClearAttachments(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    attachmentCount,
-    P_VkClearAttachment                         pAttachments,
-    uint32_t                                    rectCount,
-    P_VkClearRect                               pRects);
+    commandBuffer_:VkCommandBuffer;
+    attachmentCount_:uint32_t;
+    pAttachments_:P_VkClearAttachment;
+    rectCount_:uint32_t;
+    pRects_:P_VkClearRect );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdResolveImage(
-    VkCommandBuffer                             commandBuffer,
-    VkImage                                     srcImage,
-    VkImageLayout                               srcImageLayout,
-    VkImage                                     dstImage,
-    VkImageLayout                               dstImageLayout,
-    uint32_t                                    regionCount,
-    P_VkImageResolve                            pRegions);
+    commandBuffer_:VkCommandBuffer;
+    srcImage_:VkImage;
+    srcImageLayout_:VkImageLayout;
+    dstImage_:VkImage;
+    dstImageLayout_:VkImageLayout;
+    regionCount_:uint32_t;
+    pRegions_:P_VkImageResolve );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetEvent(
-    VkCommandBuffer                             commandBuffer,
-    VkEvent                                     event,
-    VkPipelineStageFlags                        stageMask);
+    commandBuffer_:VkCommandBuffer;
+    event_:VkEvent;
+    stageMask_:VkPipelineStageFlags );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdResetEvent(
-    VkCommandBuffer                             commandBuffer,
-    VkEvent                                     event,
-    VkPipelineStageFlags                        stageMask);
+    commandBuffer_:VkCommandBuffer;
+    event_:VkEvent;
+    stageMask_:VkPipelineStageFlags );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdWaitEvents(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    eventCount,
-    P_VkEvent                                   pEvents,
-    VkPipelineStageFlags                        srcStageMask,
-    VkPipelineStageFlags                        dstStageMask,
-    uint32_t                                    memoryBarrierCount,
-    P_VkMemoryBarrier                           pMemoryBarriers,
-    uint32_t                                    bufferMemoryBarrierCount,
-    P_VkBufferMemoryBarrier                     pBufferMemoryBarriers,
-    uint32_t                                    imageMemoryBarrierCount,
-    P_VkImageMemoryBarrier                      pImageMemoryBarriers);
+    commandBuffer_:VkCommandBuffer;
+    eventCount_:uint32_t;
+    pEvents_:P_VkEvent;
+    srcStageMask_:VkPipelineStageFlags;
+    dstStageMask_:VkPipelineStageFlags;
+    memoryBarrierCount_:uint32_t;
+    pMemoryBarriers_:P_VkMemoryBarrier;
+    bufferMemoryBarrierCount_:uint32_t;
+    pBufferMemoryBarriers_:P_VkBufferMemoryBarrier;
+    imageMemoryBarrierCount_:uint32_t;
+    pImageMemoryBarriers_:P_VkImageMemoryBarrier );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdPipelineBarrier(
-    VkCommandBuffer                             commandBuffer,
-    VkPipelineStageFlags                        srcStageMask,
-    VkPipelineStageFlags                        dstStageMask,
-    VkDependencyFlags                           dependencyFlags,
-    uint32_t                                    memoryBarrierCount,
-    P_VkMemoryBarrier                           pMemoryBarriers,
-    uint32_t                                    bufferMemoryBarrierCount,
-    P_VkBufferMemoryBarrier                     pBufferMemoryBarriers,
-    uint32_t                                    imageMemoryBarrierCount,
-    P_VkImageMemoryBarrier                      pImageMemoryBarriers);
+    commandBuffer_:VkCommandBuffer;
+    srcStageMask_:VkPipelineStageFlags;
+    dstStageMask_:VkPipelineStageFlags;
+    dependencyFlags_:VkDependencyFlags;
+    memoryBarrierCount_:uint32_t;
+    pMemoryBarriers_:P_VkMemoryBarrier;
+    bufferMemoryBarrierCount_:uint32_t;
+    pBufferMemoryBarriers_:P_VkBufferMemoryBarrier;
+    imageMemoryBarrierCount_:uint32_t;
+    pImageMemoryBarriers_:P_VkImageMemoryBarrier );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBeginQuery(
-    VkCommandBuffer                             commandBuffer,
-    VkQueryPool                                 queryPool,
-    uint32_t                                    query,
-    VkQueryControlFlags                         flags);
+    commandBuffer_:VkCommandBuffer;
+    queryPool_:VkQueryPool;
+    query_:uint32_t;
+    flags_:VkQueryControlFlags );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdEndQuery(
-    VkCommandBuffer                             commandBuffer,
-    VkQueryPool                                 queryPool,
-    uint32_t                                    query);
+    commandBuffer_:VkCommandBuffer;
+    queryPool_:VkQueryPool;
+    query_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdResetQueryPool(
-    VkCommandBuffer                             commandBuffer,
-    VkQueryPool                                 queryPool,
-    uint32_t                                    firstQuery,
-    uint32_t                                    queryCount);
+    commandBuffer_:VkCommandBuffer;
+    queryPool_:VkQueryPool;
+    firstQuery_:uint32_t;
+    queryCount_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdWriteTimestamp(
-    VkCommandBuffer                             commandBuffer,
-    VkPipelineStageFlagBits                     pipelineStage,
-    VkQueryPool                                 queryPool,
-    uint32_t                                    query);
+    commandBuffer_:VkCommandBuffer;
+    pipelineStage_:VkPipelineStageFlagBits;
+    queryPool_:VkQueryPool;
+    query_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdCopyQueryPoolResults(
-    VkCommandBuffer                             commandBuffer,
-    VkQueryPool                                 queryPool,
-    uint32_t                                    firstQuery,
-    uint32_t                                    queryCount,
-    VkBuffer                                    dstBuffer,
-    VkDeviceSize                                dstOffset,
-    VkDeviceSize                                stride,
-    VkQueryResultFlags                          flags);
+    commandBuffer_:VkCommandBuffer;
+    queryPool_:VkQueryPool;
+    firstQuery_:uint32_t;
+    queryCount_:uint32_t;
+    dstBuffer_:VkBuffer;
+    dstOffset_:VkDeviceSize;
+    stride_:VkDeviceSize;
+    flags_:VkQueryResultFlags );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdPushConstants(
-    VkCommandBuffer                             commandBuffer,
-    VkPipelineLayout                            layout,
-    VkShaderStageFlags                          stageFlags,
-    uint32_t                                    offset,
-    uint32_t                                    size,
-    P_void                                      pValues);
+    commandBuffer_:VkCommandBuffer;
+    layout_:VkPipelineLayout;
+    stageFlags_:VkShaderStageFlags;
+    offset_:uint32_t;
+    size_:uint32_t;
+    pValues_:P_void );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBeginRenderPass(
-    VkCommandBuffer                             commandBuffer,
-    P_VkRenderPassBeginInfo                     pRenderPassBegin,
-    VkSubpassContents                           contents);
+    commandBuffer_:VkCommandBuffer;
+    pRenderPassBegin_:P_VkRenderPassBeginInfo;
+    contents_:VkSubpassContents );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdNextSubpass(
-    VkCommandBuffer                             commandBuffer,
-    VkSubpassContents                           contents);
+    commandBuffer_:VkCommandBuffer;
+    contents_:VkSubpassContents );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdEndRenderPass(
-    VkCommandBuffer                             commandBuffer);
+    commandBuffer_:VkCommandBuffer );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdExecuteCommands(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    commandBufferCount,
-    P_VkCommandBuffer                           pCommandBuffers);
+    commandBuffer_:VkCommandBuffer;
+    commandBufferCount_:uint32_t;
+    pCommandBuffers_:P_VkCommandBuffer );
 {$ENDIF}
 
 
@@ -4764,180 +4764,180 @@ type VkPhysicalDeviceShaderDrawParametersFeatures = record
 
 type VkPhysicalDeviceShaderDrawParameterFeatures = VkPhysicalDeviceShaderDrawParametersFeatures;
 
-type PFN_vkEnumerateInstanceVersion = function(P_uint32_t pApiVersion) :VkResult;
-type PFN_vkBindBufferMemory2 = function(VkDevice device, uint32_t bindInfoCount, const P_VkBindBufferMemoryInfo pBindInfos) :VkResult;
-type PFN_vkBindImageMemory2 = function(VkDevice device, uint32_t bindInfoCount, const P_VkBindImageMemoryInfo pBindInfos) :VkResult;
-type PFN_vkGetDeviceGroupPeerMemoryFeatures = procedure(VkDevice device, uint32_t heapIndex, uint32_t localDeviceIndex, uint32_t remoteDeviceIndex, P_VkPeerMemoryFeatureFlags pPeerMemoryFeatures);
-type PFN_vkCmdSetDeviceMask = procedure(VkCommandBuffer commandBuffer, uint32_t deviceMask);
-type PFN_vkCmdDispatchBase = procedure(VkCommandBuffer commandBuffer, uint32_t baseGroupX, uint32_t baseGroupY, uint32_t baseGroupZ, uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ);
-type PFN_vkEnumeratePhysicalDeviceGroups = function(VkInstance instance, P_uint32_t pPhysicalDeviceGroupCount, P_VkPhysicalDeviceGroupProperties pPhysicalDeviceGroupProperties) :VkResult;
-type PFN_vkGetImageMemoryRequirements2 = procedure(VkDevice device, const P_VkImageMemoryRequirementsInfo2 pInfo, P_VkMemoryRequirements2 pMemoryRequirements);
-type PFN_vkGetBufferMemoryRequirements2 = procedure(VkDevice device, const P_VkBufferMemoryRequirementsInfo2 pInfo, P_VkMemoryRequirements2 pMemoryRequirements);
-type PFN_vkGetImageSparseMemoryRequirements2 = procedure(VkDevice device, const P_VkImageSparseMemoryRequirementsInfo2 pInfo, P_uint32_t pSparseMemoryRequirementCount, P_VkSparseImageMemoryRequirements2 pSparseMemoryRequirements);
-type PFN_vkGetPhysicalDeviceFeatures2 = procedure(VkPhysicalDevice physicalDevice, P_VkPhysicalDeviceFeatures2 pFeatures);
-type PFN_vkGetPhysicalDeviceProperties2 = procedure(VkPhysicalDevice physicalDevice, P_VkPhysicalDeviceProperties2 pProperties);
-type PFN_vkGetPhysicalDeviceFormatProperties2 = procedure(VkPhysicalDevice physicalDevice, VkFormat format, P_VkFormatProperties2 pFormatProperties);
-type PFN_vkGetPhysicalDeviceImageFormatProperties2 = function(VkPhysicalDevice physicalDevice, const P_VkPhysicalDeviceImageFormatInfo2 pImageFormatInfo, P_VkImageFormatProperties2 pImageFormatProperties) :VkResult;
-type PFN_vkGetPhysicalDeviceQueueFamilyProperties2 = procedure(VkPhysicalDevice physicalDevice, P_uint32_t pQueueFamilyPropertyCount, P_VkQueueFamilyProperties2 pQueueFamilyProperties);
-type PFN_vkGetPhysicalDeviceMemoryProperties2 = procedure(VkPhysicalDevice physicalDevice, P_VkPhysicalDeviceMemoryProperties2 pMemoryProperties);
-type PFN_vkGetPhysicalDeviceSparseImageFormatProperties2 = procedure(VkPhysicalDevice physicalDevice, const P_VkPhysicalDeviceSparseImageFormatInfo2 pFormatInfo, P_uint32_t pPropertyCount, P_VkSparseImageFormatProperties2 pProperties);
-type PFN_vkTrimCommandPool = procedure(VkDevice device, VkCommandPool commandPool, VkCommandPoolTrimFlags flags);
-type PFN_vkGetDeviceQueue2 = procedure(VkDevice device, const P_VkDeviceQueueInfo2 pQueueInfo, P_VkQueue pQueue);
-type PFN_vkCreateSamplerYcbcrConversion = function(VkDevice device, const P_VkSamplerYcbcrConversionCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkSamplerYcbcrConversion pYcbcrConversion) :VkResult;
-type PFN_vkDestroySamplerYcbcrConversion = procedure(VkDevice device, VkSamplerYcbcrConversion ycbcrConversion, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkCreateDescriptorUpdateTemplate = function(VkDevice device, const P_VkDescriptorUpdateTemplateCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkDescriptorUpdateTemplate pDescriptorUpdateTemplate) :VkResult;
-type PFN_vkDestroyDescriptorUpdateTemplate = procedure(VkDevice device, VkDescriptorUpdateTemplate descriptorUpdateTemplate, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkUpdateDescriptorSetWithTemplate = procedure(VkDevice device, VkDescriptorSet descriptorSet, VkDescriptorUpdateTemplate descriptorUpdateTemplate, const P_void pData);
-type PFN_vkGetPhysicalDeviceExternalBufferProperties = procedure(VkPhysicalDevice physicalDevice, const P_VkPhysicalDeviceExternalBufferInfo pExternalBufferInfo, P_VkExternalBufferProperties pExternalBufferProperties);
-type PFN_vkGetPhysicalDeviceExternalFenceProperties = procedure(VkPhysicalDevice physicalDevice, const P_VkPhysicalDeviceExternalFenceInfo pExternalFenceInfo, P_VkExternalFenceProperties pExternalFenceProperties);
-type PFN_vkGetPhysicalDeviceExternalSemaphoreProperties = procedure(VkPhysicalDevice physicalDevice, const P_VkPhysicalDeviceExternalSemaphoreInfo pExternalSemaphoreInfo, P_VkExternalSemaphoreProperties pExternalSemaphoreProperties);
-type PFN_vkGetDescriptorSetLayoutSupport = procedure(VkDevice device, const P_VkDescriptorSetLayoutCreateInfo pCreateInfo, P_VkDescriptorSetLayoutSupport pSupport);
+type PFN_vkEnumerateInstanceVersion = function( pApiVersion_:P_uint32_t ) :VkResult;
+type PFN_vkBindBufferMemory2 = function( device_:VkDevice; bindInfoCount_:uint32_t; const pBindInfos_:P_VkBindBufferMemoryInfo ) :VkResult;
+type PFN_vkBindImageMemory2 = function( device_:VkDevice; bindInfoCount_:uint32_t; const pBindInfos_:P_VkBindImageMemoryInfo ) :VkResult;
+type PFN_vkGetDeviceGroupPeerMemoryFeatures = procedure( device_:VkDevice; heapIndex_:uint32_t; localDeviceIndex_:uint32_t; remoteDeviceIndex_:uint32_t; pPeerMemoryFeatures_:P_VkPeerMemoryFeatureFlags );
+type PFN_vkCmdSetDeviceMask = procedure( commandBuffer_:VkCommandBuffer; deviceMask_:uint32_t );
+type PFN_vkCmdDispatchBase = procedure( commandBuffer_:VkCommandBuffer; baseGroupX_:uint32_t; baseGroupY_:uint32_t; baseGroupZ_:uint32_t; groupCountX_:uint32_t; groupCountY_:uint32_t; groupCountZ_:uint32_t );
+type PFN_vkEnumeratePhysicalDeviceGroups = function( instance_:VkInstance; pPhysicalDeviceGroupCount_:P_uint32_t; pPhysicalDeviceGroupProperties_:P_VkPhysicalDeviceGroupProperties ) :VkResult;
+type PFN_vkGetImageMemoryRequirements2 = procedure( device_:VkDevice; const pInfo_:P_VkImageMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
+type PFN_vkGetBufferMemoryRequirements2 = procedure( device_:VkDevice; const pInfo_:P_VkBufferMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
+type PFN_vkGetImageSparseMemoryRequirements2 = procedure( device_:VkDevice; const pInfo_:P_VkImageSparseMemoryRequirementsInfo2; pSparseMemoryRequirementCount_:P_uint32_t; pSparseMemoryRequirements_:P_VkSparseImageMemoryRequirements2 );
+type PFN_vkGetPhysicalDeviceFeatures2 = procedure( physicalDevice_:VkPhysicalDevice; pFeatures_:P_VkPhysicalDeviceFeatures2 );
+type PFN_vkGetPhysicalDeviceProperties2 = procedure( physicalDevice_:VkPhysicalDevice; pProperties_:P_VkPhysicalDeviceProperties2 );
+type PFN_vkGetPhysicalDeviceFormatProperties2 = procedure( physicalDevice_:VkPhysicalDevice; format_:VkFormat; pFormatProperties_:P_VkFormatProperties2 );
+type PFN_vkGetPhysicalDeviceImageFormatProperties2 = function( physicalDevice_:VkPhysicalDevice; const pImageFormatInfo_:P_VkPhysicalDeviceImageFormatInfo2; pImageFormatProperties_:P_VkImageFormatProperties2 ) :VkResult;
+type PFN_vkGetPhysicalDeviceQueueFamilyProperties2 = procedure( physicalDevice_:VkPhysicalDevice; pQueueFamilyPropertyCount_:P_uint32_t; pQueueFamilyProperties_:P_VkQueueFamilyProperties2 );
+type PFN_vkGetPhysicalDeviceMemoryProperties2 = procedure( physicalDevice_:VkPhysicalDevice; pMemoryProperties_:P_VkPhysicalDeviceMemoryProperties2 );
+type PFN_vkGetPhysicalDeviceSparseImageFormatProperties2 = procedure( physicalDevice_:VkPhysicalDevice; const pFormatInfo_:P_VkPhysicalDeviceSparseImageFormatInfo2; pPropertyCount_:P_uint32_t; pProperties_:P_VkSparseImageFormatProperties2 );
+type PFN_vkTrimCommandPool = procedure( device_:VkDevice; commandPool_:VkCommandPool; flags_:VkCommandPoolTrimFlags );
+type PFN_vkGetDeviceQueue2 = procedure( device_:VkDevice; const pQueueInfo_:P_VkDeviceQueueInfo2; pQueue_:P_VkQueue );
+type PFN_vkCreateSamplerYcbcrConversion = function( device_:VkDevice; const pCreateInfo_:P_VkSamplerYcbcrConversionCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pYcbcrConversion_:P_VkSamplerYcbcrConversion ) :VkResult;
+type PFN_vkDestroySamplerYcbcrConversion = procedure( device_:VkDevice; ycbcrConversion_:VkSamplerYcbcrConversion; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCreateDescriptorUpdateTemplate = function( device_:VkDevice; const pCreateInfo_:P_VkDescriptorUpdateTemplateCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pDescriptorUpdateTemplate_:P_VkDescriptorUpdateTemplate ) :VkResult;
+type PFN_vkDestroyDescriptorUpdateTemplate = procedure( device_:VkDevice; descriptorUpdateTemplate_:VkDescriptorUpdateTemplate; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkUpdateDescriptorSetWithTemplate = procedure( device_:VkDevice; descriptorSet_:VkDescriptorSet; descriptorUpdateTemplate_:VkDescriptorUpdateTemplate; const pData_:P_void );
+type PFN_vkGetPhysicalDeviceExternalBufferProperties = procedure( physicalDevice_:VkPhysicalDevice; const pExternalBufferInfo_:P_VkPhysicalDeviceExternalBufferInfo; pExternalBufferProperties_:P_VkExternalBufferProperties );
+type PFN_vkGetPhysicalDeviceExternalFenceProperties = procedure( physicalDevice_:VkPhysicalDevice; const pExternalFenceInfo_:P_VkPhysicalDeviceExternalFenceInfo; pExternalFenceProperties_:P_VkExternalFenceProperties );
+type PFN_vkGetPhysicalDeviceExternalSemaphoreProperties = procedure( physicalDevice_:VkPhysicalDevice; const pExternalSemaphoreInfo_:P_VkPhysicalDeviceExternalSemaphoreInfo; pExternalSemaphoreProperties_:P_VkExternalSemaphoreProperties );
+type PFN_vkGetDescriptorSetLayoutSupport = procedure( device_:VkDevice; const pCreateInfo_:P_VkDescriptorSetLayoutCreateInfo; pSupport_:P_VkDescriptorSetLayoutSupport );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkEnumerateInstanceVersion(
-    P_uint32_t                                  pApiVersion);
+    pApiVersion_:P_uint32_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkBindBufferMemory2(
-    VkDevice                                    device,
-    uint32_t                                    bindInfoCount,
-    P_VkBindBufferMemoryInfo                    pBindInfos);
+    device_:VkDevice;
+    bindInfoCount_:uint32_t;
+    pBindInfos_:P_VkBindBufferMemoryInfo );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkBindImageMemory2(
-    VkDevice                                    device,
-    uint32_t                                    bindInfoCount,
-    P_VkBindImageMemoryInfo                     pBindInfos);
+    device_:VkDevice;
+    bindInfoCount_:uint32_t;
+    pBindInfos_:P_VkBindImageMemoryInfo );
 
 VKAPI_ATTR void VKAPI_CALL vkGetDeviceGroupPeerMemoryFeatures(
-    VkDevice                                    device,
-    uint32_t                                    heapIndex,
-    uint32_t                                    localDeviceIndex,
-    uint32_t                                    remoteDeviceIndex,
-    P_VkPeerMemoryFeatureFlags                  pPeerMemoryFeatures);
+    device_:VkDevice;
+    heapIndex_:uint32_t;
+    localDeviceIndex_:uint32_t;
+    remoteDeviceIndex_:uint32_t;
+    pPeerMemoryFeatures_:P_VkPeerMemoryFeatureFlags );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetDeviceMask(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    deviceMask);
+    commandBuffer_:VkCommandBuffer;
+    deviceMask_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDispatchBase(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    baseGroupX,
-    uint32_t                                    baseGroupY,
-    uint32_t                                    baseGroupZ,
-    uint32_t                                    groupCountX,
-    uint32_t                                    groupCountY,
-    uint32_t                                    groupCountZ);
+    commandBuffer_:VkCommandBuffer;
+    baseGroupX_:uint32_t;
+    baseGroupY_:uint32_t;
+    baseGroupZ_:uint32_t;
+    groupCountX_:uint32_t;
+    groupCountY_:uint32_t;
+    groupCountZ_:uint32_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkEnumeratePhysicalDeviceGroups(
-    VkInstance                                  instance,
-    P_uint32_t                                  pPhysicalDeviceGroupCount,
-    P_VkPhysicalDeviceGroupProperties           pPhysicalDeviceGroupProperties);
+    instance_:VkInstance;
+    pPhysicalDeviceGroupCount_:P_uint32_t;
+    pPhysicalDeviceGroupProperties_:P_VkPhysicalDeviceGroupProperties );
 
 VKAPI_ATTR void VKAPI_CALL vkGetImageMemoryRequirements2(
-    VkDevice                                    device,
-    P_VkImageMemoryRequirementsInfo2            pInfo,
-    P_VkMemoryRequirements2                     pMemoryRequirements);
+    device_:VkDevice;
+    pInfo_:P_VkImageMemoryRequirementsInfo2;
+    pMemoryRequirements_:P_VkMemoryRequirements2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetBufferMemoryRequirements2(
-    VkDevice                                    device,
-    P_VkBufferMemoryRequirementsInfo2           pInfo,
-    P_VkMemoryRequirements2                     pMemoryRequirements);
+    device_:VkDevice;
+    pInfo_:P_VkBufferMemoryRequirementsInfo2;
+    pMemoryRequirements_:P_VkMemoryRequirements2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetImageSparseMemoryRequirements2(
-    VkDevice                                    device,
-    P_VkImageSparseMemoryRequirementsInfo2      pInfo,
-    P_uint32_t                                  pSparseMemoryRequirementCount,
-    P_VkSparseImageMemoryRequirements2          pSparseMemoryRequirements);
+    device_:VkDevice;
+    pInfo_:P_VkImageSparseMemoryRequirementsInfo2;
+    pSparseMemoryRequirementCount_:P_uint32_t;
+    pSparseMemoryRequirements_:P_VkSparseImageMemoryRequirements2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceFeatures2(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceFeatures2                 pFeatures);
+    physicalDevice_:VkPhysicalDevice;
+    pFeatures_:P_VkPhysicalDeviceFeatures2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceProperties2(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceProperties2               pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pProperties_:P_VkPhysicalDeviceProperties2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceFormatProperties2(
-    VkPhysicalDevice                            physicalDevice,
-    VkFormat                                    format,
-    P_VkFormatProperties2                       pFormatProperties);
+    physicalDevice_:VkPhysicalDevice;
+    format_:VkFormat;
+    pFormatProperties_:P_VkFormatProperties2 );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceImageFormatProperties2(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceImageFormatInfo2          pImageFormatInfo,
-    P_VkImageFormatProperties2                  pImageFormatProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pImageFormatInfo_:P_VkPhysicalDeviceImageFormatInfo2;
+    pImageFormatProperties_:P_VkImageFormatProperties2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceQueueFamilyProperties2(
-    VkPhysicalDevice                            physicalDevice,
-    P_uint32_t                                  pQueueFamilyPropertyCount,
-    P_VkQueueFamilyProperties2                  pQueueFamilyProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pQueueFamilyPropertyCount_:P_uint32_t;
+    pQueueFamilyProperties_:P_VkQueueFamilyProperties2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceMemoryProperties2(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceMemoryProperties2         pMemoryProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pMemoryProperties_:P_VkPhysicalDeviceMemoryProperties2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceSparseImageFormatProperties2(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceSparseImageFormatInfo2      pFormatInfo,
-    P_uint32_t                                  pPropertyCount,
-    P_VkSparseImageFormatProperties2            pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pFormatInfo_:P_VkPhysicalDeviceSparseImageFormatInfo2;
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkSparseImageFormatProperties2 );
 
 VKAPI_ATTR void VKAPI_CALL vkTrimCommandPool(
-    VkDevice                                    device,
-    VkCommandPool                               commandPool,
-    VkCommandPoolTrimFlags                      flags);
+    device_:VkDevice;
+    commandPool_:VkCommandPool;
+    flags_:VkCommandPoolTrimFlags );
 
 VKAPI_ATTR void VKAPI_CALL vkGetDeviceQueue2(
-    VkDevice                                    device,
-    P_VkDeviceQueueInfo2                        pQueueInfo,
-    P_VkQueue                                   pQueue);
+    device_:VkDevice;
+    pQueueInfo_:P_VkDeviceQueueInfo2;
+    pQueue_:P_VkQueue );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateSamplerYcbcrConversion(
-    VkDevice                                    device,
-    P_VkSamplerYcbcrConversionCreateInfo        pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkSamplerYcbcrConversion                  pYcbcrConversion);
+    device_:VkDevice;
+    pCreateInfo_:P_VkSamplerYcbcrConversionCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pYcbcrConversion_:P_VkSamplerYcbcrConversion );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroySamplerYcbcrConversion(
-    VkDevice                                    device,
-    VkSamplerYcbcrConversion                    ycbcrConversion,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    ycbcrConversion_:VkSamplerYcbcrConversion;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateDescriptorUpdateTemplate(
-    VkDevice                                    device,
-    P_VkDescriptorUpdateTemplateCreateInfo      pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkDescriptorUpdateTemplate                pDescriptorUpdateTemplate);
+    device_:VkDevice;
+    pCreateInfo_:P_VkDescriptorUpdateTemplateCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pDescriptorUpdateTemplate_:P_VkDescriptorUpdateTemplate );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyDescriptorUpdateTemplate(
-    VkDevice                                    device,
-    VkDescriptorUpdateTemplate                  descriptorUpdateTemplate,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    descriptorUpdateTemplate_:VkDescriptorUpdateTemplate;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR void VKAPI_CALL vkUpdateDescriptorSetWithTemplate(
-    VkDevice                                    device,
-    VkDescriptorSet                             descriptorSet,
-    VkDescriptorUpdateTemplate                  descriptorUpdateTemplate,
-    P_void                                      pData);
+    device_:VkDevice;
+    descriptorSet_:VkDescriptorSet;
+    descriptorUpdateTemplate_:VkDescriptorUpdateTemplate;
+    pData_:P_void );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceExternalBufferProperties(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceExternalBufferInfo        pExternalBufferInfo,
-    P_VkExternalBufferProperties                pExternalBufferProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pExternalBufferInfo_:P_VkPhysicalDeviceExternalBufferInfo;
+    pExternalBufferProperties_:P_VkExternalBufferProperties );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceExternalFenceProperties(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceExternalFenceInfo         pExternalFenceInfo,
-    P_VkExternalFenceProperties                 pExternalFenceProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pExternalFenceInfo_:P_VkPhysicalDeviceExternalFenceInfo;
+    pExternalFenceProperties_:P_VkExternalFenceProperties );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceExternalSemaphoreProperties(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceExternalSemaphoreInfo      pExternalSemaphoreInfo,
-    P_VkExternalSemaphoreProperties             pExternalSemaphoreProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pExternalSemaphoreInfo_:P_VkPhysicalDeviceExternalSemaphoreInfo;
+    pExternalSemaphoreProperties_:P_VkExternalSemaphoreProperties );
 
 VKAPI_ATTR void VKAPI_CALL vkGetDescriptorSetLayoutSupport(
-    VkDevice                                    device,
-    P_VkDescriptorSetLayoutCreateInfo           pCreateInfo,
-    P_VkDescriptorSetLayoutSupport              pSupport);
+    device_:VkDevice;
+    pCreateInfo_:P_VkDescriptorSetLayoutCreateInfo;
+    pSupport_:P_VkDescriptorSetLayoutSupport );
 {$ENDIF}
 
 
@@ -5597,90 +5597,90 @@ type VkDeviceMemoryOpaqueCaptureAddressInfo = record
        memory :VkDeviceMemory;
      end;
 
-type PFN_vkCmdDrawIndirectCount = procedure(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride);
-type PFN_vkCmdDrawIndexedIndirectCount = procedure(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride);
-type PFN_vkCreateRenderPass2 = function(VkDevice device, const P_VkRenderPassCreateInfo2 pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkRenderPass pRenderPass) :VkResult;
-type PFN_vkCmdBeginRenderPass2 = procedure(VkCommandBuffer commandBuffer, const P_VkRenderPassBeginInfo      pRenderPassBegin, const P_VkSubpassBeginInfo      pSubpassBeginInfo);
-type PFN_vkCmdNextSubpass2 = procedure(VkCommandBuffer commandBuffer, const P_VkSubpassBeginInfo      pSubpassBeginInfo, const P_VkSubpassEndInfo        pSubpassEndInfo);
-type PFN_vkCmdEndRenderPass2 = procedure(VkCommandBuffer commandBuffer, const P_VkSubpassEndInfo        pSubpassEndInfo);
-type PFN_vkResetQueryPool = procedure(VkDevice device, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount);
-type PFN_vkGetSemaphoreCounterValue = function(VkDevice device, VkSemaphore semaphore, P_uint64_t pValue) :VkResult;
-type PFN_vkWaitSemaphores = function(VkDevice device, const P_VkSemaphoreWaitInfo pWaitInfo, uint64_t timeout) :VkResult;
-type PFN_vkSignalSemaphore = function(VkDevice device, const P_VkSemaphoreSignalInfo pSignalInfo) :VkResult;
-type PFN_vkGetBufferDeviceAddress = function(VkDevice device, const P_VkBufferDeviceAddressInfo pInfo) :VkDeviceAddress;
-type PFN_vkGetBufferOpaqueCaptureAddress = function(VkDevice device, const P_VkBufferDeviceAddressInfo pInfo) :uint64_t;
-type PFN_vkGetDeviceMemoryOpaqueCaptureAddress = function(VkDevice device, const P_VkDeviceMemoryOpaqueCaptureAddressInfo pInfo) :uint64_t;
+type PFN_vkCmdDrawIndirectCount = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; countBuffer_:VkBuffer; countBufferOffset_:VkDeviceSize; maxDrawCount_:uint32_t; stride_:uint32_t );
+type PFN_vkCmdDrawIndexedIndirectCount = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; countBuffer_:VkBuffer; countBufferOffset_:VkDeviceSize; maxDrawCount_:uint32_t; stride_:uint32_t );
+type PFN_vkCreateRenderPass2 = function( device_:VkDevice; const pCreateInfo_:P_VkRenderPassCreateInfo2; const pAllocator_:P_VkAllocationCallbacks; pRenderPass_:P_VkRenderPass ) :VkResult;
+type PFN_vkCmdBeginRenderPass2 = procedure( commandBuffer_:VkCommandBuffer; const pRenderPassBegin_:P_VkRenderPassBeginInfo; const pSubpassBeginInfo_:P_VkSubpassBeginInfo );
+type PFN_vkCmdNextSubpass2 = procedure( commandBuffer_:VkCommandBuffer; const pSubpassBeginInfo_:P_VkSubpassBeginInfo; const pSubpassEndInfo_:P_VkSubpassEndInfo );
+type PFN_vkCmdEndRenderPass2 = procedure( commandBuffer_:VkCommandBuffer; const pSubpassEndInfo_:P_VkSubpassEndInfo );
+type PFN_vkResetQueryPool = procedure( device_:VkDevice; queryPool_:VkQueryPool; firstQuery_:uint32_t; queryCount_:uint32_t );
+type PFN_vkGetSemaphoreCounterValue = function( device_:VkDevice; semaphore_:VkSemaphore; pValue_:P_uint64_t ) :VkResult;
+type PFN_vkWaitSemaphores = function( device_:VkDevice; const pWaitInfo_:P_VkSemaphoreWaitInfo; timeout_:uint64_t ) :VkResult;
+type PFN_vkSignalSemaphore = function( device_:VkDevice; const pSignalInfo_:P_VkSemaphoreSignalInfo ) :VkResult;
+type PFN_vkGetBufferDeviceAddress = function( device_:VkDevice; const pInfo_:P_VkBufferDeviceAddressInfo ) :VkDeviceAddress;
+type PFN_vkGetBufferOpaqueCaptureAddress = function( device_:VkDevice; const pInfo_:P_VkBufferDeviceAddressInfo ) :uint64_t;
+type PFN_vkGetDeviceMemoryOpaqueCaptureAddress = function( device_:VkDevice; const pInfo_:P_VkDeviceMemoryOpaqueCaptureAddressInfo ) :uint64_t;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdDrawIndirectCount(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    buffer,
-    VkDeviceSize                                offset,
-    VkBuffer                                    countBuffer,
-    VkDeviceSize                                countBufferOffset,
-    uint32_t                                    maxDrawCount,
-    uint32_t                                    stride);
+    commandBuffer_:VkCommandBuffer;
+    buffer_:VkBuffer;
+    offset_:VkDeviceSize;
+    countBuffer_:VkBuffer;
+    countBufferOffset_:VkDeviceSize;
+    maxDrawCount_:uint32_t;
+    stride_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDrawIndexedIndirectCount(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    buffer,
-    VkDeviceSize                                offset,
-    VkBuffer                                    countBuffer,
-    VkDeviceSize                                countBufferOffset,
-    uint32_t                                    maxDrawCount,
-    uint32_t                                    stride);
+    commandBuffer_:VkCommandBuffer;
+    buffer_:VkBuffer;
+    offset_:VkDeviceSize;
+    countBuffer_:VkBuffer;
+    countBufferOffset_:VkDeviceSize;
+    maxDrawCount_:uint32_t;
+    stride_:uint32_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateRenderPass2(
-    VkDevice                                    device,
-    P_VkRenderPassCreateInfo2                   pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkRenderPass                              pRenderPass);
+    device_:VkDevice;
+    pCreateInfo_:P_VkRenderPassCreateInfo2;
+    pAllocator_:P_VkAllocationCallbacks;
+    pRenderPass_:P_VkRenderPass );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBeginRenderPass2(
-    VkCommandBuffer                             commandBuffer,
-    P_VkRenderPassBeginInfo                     pRenderPassBegin,
-    P_VkSubpassBeginInfo                        pSubpassBeginInfo);
+    commandBuffer_:VkCommandBuffer;
+    pRenderPassBegin_:P_VkRenderPassBeginInfo;
+    pSubpassBeginInfo_:P_VkSubpassBeginInfo );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdNextSubpass2(
-    VkCommandBuffer                             commandBuffer,
-    P_VkSubpassBeginInfo                        pSubpassBeginInfo,
-    P_VkSubpassEndInfo                          pSubpassEndInfo);
+    commandBuffer_:VkCommandBuffer;
+    pSubpassBeginInfo_:P_VkSubpassBeginInfo;
+    pSubpassEndInfo_:P_VkSubpassEndInfo );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdEndRenderPass2(
-    VkCommandBuffer                             commandBuffer,
-    P_VkSubpassEndInfo                          pSubpassEndInfo);
+    commandBuffer_:VkCommandBuffer;
+    pSubpassEndInfo_:P_VkSubpassEndInfo );
 
 VKAPI_ATTR void VKAPI_CALL vkResetQueryPool(
-    VkDevice                                    device,
-    VkQueryPool                                 queryPool,
-    uint32_t                                    firstQuery,
-    uint32_t                                    queryCount);
+    device_:VkDevice;
+    queryPool_:VkQueryPool;
+    firstQuery_:uint32_t;
+    queryCount_:uint32_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetSemaphoreCounterValue(
-    VkDevice                                    device,
-    VkSemaphore                                 semaphore,
-    P_uint64_t                                  pValue);
+    device_:VkDevice;
+    semaphore_:VkSemaphore;
+    pValue_:P_uint64_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkWaitSemaphores(
-    VkDevice                                    device,
-    P_VkSemaphoreWaitInfo                       pWaitInfo,
-    uint64_t                                    timeout);
+    device_:VkDevice;
+    pWaitInfo_:P_VkSemaphoreWaitInfo;
+    timeout_:uint64_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkSignalSemaphore(
-    VkDevice                                    device,
-    P_VkSemaphoreSignalInfo                     pSignalInfo);
+    device_:VkDevice;
+    pSignalInfo_:P_VkSemaphoreSignalInfo );
 
 VKAPI_ATTR VkDeviceAddress VKAPI_CALL vkGetBufferDeviceAddress(
-    VkDevice                                    device,
-    P_VkBufferDeviceAddressInfo                 pInfo);
+    device_:VkDevice;
+    pInfo_:P_VkBufferDeviceAddressInfo );
 
 VKAPI_ATTR uint64_t VKAPI_CALL vkGetBufferOpaqueCaptureAddress(
-    VkDevice                                    device,
-    P_VkBufferDeviceAddressInfo                 pInfo);
+    device_:VkDevice;
+    pInfo_:P_VkBufferDeviceAddressInfo );
 
 VKAPI_ATTR uint64_t VKAPI_CALL vkGetDeviceMemoryOpaqueCaptureAddress(
-    VkDevice                                    device,
-    P_VkDeviceMemoryOpaqueCaptureAddressInfo      pInfo);
+    device_:VkDevice;
+    pInfo_:P_VkDeviceMemoryOpaqueCaptureAddressInfo );
 {$ENDIF}
 
 
@@ -5761,40 +5761,40 @@ type VkSurfaceFormatKHR = record
        colorSpace :VkColorSpaceKHR;
      end;
 
-type PFN_vkDestroySurfaceKHR = procedure(VkInstance instance, VkSurfaceKHR surface, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkGetPhysicalDeviceSurfaceSupportKHR = function(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, VkSurfaceKHR surface, P_VkBool32 pSupported) :VkResult;
-type PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR = function(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, P_VkSurfaceCapabilitiesKHR pSurfaceCapabilities) :VkResult;
-type PFN_vkGetPhysicalDeviceSurfaceFormatsKHR = function(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, P_uint32_t pSurfaceFormatCount, P_VkSurfaceFormatKHR pSurfaceFormats) :VkResult;
-type PFN_vkGetPhysicalDeviceSurfacePresentModesKHR = function(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, P_uint32_t pPresentModeCount, P_VkPresentModeKHR pPresentModes) :VkResult;
+type PFN_vkDestroySurfaceKHR = procedure( instance_:VkInstance; surface_:VkSurfaceKHR; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkGetPhysicalDeviceSurfaceSupportKHR = function( physicalDevice_:VkPhysicalDevice; queueFamilyIndex_:uint32_t; surface_:VkSurfaceKHR; pSupported_:P_VkBool32 ) :VkResult;
+type PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR = function( physicalDevice_:VkPhysicalDevice; surface_:VkSurfaceKHR; pSurfaceCapabilities_:P_VkSurfaceCapabilitiesKHR ) :VkResult;
+type PFN_vkGetPhysicalDeviceSurfaceFormatsKHR = function( physicalDevice_:VkPhysicalDevice; surface_:VkSurfaceKHR; pSurfaceFormatCount_:P_uint32_t; pSurfaceFormats_:P_VkSurfaceFormatKHR ) :VkResult;
+type PFN_vkGetPhysicalDeviceSurfacePresentModesKHR = function( physicalDevice_:VkPhysicalDevice; surface_:VkSurfaceKHR; pPresentModeCount_:P_uint32_t; pPresentModes_:P_VkPresentModeKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkDestroySurfaceKHR(
-    VkInstance                                  instance,
-    VkSurfaceKHR                                surface,
-    P_VkAllocationCallbacks                     pAllocator);
+    instance_:VkInstance;
+    surface_:VkSurfaceKHR;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfaceSupportKHR(
-    VkPhysicalDevice                            physicalDevice,
-    uint32_t                                    queueFamilyIndex,
-    VkSurfaceKHR                                surface,
-    P_VkBool32                                  pSupported);
+    physicalDevice_:VkPhysicalDevice;
+    queueFamilyIndex_:uint32_t;
+    surface_:VkSurfaceKHR;
+    pSupported_:P_VkBool32 );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfaceCapabilitiesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    VkSurfaceKHR                                surface,
-    P_VkSurfaceCapabilitiesKHR                  pSurfaceCapabilities);
+    physicalDevice_:VkPhysicalDevice;
+    surface_:VkSurfaceKHR;
+    pSurfaceCapabilities_:P_VkSurfaceCapabilitiesKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfaceFormatsKHR(
-    VkPhysicalDevice                            physicalDevice,
-    VkSurfaceKHR                                surface,
-    P_uint32_t                                  pSurfaceFormatCount,
-    P_VkSurfaceFormatKHR                        pSurfaceFormats);
+    physicalDevice_:VkPhysicalDevice;
+    surface_:VkSurfaceKHR;
+    pSurfaceFormatCount_:P_uint32_t;
+    pSurfaceFormats_:P_VkSurfaceFormatKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfacePresentModesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    VkSurfaceKHR                                surface,
-    P_uint32_t                                  pPresentModeCount,
-    P_VkPresentModeKHR                          pPresentModes);
+    physicalDevice_:VkPhysicalDevice;
+    surface_:VkSurfaceKHR;
+    pPresentModeCount_:P_uint32_t;
+    pPresentModes_:P_VkPresentModeKHR );
 {$ENDIF}
 
 
@@ -5895,65 +5895,65 @@ type VkDeviceGroupSwapchainCreateInfoKHR = record
        modes :VkDeviceGroupPresentModeFlagsKHR;
      end;
 
-type PFN_vkCreateSwapchainKHR = function(VkDevice device, const P_VkSwapchainCreateInfoKHR pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkSwapchainKHR pSwapchain) :VkResult;
-type PFN_vkDestroySwapchainKHR = procedure(VkDevice device, VkSwapchainKHR swapchain, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkGetSwapchainImagesKHR = function(VkDevice device, VkSwapchainKHR swapchain, P_uint32_t pSwapchainImageCount, P_VkImage pSwapchainImages) :VkResult;
-type PFN_vkAcquireNextImageKHR = function(VkDevice device, VkSwapchainKHR swapchain, uint64_t timeout, VkSemaphore semaphore, VkFence fence, P_uint32_t pImageIndex) :VkResult;
-type PFN_vkQueuePresentKHR = function(VkQueue queue, const P_VkPresentInfoKHR pPresentInfo) :VkResult;
-type PFN_vkGetDeviceGroupPresentCapabilitiesKHR = function(VkDevice device, P_VkDeviceGroupPresentCapabilitiesKHR pDeviceGroupPresentCapabilities) :VkResult;
-type PFN_vkGetDeviceGroupSurfacePresentModesKHR = function(VkDevice device, VkSurfaceKHR surface, P_VkDeviceGroupPresentModeFlagsKHR pModes) :VkResult;
-type PFN_vkGetPhysicalDevicePresentRectanglesKHR = function(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, P_uint32_t pRectCount, P_VkRect2D pRects) :VkResult;
-type PFN_vkAcquireNextImage2KHR = function(VkDevice device, const P_VkAcquireNextImageInfoKHR pAcquireInfo, P_uint32_t pImageIndex) :VkResult;
+type PFN_vkCreateSwapchainKHR = function( device_:VkDevice; const pCreateInfo_:P_VkSwapchainCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pSwapchain_:P_VkSwapchainKHR ) :VkResult;
+type PFN_vkDestroySwapchainKHR = procedure( device_:VkDevice; swapchain_:VkSwapchainKHR; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkGetSwapchainImagesKHR = function( device_:VkDevice; swapchain_:VkSwapchainKHR; pSwapchainImageCount_:P_uint32_t; pSwapchainImages_:P_VkImage ) :VkResult;
+type PFN_vkAcquireNextImageKHR = function( device_:VkDevice; swapchain_:VkSwapchainKHR; timeout_:uint64_t; semaphore_:VkSemaphore; fence_:VkFence; pImageIndex_:P_uint32_t ) :VkResult;
+type PFN_vkQueuePresentKHR = function( queue_:VkQueue; const pPresentInfo_:P_VkPresentInfoKHR ) :VkResult;
+type PFN_vkGetDeviceGroupPresentCapabilitiesKHR = function( device_:VkDevice; pDeviceGroupPresentCapabilities_:P_VkDeviceGroupPresentCapabilitiesKHR ) :VkResult;
+type PFN_vkGetDeviceGroupSurfacePresentModesKHR = function( device_:VkDevice; surface_:VkSurfaceKHR; pModes_:P_VkDeviceGroupPresentModeFlagsKHR ) :VkResult;
+type PFN_vkGetPhysicalDevicePresentRectanglesKHR = function( physicalDevice_:VkPhysicalDevice; surface_:VkSurfaceKHR; pRectCount_:P_uint32_t; pRects_:P_VkRect2D ) :VkResult;
+type PFN_vkAcquireNextImage2KHR = function( device_:VkDevice; const pAcquireInfo_:P_VkAcquireNextImageInfoKHR; pImageIndex_:P_uint32_t ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateSwapchainKHR(
-    VkDevice                                    device,
-    P_VkSwapchainCreateInfoKHR                  pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkSwapchainKHR                            pSwapchain);
+    device_:VkDevice;
+    pCreateInfo_:P_VkSwapchainCreateInfoKHR;
+    pAllocator_:P_VkAllocationCallbacks;
+    pSwapchain_:P_VkSwapchainKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroySwapchainKHR(
-    VkDevice                                    device,
-    VkSwapchainKHR                              swapchain,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    swapchain_:VkSwapchainKHR;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetSwapchainImagesKHR(
-    VkDevice                                    device,
-    VkSwapchainKHR                              swapchain,
-    P_uint32_t                                  pSwapchainImageCount,
-    P_VkImage                                   pSwapchainImages);
+    device_:VkDevice;
+    swapchain_:VkSwapchainKHR;
+    pSwapchainImageCount_:P_uint32_t;
+    pSwapchainImages_:P_VkImage );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkAcquireNextImageKHR(
-    VkDevice                                    device,
-    VkSwapchainKHR                              swapchain,
-    uint64_t                                    timeout,
-    VkSemaphore                                 semaphore,
-    VkFence                                     fence,
-    P_uint32_t                                  pImageIndex);
+    device_:VkDevice;
+    swapchain_:VkSwapchainKHR;
+    timeout_:uint64_t;
+    semaphore_:VkSemaphore;
+    fence_:VkFence;
+    pImageIndex_:P_uint32_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkQueuePresentKHR(
-    VkQueue                                     queue,
-    P_VkPresentInfoKHR                          pPresentInfo);
+    queue_:VkQueue;
+    pPresentInfo_:P_VkPresentInfoKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetDeviceGroupPresentCapabilitiesKHR(
-    VkDevice                                    device,
-    P_VkDeviceGroupPresentCapabilitiesKHR       pDeviceGroupPresentCapabilities);
+    device_:VkDevice;
+    pDeviceGroupPresentCapabilities_:P_VkDeviceGroupPresentCapabilitiesKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetDeviceGroupSurfacePresentModesKHR(
-    VkDevice                                    device,
-    VkSurfaceKHR                                surface,
-    P_VkDeviceGroupPresentModeFlagsKHR          pModes);
+    device_:VkDevice;
+    surface_:VkSurfaceKHR;
+    pModes_:P_VkDeviceGroupPresentModeFlagsKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDevicePresentRectanglesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    VkSurfaceKHR                                surface,
-    P_uint32_t                                  pRectCount,
-    P_VkRect2D                                  pRects);
+    physicalDevice_:VkPhysicalDevice;
+    surface_:VkSurfaceKHR;
+    pRectCount_:P_uint32_t;
+    pRects_:P_VkRect2D );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkAcquireNextImage2KHR(
-    VkDevice                                    device,
-    P_VkAcquireNextImageInfoKHR                 pAcquireInfo,
-    P_uint32_t                                  pImageIndex);
+    device_:VkDevice;
+    pAcquireInfo_:P_VkAcquireNextImageInfoKHR;
+    pImageIndex_:P_uint32_t );
 {$ENDIF}
 
 
@@ -6030,55 +6030,55 @@ type VkDisplaySurfaceCreateInfoKHR = record
        imageExtent :VkExtent2D;
      end;
 
-type PFN_vkGetPhysicalDeviceDisplayPropertiesKHR = function(VkPhysicalDevice physicalDevice, P_uint32_t pPropertyCount, P_VkDisplayPropertiesKHR pProperties) :VkResult;
-type PFN_vkGetPhysicalDeviceDisplayPlanePropertiesKHR = function(VkPhysicalDevice physicalDevice, P_uint32_t pPropertyCount, P_VkDisplayPlanePropertiesKHR pProperties) :VkResult;
-type PFN_vkGetDisplayPlaneSupportedDisplaysKHR = function(VkPhysicalDevice physicalDevice, uint32_t planeIndex, P_uint32_t pDisplayCount, P_VkDisplayKHR pDisplays) :VkResult;
-type PFN_vkGetDisplayModePropertiesKHR = function(VkPhysicalDevice physicalDevice, VkDisplayKHR display, P_uint32_t pPropertyCount, P_VkDisplayModePropertiesKHR pProperties) :VkResult;
-type PFN_vkCreateDisplayModeKHR = function(VkPhysicalDevice physicalDevice, VkDisplayKHR display, const P_VkDisplayModeCreateInfoKHR pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkDisplayModeKHR pMode) :VkResult;
-type PFN_vkGetDisplayPlaneCapabilitiesKHR = function(VkPhysicalDevice physicalDevice, VkDisplayModeKHR mode, uint32_t planeIndex, P_VkDisplayPlaneCapabilitiesKHR pCapabilities) :VkResult;
-type PFN_vkCreateDisplayPlaneSurfaceKHR = function(VkInstance instance, const P_VkDisplaySurfaceCreateInfoKHR pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkSurfaceKHR pSurface) :VkResult;
+type PFN_vkGetPhysicalDeviceDisplayPropertiesKHR = function( physicalDevice_:VkPhysicalDevice; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayPropertiesKHR ) :VkResult;
+type PFN_vkGetPhysicalDeviceDisplayPlanePropertiesKHR = function( physicalDevice_:VkPhysicalDevice; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayPlanePropertiesKHR ) :VkResult;
+type PFN_vkGetDisplayPlaneSupportedDisplaysKHR = function( physicalDevice_:VkPhysicalDevice; planeIndex_:uint32_t; pDisplayCount_:P_uint32_t; pDisplays_:P_VkDisplayKHR ) :VkResult;
+type PFN_vkGetDisplayModePropertiesKHR = function( physicalDevice_:VkPhysicalDevice; display_:VkDisplayKHR; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayModePropertiesKHR ) :VkResult;
+type PFN_vkCreateDisplayModeKHR = function( physicalDevice_:VkPhysicalDevice; display_:VkDisplayKHR; const pCreateInfo_:P_VkDisplayModeCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pMode_:P_VkDisplayModeKHR ) :VkResult;
+type PFN_vkGetDisplayPlaneCapabilitiesKHR = function( physicalDevice_:VkPhysicalDevice; mode_:VkDisplayModeKHR; planeIndex_:uint32_t; pCapabilities_:P_VkDisplayPlaneCapabilitiesKHR ) :VkResult;
+type PFN_vkCreateDisplayPlaneSurfaceKHR = function( instance_:VkInstance; const pCreateInfo_:P_VkDisplaySurfaceCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pSurface_:P_VkSurfaceKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceDisplayPropertiesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_uint32_t                                  pPropertyCount,
-    P_VkDisplayPropertiesKHR                    pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkDisplayPropertiesKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceDisplayPlanePropertiesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_uint32_t                                  pPropertyCount,
-    P_VkDisplayPlanePropertiesKHR               pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkDisplayPlanePropertiesKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetDisplayPlaneSupportedDisplaysKHR(
-    VkPhysicalDevice                            physicalDevice,
-    uint32_t                                    planeIndex,
-    P_uint32_t                                  pDisplayCount,
-    P_VkDisplayKHR                              pDisplays);
+    physicalDevice_:VkPhysicalDevice;
+    planeIndex_:uint32_t;
+    pDisplayCount_:P_uint32_t;
+    pDisplays_:P_VkDisplayKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetDisplayModePropertiesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    VkDisplayKHR                                display,
-    P_uint32_t                                  pPropertyCount,
-    P_VkDisplayModePropertiesKHR                pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    display_:VkDisplayKHR;
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkDisplayModePropertiesKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateDisplayModeKHR(
-    VkPhysicalDevice                            physicalDevice,
-    VkDisplayKHR                                display,
-    P_VkDisplayModeCreateInfoKHR                pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkDisplayModeKHR                          pMode);
+    physicalDevice_:VkPhysicalDevice;
+    display_:VkDisplayKHR;
+    pCreateInfo_:P_VkDisplayModeCreateInfoKHR;
+    pAllocator_:P_VkAllocationCallbacks;
+    pMode_:P_VkDisplayModeKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetDisplayPlaneCapabilitiesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    VkDisplayModeKHR                            mode,
-    uint32_t                                    planeIndex,
-    P_VkDisplayPlaneCapabilitiesKHR             pCapabilities);
+    physicalDevice_:VkPhysicalDevice;
+    mode_:VkDisplayModeKHR;
+    planeIndex_:uint32_t;
+    pCapabilities_:P_VkDisplayPlaneCapabilitiesKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateDisplayPlaneSurfaceKHR(
-    VkInstance                                  instance,
-    P_VkDisplaySurfaceCreateInfoKHR             pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkSurfaceKHR                              pSurface);
+    instance_:VkInstance;
+    pCreateInfo_:P_VkDisplaySurfaceCreateInfoKHR;
+    pAllocator_:P_VkAllocationCallbacks;
+    pSurface_:P_VkSurfaceKHR );
 {$ENDIF}
 
 
@@ -6093,15 +6093,15 @@ type VkDisplayPresentInfoKHR = record
        persistent :VkBool32;
      end;
 
-type PFN_vkCreateSharedSwapchainsKHR = function(VkDevice device, uint32_t swapchainCount, const P_VkSwapchainCreateInfoKHR pCreateInfos, const P_VkAllocationCallbacks pAllocator, P_VkSwapchainKHR pSwapchains) :VkResult;
+type PFN_vkCreateSharedSwapchainsKHR = function( device_:VkDevice; swapchainCount_:uint32_t; const pCreateInfos_:P_VkSwapchainCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pSwapchains_:P_VkSwapchainKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateSharedSwapchainsKHR(
-    VkDevice                                    device,
-    uint32_t                                    swapchainCount,
-    P_VkSwapchainCreateInfoKHR                  pCreateInfos,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkSwapchainKHR                            pSwapchains);
+    device_:VkDevice;
+    swapchainCount_:uint32_t;
+    pCreateInfos_:P_VkSwapchainCreateInfoKHR;
+    pAllocator_:P_VkAllocationCallbacks;
+    pSwapchains_:P_VkSwapchainKHR );
 {$ENDIF}
 
 
@@ -6142,47 +6142,47 @@ type VkSparseImageFormatProperties2KHR = VkSparseImageFormatProperties2;
 
 type VkPhysicalDeviceSparseImageFormatInfo2KHR = VkPhysicalDeviceSparseImageFormatInfo2;
 
-type PFN_vkGetPhysicalDeviceFeatures2KHR = procedure(VkPhysicalDevice physicalDevice, P_VkPhysicalDeviceFeatures2 pFeatures);
-type PFN_vkGetPhysicalDeviceProperties2KHR = procedure(VkPhysicalDevice physicalDevice, P_VkPhysicalDeviceProperties2 pProperties);
-type PFN_vkGetPhysicalDeviceFormatProperties2KHR = procedure(VkPhysicalDevice physicalDevice, VkFormat format, P_VkFormatProperties2 pFormatProperties);
-type PFN_vkGetPhysicalDeviceImageFormatProperties2KHR = function(VkPhysicalDevice physicalDevice, const P_VkPhysicalDeviceImageFormatInfo2 pImageFormatInfo, P_VkImageFormatProperties2 pImageFormatProperties) :VkResult;
-type PFN_vkGetPhysicalDeviceQueueFamilyProperties2KHR = procedure(VkPhysicalDevice physicalDevice, P_uint32_t pQueueFamilyPropertyCount, P_VkQueueFamilyProperties2 pQueueFamilyProperties);
-type PFN_vkGetPhysicalDeviceMemoryProperties2KHR = procedure(VkPhysicalDevice physicalDevice, P_VkPhysicalDeviceMemoryProperties2 pMemoryProperties);
-type PFN_vkGetPhysicalDeviceSparseImageFormatProperties2KHR = procedure(VkPhysicalDevice physicalDevice, const P_VkPhysicalDeviceSparseImageFormatInfo2 pFormatInfo, P_uint32_t pPropertyCount, P_VkSparseImageFormatProperties2 pProperties);
+type PFN_vkGetPhysicalDeviceFeatures2KHR = procedure( physicalDevice_:VkPhysicalDevice; pFeatures_:P_VkPhysicalDeviceFeatures2 );
+type PFN_vkGetPhysicalDeviceProperties2KHR = procedure( physicalDevice_:VkPhysicalDevice; pProperties_:P_VkPhysicalDeviceProperties2 );
+type PFN_vkGetPhysicalDeviceFormatProperties2KHR = procedure( physicalDevice_:VkPhysicalDevice; format_:VkFormat; pFormatProperties_:P_VkFormatProperties2 );
+type PFN_vkGetPhysicalDeviceImageFormatProperties2KHR = function( physicalDevice_:VkPhysicalDevice; const pImageFormatInfo_:P_VkPhysicalDeviceImageFormatInfo2; pImageFormatProperties_:P_VkImageFormatProperties2 ) :VkResult;
+type PFN_vkGetPhysicalDeviceQueueFamilyProperties2KHR = procedure( physicalDevice_:VkPhysicalDevice; pQueueFamilyPropertyCount_:P_uint32_t; pQueueFamilyProperties_:P_VkQueueFamilyProperties2 );
+type PFN_vkGetPhysicalDeviceMemoryProperties2KHR = procedure( physicalDevice_:VkPhysicalDevice; pMemoryProperties_:P_VkPhysicalDeviceMemoryProperties2 );
+type PFN_vkGetPhysicalDeviceSparseImageFormatProperties2KHR = procedure( physicalDevice_:VkPhysicalDevice; const pFormatInfo_:P_VkPhysicalDeviceSparseImageFormatInfo2; pPropertyCount_:P_uint32_t; pProperties_:P_VkSparseImageFormatProperties2 );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceFeatures2KHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceFeatures2                 pFeatures);
+    physicalDevice_:VkPhysicalDevice;
+    pFeatures_:P_VkPhysicalDeviceFeatures2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceProperties2KHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceProperties2               pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pProperties_:P_VkPhysicalDeviceProperties2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceFormatProperties2KHR(
-    VkPhysicalDevice                            physicalDevice,
-    VkFormat                                    format,
-    P_VkFormatProperties2                       pFormatProperties);
+    physicalDevice_:VkPhysicalDevice;
+    format_:VkFormat;
+    pFormatProperties_:P_VkFormatProperties2 );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceImageFormatProperties2KHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceImageFormatInfo2          pImageFormatInfo,
-    P_VkImageFormatProperties2                  pImageFormatProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pImageFormatInfo_:P_VkPhysicalDeviceImageFormatInfo2;
+    pImageFormatProperties_:P_VkImageFormatProperties2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceQueueFamilyProperties2KHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_uint32_t                                  pQueueFamilyPropertyCount,
-    P_VkQueueFamilyProperties2                  pQueueFamilyProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pQueueFamilyPropertyCount_:P_uint32_t;
+    pQueueFamilyProperties_:P_VkQueueFamilyProperties2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceMemoryProperties2KHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceMemoryProperties2         pMemoryProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pMemoryProperties_:P_VkPhysicalDeviceMemoryProperties2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceSparseImageFormatProperties2KHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceSparseImageFormatInfo2      pFormatInfo,
-    P_uint32_t                                  pPropertyCount,
-    P_VkSparseImageFormatProperties2            pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pFormatInfo_:P_VkPhysicalDeviceSparseImageFormatInfo2;
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkSparseImageFormatProperties2 );
 {$ENDIF}
 
 
@@ -6211,30 +6211,30 @@ type VkBindBufferMemoryDeviceGroupInfoKHR = VkBindBufferMemoryDeviceGroupInfo;
 
 type VkBindImageMemoryDeviceGroupInfoKHR = VkBindImageMemoryDeviceGroupInfo;
 
-type PFN_vkGetDeviceGroupPeerMemoryFeaturesKHR = procedure(VkDevice device, uint32_t heapIndex, uint32_t localDeviceIndex, uint32_t remoteDeviceIndex, P_VkPeerMemoryFeatureFlags pPeerMemoryFeatures);
-type PFN_vkCmdSetDeviceMaskKHR = procedure(VkCommandBuffer commandBuffer, uint32_t deviceMask);
-type PFN_vkCmdDispatchBaseKHR = procedure(VkCommandBuffer commandBuffer, uint32_t baseGroupX, uint32_t baseGroupY, uint32_t baseGroupZ, uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ);
+type PFN_vkGetDeviceGroupPeerMemoryFeaturesKHR = procedure( device_:VkDevice; heapIndex_:uint32_t; localDeviceIndex_:uint32_t; remoteDeviceIndex_:uint32_t; pPeerMemoryFeatures_:P_VkPeerMemoryFeatureFlags );
+type PFN_vkCmdSetDeviceMaskKHR = procedure( commandBuffer_:VkCommandBuffer; deviceMask_:uint32_t );
+type PFN_vkCmdDispatchBaseKHR = procedure( commandBuffer_:VkCommandBuffer; baseGroupX_:uint32_t; baseGroupY_:uint32_t; baseGroupZ_:uint32_t; groupCountX_:uint32_t; groupCountY_:uint32_t; groupCountZ_:uint32_t );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkGetDeviceGroupPeerMemoryFeaturesKHR(
-    VkDevice                                    device,
-    uint32_t                                    heapIndex,
-    uint32_t                                    localDeviceIndex,
-    uint32_t                                    remoteDeviceIndex,
-    P_VkPeerMemoryFeatureFlags                  pPeerMemoryFeatures);
+    device_:VkDevice;
+    heapIndex_:uint32_t;
+    localDeviceIndex_:uint32_t;
+    remoteDeviceIndex_:uint32_t;
+    pPeerMemoryFeatures_:P_VkPeerMemoryFeatureFlags );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetDeviceMaskKHR(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    deviceMask);
+    commandBuffer_:VkCommandBuffer;
+    deviceMask_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDispatchBaseKHR(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    baseGroupX,
-    uint32_t                                    baseGroupY,
-    uint32_t                                    baseGroupZ,
-    uint32_t                                    groupCountX,
-    uint32_t                                    groupCountY,
-    uint32_t                                    groupCountZ);
+    commandBuffer_:VkCommandBuffer;
+    baseGroupX_:uint32_t;
+    baseGroupY_:uint32_t;
+    baseGroupZ_:uint32_t;
+    groupCountX_:uint32_t;
+    groupCountY_:uint32_t;
+    groupCountZ_:uint32_t );
 {$ENDIF}
 
 
@@ -6248,13 +6248,13 @@ const VK_KHR_MAINTENANCE1_SPEC_VERSION  = 2;
 const VK_KHR_MAINTENANCE1_EXTENSION_NAME = 'VK_KHR_maintenance1';
 type VkCommandPoolTrimFlagsKHR = VkCommandPoolTrimFlags;
 
-type PFN_vkTrimCommandPoolKHR = procedure(VkDevice device, VkCommandPool commandPool, VkCommandPoolTrimFlags flags);
+type PFN_vkTrimCommandPoolKHR = procedure( device_:VkDevice; commandPool_:VkCommandPool; flags_:VkCommandPoolTrimFlags );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkTrimCommandPoolKHR(
-    VkDevice                                    device,
-    VkCommandPool                               commandPool,
-    VkCommandPoolTrimFlags                      flags);
+    device_:VkDevice;
+    commandPool_:VkCommandPool;
+    flags_:VkCommandPoolTrimFlags );
 {$ENDIF}
 
 
@@ -6266,13 +6266,13 @@ type VkPhysicalDeviceGroupPropertiesKHR = VkPhysicalDeviceGroupProperties;
 
 type VkDeviceGroupDeviceCreateInfoKHR = VkDeviceGroupDeviceCreateInfo;
 
-type PFN_vkEnumeratePhysicalDeviceGroupsKHR = function(VkInstance instance, P_uint32_t pPhysicalDeviceGroupCount, P_VkPhysicalDeviceGroupProperties pPhysicalDeviceGroupProperties) :VkResult;
+type PFN_vkEnumeratePhysicalDeviceGroupsKHR = function( instance_:VkInstance; pPhysicalDeviceGroupCount_:P_uint32_t; pPhysicalDeviceGroupProperties_:P_VkPhysicalDeviceGroupProperties ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkEnumeratePhysicalDeviceGroupsKHR(
-    VkInstance                                  instance,
-    P_uint32_t                                  pPhysicalDeviceGroupCount,
-    P_VkPhysicalDeviceGroupProperties           pPhysicalDeviceGroupProperties);
+    instance_:VkInstance;
+    pPhysicalDeviceGroupCount_:P_uint32_t;
+    pPhysicalDeviceGroupProperties_:P_VkPhysicalDeviceGroupProperties );
 {$ENDIF}
 
 
@@ -6300,13 +6300,13 @@ type VkExternalBufferPropertiesKHR = VkExternalBufferProperties;
 
 type VkPhysicalDeviceIDPropertiesKHR = VkPhysicalDeviceIDProperties;
 
-type PFN_vkGetPhysicalDeviceExternalBufferPropertiesKHR = procedure(VkPhysicalDevice physicalDevice, const P_VkPhysicalDeviceExternalBufferInfo pExternalBufferInfo, P_VkExternalBufferProperties pExternalBufferProperties);
+type PFN_vkGetPhysicalDeviceExternalBufferPropertiesKHR = procedure( physicalDevice_:VkPhysicalDevice; const pExternalBufferInfo_:P_VkPhysicalDeviceExternalBufferInfo; pExternalBufferProperties_:P_VkExternalBufferProperties );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceExternalBufferPropertiesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceExternalBufferInfo        pExternalBufferInfo,
-    P_VkExternalBufferProperties                pExternalBufferProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pExternalBufferInfo_:P_VkPhysicalDeviceExternalBufferInfo;
+    pExternalBufferProperties_:P_VkExternalBufferProperties );
 {$ENDIF}
 
 
@@ -6345,20 +6345,20 @@ type VkMemoryGetFdInfoKHR = record
        handleType :VkExternalMemoryHandleTypeFlagBits;
      end;
 
-type PFN_vkGetMemoryFdKHR = function(VkDevice device, const P_VkMemoryGetFdInfoKHR pGetFdInfo, P_int pFd) :VkResult;
-type PFN_vkGetMemoryFdPropertiesKHR = function(VkDevice device, VkExternalMemoryHandleTypeFlagBits handleType, int fd, P_VkMemoryFdPropertiesKHR pMemoryFdProperties) :VkResult;
+type PFN_vkGetMemoryFdKHR = function( device_:VkDevice; const pGetFdInfo_:P_VkMemoryGetFdInfoKHR; pFd_:P_int ) :VkResult;
+type PFN_vkGetMemoryFdPropertiesKHR = function( device_:VkDevice; handleType_:VkExternalMemoryHandleTypeFlagBits; fd_:int; pMemoryFdProperties_:P_VkMemoryFdPropertiesKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetMemoryFdKHR(
-    VkDevice                                    device,
-    P_VkMemoryGetFdInfoKHR                      pGetFdInfo,
-    P_int                                       pFd);
+    device_:VkDevice;
+    pGetFdInfo_:P_VkMemoryGetFdInfoKHR;
+    pFd_:P_int );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetMemoryFdPropertiesKHR(
-    VkDevice                                    device,
-    VkExternalMemoryHandleTypeFlagBits          handleType,
-    int                                         fd,
-    P_VkMemoryFdPropertiesKHR                   pMemoryFdProperties);
+    device_:VkDevice;
+    handleType_:VkExternalMemoryHandleTypeFlagBits;
+    fd_:int;
+    pMemoryFdProperties_:P_VkMemoryFdPropertiesKHR );
 {$ENDIF}
 
 
@@ -6377,13 +6377,13 @@ type VkPhysicalDeviceExternalSemaphoreInfoKHR = VkPhysicalDeviceExternalSemaphor
 
 type VkExternalSemaphorePropertiesKHR = VkExternalSemaphoreProperties;
 
-type PFN_vkGetPhysicalDeviceExternalSemaphorePropertiesKHR = procedure(VkPhysicalDevice physicalDevice, const P_VkPhysicalDeviceExternalSemaphoreInfo pExternalSemaphoreInfo, P_VkExternalSemaphoreProperties pExternalSemaphoreProperties);
+type PFN_vkGetPhysicalDeviceExternalSemaphorePropertiesKHR = procedure( physicalDevice_:VkPhysicalDevice; const pExternalSemaphoreInfo_:P_VkPhysicalDeviceExternalSemaphoreInfo; pExternalSemaphoreProperties_:P_VkExternalSemaphoreProperties );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceExternalSemaphorePropertiesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceExternalSemaphoreInfo      pExternalSemaphoreInfo,
-    P_VkExternalSemaphoreProperties             pExternalSemaphoreProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pExternalSemaphoreInfo_:P_VkPhysicalDeviceExternalSemaphoreInfo;
+    pExternalSemaphoreProperties_:P_VkExternalSemaphoreProperties );
 {$ENDIF}
 
 
@@ -6417,18 +6417,18 @@ type VkSemaphoreGetFdInfoKHR = record
        handleType :VkExternalSemaphoreHandleTypeFlagBits;
      end;
 
-type PFN_vkImportSemaphoreFdKHR = function(VkDevice device, const P_VkImportSemaphoreFdInfoKHR pImportSemaphoreFdInfo) :VkResult;
-type PFN_vkGetSemaphoreFdKHR = function(VkDevice device, const P_VkSemaphoreGetFdInfoKHR pGetFdInfo, P_int pFd) :VkResult;
+type PFN_vkImportSemaphoreFdKHR = function( device_:VkDevice; const pImportSemaphoreFdInfo_:P_VkImportSemaphoreFdInfoKHR ) :VkResult;
+type PFN_vkGetSemaphoreFdKHR = function( device_:VkDevice; const pGetFdInfo_:P_VkSemaphoreGetFdInfoKHR; pFd_:P_int ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkImportSemaphoreFdKHR(
-    VkDevice                                    device,
-    P_VkImportSemaphoreFdInfoKHR                pImportSemaphoreFdInfo);
+    device_:VkDevice;
+    pImportSemaphoreFdInfo_:P_VkImportSemaphoreFdInfoKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetSemaphoreFdKHR(
-    VkDevice                                    device,
-    P_VkSemaphoreGetFdInfoKHR                   pGetFdInfo,
-    P_int                                       pFd);
+    device_:VkDevice;
+    pGetFdInfo_:P_VkSemaphoreGetFdInfoKHR;
+    pFd_:P_int );
 {$ENDIF}
 
 
@@ -6441,24 +6441,24 @@ type VkPhysicalDevicePushDescriptorPropertiesKHR = record
        maxPushDescriptors :uint32_t;
      end;
 
-type PFN_vkCmdPushDescriptorSetKHR = procedure(VkCommandBuffer commandBuffer, VkPipelineBindPoint pipelineBindPoint, VkPipelineLayout layout, uint32_t set, uint32_t descriptorWriteCount, const P_VkWriteDescriptorSet pDescriptorWrites);
-type PFN_vkCmdPushDescriptorSetWithTemplateKHR = procedure(VkCommandBuffer commandBuffer, VkDescriptorUpdateTemplate descriptorUpdateTemplate, VkPipelineLayout layout, uint32_t set, const P_void pData);
+type PFN_vkCmdPushDescriptorSetKHR = procedure( commandBuffer_:VkCommandBuffer; pipelineBindPoint_:VkPipelineBindPoint; layout_:VkPipelineLayout; set_:uint32_t; descriptorWriteCount_:uint32_t; const pDescriptorWrites_:P_VkWriteDescriptorSet );
+type PFN_vkCmdPushDescriptorSetWithTemplateKHR = procedure( commandBuffer_:VkCommandBuffer; descriptorUpdateTemplate_:VkDescriptorUpdateTemplate; layout_:VkPipelineLayout; set_:uint32_t; const pData_:P_void );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdPushDescriptorSetKHR(
-    VkCommandBuffer                             commandBuffer,
-    VkPipelineBindPoint                         pipelineBindPoint,
-    VkPipelineLayout                            layout,
-    uint32_t                                    set,
-    uint32_t                                    descriptorWriteCount,
-    P_VkWriteDescriptorSet                      pDescriptorWrites);
+    commandBuffer_:VkCommandBuffer;
+    pipelineBindPoint_:VkPipelineBindPoint;
+    layout_:VkPipelineLayout;
+    set_:uint32_t;
+    descriptorWriteCount_:uint32_t;
+    pDescriptorWrites_:P_VkWriteDescriptorSet );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdPushDescriptorSetWithTemplateKHR(
-    VkCommandBuffer                             commandBuffer,
-    VkDescriptorUpdateTemplate                  descriptorUpdateTemplate,
-    VkPipelineLayout                            layout,
-    uint32_t                                    set,
-    P_void                                      pData);
+    commandBuffer_:VkCommandBuffer;
+    descriptorUpdateTemplate_:VkDescriptorUpdateTemplate;
+    layout_:VkPipelineLayout;
+    set_:uint32_t;
+    pData_:P_void );
 {$ENDIF}
 
 
@@ -6514,27 +6514,27 @@ type VkDescriptorUpdateTemplateEntryKHR = VkDescriptorUpdateTemplateEntry;
 
 type VkDescriptorUpdateTemplateCreateInfoKHR = VkDescriptorUpdateTemplateCreateInfo;
 
-type PFN_vkCreateDescriptorUpdateTemplateKHR = function(VkDevice device, const P_VkDescriptorUpdateTemplateCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkDescriptorUpdateTemplate pDescriptorUpdateTemplate) :VkResult;
-type PFN_vkDestroyDescriptorUpdateTemplateKHR = procedure(VkDevice device, VkDescriptorUpdateTemplate descriptorUpdateTemplate, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkUpdateDescriptorSetWithTemplateKHR = procedure(VkDevice device, VkDescriptorSet descriptorSet, VkDescriptorUpdateTemplate descriptorUpdateTemplate, const P_void pData);
+type PFN_vkCreateDescriptorUpdateTemplateKHR = function( device_:VkDevice; const pCreateInfo_:P_VkDescriptorUpdateTemplateCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pDescriptorUpdateTemplate_:P_VkDescriptorUpdateTemplate ) :VkResult;
+type PFN_vkDestroyDescriptorUpdateTemplateKHR = procedure( device_:VkDevice; descriptorUpdateTemplate_:VkDescriptorUpdateTemplate; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkUpdateDescriptorSetWithTemplateKHR = procedure( device_:VkDevice; descriptorSet_:VkDescriptorSet; descriptorUpdateTemplate_:VkDescriptorUpdateTemplate; const pData_:P_void );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateDescriptorUpdateTemplateKHR(
-    VkDevice                                    device,
-    P_VkDescriptorUpdateTemplateCreateInfo      pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkDescriptorUpdateTemplate                pDescriptorUpdateTemplate);
+    device_:VkDevice;
+    pCreateInfo_:P_VkDescriptorUpdateTemplateCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pDescriptorUpdateTemplate_:P_VkDescriptorUpdateTemplate );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyDescriptorUpdateTemplateKHR(
-    VkDevice                                    device,
-    VkDescriptorUpdateTemplate                  descriptorUpdateTemplate,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    descriptorUpdateTemplate_:VkDescriptorUpdateTemplate;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR void VKAPI_CALL vkUpdateDescriptorSetWithTemplateKHR(
-    VkDevice                                    device,
-    VkDescriptorSet                             descriptorSet,
-    VkDescriptorUpdateTemplate                  descriptorUpdateTemplate,
-    P_void                                      pData);
+    device_:VkDevice;
+    descriptorSet_:VkDescriptorSet;
+    descriptorUpdateTemplate_:VkDescriptorUpdateTemplate;
+    pData_:P_void );
 {$ENDIF}
 
 
@@ -6568,31 +6568,31 @@ type VkSubpassBeginInfoKHR = VkSubpassBeginInfo;
 
 type VkSubpassEndInfoKHR = VkSubpassEndInfo;
 
-type PFN_vkCreateRenderPass2KHR = function(VkDevice device, const P_VkRenderPassCreateInfo2 pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkRenderPass pRenderPass) :VkResult;
-type PFN_vkCmdBeginRenderPass2KHR = procedure(VkCommandBuffer commandBuffer, const P_VkRenderPassBeginInfo      pRenderPassBegin, const P_VkSubpassBeginInfo      pSubpassBeginInfo);
-type PFN_vkCmdNextSubpass2KHR = procedure(VkCommandBuffer commandBuffer, const P_VkSubpassBeginInfo      pSubpassBeginInfo, const P_VkSubpassEndInfo        pSubpassEndInfo);
-type PFN_vkCmdEndRenderPass2KHR = procedure(VkCommandBuffer commandBuffer, const P_VkSubpassEndInfo        pSubpassEndInfo);
+type PFN_vkCreateRenderPass2KHR = function( device_:VkDevice; const pCreateInfo_:P_VkRenderPassCreateInfo2; const pAllocator_:P_VkAllocationCallbacks; pRenderPass_:P_VkRenderPass ) :VkResult;
+type PFN_vkCmdBeginRenderPass2KHR = procedure( commandBuffer_:VkCommandBuffer; const pRenderPassBegin_:P_VkRenderPassBeginInfo; const pSubpassBeginInfo_:P_VkSubpassBeginInfo );
+type PFN_vkCmdNextSubpass2KHR = procedure( commandBuffer_:VkCommandBuffer; const pSubpassBeginInfo_:P_VkSubpassBeginInfo; const pSubpassEndInfo_:P_VkSubpassEndInfo );
+type PFN_vkCmdEndRenderPass2KHR = procedure( commandBuffer_:VkCommandBuffer; const pSubpassEndInfo_:P_VkSubpassEndInfo );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateRenderPass2KHR(
-    VkDevice                                    device,
-    P_VkRenderPassCreateInfo2                   pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkRenderPass                              pRenderPass);
+    device_:VkDevice;
+    pCreateInfo_:P_VkRenderPassCreateInfo2;
+    pAllocator_:P_VkAllocationCallbacks;
+    pRenderPass_:P_VkRenderPass );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBeginRenderPass2KHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkRenderPassBeginInfo                     pRenderPassBegin,
-    P_VkSubpassBeginInfo                        pSubpassBeginInfo);
+    commandBuffer_:VkCommandBuffer;
+    pRenderPassBegin_:P_VkRenderPassBeginInfo;
+    pSubpassBeginInfo_:P_VkSubpassBeginInfo );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdNextSubpass2KHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkSubpassBeginInfo                        pSubpassBeginInfo,
-    P_VkSubpassEndInfo                          pSubpassEndInfo);
+    commandBuffer_:VkCommandBuffer;
+    pSubpassBeginInfo_:P_VkSubpassBeginInfo;
+    pSubpassEndInfo_:P_VkSubpassEndInfo );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdEndRenderPass2KHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkSubpassEndInfo                          pSubpassEndInfo);
+    commandBuffer_:VkCommandBuffer;
+    pSubpassEndInfo_:P_VkSubpassEndInfo );
 {$ENDIF}
 
 
@@ -6605,12 +6605,12 @@ type VkSharedPresentSurfaceCapabilitiesKHR = record
        sharedPresentSupportedUsageFlags :VkImageUsageFlags;
      end;
 
-type PFN_vkGetSwapchainStatusKHR = function(VkDevice device, VkSwapchainKHR swapchain) :VkResult;
+type PFN_vkGetSwapchainStatusKHR = function( device_:VkDevice; swapchain_:VkSwapchainKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetSwapchainStatusKHR(
-    VkDevice                                    device,
-    VkSwapchainKHR                              swapchain);
+    device_:VkDevice;
+    swapchain_:VkSwapchainKHR );
 {$ENDIF}
 
 
@@ -6629,13 +6629,13 @@ type VkPhysicalDeviceExternalFenceInfoKHR = VkPhysicalDeviceExternalFenceInfo;
 
 type VkExternalFencePropertiesKHR = VkExternalFenceProperties;
 
-type PFN_vkGetPhysicalDeviceExternalFencePropertiesKHR = procedure(VkPhysicalDevice physicalDevice, const P_VkPhysicalDeviceExternalFenceInfo pExternalFenceInfo, P_VkExternalFenceProperties pExternalFenceProperties);
+type PFN_vkGetPhysicalDeviceExternalFencePropertiesKHR = procedure( physicalDevice_:VkPhysicalDevice; const pExternalFenceInfo_:P_VkPhysicalDeviceExternalFenceInfo; pExternalFenceProperties_:P_VkExternalFenceProperties );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceExternalFencePropertiesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceExternalFenceInfo         pExternalFenceInfo,
-    P_VkExternalFenceProperties                 pExternalFenceProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pExternalFenceInfo_:P_VkPhysicalDeviceExternalFenceInfo;
+    pExternalFenceProperties_:P_VkExternalFenceProperties );
 {$ENDIF}
 
 
@@ -6669,18 +6669,18 @@ type VkFenceGetFdInfoKHR = record
        handleType :VkExternalFenceHandleTypeFlagBits;
      end;
 
-type PFN_vkImportFenceFdKHR = function(VkDevice device, const P_VkImportFenceFdInfoKHR pImportFenceFdInfo) :VkResult;
-type PFN_vkGetFenceFdKHR = function(VkDevice device, const P_VkFenceGetFdInfoKHR pGetFdInfo, P_int pFd) :VkResult;
+type PFN_vkImportFenceFdKHR = function( device_:VkDevice; const pImportFenceFdInfo_:P_VkImportFenceFdInfoKHR ) :VkResult;
+type PFN_vkGetFenceFdKHR = function( device_:VkDevice; const pGetFdInfo_:P_VkFenceGetFdInfoKHR; pFd_:P_int ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkImportFenceFdKHR(
-    VkDevice                                    device,
-    P_VkImportFenceFdInfoKHR                    pImportFenceFdInfo);
+    device_:VkDevice;
+    pImportFenceFdInfo_:P_VkImportFenceFdInfoKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetFenceFdKHR(
-    VkDevice                                    device,
-    P_VkFenceGetFdInfoKHR                       pGetFdInfo,
-    P_int                                       pFd);
+    device_:VkDevice;
+    pGetFdInfo_:P_VkFenceGetFdInfoKHR;
+    pFd_:P_int );
 {$ENDIF}
 
 
@@ -6798,30 +6798,30 @@ type VkPerformanceQuerySubmitInfoKHR = record
        counterPassIndex :uint32_t;
      end;
 
-type PFN_vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR = function(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, P_uint32_t pCounterCount, P_VkPerformanceCounterKHR pCounters, P_VkPerformanceCounterDescriptionKHR pCounterDescriptions) :VkResult;
-type PFN_vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR = procedure(VkPhysicalDevice physicalDevice, const P_VkQueryPoolPerformanceCreateInfoKHR pPerformanceQueryCreateInfo, P_uint32_t pNumPasses);
-type PFN_vkAcquireProfilingLockKHR = function(VkDevice device, const P_VkAcquireProfilingLockInfoKHR pInfo) :VkResult;
-type PFN_vkReleaseProfilingLockKHR = procedure(VkDevice device);
+type PFN_vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR = function( physicalDevice_:VkPhysicalDevice; queueFamilyIndex_:uint32_t; pCounterCount_:P_uint32_t; pCounters_:P_VkPerformanceCounterKHR; pCounterDescriptions_:P_VkPerformanceCounterDescriptionKHR ) :VkResult;
+type PFN_vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR = procedure( physicalDevice_:VkPhysicalDevice; const pPerformanceQueryCreateInfo_:P_VkQueryPoolPerformanceCreateInfoKHR; pNumPasses_:P_uint32_t );
+type PFN_vkAcquireProfilingLockKHR = function( device_:VkDevice; const pInfo_:P_VkAcquireProfilingLockInfoKHR ) :VkResult;
+type PFN_vkReleaseProfilingLockKHR = procedure( device_:VkDevice );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR(
-    VkPhysicalDevice                            physicalDevice,
-    uint32_t                                    queueFamilyIndex,
-    P_uint32_t                                  pCounterCount,
-    P_VkPerformanceCounterKHR                   pCounters,
-    P_VkPerformanceCounterDescriptionKHR        pCounterDescriptions);
+    physicalDevice_:VkPhysicalDevice;
+    queueFamilyIndex_:uint32_t;
+    pCounterCount_:P_uint32_t;
+    pCounters_:P_VkPerformanceCounterKHR;
+    pCounterDescriptions_:P_VkPerformanceCounterDescriptionKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkQueryPoolPerformanceCreateInfoKHR       pPerformanceQueryCreateInfo,
-    P_uint32_t                                  pNumPasses);
+    physicalDevice_:VkPhysicalDevice;
+    pPerformanceQueryCreateInfo_:P_VkQueryPoolPerformanceCreateInfoKHR;
+    pNumPasses_:P_uint32_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkAcquireProfilingLockKHR(
-    VkDevice                                    device,
-    P_VkAcquireProfilingLockInfoKHR             pInfo);
+    device_:VkDevice;
+    pInfo_:P_VkAcquireProfilingLockInfoKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkReleaseProfilingLockKHR(
-    VkDevice                                    device);
+    device_:VkDevice );
 {$ENDIF}
 
 
@@ -6865,20 +6865,20 @@ type VkSurfaceFormat2KHR = record
        surfaceFormat :VkSurfaceFormatKHR;
      end;
 
-type PFN_vkGetPhysicalDeviceSurfaceCapabilities2KHR = function(VkPhysicalDevice physicalDevice, const P_VkPhysicalDeviceSurfaceInfo2KHR pSurfaceInfo, P_VkSurfaceCapabilities2KHR pSurfaceCapabilities) :VkResult;
-type PFN_vkGetPhysicalDeviceSurfaceFormats2KHR = function(VkPhysicalDevice physicalDevice, const P_VkPhysicalDeviceSurfaceInfo2KHR pSurfaceInfo, P_uint32_t pSurfaceFormatCount, P_VkSurfaceFormat2KHR pSurfaceFormats) :VkResult;
+type PFN_vkGetPhysicalDeviceSurfaceCapabilities2KHR = function( physicalDevice_:VkPhysicalDevice; const pSurfaceInfo_:P_VkPhysicalDeviceSurfaceInfo2KHR; pSurfaceCapabilities_:P_VkSurfaceCapabilities2KHR ) :VkResult;
+type PFN_vkGetPhysicalDeviceSurfaceFormats2KHR = function( physicalDevice_:VkPhysicalDevice; const pSurfaceInfo_:P_VkPhysicalDeviceSurfaceInfo2KHR; pSurfaceFormatCount_:P_uint32_t; pSurfaceFormats_:P_VkSurfaceFormat2KHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfaceCapabilities2KHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceSurfaceInfo2KHR           pSurfaceInfo,
-    P_VkSurfaceCapabilities2KHR                 pSurfaceCapabilities);
+    physicalDevice_:VkPhysicalDevice;
+    pSurfaceInfo_:P_VkPhysicalDeviceSurfaceInfo2KHR;
+    pSurfaceCapabilities_:P_VkSurfaceCapabilities2KHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfaceFormats2KHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkPhysicalDeviceSurfaceInfo2KHR           pSurfaceInfo,
-    P_uint32_t                                  pSurfaceFormatCount,
-    P_VkSurfaceFormat2KHR                       pSurfaceFormats);
+    physicalDevice_:VkPhysicalDevice;
+    pSurfaceInfo_:P_VkPhysicalDeviceSurfaceInfo2KHR;
+    pSurfaceFormatCount_:P_uint32_t;
+    pSurfaceFormats_:P_VkSurfaceFormat2KHR );
 {$ENDIF}
 
 
@@ -6925,32 +6925,32 @@ type VkDisplayPlaneCapabilities2KHR = record
        capabilities :VkDisplayPlaneCapabilitiesKHR;
      end;
 
-type PFN_vkGetPhysicalDeviceDisplayProperties2KHR = function(VkPhysicalDevice physicalDevice, P_uint32_t pPropertyCount, P_VkDisplayProperties2KHR pProperties) :VkResult;
-type PFN_vkGetPhysicalDeviceDisplayPlaneProperties2KHR = function(VkPhysicalDevice physicalDevice, P_uint32_t pPropertyCount, P_VkDisplayPlaneProperties2KHR pProperties) :VkResult;
-type PFN_vkGetDisplayModeProperties2KHR = function(VkPhysicalDevice physicalDevice, VkDisplayKHR display, P_uint32_t pPropertyCount, P_VkDisplayModeProperties2KHR pProperties) :VkResult;
-type PFN_vkGetDisplayPlaneCapabilities2KHR = function(VkPhysicalDevice physicalDevice, const P_VkDisplayPlaneInfo2KHR pDisplayPlaneInfo, P_VkDisplayPlaneCapabilities2KHR pCapabilities) :VkResult;
+type PFN_vkGetPhysicalDeviceDisplayProperties2KHR = function( physicalDevice_:VkPhysicalDevice; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayProperties2KHR ) :VkResult;
+type PFN_vkGetPhysicalDeviceDisplayPlaneProperties2KHR = function( physicalDevice_:VkPhysicalDevice; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayPlaneProperties2KHR ) :VkResult;
+type PFN_vkGetDisplayModeProperties2KHR = function( physicalDevice_:VkPhysicalDevice; display_:VkDisplayKHR; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayModeProperties2KHR ) :VkResult;
+type PFN_vkGetDisplayPlaneCapabilities2KHR = function( physicalDevice_:VkPhysicalDevice; const pDisplayPlaneInfo_:P_VkDisplayPlaneInfo2KHR; pCapabilities_:P_VkDisplayPlaneCapabilities2KHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceDisplayProperties2KHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_uint32_t                                  pPropertyCount,
-    P_VkDisplayProperties2KHR                   pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkDisplayProperties2KHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceDisplayPlaneProperties2KHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_uint32_t                                  pPropertyCount,
-    P_VkDisplayPlaneProperties2KHR              pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkDisplayPlaneProperties2KHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetDisplayModeProperties2KHR(
-    VkPhysicalDevice                            physicalDevice,
-    VkDisplayKHR                                display,
-    P_uint32_t                                  pPropertyCount,
-    P_VkDisplayModeProperties2KHR               pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    display_:VkDisplayKHR;
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkDisplayModeProperties2KHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetDisplayPlaneCapabilities2KHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_VkDisplayPlaneInfo2KHR                    pDisplayPlaneInfo,
-    P_VkDisplayPlaneCapabilities2KHR            pCapabilities);
+    physicalDevice_:VkPhysicalDevice;
+    pDisplayPlaneInfo_:P_VkDisplayPlaneInfo2KHR;
+    pCapabilities_:P_VkDisplayPlaneCapabilities2KHR );
 {$ENDIF}
 
 
@@ -6986,26 +6986,26 @@ type VkMemoryRequirements2KHR = VkMemoryRequirements2;
 
 type VkSparseImageMemoryRequirements2KHR = VkSparseImageMemoryRequirements2;
 
-type PFN_vkGetImageMemoryRequirements2KHR = procedure(VkDevice device, const P_VkImageMemoryRequirementsInfo2 pInfo, P_VkMemoryRequirements2 pMemoryRequirements);
-type PFN_vkGetBufferMemoryRequirements2KHR = procedure(VkDevice device, const P_VkBufferMemoryRequirementsInfo2 pInfo, P_VkMemoryRequirements2 pMemoryRequirements);
-type PFN_vkGetImageSparseMemoryRequirements2KHR = procedure(VkDevice device, const P_VkImageSparseMemoryRequirementsInfo2 pInfo, P_uint32_t pSparseMemoryRequirementCount, P_VkSparseImageMemoryRequirements2 pSparseMemoryRequirements);
+type PFN_vkGetImageMemoryRequirements2KHR = procedure( device_:VkDevice; const pInfo_:P_VkImageMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
+type PFN_vkGetBufferMemoryRequirements2KHR = procedure( device_:VkDevice; const pInfo_:P_VkBufferMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
+type PFN_vkGetImageSparseMemoryRequirements2KHR = procedure( device_:VkDevice; const pInfo_:P_VkImageSparseMemoryRequirementsInfo2; pSparseMemoryRequirementCount_:P_uint32_t; pSparseMemoryRequirements_:P_VkSparseImageMemoryRequirements2 );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkGetImageMemoryRequirements2KHR(
-    VkDevice                                    device,
-    P_VkImageMemoryRequirementsInfo2            pInfo,
-    P_VkMemoryRequirements2                     pMemoryRequirements);
+    device_:VkDevice;
+    pInfo_:P_VkImageMemoryRequirementsInfo2;
+    pMemoryRequirements_:P_VkMemoryRequirements2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetBufferMemoryRequirements2KHR(
-    VkDevice                                    device,
-    P_VkBufferMemoryRequirementsInfo2           pInfo,
-    P_VkMemoryRequirements2                     pMemoryRequirements);
+    device_:VkDevice;
+    pInfo_:P_VkBufferMemoryRequirementsInfo2;
+    pMemoryRequirements_:P_VkMemoryRequirements2 );
 
 VKAPI_ATTR void VKAPI_CALL vkGetImageSparseMemoryRequirements2KHR(
-    VkDevice                                    device,
-    P_VkImageSparseMemoryRequirementsInfo2      pInfo,
-    P_uint32_t                                  pSparseMemoryRequirementCount,
-    P_VkSparseImageMemoryRequirements2          pSparseMemoryRequirements);
+    device_:VkDevice;
+    pInfo_:P_VkImageSparseMemoryRequirementsInfo2;
+    pSparseMemoryRequirementCount_:P_uint32_t;
+    pSparseMemoryRequirements_:P_VkSparseImageMemoryRequirements2 );
 {$ENDIF}
 
 
@@ -7039,20 +7039,20 @@ type VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR = VkPhysicalDeviceSampler
 
 type VkSamplerYcbcrConversionImageFormatPropertiesKHR = VkSamplerYcbcrConversionImageFormatProperties;
 
-type PFN_vkCreateSamplerYcbcrConversionKHR = function(VkDevice device, const P_VkSamplerYcbcrConversionCreateInfo pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkSamplerYcbcrConversion pYcbcrConversion) :VkResult;
-type PFN_vkDestroySamplerYcbcrConversionKHR = procedure(VkDevice device, VkSamplerYcbcrConversion ycbcrConversion, const P_VkAllocationCallbacks pAllocator);
+type PFN_vkCreateSamplerYcbcrConversionKHR = function( device_:VkDevice; const pCreateInfo_:P_VkSamplerYcbcrConversionCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pYcbcrConversion_:P_VkSamplerYcbcrConversion ) :VkResult;
+type PFN_vkDestroySamplerYcbcrConversionKHR = procedure( device_:VkDevice; ycbcrConversion_:VkSamplerYcbcrConversion; const pAllocator_:P_VkAllocationCallbacks );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateSamplerYcbcrConversionKHR(
-    VkDevice                                    device,
-    P_VkSamplerYcbcrConversionCreateInfo        pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkSamplerYcbcrConversion                  pYcbcrConversion);
+    device_:VkDevice;
+    pCreateInfo_:P_VkSamplerYcbcrConversionCreateInfo;
+    pAllocator_:P_VkAllocationCallbacks;
+    pYcbcrConversion_:P_VkSamplerYcbcrConversion );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroySamplerYcbcrConversionKHR(
-    VkDevice                                    device,
-    VkSamplerYcbcrConversion                    ycbcrConversion,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    ycbcrConversion_:VkSamplerYcbcrConversion;
+    pAllocator_:P_VkAllocationCallbacks );
 {$ENDIF}
 
 
@@ -7063,19 +7063,19 @@ type VkBindBufferMemoryInfoKHR = VkBindBufferMemoryInfo;
 
 type VkBindImageMemoryInfoKHR = VkBindImageMemoryInfo;
 
-type PFN_vkBindBufferMemory2KHR = function(VkDevice device, uint32_t bindInfoCount, const P_VkBindBufferMemoryInfo pBindInfos) :VkResult;
-type PFN_vkBindImageMemory2KHR = function(VkDevice device, uint32_t bindInfoCount, const P_VkBindImageMemoryInfo pBindInfos) :VkResult;
+type PFN_vkBindBufferMemory2KHR = function( device_:VkDevice; bindInfoCount_:uint32_t; const pBindInfos_:P_VkBindBufferMemoryInfo ) :VkResult;
+type PFN_vkBindImageMemory2KHR = function( device_:VkDevice; bindInfoCount_:uint32_t; const pBindInfos_:P_VkBindImageMemoryInfo ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkBindBufferMemory2KHR(
-    VkDevice                                    device,
-    uint32_t                                    bindInfoCount,
-    P_VkBindBufferMemoryInfo                    pBindInfos);
+    device_:VkDevice;
+    bindInfoCount_:uint32_t;
+    pBindInfos_:P_VkBindBufferMemoryInfo );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkBindImageMemory2KHR(
-    VkDevice                                    device,
-    uint32_t                                    bindInfoCount,
-    P_VkBindImageMemoryInfo                     pBindInfos);
+    device_:VkDevice;
+    bindInfoCount_:uint32_t;
+    pBindInfos_:P_VkBindImageMemoryInfo );
 {$ENDIF}
 
 
@@ -7086,40 +7086,40 @@ type VkPhysicalDeviceMaintenance3PropertiesKHR = VkPhysicalDeviceMaintenance3Pro
 
 type VkDescriptorSetLayoutSupportKHR = VkDescriptorSetLayoutSupport;
 
-type PFN_vkGetDescriptorSetLayoutSupportKHR = procedure(VkDevice device, const P_VkDescriptorSetLayoutCreateInfo pCreateInfo, P_VkDescriptorSetLayoutSupport pSupport);
+type PFN_vkGetDescriptorSetLayoutSupportKHR = procedure( device_:VkDevice; const pCreateInfo_:P_VkDescriptorSetLayoutCreateInfo; pSupport_:P_VkDescriptorSetLayoutSupport );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkGetDescriptorSetLayoutSupportKHR(
-    VkDevice                                    device,
-    P_VkDescriptorSetLayoutCreateInfo           pCreateInfo,
-    P_VkDescriptorSetLayoutSupport              pSupport);
+    device_:VkDevice;
+    pCreateInfo_:P_VkDescriptorSetLayoutCreateInfo;
+    pSupport_:P_VkDescriptorSetLayoutSupport );
 {$ENDIF}
 
 
 const VK_KHR_draw_indirect_count = 1;
 const VK_KHR_DRAW_INDIRECT_COUNT_SPEC_VERSION = 1;
 const VK_KHR_DRAW_INDIRECT_COUNT_EXTENSION_NAME = 'VK_KHR_draw_indirect_count';
-type PFN_vkCmdDrawIndirectCountKHR = procedure(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride);
-type PFN_vkCmdDrawIndexedIndirectCountKHR = procedure(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride);
+type PFN_vkCmdDrawIndirectCountKHR = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; countBuffer_:VkBuffer; countBufferOffset_:VkDeviceSize; maxDrawCount_:uint32_t; stride_:uint32_t );
+type PFN_vkCmdDrawIndexedIndirectCountKHR = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; countBuffer_:VkBuffer; countBufferOffset_:VkDeviceSize; maxDrawCount_:uint32_t; stride_:uint32_t );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdDrawIndirectCountKHR(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    buffer,
-    VkDeviceSize                                offset,
-    VkBuffer                                    countBuffer,
-    VkDeviceSize                                countBufferOffset,
-    uint32_t                                    maxDrawCount,
-    uint32_t                                    stride);
+    commandBuffer_:VkCommandBuffer;
+    buffer_:VkBuffer;
+    offset_:VkDeviceSize;
+    countBuffer_:VkBuffer;
+    countBufferOffset_:VkDeviceSize;
+    maxDrawCount_:uint32_t;
+    stride_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDrawIndexedIndirectCountKHR(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    buffer,
-    VkDeviceSize                                offset,
-    VkBuffer                                    countBuffer,
-    VkDeviceSize                                countBufferOffset,
-    uint32_t                                    maxDrawCount,
-    uint32_t                                    stride);
+    commandBuffer_:VkCommandBuffer;
+    buffer_:VkBuffer;
+    offset_:VkDeviceSize;
+    countBuffer_:VkBuffer;
+    countBufferOffset_:VkDeviceSize;
+    maxDrawCount_:uint32_t;
+    stride_:uint32_t );
 {$ENDIF}
 
 
@@ -7217,24 +7217,24 @@ type VkSemaphoreWaitInfoKHR = VkSemaphoreWaitInfo;
 
 type VkSemaphoreSignalInfoKHR = VkSemaphoreSignalInfo;
 
-type PFN_vkGetSemaphoreCounterValueKHR = function(VkDevice device, VkSemaphore semaphore, P_uint64_t pValue) :VkResult;
-type PFN_vkWaitSemaphoresKHR = function(VkDevice device, const P_VkSemaphoreWaitInfo pWaitInfo, uint64_t timeout) :VkResult;
-type PFN_vkSignalSemaphoreKHR = function(VkDevice device, const P_VkSemaphoreSignalInfo pSignalInfo) :VkResult;
+type PFN_vkGetSemaphoreCounterValueKHR = function( device_:VkDevice; semaphore_:VkSemaphore; pValue_:P_uint64_t ) :VkResult;
+type PFN_vkWaitSemaphoresKHR = function( device_:VkDevice; const pWaitInfo_:P_VkSemaphoreWaitInfo; timeout_:uint64_t ) :VkResult;
+type PFN_vkSignalSemaphoreKHR = function( device_:VkDevice; const pSignalInfo_:P_VkSemaphoreSignalInfo ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetSemaphoreCounterValueKHR(
-    VkDevice                                    device,
-    VkSemaphore                                 semaphore,
-    P_uint64_t                                  pValue);
+    device_:VkDevice;
+    semaphore_:VkSemaphore;
+    pValue_:P_uint64_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkWaitSemaphoresKHR(
-    VkDevice                                    device,
-    P_VkSemaphoreWaitInfo                       pWaitInfo,
-    uint64_t                                    timeout);
+    device_:VkDevice;
+    pWaitInfo_:P_VkSemaphoreWaitInfo;
+    timeout_:uint64_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkSignalSemaphoreKHR(
-    VkDevice                                    device,
-    P_VkSemaphoreSignalInfo                     pSignalInfo);
+    device_:VkDevice;
+    pSignalInfo_:P_VkSemaphoreSignalInfo );
 {$ENDIF}
 
 
@@ -7319,19 +7319,19 @@ type VkPhysicalDeviceFragmentShadingRateKHR = record
        fragmentSize :VkExtent2D;
      end;
 
-type PFN_vkGetPhysicalDeviceFragmentShadingRatesKHR = function(VkPhysicalDevice physicalDevice, P_uint32_t pFragmentShadingRateCount, P_VkPhysicalDeviceFragmentShadingRateKHR pFragmentShadingRates) :VkResult;
-type PFN_vkCmdSetFragmentShadingRateKHR = procedure(VkCommandBuffer           commandBuffer, const P_VkExtent2D                           pFragmentSize, const VkFragmentShadingRateCombinerOpKHR    combinerOps[2]);
+type PFN_vkGetPhysicalDeviceFragmentShadingRatesKHR = function( physicalDevice_:VkPhysicalDevice; pFragmentShadingRateCount_:P_uint32_t; pFragmentShadingRates_:P_VkPhysicalDeviceFragmentShadingRateKHR ) :VkResult;
+type PFN_vkCmdSetFragmentShadingRateKHR = procedure( commandBuffer_:VkCommandBuffer; const pFragmentSize_:P_VkExtent2D; const combinerOps_:array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceFragmentShadingRatesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    P_uint32_t                                  pFragmentShadingRateCount,
-    P_VkPhysicalDeviceFragmentShadingRateKHR    pFragmentShadingRates);
+    physicalDevice_:VkPhysicalDevice;
+    pFragmentShadingRateCount_:P_uint32_t;
+    pFragmentShadingRates_:P_VkPhysicalDeviceFragmentShadingRateKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetFragmentShadingRateKHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkExtent2D                                pFragmentSize,
-    const VkFragmentShadingRateCombinerOpKHR    combinerOps[2]);
+    commandBuffer_:VkCommandBuffer;
+    pFragmentSize_:P_VkExtent2D;
+    const combinerOps_:array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR );
 {$ENDIF}
 
 
@@ -7382,22 +7382,22 @@ type VkMemoryOpaqueCaptureAddressAllocateInfoKHR = VkMemoryOpaqueCaptureAddressA
 
 type VkDeviceMemoryOpaqueCaptureAddressInfoKHR = VkDeviceMemoryOpaqueCaptureAddressInfo;
 
-type PFN_vkGetBufferDeviceAddressKHR = function(VkDevice device, const P_VkBufferDeviceAddressInfo pInfo) :VkDeviceAddress;
-type PFN_vkGetBufferOpaqueCaptureAddressKHR = function(VkDevice device, const P_VkBufferDeviceAddressInfo pInfo) :uint64_t;
-type PFN_vkGetDeviceMemoryOpaqueCaptureAddressKHR = function(VkDevice device, const P_VkDeviceMemoryOpaqueCaptureAddressInfo pInfo) :uint64_t;
+type PFN_vkGetBufferDeviceAddressKHR = function( device_:VkDevice; const pInfo_:P_VkBufferDeviceAddressInfo ) :VkDeviceAddress;
+type PFN_vkGetBufferOpaqueCaptureAddressKHR = function( device_:VkDevice; const pInfo_:P_VkBufferDeviceAddressInfo ) :uint64_t;
+type PFN_vkGetDeviceMemoryOpaqueCaptureAddressKHR = function( device_:VkDevice; const pInfo_:P_VkDeviceMemoryOpaqueCaptureAddressInfo ) :uint64_t;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkDeviceAddress VKAPI_CALL vkGetBufferDeviceAddressKHR(
-    VkDevice                                    device,
-    P_VkBufferDeviceAddressInfo                 pInfo);
+    device_:VkDevice;
+    pInfo_:P_VkBufferDeviceAddressInfo );
 
 VKAPI_ATTR uint64_t VKAPI_CALL vkGetBufferOpaqueCaptureAddressKHR(
-    VkDevice                                    device,
-    P_VkBufferDeviceAddressInfo                 pInfo);
+    device_:VkDevice;
+    pInfo_:P_VkBufferDeviceAddressInfo );
 
 VKAPI_ATTR uint64_t VKAPI_CALL vkGetDeviceMemoryOpaqueCaptureAddressKHR(
-    VkDevice                                    device,
-    P_VkDeviceMemoryOpaqueCaptureAddressInfo      pInfo);
+    device_:VkDevice;
+    pInfo_:P_VkDeviceMemoryOpaqueCaptureAddressInfo );
 {$ENDIF}
 
 
@@ -7405,34 +7405,34 @@ const VK_KHR_deferred_host_operations = 1;
 VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkDeferredOperationKHR)
 const VK_KHR_DEFERRED_HOST_OPERATIONS_SPEC_VERSION = 4;
 const VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME = 'VK_KHR_deferred_host_operations';
-type PFN_vkCreateDeferredOperationKHR = function(VkDevice device, const P_VkAllocationCallbacks pAllocator, P_VkDeferredOperationKHR pDeferredOperation) :VkResult;
-type PFN_vkDestroyDeferredOperationKHR = procedure(VkDevice device, VkDeferredOperationKHR operation, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkGetDeferredOperationMaxConcurrencyKHR = function(VkDevice device, VkDeferredOperationKHR operation) :uint32_t;
-type PFN_vkGetDeferredOperationResultKHR = function(VkDevice device, VkDeferredOperationKHR operation) :VkResult;
-type PFN_vkDeferredOperationJoinKHR = function(VkDevice device, VkDeferredOperationKHR operation) :VkResult;
+type PFN_vkCreateDeferredOperationKHR = function( device_:VkDevice; const pAllocator_:P_VkAllocationCallbacks; pDeferredOperation_:P_VkDeferredOperationKHR ) :VkResult;
+type PFN_vkDestroyDeferredOperationKHR = procedure( device_:VkDevice; operation_:VkDeferredOperationKHR; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkGetDeferredOperationMaxConcurrencyKHR = function( device_:VkDevice; operation_:VkDeferredOperationKHR ) :uint32_t;
+type PFN_vkGetDeferredOperationResultKHR = function( device_:VkDevice; operation_:VkDeferredOperationKHR ) :VkResult;
+type PFN_vkDeferredOperationJoinKHR = function( device_:VkDevice; operation_:VkDeferredOperationKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateDeferredOperationKHR(
-    VkDevice                                    device,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkDeferredOperationKHR                    pDeferredOperation);
+    device_:VkDevice;
+    pAllocator_:P_VkAllocationCallbacks;
+    pDeferredOperation_:P_VkDeferredOperationKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyDeferredOperationKHR(
-    VkDevice                                    device,
-    VkDeferredOperationKHR                      operation,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    operation_:VkDeferredOperationKHR;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR uint32_t VKAPI_CALL vkGetDeferredOperationMaxConcurrencyKHR(
-    VkDevice                                    device,
-    VkDeferredOperationKHR                      operation);
+    device_:VkDevice;
+    operation_:VkDeferredOperationKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetDeferredOperationResultKHR(
-    VkDevice                                    device,
-    VkDeferredOperationKHR                      operation);
+    device_:VkDevice;
+    operation_:VkDeferredOperationKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkDeferredOperationJoinKHR(
-    VkDevice                                    device,
-    VkDeferredOperationKHR                      operation);
+    device_:VkDevice;
+    operation_:VkDeferredOperationKHR );
 {$ENDIF}
 
 
@@ -7502,27 +7502,27 @@ type VkPipelineExecutableInternalRepresentationKHR = record
        pData :P_void;
      end;
 
-type PFN_vkGetPipelineExecutablePropertiesKHR = function(VkDevice                        device, const P_VkPipelineInfoKHR        pPipelineInfo, P_uint32_t pExecutableCount, P_VkPipelineExecutablePropertiesKHR pProperties) :VkResult;
-type PFN_vkGetPipelineExecutableStatisticsKHR = function(VkDevice                        device, const P_VkPipelineExecutableInfoKHR  pExecutableInfo, P_uint32_t pStatisticCount, P_VkPipelineExecutableStatisticKHR pStatistics) :VkResult;
-type PFN_vkGetPipelineExecutableInternalRepresentationsKHR = function(VkDevice                        device, const P_VkPipelineExecutableInfoKHR  pExecutableInfo, P_uint32_t pInternalRepresentationCount, P_VkPipelineExecutableInternalRepresentationKHR pInternalRepresentations) :VkResult;
+type PFN_vkGetPipelineExecutablePropertiesKHR = function( device_:VkDevice; const pPipelineInfo_:P_VkPipelineInfoKHR; pExecutableCount_:P_uint32_t; pProperties_:P_VkPipelineExecutablePropertiesKHR ) :VkResult;
+type PFN_vkGetPipelineExecutableStatisticsKHR = function( device_:VkDevice; const pExecutableInfo_:P_VkPipelineExecutableInfoKHR; pStatisticCount_:P_uint32_t; pStatistics_:P_VkPipelineExecutableStatisticKHR ) :VkResult;
+type PFN_vkGetPipelineExecutableInternalRepresentationsKHR = function( device_:VkDevice; const pExecutableInfo_:P_VkPipelineExecutableInfoKHR; pInternalRepresentationCount_:P_uint32_t; pInternalRepresentations_:P_VkPipelineExecutableInternalRepresentationKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPipelineExecutablePropertiesKHR(
-    VkDevice                                    device,
-    P_VkPipelineInfoKHR                         pPipelineInfo,
-    P_uint32_t                                  pExecutableCount,
-    P_VkPipelineExecutablePropertiesKHR         pProperties);
+    device_:VkDevice;
+    pPipelineInfo_:P_VkPipelineInfoKHR;
+    pExecutableCount_:P_uint32_t;
+    pProperties_:P_VkPipelineExecutablePropertiesKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPipelineExecutableStatisticsKHR(
-    VkDevice                                    device,
-    P_VkPipelineExecutableInfoKHR               pExecutableInfo,
-    P_uint32_t                                  pStatisticCount,
-    P_VkPipelineExecutableStatisticKHR          pStatistics);
+    device_:VkDevice;
+    pExecutableInfo_:P_VkPipelineExecutableInfoKHR;
+    pStatisticCount_:P_uint32_t;
+    pStatistics_:P_VkPipelineExecutableStatisticKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPipelineExecutableInternalRepresentationsKHR(
-    VkDevice                                    device,
-    P_VkPipelineExecutableInfoKHR               pExecutableInfo,
-    P_uint32_t                                  pInternalRepresentationCount,
+    device_:VkDevice;
+    pExecutableInfo_:P_VkPipelineExecutableInfoKHR;
+    pInternalRepresentationCount_:P_uint32_t;
     P_VkPipelineExecutableInternalRepresentationKHRpInternalRepresentations);
 {$ENDIF}
 
@@ -7732,59 +7732,59 @@ type VkCheckpointData2NV = record
        pCheckpointMarker :P_void;
      end;
 
-type PFN_vkCmdSetEvent2KHR = procedure(VkCommandBuffer                   commandBuffer, VkEvent                                             event, const P_VkDependencyInfoKHR                          pDependencyInfo);
-type PFN_vkCmdResetEvent2KHR = procedure(VkCommandBuffer                   commandBuffer, VkEvent                                             event, VkPipelineStageFlags2KHR                            stageMask);
-type PFN_vkCmdWaitEvents2KHR = procedure(VkCommandBuffer                   commandBuffer, uint32_t                                            eventCount, const P_VkEvent                     pEvents, const P_VkDependencyInfoKHR         pDependencyInfos);
-type PFN_vkCmdPipelineBarrier2KHR = procedure(VkCommandBuffer                   commandBuffer, const P_VkDependencyInfoKHR                                pDependencyInfo);
-type PFN_vkCmdWriteTimestamp2KHR = procedure(VkCommandBuffer                   commandBuffer, VkPipelineStageFlags2KHR                            stage, VkQueryPool                                         queryPool, uint32_t                                            query);
-type PFN_vkQueueSubmit2KHR = function(VkQueue                           queue, uint32_t                            submitCount, const P_VkSubmitInfo2KHR           pSubmits, VkFence           fence) :VkResult;
-type PFN_vkCmdWriteBufferMarker2AMD = procedure(VkCommandBuffer                   commandBuffer, VkPipelineStageFlags2KHR                            stage, VkBuffer                                            dstBuffer, VkDeviceSize                                        dstOffset, uint32_t                                            marker);
-type PFN_vkGetQueueCheckpointData2NV = procedure(VkQueue queue, P_uint32_t pCheckpointDataCount, P_VkCheckpointData2NV pCheckpointData);
+type PFN_vkCmdSetEvent2KHR = procedure( commandBuffer_:VkCommandBuffer; event_:VkEvent; const pDependencyInfo_:P_VkDependencyInfoKHR );
+type PFN_vkCmdResetEvent2KHR = procedure( commandBuffer_:VkCommandBuffer; event_:VkEvent; stageMask_:VkPipelineStageFlags2KHR );
+type PFN_vkCmdWaitEvents2KHR = procedure( commandBuffer_:VkCommandBuffer; eventCount_:uint32_t; const pEvents_:P_VkEvent; const pDependencyInfos_:P_VkDependencyInfoKHR );
+type PFN_vkCmdPipelineBarrier2KHR = procedure( commandBuffer_:VkCommandBuffer; const pDependencyInfo_:P_VkDependencyInfoKHR );
+type PFN_vkCmdWriteTimestamp2KHR = procedure( commandBuffer_:VkCommandBuffer; stage_:VkPipelineStageFlags2KHR; queryPool_:VkQueryPool; query_:uint32_t );
+type PFN_vkQueueSubmit2KHR = function( queue_:VkQueue; submitCount_:uint32_t; const pSubmits_:P_VkSubmitInfo2KHR; fence_:VkFence ) :VkResult;
+type PFN_vkCmdWriteBufferMarker2AMD = procedure( commandBuffer_:VkCommandBuffer; stage_:VkPipelineStageFlags2KHR; dstBuffer_:VkBuffer; dstOffset_:VkDeviceSize; marker_:uint32_t );
+type PFN_vkGetQueueCheckpointData2NV = procedure( queue_:VkQueue; pCheckpointDataCount_:P_uint32_t; pCheckpointData_:P_VkCheckpointData2NV );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdSetEvent2KHR(
-    VkCommandBuffer                             commandBuffer,
-    VkEvent                                     event,
-    P_VkDependencyInfoKHR                       pDependencyInfo);
+    commandBuffer_:VkCommandBuffer;
+    event_:VkEvent;
+    pDependencyInfo_:P_VkDependencyInfoKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdResetEvent2KHR(
-    VkCommandBuffer                             commandBuffer,
-    VkEvent                                     event,
-    VkPipelineStageFlags2KHR                    stageMask);
+    commandBuffer_:VkCommandBuffer;
+    event_:VkEvent;
+    stageMask_:VkPipelineStageFlags2KHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdWaitEvents2KHR(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    eventCount,
-    P_VkEvent                                   pEvents,
-    P_VkDependencyInfoKHR                       pDependencyInfos);
+    commandBuffer_:VkCommandBuffer;
+    eventCount_:uint32_t;
+    pEvents_:P_VkEvent;
+    pDependencyInfos_:P_VkDependencyInfoKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdPipelineBarrier2KHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkDependencyInfoKHR                       pDependencyInfo);
+    commandBuffer_:VkCommandBuffer;
+    pDependencyInfo_:P_VkDependencyInfoKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdWriteTimestamp2KHR(
-    VkCommandBuffer                             commandBuffer,
-    VkPipelineStageFlags2KHR                    stage,
-    VkQueryPool                                 queryPool,
-    uint32_t                                    query);
+    commandBuffer_:VkCommandBuffer;
+    stage_:VkPipelineStageFlags2KHR;
+    queryPool_:VkQueryPool;
+    query_:uint32_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkQueueSubmit2KHR(
-    VkQueue                                     queue,
-    uint32_t                                    submitCount,
-    P_VkSubmitInfo2KHR                          pSubmits,
-    VkFence                                     fence);
+    queue_:VkQueue;
+    submitCount_:uint32_t;
+    pSubmits_:P_VkSubmitInfo2KHR;
+    fence_:VkFence );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdWriteBufferMarker2AMD(
-    VkCommandBuffer                             commandBuffer,
-    VkPipelineStageFlags2KHR                    stage,
-    VkBuffer                                    dstBuffer,
-    VkDeviceSize                                dstOffset,
-    uint32_t                                    marker);
+    commandBuffer_:VkCommandBuffer;
+    stage_:VkPipelineStageFlags2KHR;
+    dstBuffer_:VkBuffer;
+    dstOffset_:VkDeviceSize;
+    marker_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkGetQueueCheckpointData2NV(
-    VkQueue                                     queue,
-    P_uint32_t                                  pCheckpointDataCount,
-    P_VkCheckpointData2NV                       pCheckpointData);
+    queue_:VkQueue;
+    pCheckpointDataCount_:P_uint32_t;
+    pCheckpointData_:P_VkCheckpointData2NV );
 {$ENDIF}
 
 
@@ -7927,37 +7927,37 @@ type VkResolveImageInfo2KHR = record
        pRegions :P_VkImageResolve2KHR;
      end;
 
-type PFN_vkCmdCopyBuffer2KHR = procedure(VkCommandBuffer commandBuffer, const P_VkCopyBufferInfo2KHR pCopyBufferInfo);
-type PFN_vkCmdCopyImage2KHR = procedure(VkCommandBuffer commandBuffer, const P_VkCopyImageInfo2KHR pCopyImageInfo);
-type PFN_vkCmdCopyBufferToImage2KHR = procedure(VkCommandBuffer commandBuffer, const P_VkCopyBufferToImageInfo2KHR pCopyBufferToImageInfo);
-type PFN_vkCmdCopyImageToBuffer2KHR = procedure(VkCommandBuffer commandBuffer, const P_VkCopyImageToBufferInfo2KHR pCopyImageToBufferInfo);
-type PFN_vkCmdBlitImage2KHR = procedure(VkCommandBuffer commandBuffer, const P_VkBlitImageInfo2KHR pBlitImageInfo);
-type PFN_vkCmdResolveImage2KHR = procedure(VkCommandBuffer commandBuffer, const P_VkResolveImageInfo2KHR pResolveImageInfo);
+type PFN_vkCmdCopyBuffer2KHR = procedure( commandBuffer_:VkCommandBuffer; const pCopyBufferInfo_:P_VkCopyBufferInfo2KHR );
+type PFN_vkCmdCopyImage2KHR = procedure( commandBuffer_:VkCommandBuffer; const pCopyImageInfo_:P_VkCopyImageInfo2KHR );
+type PFN_vkCmdCopyBufferToImage2KHR = procedure( commandBuffer_:VkCommandBuffer; const pCopyBufferToImageInfo_:P_VkCopyBufferToImageInfo2KHR );
+type PFN_vkCmdCopyImageToBuffer2KHR = procedure( commandBuffer_:VkCommandBuffer; const pCopyImageToBufferInfo_:P_VkCopyImageToBufferInfo2KHR );
+type PFN_vkCmdBlitImage2KHR = procedure( commandBuffer_:VkCommandBuffer; const pBlitImageInfo_:P_VkBlitImageInfo2KHR );
+type PFN_vkCmdResolveImage2KHR = procedure( commandBuffer_:VkCommandBuffer; const pResolveImageInfo_:P_VkResolveImageInfo2KHR );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdCopyBuffer2KHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkCopyBufferInfo2KHR                      pCopyBufferInfo);
+    commandBuffer_:VkCommandBuffer;
+    pCopyBufferInfo_:P_VkCopyBufferInfo2KHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdCopyImage2KHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkCopyImageInfo2KHR                       pCopyImageInfo);
+    commandBuffer_:VkCommandBuffer;
+    pCopyImageInfo_:P_VkCopyImageInfo2KHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdCopyBufferToImage2KHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkCopyBufferToImageInfo2KHR               pCopyBufferToImageInfo);
+    commandBuffer_:VkCommandBuffer;
+    pCopyBufferToImageInfo_:P_VkCopyBufferToImageInfo2KHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdCopyImageToBuffer2KHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkCopyImageToBufferInfo2KHR               pCopyImageToBufferInfo);
+    commandBuffer_:VkCommandBuffer;
+    pCopyImageToBufferInfo_:P_VkCopyImageToBufferInfo2KHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBlitImage2KHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkBlitImageInfo2KHR                       pBlitImageInfo);
+    commandBuffer_:VkCommandBuffer;
+    pBlitImageInfo_:P_VkBlitImageInfo2KHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdResolveImage2KHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkResolveImageInfo2KHR                    pResolveImageInfo);
+    commandBuffer_:VkCommandBuffer;
+    pResolveImageInfo_:P_VkResolveImageInfo2KHR );
 {$ENDIF}
 
 
@@ -8020,14 +8020,14 @@ type VkDebugReportFlagBitsEXT = (
      );
 type VkDebugReportFlagsEXT = VkFlags;
 type PFN_vkDebugReportCallbackEXT = function(
-    VkDebugReportFlagsEXT                       flags,
-    VkDebugReportObjectTypeEXT                  objectType,
-    uint64_t                                    object,
-    size_t                                      location,
-    int32_t                                     messageCode,
-    P_char                                      pLayerPrefix,
-    P_char                                      pMessage,
-    P_void                                      pUserData) :VkBool32;
+    flags_:VkDebugReportFlagsEXT;
+    objectType_:VkDebugReportObjectTypeEXT;
+    object_:uint64_t;
+    location_:size_t;
+    messageCode_:int32_t;
+    pLayerPrefix_:P_char;
+    pMessage_:P_char;
+    pUserData_:P_void ) :VkBool32;
 
 type VkDebugReportCallbackCreateInfoEXT = record
        sType :VkStructureType;
@@ -8037,31 +8037,31 @@ type VkDebugReportCallbackCreateInfoEXT = record
        pUserData :P_void;
      end;
 
-type PFN_vkCreateDebugReportCallbackEXT = function(VkInstance instance, const P_VkDebugReportCallbackCreateInfoEXT pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkDebugReportCallbackEXT pCallback) :VkResult;
-type PFN_vkDestroyDebugReportCallbackEXT = procedure(VkInstance instance, VkDebugReportCallbackEXT callback, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkDebugReportMessageEXT = procedure(VkInstance instance, VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objectType, uint64_t object, size_t location, int32_t messageCode, const P_char pLayerPrefix, const P_char pMessage);
+type PFN_vkCreateDebugReportCallbackEXT = function( instance_:VkInstance; const pCreateInfo_:P_VkDebugReportCallbackCreateInfoEXT; const pAllocator_:P_VkAllocationCallbacks; pCallback_:P_VkDebugReportCallbackEXT ) :VkResult;
+type PFN_vkDestroyDebugReportCallbackEXT = procedure( instance_:VkInstance; callback_:VkDebugReportCallbackEXT; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkDebugReportMessageEXT = procedure( instance_:VkInstance; flags_:VkDebugReportFlagsEXT; objectType_:VkDebugReportObjectTypeEXT; object_:uint64_t; location_:size_t; messageCode_:int32_t; const pLayerPrefix_:P_char; const pMessage_:P_char );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateDebugReportCallbackEXT(
-    VkInstance                                  instance,
-    P_VkDebugReportCallbackCreateInfoEXT        pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkDebugReportCallbackEXT                  pCallback);
+    instance_:VkInstance;
+    pCreateInfo_:P_VkDebugReportCallbackCreateInfoEXT;
+    pAllocator_:P_VkAllocationCallbacks;
+    pCallback_:P_VkDebugReportCallbackEXT );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyDebugReportCallbackEXT(
-    VkInstance                                  instance,
-    VkDebugReportCallbackEXT                    callback,
-    P_VkAllocationCallbacks                     pAllocator);
+    instance_:VkInstance;
+    callback_:VkDebugReportCallbackEXT;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR void VKAPI_CALL vkDebugReportMessageEXT(
-    VkInstance                                  instance,
-    VkDebugReportFlagsEXT                       flags,
-    VkDebugReportObjectTypeEXT                  objectType,
-    uint64_t                                    object,
-    size_t                                      location,
-    int32_t                                     messageCode,
-    P_char                                      pLayerPrefix,
-    P_char                                      pMessage);
+    instance_:VkInstance;
+    flags_:VkDebugReportFlagsEXT;
+    objectType_:VkDebugReportObjectTypeEXT;
+    object_:uint64_t;
+    location_:size_t;
+    messageCode_:int32_t;
+    pLayerPrefix_:P_char;
+    pMessage_:P_char );
 {$ENDIF}
 
 
@@ -8135,31 +8135,31 @@ type VkDebugMarkerMarkerInfoEXT = record
        color :array [ 0..4-1 ] of float;
      end;
 
-type PFN_vkDebugMarkerSetObjectTagEXT = function(VkDevice device, const P_VkDebugMarkerObjectTagInfoEXT pTagInfo) :VkResult;
-type PFN_vkDebugMarkerSetObjectNameEXT = function(VkDevice device, const P_VkDebugMarkerObjectNameInfoEXT pNameInfo) :VkResult;
-type PFN_vkCmdDebugMarkerBeginEXT = procedure(VkCommandBuffer commandBuffer, const P_VkDebugMarkerMarkerInfoEXT pMarkerInfo);
-type PFN_vkCmdDebugMarkerEndEXT = procedure(VkCommandBuffer commandBuffer);
-type PFN_vkCmdDebugMarkerInsertEXT = procedure(VkCommandBuffer commandBuffer, const P_VkDebugMarkerMarkerInfoEXT pMarkerInfo);
+type PFN_vkDebugMarkerSetObjectTagEXT = function( device_:VkDevice; const pTagInfo_:P_VkDebugMarkerObjectTagInfoEXT ) :VkResult;
+type PFN_vkDebugMarkerSetObjectNameEXT = function( device_:VkDevice; const pNameInfo_:P_VkDebugMarkerObjectNameInfoEXT ) :VkResult;
+type PFN_vkCmdDebugMarkerBeginEXT = procedure( commandBuffer_:VkCommandBuffer; const pMarkerInfo_:P_VkDebugMarkerMarkerInfoEXT );
+type PFN_vkCmdDebugMarkerEndEXT = procedure( commandBuffer_:VkCommandBuffer );
+type PFN_vkCmdDebugMarkerInsertEXT = procedure( commandBuffer_:VkCommandBuffer; const pMarkerInfo_:P_VkDebugMarkerMarkerInfoEXT );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkDebugMarkerSetObjectTagEXT(
-    VkDevice                                    device,
-    P_VkDebugMarkerObjectTagInfoEXT             pTagInfo);
+    device_:VkDevice;
+    pTagInfo_:P_VkDebugMarkerObjectTagInfoEXT );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkDebugMarkerSetObjectNameEXT(
-    VkDevice                                    device,
-    P_VkDebugMarkerObjectNameInfoEXT            pNameInfo);
+    device_:VkDevice;
+    pNameInfo_:P_VkDebugMarkerObjectNameInfoEXT );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDebugMarkerBeginEXT(
-    VkCommandBuffer                             commandBuffer,
-    P_VkDebugMarkerMarkerInfoEXT                pMarkerInfo);
+    commandBuffer_:VkCommandBuffer;
+    pMarkerInfo_:P_VkDebugMarkerMarkerInfoEXT );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDebugMarkerEndEXT(
-    VkCommandBuffer                             commandBuffer);
+    commandBuffer_:VkCommandBuffer );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDebugMarkerInsertEXT(
-    VkCommandBuffer                             commandBuffer,
-    P_VkDebugMarkerMarkerInfoEXT                pMarkerInfo);
+    commandBuffer_:VkCommandBuffer;
+    pMarkerInfo_:P_VkDebugMarkerMarkerInfoEXT );
 {$ENDIF}
 
 
@@ -8225,57 +8225,57 @@ type VkPipelineRasterizationStateStreamCreateInfoEXT = record
        rasterizationStream :uint32_t;
      end;
 
-type PFN_vkCmdBindTransformFeedbackBuffersEXT = procedure(VkCommandBuffer commandBuffer, uint32_t firstBinding, uint32_t bindingCount, const P_VkBuffer pBuffers, const P_VkDeviceSize pOffsets, const P_VkDeviceSize pSizes);
-type PFN_vkCmdBeginTransformFeedbackEXT = procedure(VkCommandBuffer commandBuffer, uint32_t firstCounterBuffer, uint32_t counterBufferCount, const P_VkBuffer pCounterBuffers, const P_VkDeviceSize pCounterBufferOffsets);
-type PFN_vkCmdEndTransformFeedbackEXT = procedure(VkCommandBuffer commandBuffer, uint32_t firstCounterBuffer, uint32_t counterBufferCount, const P_VkBuffer pCounterBuffers, const P_VkDeviceSize pCounterBufferOffsets);
-type PFN_vkCmdBeginQueryIndexedEXT = procedure(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t query, VkQueryControlFlags flags, uint32_t index);
-type PFN_vkCmdEndQueryIndexedEXT = procedure(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t query, uint32_t index);
-type PFN_vkCmdDrawIndirectByteCountEXT = procedure(VkCommandBuffer commandBuffer, uint32_t instanceCount, uint32_t firstInstance, VkBuffer counterBuffer, VkDeviceSize counterBufferOffset, uint32_t counterOffset, uint32_t vertexStride);
+type PFN_vkCmdBindTransformFeedbackBuffersEXT = procedure( commandBuffer_:VkCommandBuffer; firstBinding_:uint32_t; bindingCount_:uint32_t; const pBuffers_:P_VkBuffer; const pOffsets_:P_VkDeviceSize; const pSizes_:P_VkDeviceSize );
+type PFN_vkCmdBeginTransformFeedbackEXT = procedure( commandBuffer_:VkCommandBuffer; firstCounterBuffer_:uint32_t; counterBufferCount_:uint32_t; const pCounterBuffers_:P_VkBuffer; const pCounterBufferOffsets_:P_VkDeviceSize );
+type PFN_vkCmdEndTransformFeedbackEXT = procedure( commandBuffer_:VkCommandBuffer; firstCounterBuffer_:uint32_t; counterBufferCount_:uint32_t; const pCounterBuffers_:P_VkBuffer; const pCounterBufferOffsets_:P_VkDeviceSize );
+type PFN_vkCmdBeginQueryIndexedEXT = procedure( commandBuffer_:VkCommandBuffer; queryPool_:VkQueryPool; query_:uint32_t; flags_:VkQueryControlFlags; index_:uint32_t );
+type PFN_vkCmdEndQueryIndexedEXT = procedure( commandBuffer_:VkCommandBuffer; queryPool_:VkQueryPool; query_:uint32_t; index_:uint32_t );
+type PFN_vkCmdDrawIndirectByteCountEXT = procedure( commandBuffer_:VkCommandBuffer; instanceCount_:uint32_t; firstInstance_:uint32_t; counterBuffer_:VkBuffer; counterBufferOffset_:VkDeviceSize; counterOffset_:uint32_t; vertexStride_:uint32_t );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdBindTransformFeedbackBuffersEXT(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    firstBinding,
-    uint32_t                                    bindingCount,
-    P_VkBuffer                                  pBuffers,
-    P_VkDeviceSize                              pOffsets,
-    P_VkDeviceSize                              pSizes);
+    commandBuffer_:VkCommandBuffer;
+    firstBinding_:uint32_t;
+    bindingCount_:uint32_t;
+    pBuffers_:P_VkBuffer;
+    pOffsets_:P_VkDeviceSize;
+    pSizes_:P_VkDeviceSize );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBeginTransformFeedbackEXT(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    firstCounterBuffer,
-    uint32_t                                    counterBufferCount,
-    P_VkBuffer                                  pCounterBuffers,
-    P_VkDeviceSize                              pCounterBufferOffsets);
+    commandBuffer_:VkCommandBuffer;
+    firstCounterBuffer_:uint32_t;
+    counterBufferCount_:uint32_t;
+    pCounterBuffers_:P_VkBuffer;
+    pCounterBufferOffsets_:P_VkDeviceSize );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdEndTransformFeedbackEXT(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    firstCounterBuffer,
-    uint32_t                                    counterBufferCount,
-    P_VkBuffer                                  pCounterBuffers,
-    P_VkDeviceSize                              pCounterBufferOffsets);
+    commandBuffer_:VkCommandBuffer;
+    firstCounterBuffer_:uint32_t;
+    counterBufferCount_:uint32_t;
+    pCounterBuffers_:P_VkBuffer;
+    pCounterBufferOffsets_:P_VkDeviceSize );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBeginQueryIndexedEXT(
-    VkCommandBuffer                             commandBuffer,
-    VkQueryPool                                 queryPool,
-    uint32_t                                    query,
-    VkQueryControlFlags                         flags,
-    uint32_t                                    index);
+    commandBuffer_:VkCommandBuffer;
+    queryPool_:VkQueryPool;
+    query_:uint32_t;
+    flags_:VkQueryControlFlags;
+    index_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdEndQueryIndexedEXT(
-    VkCommandBuffer                             commandBuffer,
-    VkQueryPool                                 queryPool,
-    uint32_t                                    query,
-    uint32_t                                    index);
+    commandBuffer_:VkCommandBuffer;
+    queryPool_:VkQueryPool;
+    query_:uint32_t;
+    index_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDrawIndirectByteCountEXT(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    instanceCount,
-    uint32_t                                    firstInstance,
-    VkBuffer                                    counterBuffer,
-    VkDeviceSize                                counterBufferOffset,
-    uint32_t                                    counterOffset,
-    uint32_t                                    vertexStride);
+    commandBuffer_:VkCommandBuffer;
+    instanceCount_:uint32_t;
+    firstInstance_:uint32_t;
+    counterBuffer_:VkBuffer;
+    counterBufferOffset_:VkDeviceSize;
+    counterOffset_:uint32_t;
+    vertexStride_:uint32_t );
 {$ENDIF}
 
 
@@ -8297,45 +8297,45 @@ type VkImageViewAddressPropertiesNVX = record
        size :VkDeviceSize;
      end;
 
-type PFN_vkGetImageViewHandleNVX = function(VkDevice device, const P_VkImageViewHandleInfoNVX pInfo) :uint32_t;
-type PFN_vkGetImageViewAddressNVX = function(VkDevice device, VkImageView imageView, P_VkImageViewAddressPropertiesNVX pProperties) :VkResult;
+type PFN_vkGetImageViewHandleNVX = function( device_:VkDevice; const pInfo_:P_VkImageViewHandleInfoNVX ) :uint32_t;
+type PFN_vkGetImageViewAddressNVX = function( device_:VkDevice; imageView_:VkImageView; pProperties_:P_VkImageViewAddressPropertiesNVX ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR uint32_t VKAPI_CALL vkGetImageViewHandleNVX(
-    VkDevice                                    device,
-    P_VkImageViewHandleInfoNVX                  pInfo);
+    device_:VkDevice;
+    pInfo_:P_VkImageViewHandleInfoNVX );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetImageViewAddressNVX(
-    VkDevice                                    device,
-    VkImageView                                 imageView,
-    P_VkImageViewAddressPropertiesNVX           pProperties);
+    device_:VkDevice;
+    imageView_:VkImageView;
+    pProperties_:P_VkImageViewAddressPropertiesNVX );
 {$ENDIF}
 
 
 const VK_AMD_draw_indirect_count = 1;
 const VK_AMD_DRAW_INDIRECT_COUNT_SPEC_VERSION = 2;
 const VK_AMD_DRAW_INDIRECT_COUNT_EXTENSION_NAME = 'VK_AMD_draw_indirect_count';
-type PFN_vkCmdDrawIndirectCountAMD = procedure(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride);
-type PFN_vkCmdDrawIndexedIndirectCountAMD = procedure(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride);
+type PFN_vkCmdDrawIndirectCountAMD = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; countBuffer_:VkBuffer; countBufferOffset_:VkDeviceSize; maxDrawCount_:uint32_t; stride_:uint32_t );
+type PFN_vkCmdDrawIndexedIndirectCountAMD = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; countBuffer_:VkBuffer; countBufferOffset_:VkDeviceSize; maxDrawCount_:uint32_t; stride_:uint32_t );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdDrawIndirectCountAMD(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    buffer,
-    VkDeviceSize                                offset,
-    VkBuffer                                    countBuffer,
-    VkDeviceSize                                countBufferOffset,
-    uint32_t                                    maxDrawCount,
-    uint32_t                                    stride);
+    commandBuffer_:VkCommandBuffer;
+    buffer_:VkBuffer;
+    offset_:VkDeviceSize;
+    countBuffer_:VkBuffer;
+    countBufferOffset_:VkDeviceSize;
+    maxDrawCount_:uint32_t;
+    stride_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDrawIndexedIndirectCountAMD(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    buffer,
-    VkDeviceSize                                offset,
-    VkBuffer                                    countBuffer,
-    VkDeviceSize                                countBufferOffset,
-    uint32_t                                    maxDrawCount,
-    uint32_t                                    stride);
+    commandBuffer_:VkCommandBuffer;
+    buffer_:VkBuffer;
+    offset_:VkDeviceSize;
+    countBuffer_:VkBuffer;
+    countBufferOffset_:VkDeviceSize;
+    maxDrawCount_:uint32_t;
+    stride_:uint32_t );
 {$ENDIF}
 
 
@@ -8393,16 +8393,16 @@ type VkShaderStatisticsInfoAMD = record
        computeWorkGroupSize :array [ 0..3-1 ] of uint32_t;
      end;
 
-type PFN_vkGetShaderInfoAMD = function(VkDevice device, VkPipeline pipeline, VkShaderStageFlagBits shaderStage, VkShaderInfoTypeAMD infoType, P_size_t pInfoSize, P_void pInfo) :VkResult;
+type PFN_vkGetShaderInfoAMD = function( device_:VkDevice; pipeline_:VkPipeline; shaderStage_:VkShaderStageFlagBits; infoType_:VkShaderInfoTypeAMD; pInfoSize_:P_size_t; pInfo_:P_void ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetShaderInfoAMD(
-    VkDevice                                    device,
-    VkPipeline                                  pipeline,
-    VkShaderStageFlagBits                       shaderStage,
-    VkShaderInfoTypeAMD                         infoType,
-    P_size_t                                    pInfoSize,
-    P_void                                      pInfo);
+    device_:VkDevice;
+    pipeline_:VkPipeline;
+    shaderStage_:VkShaderStageFlagBits;
+    infoType_:VkShaderInfoTypeAMD;
+    pInfoSize_:P_size_t;
+    pInfo_:P_void );
 {$ENDIF}
 
 
@@ -8454,18 +8454,18 @@ type VkExternalImageFormatPropertiesNV = record
        compatibleHandleTypes :VkExternalMemoryHandleTypeFlagsNV;
      end;
 
-type PFN_vkGetPhysicalDeviceExternalImageFormatPropertiesNV = function(VkPhysicalDevice physicalDevice, VkFormat format, VkImageType type, VkImageTiling tiling, VkImageUsageFlags usage, VkImageCreateFlags flags, VkExternalMemoryHandleTypeFlagsNV externalHandleType, P_VkExternalImageFormatPropertiesNV pExternalImageFormatProperties) :VkResult;
+type PFN_vkGetPhysicalDeviceExternalImageFormatPropertiesNV = function( physicalDevice_:VkPhysicalDevice; format_:VkFormat; type_:VkImageType; tiling_:VkImageTiling; usage_:VkImageUsageFlags; flags_:VkImageCreateFlags; externalHandleType_:VkExternalMemoryHandleTypeFlagsNV; pExternalImageFormatProperties_:P_VkExternalImageFormatPropertiesNV ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceExternalImageFormatPropertiesNV(
-    VkPhysicalDevice                            physicalDevice,
-    VkFormat                                    format,
-    VkImageType                                 type,
-    VkImageTiling                               tiling,
-    VkImageUsageFlags                           usage,
-    VkImageCreateFlags                          flags,
-    VkExternalMemoryHandleTypeFlagsNV           externalHandleType,
-    P_VkExternalImageFormatPropertiesNV         pExternalImageFormatProperties);
+    physicalDevice_:VkPhysicalDevice;
+    format_:VkFormat;
+    type_:VkImageType;
+    tiling_:VkImageTiling;
+    usage_:VkImageUsageFlags;
+    flags_:VkImageCreateFlags;
+    externalHandleType_:VkExternalMemoryHandleTypeFlagsNV;
+    pExternalImageFormatProperties_:P_VkExternalImageFormatPropertiesNV );
 {$ENDIF}
 
 
@@ -8572,16 +8572,16 @@ type VkCommandBufferInheritanceConditionalRenderingInfoEXT = record
        conditionalRenderingEnable :VkBool32;
      end;
 
-type PFN_vkCmdBeginConditionalRenderingEXT = procedure(VkCommandBuffer commandBuffer, const P_VkConditionalRenderingBeginInfoEXT pConditionalRenderingBegin);
-type PFN_vkCmdEndConditionalRenderingEXT = procedure(VkCommandBuffer commandBuffer);
+type PFN_vkCmdBeginConditionalRenderingEXT = procedure( commandBuffer_:VkCommandBuffer; const pConditionalRenderingBegin_:P_VkConditionalRenderingBeginInfoEXT );
+type PFN_vkCmdEndConditionalRenderingEXT = procedure( commandBuffer_:VkCommandBuffer );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdBeginConditionalRenderingEXT(
-    VkCommandBuffer                             commandBuffer,
-    P_VkConditionalRenderingBeginInfoEXT        pConditionalRenderingBegin);
+    commandBuffer_:VkCommandBuffer;
+    pConditionalRenderingBegin_:P_VkConditionalRenderingBeginInfoEXT );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdEndConditionalRenderingEXT(
-    VkCommandBuffer                             commandBuffer);
+    commandBuffer_:VkCommandBuffer );
 {$ENDIF}
 
 
@@ -8601,26 +8601,26 @@ type VkPipelineViewportWScalingStateCreateInfoNV = record
        pViewportWScalings :P_VkViewportWScalingNV;
      end;
 
-type PFN_vkCmdSetViewportWScalingNV = procedure(VkCommandBuffer commandBuffer, uint32_t firstViewport, uint32_t viewportCount, const P_VkViewportWScalingNV pViewportWScalings);
+type PFN_vkCmdSetViewportWScalingNV = procedure( commandBuffer_:VkCommandBuffer; firstViewport_:uint32_t; viewportCount_:uint32_t; const pViewportWScalings_:P_VkViewportWScalingNV );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdSetViewportWScalingNV(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    firstViewport,
-    uint32_t                                    viewportCount,
-    P_VkViewportWScalingNV                      pViewportWScalings);
+    commandBuffer_:VkCommandBuffer;
+    firstViewport_:uint32_t;
+    viewportCount_:uint32_t;
+    pViewportWScalings_:P_VkViewportWScalingNV );
 {$ENDIF}
 
 
 const VK_EXT_direct_mode_display = 1;
 const VK_EXT_DIRECT_MODE_DISPLAY_SPEC_VERSION = 1;
 const VK_EXT_DIRECT_MODE_DISPLAY_EXTENSION_NAME = 'VK_EXT_direct_mode_display';
-type PFN_vkReleaseDisplayEXT = function(VkPhysicalDevice physicalDevice, VkDisplayKHR display) :VkResult;
+type PFN_vkReleaseDisplayEXT = function( physicalDevice_:VkPhysicalDevice; display_:VkDisplayKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkReleaseDisplayEXT(
-    VkPhysicalDevice                            physicalDevice,
-    VkDisplayKHR                                display);
+    physicalDevice_:VkPhysicalDevice;
+    display_:VkDisplayKHR );
 {$ENDIF}
 
 
@@ -8650,13 +8650,13 @@ type VkSurfaceCapabilities2EXT = record
        supportedSurfaceCounters :VkSurfaceCounterFlagsEXT;
      end;
 
-type PFN_vkGetPhysicalDeviceSurfaceCapabilities2EXT = function(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, P_VkSurfaceCapabilities2EXT pSurfaceCapabilities) :VkResult;
+type PFN_vkGetPhysicalDeviceSurfaceCapabilities2EXT = function( physicalDevice_:VkPhysicalDevice; surface_:VkSurfaceKHR; pSurfaceCapabilities_:P_VkSurfaceCapabilities2EXT ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfaceCapabilities2EXT(
-    VkPhysicalDevice                            physicalDevice,
-    VkSurfaceKHR                                surface,
-    P_VkSurfaceCapabilities2EXT                 pSurfaceCapabilities);
+    physicalDevice_:VkPhysicalDevice;
+    surface_:VkSurfaceKHR;
+    pSurfaceCapabilities_:P_VkSurfaceCapabilities2EXT );
 {$ENDIF}
 
 
@@ -8704,35 +8704,35 @@ type VkSwapchainCounterCreateInfoEXT = record
        surfaceCounters :VkSurfaceCounterFlagsEXT;
      end;
 
-type PFN_vkDisplayPowerControlEXT = function(VkDevice device, VkDisplayKHR display, const P_VkDisplayPowerInfoEXT pDisplayPowerInfo) :VkResult;
-type PFN_vkRegisterDeviceEventEXT = function(VkDevice device, const P_VkDeviceEventInfoEXT pDeviceEventInfo, const P_VkAllocationCallbacks pAllocator, P_VkFence pFence) :VkResult;
-type PFN_vkRegisterDisplayEventEXT = function(VkDevice device, VkDisplayKHR display, const P_VkDisplayEventInfoEXT pDisplayEventInfo, const P_VkAllocationCallbacks pAllocator, P_VkFence pFence) :VkResult;
-type PFN_vkGetSwapchainCounterEXT = function(VkDevice device, VkSwapchainKHR swapchain, VkSurfaceCounterFlagBitsEXT counter, P_uint64_t pCounterValue) :VkResult;
+type PFN_vkDisplayPowerControlEXT = function( device_:VkDevice; display_:VkDisplayKHR; const pDisplayPowerInfo_:P_VkDisplayPowerInfoEXT ) :VkResult;
+type PFN_vkRegisterDeviceEventEXT = function( device_:VkDevice; const pDeviceEventInfo_:P_VkDeviceEventInfoEXT; const pAllocator_:P_VkAllocationCallbacks; pFence_:P_VkFence ) :VkResult;
+type PFN_vkRegisterDisplayEventEXT = function( device_:VkDevice; display_:VkDisplayKHR; const pDisplayEventInfo_:P_VkDisplayEventInfoEXT; const pAllocator_:P_VkAllocationCallbacks; pFence_:P_VkFence ) :VkResult;
+type PFN_vkGetSwapchainCounterEXT = function( device_:VkDevice; swapchain_:VkSwapchainKHR; counter_:VkSurfaceCounterFlagBitsEXT; pCounterValue_:P_uint64_t ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkDisplayPowerControlEXT(
-    VkDevice                                    device,
-    VkDisplayKHR                                display,
-    P_VkDisplayPowerInfoEXT                     pDisplayPowerInfo);
+    device_:VkDevice;
+    display_:VkDisplayKHR;
+    pDisplayPowerInfo_:P_VkDisplayPowerInfoEXT );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkRegisterDeviceEventEXT(
-    VkDevice                                    device,
-    P_VkDeviceEventInfoEXT                      pDeviceEventInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkFence                                   pFence);
+    device_:VkDevice;
+    pDeviceEventInfo_:P_VkDeviceEventInfoEXT;
+    pAllocator_:P_VkAllocationCallbacks;
+    pFence_:P_VkFence );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkRegisterDisplayEventEXT(
-    VkDevice                                    device,
-    VkDisplayKHR                                display,
-    P_VkDisplayEventInfoEXT                     pDisplayEventInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkFence                                   pFence);
+    device_:VkDevice;
+    display_:VkDisplayKHR;
+    pDisplayEventInfo_:P_VkDisplayEventInfoEXT;
+    pAllocator_:P_VkAllocationCallbacks;
+    pFence_:P_VkFence );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetSwapchainCounterEXT(
-    VkDevice                                    device,
-    VkSwapchainKHR                              swapchain,
-    VkSurfaceCounterFlagBitsEXT                 counter,
-    P_uint64_t                                  pCounterValue);
+    device_:VkDevice;
+    swapchain_:VkSwapchainKHR;
+    counter_:VkSurfaceCounterFlagBitsEXT;
+    pCounterValue_:P_uint64_t );
 {$ENDIF}
 
 
@@ -8763,20 +8763,20 @@ type VkPresentTimesInfoGOOGLE = record
        pTimes :P_VkPresentTimeGOOGLE;
      end;
 
-type PFN_vkGetRefreshCycleDurationGOOGLE = function(VkDevice device, VkSwapchainKHR swapchain, P_VkRefreshCycleDurationGOOGLE pDisplayTimingProperties) :VkResult;
-type PFN_vkGetPastPresentationTimingGOOGLE = function(VkDevice device, VkSwapchainKHR swapchain, P_uint32_t pPresentationTimingCount, P_VkPastPresentationTimingGOOGLE pPresentationTimings) :VkResult;
+type PFN_vkGetRefreshCycleDurationGOOGLE = function( device_:VkDevice; swapchain_:VkSwapchainKHR; pDisplayTimingProperties_:P_VkRefreshCycleDurationGOOGLE ) :VkResult;
+type PFN_vkGetPastPresentationTimingGOOGLE = function( device_:VkDevice; swapchain_:VkSwapchainKHR; pPresentationTimingCount_:P_uint32_t; pPresentationTimings_:P_VkPastPresentationTimingGOOGLE ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetRefreshCycleDurationGOOGLE(
-    VkDevice                                    device,
-    VkSwapchainKHR                              swapchain,
-    P_VkRefreshCycleDurationGOOGLE              pDisplayTimingProperties);
+    device_:VkDevice;
+    swapchain_:VkSwapchainKHR;
+    pDisplayTimingProperties_:P_VkRefreshCycleDurationGOOGLE );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPastPresentationTimingGOOGLE(
-    VkDevice                                    device,
-    VkSwapchainKHR                              swapchain,
-    P_uint32_t                                  pPresentationTimingCount,
-    P_VkPastPresentationTimingGOOGLE            pPresentationTimings);
+    device_:VkDevice;
+    swapchain_:VkSwapchainKHR;
+    pPresentationTimingCount_:P_uint32_t;
+    pPresentationTimings_:P_VkPastPresentationTimingGOOGLE );
 {$ENDIF}
 
 
@@ -8864,14 +8864,14 @@ type VkPipelineDiscardRectangleStateCreateInfoEXT = record
        pDiscardRectangles :P_VkRect2D;
      end;
 
-type PFN_vkCmdSetDiscardRectangleEXT = procedure(VkCommandBuffer commandBuffer, uint32_t firstDiscardRectangle, uint32_t discardRectangleCount, const P_VkRect2D pDiscardRectangles);
+type PFN_vkCmdSetDiscardRectangleEXT = procedure( commandBuffer_:VkCommandBuffer; firstDiscardRectangle_:uint32_t; discardRectangleCount_:uint32_t; const pDiscardRectangles_:P_VkRect2D );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdSetDiscardRectangleEXT(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    firstDiscardRectangle,
-    uint32_t                                    discardRectangleCount,
-    P_VkRect2D                                  pDiscardRectangles);
+    commandBuffer_:VkCommandBuffer;
+    firstDiscardRectangle_:uint32_t;
+    discardRectangleCount_:uint32_t;
+    pDiscardRectangles_:P_VkRect2D );
 {$ENDIF}
 
 
@@ -8955,14 +8955,14 @@ type VkHdrMetadataEXT = record
        maxFrameAverageLightLevel :float;
      end;
 
-type PFN_vkSetHdrMetadataEXT = procedure(VkDevice device, uint32_t swapchainCount, const P_VkSwapchainKHR pSwapchains, const P_VkHdrMetadataEXT pMetadata);
+type PFN_vkSetHdrMetadataEXT = procedure( device_:VkDevice; swapchainCount_:uint32_t; const pSwapchains_:P_VkSwapchainKHR; const pMetadata_:P_VkHdrMetadataEXT );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkSetHdrMetadataEXT(
-    VkDevice                                    device,
-    uint32_t                                    swapchainCount,
-    P_VkSwapchainKHR                            pSwapchains,
-    P_VkHdrMetadataEXT                          pMetadata);
+    device_:VkDevice;
+    swapchainCount_:uint32_t;
+    pSwapchains_:P_VkSwapchainKHR;
+    pMetadata_:P_VkHdrMetadataEXT );
 {$ENDIF}
 
 
@@ -9031,10 +9031,10 @@ type VkDebugUtilsMessengerCallbackDataEXT = record
      end;
 
 type PFN_vkDebugUtilsMessengerCallbackEXT = function(
-    VkDebugUtilsMessageSeverityFlagBitsEXT           messageSeverity,
-    VkDebugUtilsMessageTypeFlagsEXT                  messageTypes,
-    P_VkDebugUtilsMessengerCallbackDataEXT           pCallbackData,
-    P_void                                           pUserData) :VkBool32;
+    messageSeverity_:VkDebugUtilsMessageSeverityFlagBitsEXT;
+    messageTypes_:VkDebugUtilsMessageTypeFlagsEXT;
+    pCallbackData_:P_VkDebugUtilsMessengerCallbackDataEXT;
+    pUserData_:P_void ) :VkBool32;
 
 type VkDebugUtilsMessengerCreateInfoEXT = record
        sType :VkStructureType;
@@ -9056,65 +9056,65 @@ type VkDebugUtilsObjectTagInfoEXT = record
        pTag :P_void;
      end;
 
-type PFN_vkSetDebugUtilsObjectNameEXT = function(VkDevice device, const P_VkDebugUtilsObjectNameInfoEXT pNameInfo) :VkResult;
-type PFN_vkSetDebugUtilsObjectTagEXT = function(VkDevice device, const P_VkDebugUtilsObjectTagInfoEXT pTagInfo) :VkResult;
-type PFN_vkQueueBeginDebugUtilsLabelEXT = procedure(VkQueue queue, const P_VkDebugUtilsLabelEXT pLabelInfo);
-type PFN_vkQueueEndDebugUtilsLabelEXT = procedure(VkQueue queue);
-type PFN_vkQueueInsertDebugUtilsLabelEXT = procedure(VkQueue queue, const P_VkDebugUtilsLabelEXT pLabelInfo);
-type PFN_vkCmdBeginDebugUtilsLabelEXT = procedure(VkCommandBuffer commandBuffer, const P_VkDebugUtilsLabelEXT pLabelInfo);
-type PFN_vkCmdEndDebugUtilsLabelEXT = procedure(VkCommandBuffer commandBuffer);
-type PFN_vkCmdInsertDebugUtilsLabelEXT = procedure(VkCommandBuffer commandBuffer, const P_VkDebugUtilsLabelEXT pLabelInfo);
-type PFN_vkCreateDebugUtilsMessengerEXT = function(VkInstance instance, const P_VkDebugUtilsMessengerCreateInfoEXT pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkDebugUtilsMessengerEXT pMessenger) :VkResult;
-type PFN_vkDestroyDebugUtilsMessengerEXT = procedure(VkInstance instance, VkDebugUtilsMessengerEXT messenger, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkSubmitDebugUtilsMessageEXT = procedure(VkInstance instance, VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageTypes, const P_VkDebugUtilsMessengerCallbackDataEXT pCallbackData);
+type PFN_vkSetDebugUtilsObjectNameEXT = function( device_:VkDevice; const pNameInfo_:P_VkDebugUtilsObjectNameInfoEXT ) :VkResult;
+type PFN_vkSetDebugUtilsObjectTagEXT = function( device_:VkDevice; const pTagInfo_:P_VkDebugUtilsObjectTagInfoEXT ) :VkResult;
+type PFN_vkQueueBeginDebugUtilsLabelEXT = procedure( queue_:VkQueue; const pLabelInfo_:P_VkDebugUtilsLabelEXT );
+type PFN_vkQueueEndDebugUtilsLabelEXT = procedure( queue_:VkQueue );
+type PFN_vkQueueInsertDebugUtilsLabelEXT = procedure( queue_:VkQueue; const pLabelInfo_:P_VkDebugUtilsLabelEXT );
+type PFN_vkCmdBeginDebugUtilsLabelEXT = procedure( commandBuffer_:VkCommandBuffer; const pLabelInfo_:P_VkDebugUtilsLabelEXT );
+type PFN_vkCmdEndDebugUtilsLabelEXT = procedure( commandBuffer_:VkCommandBuffer );
+type PFN_vkCmdInsertDebugUtilsLabelEXT = procedure( commandBuffer_:VkCommandBuffer; const pLabelInfo_:P_VkDebugUtilsLabelEXT );
+type PFN_vkCreateDebugUtilsMessengerEXT = function( instance_:VkInstance; const pCreateInfo_:P_VkDebugUtilsMessengerCreateInfoEXT; const pAllocator_:P_VkAllocationCallbacks; pMessenger_:P_VkDebugUtilsMessengerEXT ) :VkResult;
+type PFN_vkDestroyDebugUtilsMessengerEXT = procedure( instance_:VkInstance; messenger_:VkDebugUtilsMessengerEXT; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkSubmitDebugUtilsMessageEXT = procedure( instance_:VkInstance; messageSeverity_:VkDebugUtilsMessageSeverityFlagBitsEXT; messageTypes_:VkDebugUtilsMessageTypeFlagsEXT; const pCallbackData_:P_VkDebugUtilsMessengerCallbackDataEXT );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkSetDebugUtilsObjectNameEXT(
-    VkDevice                                    device,
-    P_VkDebugUtilsObjectNameInfoEXT             pNameInfo);
+    device_:VkDevice;
+    pNameInfo_:P_VkDebugUtilsObjectNameInfoEXT );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkSetDebugUtilsObjectTagEXT(
-    VkDevice                                    device,
-    P_VkDebugUtilsObjectTagInfoEXT              pTagInfo);
+    device_:VkDevice;
+    pTagInfo_:P_VkDebugUtilsObjectTagInfoEXT );
 
 VKAPI_ATTR void VKAPI_CALL vkQueueBeginDebugUtilsLabelEXT(
-    VkQueue                                     queue,
-    P_VkDebugUtilsLabelEXT                      pLabelInfo);
+    queue_:VkQueue;
+    pLabelInfo_:P_VkDebugUtilsLabelEXT );
 
 VKAPI_ATTR void VKAPI_CALL vkQueueEndDebugUtilsLabelEXT(
-    VkQueue                                     queue);
+    queue_:VkQueue );
 
 VKAPI_ATTR void VKAPI_CALL vkQueueInsertDebugUtilsLabelEXT(
-    VkQueue                                     queue,
-    P_VkDebugUtilsLabelEXT                      pLabelInfo);
+    queue_:VkQueue;
+    pLabelInfo_:P_VkDebugUtilsLabelEXT );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBeginDebugUtilsLabelEXT(
-    VkCommandBuffer                             commandBuffer,
-    P_VkDebugUtilsLabelEXT                      pLabelInfo);
+    commandBuffer_:VkCommandBuffer;
+    pLabelInfo_:P_VkDebugUtilsLabelEXT );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdEndDebugUtilsLabelEXT(
-    VkCommandBuffer                             commandBuffer);
+    commandBuffer_:VkCommandBuffer );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdInsertDebugUtilsLabelEXT(
-    VkCommandBuffer                             commandBuffer,
-    P_VkDebugUtilsLabelEXT                      pLabelInfo);
+    commandBuffer_:VkCommandBuffer;
+    pLabelInfo_:P_VkDebugUtilsLabelEXT );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateDebugUtilsMessengerEXT(
-    VkInstance                                  instance,
-    P_VkDebugUtilsMessengerCreateInfoEXT        pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkDebugUtilsMessengerEXT                  pMessenger);
+    instance_:VkInstance;
+    pCreateInfo_:P_VkDebugUtilsMessengerCreateInfoEXT;
+    pAllocator_:P_VkAllocationCallbacks;
+    pMessenger_:P_VkDebugUtilsMessengerEXT );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyDebugUtilsMessengerEXT(
-    VkInstance                                  instance,
-    VkDebugUtilsMessengerEXT                    messenger,
-    P_VkAllocationCallbacks                     pAllocator);
+    instance_:VkInstance;
+    messenger_:VkDebugUtilsMessengerEXT;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR void VKAPI_CALL vkSubmitDebugUtilsMessageEXT(
-    VkInstance                                  instance,
-    VkDebugUtilsMessageSeverityFlagBitsEXT      messageSeverity,
-    VkDebugUtilsMessageTypeFlagsEXT             messageTypes,
-    P_VkDebugUtilsMessengerCallbackDataEXT      pCallbackData);
+    instance_:VkInstance;
+    messageSeverity_:VkDebugUtilsMessageSeverityFlagBitsEXT;
+    messageTypes_:VkDebugUtilsMessageTypeFlagsEXT;
+    pCallbackData_:P_VkDebugUtilsMessengerCallbackDataEXT );
 {$ENDIF}
 
 
@@ -9243,18 +9243,18 @@ type VkMultisamplePropertiesEXT = record
        maxSampleLocationGridSize :VkExtent2D;
      end;
 
-type PFN_vkCmdSetSampleLocationsEXT = procedure(VkCommandBuffer commandBuffer, const P_VkSampleLocationsInfoEXT pSampleLocationsInfo);
-type PFN_vkGetPhysicalDeviceMultisamplePropertiesEXT = procedure(VkPhysicalDevice physicalDevice, VkSampleCountFlagBits samples, P_VkMultisamplePropertiesEXT pMultisampleProperties);
+type PFN_vkCmdSetSampleLocationsEXT = procedure( commandBuffer_:VkCommandBuffer; const pSampleLocationsInfo_:P_VkSampleLocationsInfoEXT );
+type PFN_vkGetPhysicalDeviceMultisamplePropertiesEXT = procedure( physicalDevice_:VkPhysicalDevice; samples_:VkSampleCountFlagBits; pMultisampleProperties_:P_VkMultisamplePropertiesEXT );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdSetSampleLocationsEXT(
-    VkCommandBuffer                             commandBuffer,
-    P_VkSampleLocationsInfoEXT                  pSampleLocationsInfo);
+    commandBuffer_:VkCommandBuffer;
+    pSampleLocationsInfo_:P_VkSampleLocationsInfoEXT );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceMultisamplePropertiesEXT(
-    VkPhysicalDevice                            physicalDevice,
-    VkSampleCountFlagBits                       samples,
-    P_VkMultisamplePropertiesEXT                pMultisampleProperties);
+    physicalDevice_:VkPhysicalDevice;
+    samples_:VkSampleCountFlagBits;
+    pMultisampleProperties_:P_VkMultisamplePropertiesEXT );
 {$ENDIF}
 
 
@@ -9407,13 +9407,13 @@ type VkImageDrmFormatModifierPropertiesEXT = record
        drmFormatModifier :uint64_t;
      end;
 
-type PFN_vkGetImageDrmFormatModifierPropertiesEXT = function(VkDevice device, VkImage image, P_VkImageDrmFormatModifierPropertiesEXT pProperties) :VkResult;
+type PFN_vkGetImageDrmFormatModifierPropertiesEXT = function( device_:VkDevice; image_:VkImage; pProperties_:P_VkImageDrmFormatModifierPropertiesEXT ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetImageDrmFormatModifierPropertiesEXT(
-    VkDevice                                    device,
-    VkImage                                     image,
-    P_VkImageDrmFormatModifierPropertiesEXT     pProperties);
+    device_:VkDevice;
+    image_:VkImage;
+    pProperties_:P_VkImageDrmFormatModifierPropertiesEXT );
 {$ENDIF}
 
 
@@ -9441,34 +9441,34 @@ type VkShaderModuleValidationCacheCreateInfoEXT = record
        validationCache :VkValidationCacheEXT;
      end;
 
-type PFN_vkCreateValidationCacheEXT = function(VkDevice device, const P_VkValidationCacheCreateInfoEXT pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkValidationCacheEXT pValidationCache) :VkResult;
-type PFN_vkDestroyValidationCacheEXT = procedure(VkDevice device, VkValidationCacheEXT validationCache, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkMergeValidationCachesEXT = function(VkDevice device, VkValidationCacheEXT dstCache, uint32_t srcCacheCount, const P_VkValidationCacheEXT pSrcCaches) :VkResult;
-type PFN_vkGetValidationCacheDataEXT = function(VkDevice device, VkValidationCacheEXT validationCache, P_size_t pDataSize, P_void pData) :VkResult;
+type PFN_vkCreateValidationCacheEXT = function( device_:VkDevice; const pCreateInfo_:P_VkValidationCacheCreateInfoEXT; const pAllocator_:P_VkAllocationCallbacks; pValidationCache_:P_VkValidationCacheEXT ) :VkResult;
+type PFN_vkDestroyValidationCacheEXT = procedure( device_:VkDevice; validationCache_:VkValidationCacheEXT; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkMergeValidationCachesEXT = function( device_:VkDevice; dstCache_:VkValidationCacheEXT; srcCacheCount_:uint32_t; const pSrcCaches_:P_VkValidationCacheEXT ) :VkResult;
+type PFN_vkGetValidationCacheDataEXT = function( device_:VkDevice; validationCache_:VkValidationCacheEXT; pDataSize_:P_size_t; pData_:P_void ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateValidationCacheEXT(
-    VkDevice                                    device,
-    P_VkValidationCacheCreateInfoEXT            pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkValidationCacheEXT                      pValidationCache);
+    device_:VkDevice;
+    pCreateInfo_:P_VkValidationCacheCreateInfoEXT;
+    pAllocator_:P_VkAllocationCallbacks;
+    pValidationCache_:P_VkValidationCacheEXT );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyValidationCacheEXT(
-    VkDevice                                    device,
-    VkValidationCacheEXT                        validationCache,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    validationCache_:VkValidationCacheEXT;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkMergeValidationCachesEXT(
-    VkDevice                                    device,
-    VkValidationCacheEXT                        dstCache,
-    uint32_t                                    srcCacheCount,
-    P_VkValidationCacheEXT                      pSrcCaches);
+    device_:VkDevice;
+    dstCache_:VkValidationCacheEXT;
+    srcCacheCount_:uint32_t;
+    pSrcCaches_:P_VkValidationCacheEXT );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetValidationCacheDataEXT(
-    VkDevice                                    device,
-    VkValidationCacheEXT                        validationCache,
-    P_size_t                                    pDataSize,
-    P_void                                      pData);
+    device_:VkDevice;
+    validationCache_:VkValidationCacheEXT;
+    pDataSize_:P_size_t;
+    pData_:P_void );
 {$ENDIF}
 
 
@@ -9572,27 +9572,27 @@ type VkPipelineViewportCoarseSampleOrderStateCreateInfoNV = record
        pCustomSampleOrders :P_VkCoarseSampleOrderCustomNV;
      end;
 
-type PFN_vkCmdBindShadingRateImageNV = procedure(VkCommandBuffer commandBuffer, VkImageView imageView, VkImageLayout imageLayout);
-type PFN_vkCmdSetViewportShadingRatePaletteNV = procedure(VkCommandBuffer commandBuffer, uint32_t firstViewport, uint32_t viewportCount, const P_VkShadingRatePaletteNV pShadingRatePalettes);
-type PFN_vkCmdSetCoarseSampleOrderNV = procedure(VkCommandBuffer commandBuffer, VkCoarseSampleOrderTypeNV sampleOrderType, uint32_t customSampleOrderCount, const P_VkCoarseSampleOrderCustomNV pCustomSampleOrders);
+type PFN_vkCmdBindShadingRateImageNV = procedure( commandBuffer_:VkCommandBuffer; imageView_:VkImageView; imageLayout_:VkImageLayout );
+type PFN_vkCmdSetViewportShadingRatePaletteNV = procedure( commandBuffer_:VkCommandBuffer; firstViewport_:uint32_t; viewportCount_:uint32_t; const pShadingRatePalettes_:P_VkShadingRatePaletteNV );
+type PFN_vkCmdSetCoarseSampleOrderNV = procedure( commandBuffer_:VkCommandBuffer; sampleOrderType_:VkCoarseSampleOrderTypeNV; customSampleOrderCount_:uint32_t; const pCustomSampleOrders_:P_VkCoarseSampleOrderCustomNV );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdBindShadingRateImageNV(
-    VkCommandBuffer                             commandBuffer,
-    VkImageView                                 imageView,
-    VkImageLayout                               imageLayout);
+    commandBuffer_:VkCommandBuffer;
+    imageView_:VkImageView;
+    imageLayout_:VkImageLayout );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetViewportShadingRatePaletteNV(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    firstViewport,
-    uint32_t                                    viewportCount,
-    P_VkShadingRatePaletteNV                    pShadingRatePalettes);
+    commandBuffer_:VkCommandBuffer;
+    firstViewport_:uint32_t;
+    viewportCount_:uint32_t;
+    pShadingRatePalettes_:P_VkShadingRatePaletteNV );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetCoarseSampleOrderNV(
-    VkCommandBuffer                             commandBuffer,
-    VkCoarseSampleOrderTypeNV                   sampleOrderType,
-    uint32_t                                    customSampleOrderCount,
-    P_VkCoarseSampleOrderCustomNV               pCustomSampleOrders);
+    commandBuffer_:VkCommandBuffer;
+    sampleOrderType_:VkCoarseSampleOrderTypeNV;
+    customSampleOrderCount_:uint32_t;
+    pCustomSampleOrders_:P_VkCoarseSampleOrderCustomNV );
 {$ENDIF}
 
 
@@ -9821,7 +9821,7 @@ type VkPhysicalDeviceRayTracingPropertiesNV = record
      end;
 
 type VkTransformMatrixKHR = record
-    float    matrix[3][4];
+       matrix_:array [ 0..3-1, 0..4-1 ] of float;
      end;
 
 type VkTransformMatrixNV = VkTransformMatrixKHR;
@@ -9848,118 +9848,118 @@ type VkAccelerationStructureInstanceKHR = record
 
 type VkAccelerationStructureInstanceNV = VkAccelerationStructureInstanceKHR;
 
-type PFN_vkCreateAccelerationStructureNV = function(VkDevice device, const P_VkAccelerationStructureCreateInfoNV pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkAccelerationStructureNV pAccelerationStructure) :VkResult;
-type PFN_vkDestroyAccelerationStructureNV = procedure(VkDevice device, VkAccelerationStructureNV accelerationStructure, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkGetAccelerationStructureMemoryRequirementsNV = procedure(VkDevice device, const P_VkAccelerationStructureMemoryRequirementsInfoNV pInfo, P_VkMemoryRequirements2KHR pMemoryRequirements);
-type PFN_vkBindAccelerationStructureMemoryNV = function(VkDevice device, uint32_t bindInfoCount, const P_VkBindAccelerationStructureMemoryInfoNV pBindInfos) :VkResult;
-type PFN_vkCmdBuildAccelerationStructureNV = procedure(VkCommandBuffer commandBuffer, const P_VkAccelerationStructureInfoNV pInfo, VkBuffer instanceData, VkDeviceSize instanceOffset, VkBool32 update, VkAccelerationStructureNV dst, VkAccelerationStructureNV src, VkBuffer scratch, VkDeviceSize scratchOffset);
-type PFN_vkCmdCopyAccelerationStructureNV = procedure(VkCommandBuffer commandBuffer, VkAccelerationStructureNV dst, VkAccelerationStructureNV src, VkCopyAccelerationStructureModeKHR mode);
-type PFN_vkCmdTraceRaysNV = procedure(VkCommandBuffer commandBuffer, VkBuffer raygenShaderBindingTableBuffer, VkDeviceSize raygenShaderBindingOffset, VkBuffer missShaderBindingTableBuffer, VkDeviceSize missShaderBindingOffset, VkDeviceSize missShaderBindingStride, VkBuffer hitShaderBindingTableBuffer, VkDeviceSize hitShaderBindingOffset, VkDeviceSize hitShaderBindingStride, VkBuffer callableShaderBindingTableBuffer, VkDeviceSize callableShaderBindingOffset, VkDeviceSize callableShaderBindingStride, uint32_t width, uint32_t height, uint32_t depth);
-type PFN_vkCreateRayTracingPipelinesNV = function(VkDevice device, VkPipelineCache pipelineCache, uint32_t createInfoCount, const P_VkRayTracingPipelineCreateInfoNV pCreateInfos, const P_VkAllocationCallbacks pAllocator, P_VkPipeline pPipelines) :VkResult;
-type PFN_vkGetRayTracingShaderGroupHandlesKHR = function(VkDevice device, VkPipeline pipeline, uint32_t firstGroup, uint32_t groupCount, size_t dataSize, P_void pData) :VkResult;
-type PFN_vkGetRayTracingShaderGroupHandlesNV = function(VkDevice device, VkPipeline pipeline, uint32_t firstGroup, uint32_t groupCount, size_t dataSize, P_void pData) :VkResult;
-type PFN_vkGetAccelerationStructureHandleNV = function(VkDevice device, VkAccelerationStructureNV accelerationStructure, size_t dataSize, P_void pData) :VkResult;
-type PFN_vkCmdWriteAccelerationStructuresPropertiesNV = procedure(VkCommandBuffer commandBuffer, uint32_t accelerationStructureCount, const P_VkAccelerationStructureNV pAccelerationStructures, VkQueryType queryType, VkQueryPool queryPool, uint32_t firstQuery);
-type PFN_vkCompileDeferredNV = function(VkDevice device, VkPipeline pipeline, uint32_t shader) :VkResult;
+type PFN_vkCreateAccelerationStructureNV = function( device_:VkDevice; const pCreateInfo_:P_VkAccelerationStructureCreateInfoNV; const pAllocator_:P_VkAllocationCallbacks; pAccelerationStructure_:P_VkAccelerationStructureNV ) :VkResult;
+type PFN_vkDestroyAccelerationStructureNV = procedure( device_:VkDevice; accelerationStructure_:VkAccelerationStructureNV; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkGetAccelerationStructureMemoryRequirementsNV = procedure( device_:VkDevice; const pInfo_:P_VkAccelerationStructureMemoryRequirementsInfoNV; pMemoryRequirements_:P_VkMemoryRequirements2KHR );
+type PFN_vkBindAccelerationStructureMemoryNV = function( device_:VkDevice; bindInfoCount_:uint32_t; const pBindInfos_:P_VkBindAccelerationStructureMemoryInfoNV ) :VkResult;
+type PFN_vkCmdBuildAccelerationStructureNV = procedure( commandBuffer_:VkCommandBuffer; const pInfo_:P_VkAccelerationStructureInfoNV; instanceData_:VkBuffer; instanceOffset_:VkDeviceSize; update_:VkBool32; dst_:VkAccelerationStructureNV; src_:VkAccelerationStructureNV; scratch_:VkBuffer; scratchOffset_:VkDeviceSize );
+type PFN_vkCmdCopyAccelerationStructureNV = procedure( commandBuffer_:VkCommandBuffer; dst_:VkAccelerationStructureNV; src_:VkAccelerationStructureNV; mode_:VkCopyAccelerationStructureModeKHR );
+type PFN_vkCmdTraceRaysNV = procedure( commandBuffer_:VkCommandBuffer; raygenShaderBindingTableBuffer_:VkBuffer; raygenShaderBindingOffset_:VkDeviceSize; missShaderBindingTableBuffer_:VkBuffer; missShaderBindingOffset_:VkDeviceSize; missShaderBindingStride_:VkDeviceSize; hitShaderBindingTableBuffer_:VkBuffer; hitShaderBindingOffset_:VkDeviceSize; hitShaderBindingStride_:VkDeviceSize; callableShaderBindingTableBuffer_:VkBuffer; callableShaderBindingOffset_:VkDeviceSize; callableShaderBindingStride_:VkDeviceSize; width_:uint32_t; height_:uint32_t; depth_:uint32_t );
+type PFN_vkCreateRayTracingPipelinesNV = function( device_:VkDevice; pipelineCache_:VkPipelineCache; createInfoCount_:uint32_t; const pCreateInfos_:P_VkRayTracingPipelineCreateInfoNV; const pAllocator_:P_VkAllocationCallbacks; pPipelines_:P_VkPipeline ) :VkResult;
+type PFN_vkGetRayTracingShaderGroupHandlesKHR = function( device_:VkDevice; pipeline_:VkPipeline; firstGroup_:uint32_t; groupCount_:uint32_t; dataSize_:size_t; pData_:P_void ) :VkResult;
+type PFN_vkGetRayTracingShaderGroupHandlesNV = function( device_:VkDevice; pipeline_:VkPipeline; firstGroup_:uint32_t; groupCount_:uint32_t; dataSize_:size_t; pData_:P_void ) :VkResult;
+type PFN_vkGetAccelerationStructureHandleNV = function( device_:VkDevice; accelerationStructure_:VkAccelerationStructureNV; dataSize_:size_t; pData_:P_void ) :VkResult;
+type PFN_vkCmdWriteAccelerationStructuresPropertiesNV = procedure( commandBuffer_:VkCommandBuffer; accelerationStructureCount_:uint32_t; const pAccelerationStructures_:P_VkAccelerationStructureNV; queryType_:VkQueryType; queryPool_:VkQueryPool; firstQuery_:uint32_t );
+type PFN_vkCompileDeferredNV = function( device_:VkDevice; pipeline_:VkPipeline; shader_:uint32_t ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateAccelerationStructureNV(
-    VkDevice                                    device,
-    P_VkAccelerationStructureCreateInfoNV       pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkAccelerationStructureNV                 pAccelerationStructure);
+    device_:VkDevice;
+    pCreateInfo_:P_VkAccelerationStructureCreateInfoNV;
+    pAllocator_:P_VkAllocationCallbacks;
+    pAccelerationStructure_:P_VkAccelerationStructureNV );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyAccelerationStructureNV(
-    VkDevice                                    device,
-    VkAccelerationStructureNV                   accelerationStructure,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    accelerationStructure_:VkAccelerationStructureNV;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR void VKAPI_CALL vkGetAccelerationStructureMemoryRequirementsNV(
-    VkDevice                                    device,
-    P_VkAccelerationStructureMemoryRequirementsInfoNV      pInfo,
-    P_VkMemoryRequirements2KHR                  pMemoryRequirements);
+    device_:VkDevice;
+    pInfo_:P_VkAccelerationStructureMemoryRequirementsInfoNV;
+    pMemoryRequirements_:P_VkMemoryRequirements2KHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkBindAccelerationStructureMemoryNV(
-    VkDevice                                    device,
-    uint32_t                                    bindInfoCount,
-    P_VkBindAccelerationStructureMemoryInfoNV      pBindInfos);
+    device_:VkDevice;
+    bindInfoCount_:uint32_t;
+    pBindInfos_:P_VkBindAccelerationStructureMemoryInfoNV );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBuildAccelerationStructureNV(
-    VkCommandBuffer                             commandBuffer,
-    P_VkAccelerationStructureInfoNV             pInfo,
-    VkBuffer                                    instanceData,
-    VkDeviceSize                                instanceOffset,
-    VkBool32                                    update,
-    VkAccelerationStructureNV                   dst,
-    VkAccelerationStructureNV                   src,
-    VkBuffer                                    scratch,
-    VkDeviceSize                                scratchOffset);
+    commandBuffer_:VkCommandBuffer;
+    pInfo_:P_VkAccelerationStructureInfoNV;
+    instanceData_:VkBuffer;
+    instanceOffset_:VkDeviceSize;
+    update_:VkBool32;
+    dst_:VkAccelerationStructureNV;
+    src_:VkAccelerationStructureNV;
+    scratch_:VkBuffer;
+    scratchOffset_:VkDeviceSize );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdCopyAccelerationStructureNV(
-    VkCommandBuffer                             commandBuffer,
-    VkAccelerationStructureNV                   dst,
-    VkAccelerationStructureNV                   src,
-    VkCopyAccelerationStructureModeKHR          mode);
+    commandBuffer_:VkCommandBuffer;
+    dst_:VkAccelerationStructureNV;
+    src_:VkAccelerationStructureNV;
+    mode_:VkCopyAccelerationStructureModeKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdTraceRaysNV(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    raygenShaderBindingTableBuffer,
-    VkDeviceSize                                raygenShaderBindingOffset,
-    VkBuffer                                    missShaderBindingTableBuffer,
-    VkDeviceSize                                missShaderBindingOffset,
-    VkDeviceSize                                missShaderBindingStride,
-    VkBuffer                                    hitShaderBindingTableBuffer,
-    VkDeviceSize                                hitShaderBindingOffset,
-    VkDeviceSize                                hitShaderBindingStride,
-    VkBuffer                                    callableShaderBindingTableBuffer,
-    VkDeviceSize                                callableShaderBindingOffset,
-    VkDeviceSize                                callableShaderBindingStride,
-    uint32_t                                    width,
-    uint32_t                                    height,
-    uint32_t                                    depth);
+    commandBuffer_:VkCommandBuffer;
+    raygenShaderBindingTableBuffer_:VkBuffer;
+    raygenShaderBindingOffset_:VkDeviceSize;
+    missShaderBindingTableBuffer_:VkBuffer;
+    missShaderBindingOffset_:VkDeviceSize;
+    missShaderBindingStride_:VkDeviceSize;
+    hitShaderBindingTableBuffer_:VkBuffer;
+    hitShaderBindingOffset_:VkDeviceSize;
+    hitShaderBindingStride_:VkDeviceSize;
+    callableShaderBindingTableBuffer_:VkBuffer;
+    callableShaderBindingOffset_:VkDeviceSize;
+    callableShaderBindingStride_:VkDeviceSize;
+    width_:uint32_t;
+    height_:uint32_t;
+    depth_:uint32_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateRayTracingPipelinesNV(
-    VkDevice                                    device,
-    VkPipelineCache                             pipelineCache,
-    uint32_t                                    createInfoCount,
-    P_VkRayTracingPipelineCreateInfoNV          pCreateInfos,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkPipeline                                pPipelines);
+    device_:VkDevice;
+    pipelineCache_:VkPipelineCache;
+    createInfoCount_:uint32_t;
+    pCreateInfos_:P_VkRayTracingPipelineCreateInfoNV;
+    pAllocator_:P_VkAllocationCallbacks;
+    pPipelines_:P_VkPipeline );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetRayTracingShaderGroupHandlesKHR(
-    VkDevice                                    device,
-    VkPipeline                                  pipeline,
-    uint32_t                                    firstGroup,
-    uint32_t                                    groupCount,
-    size_t                                      dataSize,
-    P_void                                      pData);
+    device_:VkDevice;
+    pipeline_:VkPipeline;
+    firstGroup_:uint32_t;
+    groupCount_:uint32_t;
+    dataSize_:size_t;
+    pData_:P_void );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetRayTracingShaderGroupHandlesNV(
-    VkDevice                                    device,
-    VkPipeline                                  pipeline,
-    uint32_t                                    firstGroup,
-    uint32_t                                    groupCount,
-    size_t                                      dataSize,
-    P_void                                      pData);
+    device_:VkDevice;
+    pipeline_:VkPipeline;
+    firstGroup_:uint32_t;
+    groupCount_:uint32_t;
+    dataSize_:size_t;
+    pData_:P_void );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetAccelerationStructureHandleNV(
-    VkDevice                                    device,
-    VkAccelerationStructureNV                   accelerationStructure,
-    size_t                                      dataSize,
-    P_void                                      pData);
+    device_:VkDevice;
+    accelerationStructure_:VkAccelerationStructureNV;
+    dataSize_:size_t;
+    pData_:P_void );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdWriteAccelerationStructuresPropertiesNV(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    accelerationStructureCount,
-    P_VkAccelerationStructureNV                 pAccelerationStructures,
-    VkQueryType                                 queryType,
-    VkQueryPool                                 queryPool,
-    uint32_t                                    firstQuery);
+    commandBuffer_:VkCommandBuffer;
+    accelerationStructureCount_:uint32_t;
+    pAccelerationStructures_:P_VkAccelerationStructureNV;
+    queryType_:VkQueryType;
+    queryPool_:VkQueryPool;
+    firstQuery_:uint32_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCompileDeferredNV(
-    VkDevice                                    device,
-    VkPipeline                                  pipeline,
-    uint32_t                                    shader);
+    device_:VkDevice;
+    pipeline_:VkPipeline;
+    shader_:uint32_t );
 {$ENDIF}
 
 
@@ -10044,29 +10044,29 @@ type VkPhysicalDeviceExternalMemoryHostPropertiesEXT = record
        minImportedHostPointerAlignment :VkDeviceSize;
      end;
 
-type PFN_vkGetMemoryHostPointerPropertiesEXT = function(VkDevice device, VkExternalMemoryHandleTypeFlagBits handleType, const P_void pHostPointer, P_VkMemoryHostPointerPropertiesEXT pMemoryHostPointerProperties) :VkResult;
+type PFN_vkGetMemoryHostPointerPropertiesEXT = function( device_:VkDevice; handleType_:VkExternalMemoryHandleTypeFlagBits; const pHostPointer_:P_void; pMemoryHostPointerProperties_:P_VkMemoryHostPointerPropertiesEXT ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetMemoryHostPointerPropertiesEXT(
-    VkDevice                                    device,
-    VkExternalMemoryHandleTypeFlagBits          handleType,
-    P_void                                      pHostPointer,
-    P_VkMemoryHostPointerPropertiesEXT          pMemoryHostPointerProperties);
+    device_:VkDevice;
+    handleType_:VkExternalMemoryHandleTypeFlagBits;
+    pHostPointer_:P_void;
+    pMemoryHostPointerProperties_:P_VkMemoryHostPointerPropertiesEXT );
 {$ENDIF}
 
 
 const VK_AMD_buffer_marker = 1;
 const VK_AMD_BUFFER_MARKER_SPEC_VERSION = 1;
 const VK_AMD_BUFFER_MARKER_EXTENSION_NAME = 'VK_AMD_buffer_marker';
-type PFN_vkCmdWriteBufferMarkerAMD = procedure(VkCommandBuffer commandBuffer, VkPipelineStageFlagBits pipelineStage, VkBuffer dstBuffer, VkDeviceSize dstOffset, uint32_t marker);
+type PFN_vkCmdWriteBufferMarkerAMD = procedure( commandBuffer_:VkCommandBuffer; pipelineStage_:VkPipelineStageFlagBits; dstBuffer_:VkBuffer; dstOffset_:VkDeviceSize; marker_:uint32_t );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdWriteBufferMarkerAMD(
-    VkCommandBuffer                             commandBuffer,
-    VkPipelineStageFlagBits                     pipelineStage,
-    VkBuffer                                    dstBuffer,
-    VkDeviceSize                                dstOffset,
-    uint32_t                                    marker);
+    commandBuffer_:VkCommandBuffer;
+    pipelineStage_:VkPipelineStageFlagBits;
+    dstBuffer_:VkBuffer;
+    dstOffset_:VkDeviceSize;
+    marker_:uint32_t );
 {$ENDIF}
 
 
@@ -10103,21 +10103,21 @@ type VkCalibratedTimestampInfoEXT = record
        timeDomain :VkTimeDomainEXT;
      end;
 
-type PFN_vkGetPhysicalDeviceCalibrateableTimeDomainsEXT = function(VkPhysicalDevice physicalDevice, P_uint32_t pTimeDomainCount, P_VkTimeDomainEXT pTimeDomains) :VkResult;
-type PFN_vkGetCalibratedTimestampsEXT = function(VkDevice device, uint32_t timestampCount, const P_VkCalibratedTimestampInfoEXT pTimestampInfos, P_uint64_t pTimestamps, P_uint64_t pMaxDeviation) :VkResult;
+type PFN_vkGetPhysicalDeviceCalibrateableTimeDomainsEXT = function( physicalDevice_:VkPhysicalDevice; pTimeDomainCount_:P_uint32_t; pTimeDomains_:P_VkTimeDomainEXT ) :VkResult;
+type PFN_vkGetCalibratedTimestampsEXT = function( device_:VkDevice; timestampCount_:uint32_t; const pTimestampInfos_:P_VkCalibratedTimestampInfoEXT; pTimestamps_:P_uint64_t; pMaxDeviation_:P_uint64_t ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceCalibrateableTimeDomainsEXT(
-    VkPhysicalDevice                            physicalDevice,
-    P_uint32_t                                  pTimeDomainCount,
-    P_VkTimeDomainEXT                           pTimeDomains);
+    physicalDevice_:VkPhysicalDevice;
+    pTimeDomainCount_:P_uint32_t;
+    pTimeDomains_:P_VkTimeDomainEXT );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetCalibratedTimestampsEXT(
-    VkDevice                                    device,
-    uint32_t                                    timestampCount,
-    P_VkCalibratedTimestampInfoEXT              pTimestampInfos,
-    P_uint64_t                                  pTimestamps,
-    P_uint64_t                                  pMaxDeviation);
+    device_:VkDevice;
+    timestampCount_:uint32_t;
+    pTimestampInfos_:P_VkCalibratedTimestampInfoEXT;
+    pTimestamps_:P_uint64_t;
+    pMaxDeviation_:P_uint64_t );
 {$ENDIF}
 
 
@@ -10269,31 +10269,31 @@ type VkDrawMeshTasksIndirectCommandNV = record
        firstTask :uint32_t;
      end;
 
-type PFN_vkCmdDrawMeshTasksNV = procedure(VkCommandBuffer commandBuffer, uint32_t taskCount, uint32_t firstTask);
-type PFN_vkCmdDrawMeshTasksIndirectNV = procedure(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride);
-type PFN_vkCmdDrawMeshTasksIndirectCountNV = procedure(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride);
+type PFN_vkCmdDrawMeshTasksNV = procedure( commandBuffer_:VkCommandBuffer; taskCount_:uint32_t; firstTask_:uint32_t );
+type PFN_vkCmdDrawMeshTasksIndirectNV = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; drawCount_:uint32_t; stride_:uint32_t );
+type PFN_vkCmdDrawMeshTasksIndirectCountNV = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; countBuffer_:VkBuffer; countBufferOffset_:VkDeviceSize; maxDrawCount_:uint32_t; stride_:uint32_t );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdDrawMeshTasksNV(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    taskCount,
-    uint32_t                                    firstTask);
+    commandBuffer_:VkCommandBuffer;
+    taskCount_:uint32_t;
+    firstTask_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDrawMeshTasksIndirectNV(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    buffer,
-    VkDeviceSize                                offset,
-    uint32_t                                    drawCount,
-    uint32_t                                    stride);
+    commandBuffer_:VkCommandBuffer;
+    buffer_:VkBuffer;
+    offset_:VkDeviceSize;
+    drawCount_:uint32_t;
+    stride_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdDrawMeshTasksIndirectCountNV(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    buffer,
-    VkDeviceSize                                offset,
-    VkBuffer                                    countBuffer,
-    VkDeviceSize                                countBufferOffset,
-    uint32_t                                    maxDrawCount,
-    uint32_t                                    stride);
+    commandBuffer_:VkCommandBuffer;
+    buffer_:VkBuffer;
+    offset_:VkDeviceSize;
+    countBuffer_:VkBuffer;
+    countBufferOffset_:VkDeviceSize;
+    maxDrawCount_:uint32_t;
+    stride_:uint32_t );
 {$ENDIF}
 
 
@@ -10335,14 +10335,14 @@ type VkPhysicalDeviceExclusiveScissorFeaturesNV = record
        exclusiveScissor :VkBool32;
      end;
 
-type PFN_vkCmdSetExclusiveScissorNV = procedure(VkCommandBuffer commandBuffer, uint32_t firstExclusiveScissor, uint32_t exclusiveScissorCount, const P_VkRect2D pExclusiveScissors);
+type PFN_vkCmdSetExclusiveScissorNV = procedure( commandBuffer_:VkCommandBuffer; firstExclusiveScissor_:uint32_t; exclusiveScissorCount_:uint32_t; const pExclusiveScissors_:P_VkRect2D );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdSetExclusiveScissorNV(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    firstExclusiveScissor,
-    uint32_t                                    exclusiveScissorCount,
-    P_VkRect2D                                  pExclusiveScissors);
+    commandBuffer_:VkCommandBuffer;
+    firstExclusiveScissor_:uint32_t;
+    exclusiveScissorCount_:uint32_t;
+    pExclusiveScissors_:P_VkRect2D );
 {$ENDIF}
 
 
@@ -10362,18 +10362,18 @@ type VkCheckpointDataNV = record
        pCheckpointMarker :P_void;
      end;
 
-type PFN_vkCmdSetCheckpointNV = procedure(VkCommandBuffer commandBuffer, const P_void pCheckpointMarker);
-type PFN_vkGetQueueCheckpointDataNV = procedure(VkQueue queue, P_uint32_t pCheckpointDataCount, P_VkCheckpointDataNV pCheckpointData);
+type PFN_vkCmdSetCheckpointNV = procedure( commandBuffer_:VkCommandBuffer; const pCheckpointMarker_:P_void );
+type PFN_vkGetQueueCheckpointDataNV = procedure( queue_:VkQueue; pCheckpointDataCount_:P_uint32_t; pCheckpointData_:P_VkCheckpointDataNV );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdSetCheckpointNV(
-    VkCommandBuffer                             commandBuffer,
-    P_void                                      pCheckpointMarker);
+    commandBuffer_:VkCommandBuffer;
+    pCheckpointMarker_:P_void );
 
 VKAPI_ATTR void VKAPI_CALL vkGetQueueCheckpointDataNV(
-    VkQueue                                     queue,
-    P_uint32_t                                  pCheckpointDataCount,
-    P_VkCheckpointDataNV                        pCheckpointData);
+    queue_:VkQueue;
+    pCheckpointDataCount_:P_uint32_t;
+    pCheckpointData_:P_VkCheckpointDataNV );
 {$ENDIF}
 
 
@@ -10477,53 +10477,53 @@ type VkPerformanceConfigurationAcquireInfoINTEL = record
        type :VkPerformanceConfigurationTypeINTEL;
      end;
 
-type PFN_vkInitializePerformanceApiINTEL = function(VkDevice device, const P_VkInitializePerformanceApiInfoINTEL pInitializeInfo) :VkResult;
-type PFN_vkUninitializePerformanceApiINTEL = procedure(VkDevice device);
-type PFN_vkCmdSetPerformanceMarkerINTEL = function(VkCommandBuffer commandBuffer, const P_VkPerformanceMarkerInfoINTEL pMarkerInfo) :VkResult;
-type PFN_vkCmdSetPerformanceStreamMarkerINTEL = function(VkCommandBuffer commandBuffer, const P_VkPerformanceStreamMarkerInfoINTEL pMarkerInfo) :VkResult;
-type PFN_vkCmdSetPerformanceOverrideINTEL = function(VkCommandBuffer commandBuffer, const P_VkPerformanceOverrideInfoINTEL pOverrideInfo) :VkResult;
-type PFN_vkAcquirePerformanceConfigurationINTEL = function(VkDevice device, const P_VkPerformanceConfigurationAcquireInfoINTEL pAcquireInfo, P_VkPerformanceConfigurationINTEL pConfiguration) :VkResult;
-type PFN_vkReleasePerformanceConfigurationINTEL = function(VkDevice device, VkPerformanceConfigurationINTEL configuration) :VkResult;
-type PFN_vkQueueSetPerformanceConfigurationINTEL = function(VkQueue queue, VkPerformanceConfigurationINTEL configuration) :VkResult;
-type PFN_vkGetPerformanceParameterINTEL = function(VkDevice device, VkPerformanceParameterTypeINTEL parameter, P_VkPerformanceValueINTEL pValue) :VkResult;
+type PFN_vkInitializePerformanceApiINTEL = function( device_:VkDevice; const pInitializeInfo_:P_VkInitializePerformanceApiInfoINTEL ) :VkResult;
+type PFN_vkUninitializePerformanceApiINTEL = procedure( device_:VkDevice );
+type PFN_vkCmdSetPerformanceMarkerINTEL = function( commandBuffer_:VkCommandBuffer; const pMarkerInfo_:P_VkPerformanceMarkerInfoINTEL ) :VkResult;
+type PFN_vkCmdSetPerformanceStreamMarkerINTEL = function( commandBuffer_:VkCommandBuffer; const pMarkerInfo_:P_VkPerformanceStreamMarkerInfoINTEL ) :VkResult;
+type PFN_vkCmdSetPerformanceOverrideINTEL = function( commandBuffer_:VkCommandBuffer; const pOverrideInfo_:P_VkPerformanceOverrideInfoINTEL ) :VkResult;
+type PFN_vkAcquirePerformanceConfigurationINTEL = function( device_:VkDevice; const pAcquireInfo_:P_VkPerformanceConfigurationAcquireInfoINTEL; pConfiguration_:P_VkPerformanceConfigurationINTEL ) :VkResult;
+type PFN_vkReleasePerformanceConfigurationINTEL = function( device_:VkDevice; configuration_:VkPerformanceConfigurationINTEL ) :VkResult;
+type PFN_vkQueueSetPerformanceConfigurationINTEL = function( queue_:VkQueue; configuration_:VkPerformanceConfigurationINTEL ) :VkResult;
+type PFN_vkGetPerformanceParameterINTEL = function( device_:VkDevice; parameter_:VkPerformanceParameterTypeINTEL; pValue_:P_VkPerformanceValueINTEL ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkInitializePerformanceApiINTEL(
-    VkDevice                                    device,
-    P_VkInitializePerformanceApiInfoINTEL       pInitializeInfo);
+    device_:VkDevice;
+    pInitializeInfo_:P_VkInitializePerformanceApiInfoINTEL );
 
 VKAPI_ATTR void VKAPI_CALL vkUninitializePerformanceApiINTEL(
-    VkDevice                                    device);
+    device_:VkDevice );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCmdSetPerformanceMarkerINTEL(
-    VkCommandBuffer                             commandBuffer,
-    P_VkPerformanceMarkerInfoINTEL              pMarkerInfo);
+    commandBuffer_:VkCommandBuffer;
+    pMarkerInfo_:P_VkPerformanceMarkerInfoINTEL );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCmdSetPerformanceStreamMarkerINTEL(
-    VkCommandBuffer                             commandBuffer,
-    P_VkPerformanceStreamMarkerInfoINTEL        pMarkerInfo);
+    commandBuffer_:VkCommandBuffer;
+    pMarkerInfo_:P_VkPerformanceStreamMarkerInfoINTEL );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCmdSetPerformanceOverrideINTEL(
-    VkCommandBuffer                             commandBuffer,
-    P_VkPerformanceOverrideInfoINTEL            pOverrideInfo);
+    commandBuffer_:VkCommandBuffer;
+    pOverrideInfo_:P_VkPerformanceOverrideInfoINTEL );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkAcquirePerformanceConfigurationINTEL(
-    VkDevice                                    device,
-    P_VkPerformanceConfigurationAcquireInfoINTEL      pAcquireInfo,
-    P_VkPerformanceConfigurationINTEL           pConfiguration);
+    device_:VkDevice;
+    pAcquireInfo_:P_VkPerformanceConfigurationAcquireInfoINTEL;
+    pConfiguration_:P_VkPerformanceConfigurationINTEL );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkReleasePerformanceConfigurationINTEL(
-    VkDevice                                    device,
-    VkPerformanceConfigurationINTEL             configuration);
+    device_:VkDevice;
+    configuration_:VkPerformanceConfigurationINTEL );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkQueueSetPerformanceConfigurationINTEL(
-    VkQueue                                     queue,
-    VkPerformanceConfigurationINTEL             configuration);
+    queue_:VkQueue;
+    configuration_:VkPerformanceConfigurationINTEL );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPerformanceParameterINTEL(
-    VkDevice                                    device,
-    VkPerformanceParameterTypeINTEL             parameter,
-    P_VkPerformanceValueINTEL                   pValue);
+    device_:VkDevice;
+    parameter_:VkPerformanceParameterTypeINTEL;
+    pValue_:P_VkPerformanceValueINTEL );
 {$ENDIF}
 
 
@@ -10556,13 +10556,13 @@ type VkSwapchainDisplayNativeHdrCreateInfoAMD = record
        localDimmingEnable :VkBool32;
      end;
 
-type PFN_vkSetLocalDimmingAMD = procedure(VkDevice device, VkSwapchainKHR swapChain, VkBool32 localDimmingEnable);
+type PFN_vkSetLocalDimmingAMD = procedure( device_:VkDevice; swapChain_:VkSwapchainKHR; localDimmingEnable_:VkBool32 );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkSetLocalDimmingAMD(
-    VkDevice                                    device,
-    VkSwapchainKHR                              swapChain,
-    VkBool32                                    localDimmingEnable);
+    device_:VkDevice;
+    swapChain_:VkSwapchainKHR;
+    localDimmingEnable_:VkBool32 );
 {$ENDIF}
 
 
@@ -10738,12 +10738,12 @@ type VkBufferDeviceAddressCreateInfoEXT = record
        deviceAddress :VkDeviceAddress;
      end;
 
-type PFN_vkGetBufferDeviceAddressEXT = function(VkDevice device, const P_VkBufferDeviceAddressInfo pInfo) :VkDeviceAddress;
+type PFN_vkGetBufferDeviceAddressEXT = function( device_:VkDevice; const pInfo_:P_VkBufferDeviceAddressInfo ) :VkDeviceAddress;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkDeviceAddress VKAPI_CALL vkGetBufferDeviceAddressEXT(
-    VkDevice                                    device,
-    P_VkBufferDeviceAddressInfo                 pInfo);
+    device_:VkDevice;
+    pInfo_:P_VkBufferDeviceAddressInfo );
 {$ENDIF}
 
 
@@ -10772,13 +10772,13 @@ type VkPhysicalDeviceToolPropertiesEXT = record
        layer :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of char;
      end;
 
-type PFN_vkGetPhysicalDeviceToolPropertiesEXT = function(VkPhysicalDevice physicalDevice, P_uint32_t pToolCount, P_VkPhysicalDeviceToolPropertiesEXT pToolProperties) :VkResult;
+type PFN_vkGetPhysicalDeviceToolPropertiesEXT = function( physicalDevice_:VkPhysicalDevice; pToolCount_:P_uint32_t; pToolProperties_:P_VkPhysicalDeviceToolPropertiesEXT ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceToolPropertiesEXT(
-    VkPhysicalDevice                            physicalDevice,
-    P_uint32_t                                  pToolCount,
-    P_VkPhysicalDeviceToolPropertiesEXT         pToolProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pToolCount_:P_uint32_t;
+    pToolProperties_:P_VkPhysicalDeviceToolPropertiesEXT );
 {$ENDIF}
 
 
@@ -10875,13 +10875,13 @@ type VkPhysicalDeviceCooperativeMatrixPropertiesNV = record
        cooperativeMatrixSupportedStages :VkShaderStageFlags;
      end;
 
-type PFN_vkGetPhysicalDeviceCooperativeMatrixPropertiesNV = function(VkPhysicalDevice physicalDevice, P_uint32_t pPropertyCount, P_VkCooperativeMatrixPropertiesNV pProperties) :VkResult;
+type PFN_vkGetPhysicalDeviceCooperativeMatrixPropertiesNV = function( physicalDevice_:VkPhysicalDevice; pPropertyCount_:P_uint32_t; pProperties_:P_VkCooperativeMatrixPropertiesNV ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceCooperativeMatrixPropertiesNV(
-    VkPhysicalDevice                            physicalDevice,
-    P_uint32_t                                  pPropertyCount,
-    P_VkCooperativeMatrixPropertiesNV           pProperties);
+    physicalDevice_:VkPhysicalDevice;
+    pPropertyCount_:P_uint32_t;
+    pProperties_:P_VkCooperativeMatrixPropertiesNV );
 {$ENDIF}
 
 
@@ -10917,13 +10917,13 @@ type VkFramebufferMixedSamplesCombinationNV = record
        colorSamples :VkSampleCountFlags;
      end;
 
-type PFN_vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV = function(VkPhysicalDevice physicalDevice, P_uint32_t pCombinationCount, P_VkFramebufferMixedSamplesCombinationNV pCombinations) :VkResult;
+type PFN_vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV = function( physicalDevice_:VkPhysicalDevice; pCombinationCount_:P_uint32_t; pCombinations_:P_VkFramebufferMixedSamplesCombinationNV ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV(
-    VkPhysicalDevice                            physicalDevice,
-    P_uint32_t                                  pCombinationCount,
-    P_VkFramebufferMixedSamplesCombinationNV    pCombinations);
+    physicalDevice_:VkPhysicalDevice;
+    pCombinationCount_:P_uint32_t;
+    pCombinations_:P_VkFramebufferMixedSamplesCombinationNV );
 {$ENDIF}
 
 
@@ -10961,14 +10961,14 @@ type VkHeadlessSurfaceCreateInfoEXT = record
        flags :VkHeadlessSurfaceCreateFlagsEXT;
      end;
 
-type PFN_vkCreateHeadlessSurfaceEXT = function(VkInstance instance, const P_VkHeadlessSurfaceCreateInfoEXT pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkSurfaceKHR pSurface) :VkResult;
+type PFN_vkCreateHeadlessSurfaceEXT = function( instance_:VkInstance; const pCreateInfo_:P_VkHeadlessSurfaceCreateInfoEXT; const pAllocator_:P_VkAllocationCallbacks; pSurface_:P_VkSurfaceKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateHeadlessSurfaceEXT(
-    VkInstance                                  instance,
-    P_VkHeadlessSurfaceCreateInfoEXT            pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkSurfaceKHR                              pSurface);
+    instance_:VkInstance;
+    pCreateInfo_:P_VkHeadlessSurfaceCreateInfoEXT;
+    pAllocator_:P_VkAllocationCallbacks;
+    pSurface_:P_VkSurfaceKHR );
 {$ENDIF}
 
 
@@ -11009,13 +11009,13 @@ type VkPipelineRasterizationLineStateCreateInfoEXT = record
        lineStipplePattern :uint16_t;
      end;
 
-type PFN_vkCmdSetLineStippleEXT = procedure(VkCommandBuffer commandBuffer, uint32_t lineStippleFactor, uint16_t lineStipplePattern);
+type PFN_vkCmdSetLineStippleEXT = procedure( commandBuffer_:VkCommandBuffer; lineStippleFactor_:uint32_t; lineStipplePattern_:uint16_t );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdSetLineStippleEXT(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    lineStippleFactor,
-    uint16_t                                    lineStipplePattern);
+    commandBuffer_:VkCommandBuffer;
+    lineStippleFactor_:uint32_t;
+    lineStipplePattern_:uint16_t );
 {$ENDIF}
 
 
@@ -11046,14 +11046,14 @@ const VK_EXT_HOST_QUERY_RESET_SPEC_VERSION = 1;
 const VK_EXT_HOST_QUERY_RESET_EXTENSION_NAME = 'VK_EXT_host_query_reset';
 type VkPhysicalDeviceHostQueryResetFeaturesEXT = VkPhysicalDeviceHostQueryResetFeatures;
 
-type PFN_vkResetQueryPoolEXT = procedure(VkDevice device, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount);
+type PFN_vkResetQueryPoolEXT = procedure( device_:VkDevice; queryPool_:VkQueryPool; firstQuery_:uint32_t; queryCount_:uint32_t );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkResetQueryPoolEXT(
-    VkDevice                                    device,
-    VkQueryPool                                 queryPool,
-    uint32_t                                    firstQuery,
-    uint32_t                                    queryCount);
+    device_:VkDevice;
+    queryPool_:VkQueryPool;
+    firstQuery_:uint32_t;
+    queryCount_:uint32_t );
 {$ENDIF}
 
 
@@ -11077,78 +11077,78 @@ type VkPhysicalDeviceExtendedDynamicStateFeaturesEXT = record
        extendedDynamicState :VkBool32;
      end;
 
-type PFN_vkCmdSetCullModeEXT = procedure(VkCommandBuffer commandBuffer, VkCullModeFlags cullMode);
-type PFN_vkCmdSetFrontFaceEXT = procedure(VkCommandBuffer commandBuffer, VkFrontFace frontFace);
-type PFN_vkCmdSetPrimitiveTopologyEXT = procedure(VkCommandBuffer commandBuffer, VkPrimitiveTopology primitiveTopology);
-type PFN_vkCmdSetViewportWithCountEXT = procedure(VkCommandBuffer commandBuffer, uint32_t viewportCount, const P_VkViewport pViewports);
-type PFN_vkCmdSetScissorWithCountEXT = procedure(VkCommandBuffer commandBuffer, uint32_t scissorCount, const P_VkRect2D pScissors);
-type PFN_vkCmdBindVertexBuffers2EXT = procedure(VkCommandBuffer commandBuffer, uint32_t firstBinding, uint32_t bindingCount, const P_VkBuffer pBuffers, const P_VkDeviceSize pOffsets, const P_VkDeviceSize pSizes, const P_VkDeviceSize pStrides);
-type PFN_vkCmdSetDepthTestEnableEXT = procedure(VkCommandBuffer commandBuffer, VkBool32 depthTestEnable);
-type PFN_vkCmdSetDepthWriteEnableEXT = procedure(VkCommandBuffer commandBuffer, VkBool32 depthWriteEnable);
-type PFN_vkCmdSetDepthCompareOpEXT = procedure(VkCommandBuffer commandBuffer, VkCompareOp depthCompareOp);
-type PFN_vkCmdSetDepthBoundsTestEnableEXT = procedure(VkCommandBuffer commandBuffer, VkBool32 depthBoundsTestEnable);
-type PFN_vkCmdSetStencilTestEnableEXT = procedure(VkCommandBuffer commandBuffer, VkBool32 stencilTestEnable);
-type PFN_vkCmdSetStencilOpEXT = procedure(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, VkStencilOp failOp, VkStencilOp passOp, VkStencilOp depthFailOp, VkCompareOp compareOp);
+type PFN_vkCmdSetCullModeEXT = procedure( commandBuffer_:VkCommandBuffer; cullMode_:VkCullModeFlags );
+type PFN_vkCmdSetFrontFaceEXT = procedure( commandBuffer_:VkCommandBuffer; frontFace_:VkFrontFace );
+type PFN_vkCmdSetPrimitiveTopologyEXT = procedure( commandBuffer_:VkCommandBuffer; primitiveTopology_:VkPrimitiveTopology );
+type PFN_vkCmdSetViewportWithCountEXT = procedure( commandBuffer_:VkCommandBuffer; viewportCount_:uint32_t; const pViewports_:P_VkViewport );
+type PFN_vkCmdSetScissorWithCountEXT = procedure( commandBuffer_:VkCommandBuffer; scissorCount_:uint32_t; const pScissors_:P_VkRect2D );
+type PFN_vkCmdBindVertexBuffers2EXT = procedure( commandBuffer_:VkCommandBuffer; firstBinding_:uint32_t; bindingCount_:uint32_t; const pBuffers_:P_VkBuffer; const pOffsets_:P_VkDeviceSize; const pSizes_:P_VkDeviceSize; const pStrides_:P_VkDeviceSize );
+type PFN_vkCmdSetDepthTestEnableEXT = procedure( commandBuffer_:VkCommandBuffer; depthTestEnable_:VkBool32 );
+type PFN_vkCmdSetDepthWriteEnableEXT = procedure( commandBuffer_:VkCommandBuffer; depthWriteEnable_:VkBool32 );
+type PFN_vkCmdSetDepthCompareOpEXT = procedure( commandBuffer_:VkCommandBuffer; depthCompareOp_:VkCompareOp );
+type PFN_vkCmdSetDepthBoundsTestEnableEXT = procedure( commandBuffer_:VkCommandBuffer; depthBoundsTestEnable_:VkBool32 );
+type PFN_vkCmdSetStencilTestEnableEXT = procedure( commandBuffer_:VkCommandBuffer; stencilTestEnable_:VkBool32 );
+type PFN_vkCmdSetStencilOpEXT = procedure( commandBuffer_:VkCommandBuffer; faceMask_:VkStencilFaceFlags; failOp_:VkStencilOp; passOp_:VkStencilOp; depthFailOp_:VkStencilOp; compareOp_:VkCompareOp );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdSetCullModeEXT(
-    VkCommandBuffer                             commandBuffer,
-    VkCullModeFlags                             cullMode);
+    commandBuffer_:VkCommandBuffer;
+    cullMode_:VkCullModeFlags );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetFrontFaceEXT(
-    VkCommandBuffer                             commandBuffer,
-    VkFrontFace                                 frontFace);
+    commandBuffer_:VkCommandBuffer;
+    frontFace_:VkFrontFace );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetPrimitiveTopologyEXT(
-    VkCommandBuffer                             commandBuffer,
-    VkPrimitiveTopology                         primitiveTopology);
+    commandBuffer_:VkCommandBuffer;
+    primitiveTopology_:VkPrimitiveTopology );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetViewportWithCountEXT(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    viewportCount,
-    P_VkViewport                                pViewports);
+    commandBuffer_:VkCommandBuffer;
+    viewportCount_:uint32_t;
+    pViewports_:P_VkViewport );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetScissorWithCountEXT(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    scissorCount,
-    P_VkRect2D                                  pScissors);
+    commandBuffer_:VkCommandBuffer;
+    scissorCount_:uint32_t;
+    pScissors_:P_VkRect2D );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBindVertexBuffers2EXT(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    firstBinding,
-    uint32_t                                    bindingCount,
-    P_VkBuffer                                  pBuffers,
-    P_VkDeviceSize                              pOffsets,
-    P_VkDeviceSize                              pSizes,
-    P_VkDeviceSize                              pStrides);
+    commandBuffer_:VkCommandBuffer;
+    firstBinding_:uint32_t;
+    bindingCount_:uint32_t;
+    pBuffers_:P_VkBuffer;
+    pOffsets_:P_VkDeviceSize;
+    pSizes_:P_VkDeviceSize;
+    pStrides_:P_VkDeviceSize );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetDepthTestEnableEXT(
-    VkCommandBuffer                             commandBuffer,
-    VkBool32                                    depthTestEnable);
+    commandBuffer_:VkCommandBuffer;
+    depthTestEnable_:VkBool32 );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetDepthWriteEnableEXT(
-    VkCommandBuffer                             commandBuffer,
-    VkBool32                                    depthWriteEnable);
+    commandBuffer_:VkCommandBuffer;
+    depthWriteEnable_:VkBool32 );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetDepthCompareOpEXT(
-    VkCommandBuffer                             commandBuffer,
-    VkCompareOp                                 depthCompareOp);
+    commandBuffer_:VkCommandBuffer;
+    depthCompareOp_:VkCompareOp );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetDepthBoundsTestEnableEXT(
-    VkCommandBuffer                             commandBuffer,
-    VkBool32                                    depthBoundsTestEnable);
+    commandBuffer_:VkCommandBuffer;
+    depthBoundsTestEnable_:VkBool32 );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetStencilTestEnableEXT(
-    VkCommandBuffer                             commandBuffer,
-    VkBool32                                    stencilTestEnable);
+    commandBuffer_:VkCommandBuffer;
+    stencilTestEnable_:VkBool32 );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetStencilOpEXT(
-    VkCommandBuffer                             commandBuffer,
-    VkStencilFaceFlags                          faceMask,
-    VkStencilOp                                 failOp,
-    VkStencilOp                                 passOp,
-    VkStencilOp                                 depthFailOp,
-    VkCompareOp                                 compareOp);
+    commandBuffer_:VkCommandBuffer;
+    faceMask_:VkStencilFaceFlags;
+    failOp_:VkStencilOp;
+    passOp_:VkStencilOp;
+    depthFailOp_:VkStencilOp;
+    compareOp_:VkCompareOp );
 {$ENDIF}
 
 
@@ -11312,44 +11312,44 @@ type VkGeneratedCommandsMemoryRequirementsInfoNV = record
        maxSequencesCount :uint32_t;
      end;
 
-type PFN_vkGetGeneratedCommandsMemoryRequirementsNV = procedure(VkDevice device, const P_VkGeneratedCommandsMemoryRequirementsInfoNV pInfo, P_VkMemoryRequirements2 pMemoryRequirements);
-type PFN_vkCmdPreprocessGeneratedCommandsNV = procedure(VkCommandBuffer commandBuffer, const P_VkGeneratedCommandsInfoNV pGeneratedCommandsInfo);
-type PFN_vkCmdExecuteGeneratedCommandsNV = procedure(VkCommandBuffer commandBuffer, VkBool32 isPreprocessed, const P_VkGeneratedCommandsInfoNV pGeneratedCommandsInfo);
-type PFN_vkCmdBindPipelineShaderGroupNV = procedure(VkCommandBuffer commandBuffer, VkPipelineBindPoint pipelineBindPoint, VkPipeline pipeline, uint32_t groupIndex);
-type PFN_vkCreateIndirectCommandsLayoutNV = function(VkDevice device, const P_VkIndirectCommandsLayoutCreateInfoNV pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkIndirectCommandsLayoutNV pIndirectCommandsLayout) :VkResult;
-type PFN_vkDestroyIndirectCommandsLayoutNV = procedure(VkDevice device, VkIndirectCommandsLayoutNV indirectCommandsLayout, const P_VkAllocationCallbacks pAllocator);
+type PFN_vkGetGeneratedCommandsMemoryRequirementsNV = procedure( device_:VkDevice; const pInfo_:P_VkGeneratedCommandsMemoryRequirementsInfoNV; pMemoryRequirements_:P_VkMemoryRequirements2 );
+type PFN_vkCmdPreprocessGeneratedCommandsNV = procedure( commandBuffer_:VkCommandBuffer; const pGeneratedCommandsInfo_:P_VkGeneratedCommandsInfoNV );
+type PFN_vkCmdExecuteGeneratedCommandsNV = procedure( commandBuffer_:VkCommandBuffer; isPreprocessed_:VkBool32; const pGeneratedCommandsInfo_:P_VkGeneratedCommandsInfoNV );
+type PFN_vkCmdBindPipelineShaderGroupNV = procedure( commandBuffer_:VkCommandBuffer; pipelineBindPoint_:VkPipelineBindPoint; pipeline_:VkPipeline; groupIndex_:uint32_t );
+type PFN_vkCreateIndirectCommandsLayoutNV = function( device_:VkDevice; const pCreateInfo_:P_VkIndirectCommandsLayoutCreateInfoNV; const pAllocator_:P_VkAllocationCallbacks; pIndirectCommandsLayout_:P_VkIndirectCommandsLayoutNV ) :VkResult;
+type PFN_vkDestroyIndirectCommandsLayoutNV = procedure( device_:VkDevice; indirectCommandsLayout_:VkIndirectCommandsLayoutNV; const pAllocator_:P_VkAllocationCallbacks );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkGetGeneratedCommandsMemoryRequirementsNV(
-    VkDevice                                    device,
-    P_VkGeneratedCommandsMemoryRequirementsInfoNV      pInfo,
-    P_VkMemoryRequirements2                     pMemoryRequirements);
+    device_:VkDevice;
+    pInfo_:P_VkGeneratedCommandsMemoryRequirementsInfoNV;
+    pMemoryRequirements_:P_VkMemoryRequirements2 );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdPreprocessGeneratedCommandsNV(
-    VkCommandBuffer                             commandBuffer,
-    P_VkGeneratedCommandsInfoNV                 pGeneratedCommandsInfo);
+    commandBuffer_:VkCommandBuffer;
+    pGeneratedCommandsInfo_:P_VkGeneratedCommandsInfoNV );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdExecuteGeneratedCommandsNV(
-    VkCommandBuffer                             commandBuffer,
-    VkBool32                                    isPreprocessed,
-    P_VkGeneratedCommandsInfoNV                 pGeneratedCommandsInfo);
+    commandBuffer_:VkCommandBuffer;
+    isPreprocessed_:VkBool32;
+    pGeneratedCommandsInfo_:P_VkGeneratedCommandsInfoNV );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBindPipelineShaderGroupNV(
-    VkCommandBuffer                             commandBuffer,
-    VkPipelineBindPoint                         pipelineBindPoint,
-    VkPipeline                                  pipeline,
-    uint32_t                                    groupIndex);
+    commandBuffer_:VkCommandBuffer;
+    pipelineBindPoint_:VkPipelineBindPoint;
+    pipeline_:VkPipeline;
+    groupIndex_:uint32_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateIndirectCommandsLayoutNV(
-    VkDevice                                    device,
-    P_VkIndirectCommandsLayoutCreateInfoNV      pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkIndirectCommandsLayoutNV                pIndirectCommandsLayout);
+    device_:VkDevice;
+    pCreateInfo_:P_VkIndirectCommandsLayoutCreateInfoNV;
+    pAllocator_:P_VkAllocationCallbacks;
+    pIndirectCommandsLayout_:P_VkIndirectCommandsLayoutNV );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyIndirectCommandsLayoutNV(
-    VkDevice                                    device,
-    VkIndirectCommandsLayoutNV                  indirectCommandsLayout,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    indirectCommandsLayout_:VkIndirectCommandsLayoutNV;
+    pAllocator_:P_VkAllocationCallbacks );
 {$ENDIF}
 
 
@@ -11423,8 +11423,8 @@ type VkDeviceMemoryReportCallbackDataEXT = record
      end;
 
 type PFN_vkDeviceMemoryReportCallbackEXT = procedure(
-    P_VkDeviceMemoryReportCallbackDataEXT       pCallbackData,
-    P_void                                      pUserData);
+    pCallbackData_:P_VkDeviceMemoryReportCallbackDataEXT;
+    pUserData_:P_void );
 
 type VkDeviceDeviceMemoryReportCreateInfoEXT = record
        sType :VkStructureType;
@@ -11513,36 +11513,36 @@ type VkPrivateDataSlotCreateInfoEXT = record
        flags :VkPrivateDataSlotCreateFlagsEXT;
      end;
 
-type PFN_vkCreatePrivateDataSlotEXT = function(VkDevice device, const P_VkPrivateDataSlotCreateInfoEXT pCreateInfo, const P_VkAllocationCallbacks pAllocator, P_VkPrivateDataSlotEXT pPrivateDataSlot) :VkResult;
-type PFN_vkDestroyPrivateDataSlotEXT = procedure(VkDevice device, VkPrivateDataSlotEXT privateDataSlot, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkSetPrivateDataEXT = function(VkDevice device, VkObjectType objectType, uint64_t objectHandle, VkPrivateDataSlotEXT privateDataSlot, uint64_t data) :VkResult;
-type PFN_vkGetPrivateDataEXT = procedure(VkDevice device, VkObjectType objectType, uint64_t objectHandle, VkPrivateDataSlotEXT privateDataSlot, P_uint64_t pData);
+type PFN_vkCreatePrivateDataSlotEXT = function( device_:VkDevice; const pCreateInfo_:P_VkPrivateDataSlotCreateInfoEXT; const pAllocator_:P_VkAllocationCallbacks; pPrivateDataSlot_:P_VkPrivateDataSlotEXT ) :VkResult;
+type PFN_vkDestroyPrivateDataSlotEXT = procedure( device_:VkDevice; privateDataSlot_:VkPrivateDataSlotEXT; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkSetPrivateDataEXT = function( device_:VkDevice; objectType_:VkObjectType; objectHandle_:uint64_t; privateDataSlot_:VkPrivateDataSlotEXT; data_:uint64_t ) :VkResult;
+type PFN_vkGetPrivateDataEXT = procedure( device_:VkDevice; objectType_:VkObjectType; objectHandle_:uint64_t; privateDataSlot_:VkPrivateDataSlotEXT; pData_:P_uint64_t );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkCreatePrivateDataSlotEXT(
-    VkDevice                                    device,
-    P_VkPrivateDataSlotCreateInfoEXT            pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkPrivateDataSlotEXT                      pPrivateDataSlot);
+    device_:VkDevice;
+    pCreateInfo_:P_VkPrivateDataSlotCreateInfoEXT;
+    pAllocator_:P_VkAllocationCallbacks;
+    pPrivateDataSlot_:P_VkPrivateDataSlotEXT );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyPrivateDataSlotEXT(
-    VkDevice                                    device,
-    VkPrivateDataSlotEXT                        privateDataSlot,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    privateDataSlot_:VkPrivateDataSlotEXT;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkSetPrivateDataEXT(
-    VkDevice                                    device,
-    VkObjectType                                objectType,
-    uint64_t                                    objectHandle,
-    VkPrivateDataSlotEXT                        privateDataSlot,
-    uint64_t                                    data);
+    device_:VkDevice;
+    objectType_:VkObjectType;
+    objectHandle_:uint64_t;
+    privateDataSlot_:VkPrivateDataSlotEXT;
+    data_:uint64_t );
 
 VKAPI_ATTR void VKAPI_CALL vkGetPrivateDataEXT(
-    VkDevice                                    device,
-    VkObjectType                                objectType,
-    uint64_t                                    objectHandle,
-    VkPrivateDataSlotEXT                        privateDataSlot,
-    P_uint64_t                                  pData);
+    device_:VkDevice;
+    objectType_:VkObjectType;
+    objectHandle_:uint64_t;
+    privateDataSlot_:VkPrivateDataSlotEXT;
+    pData_:P_uint64_t );
 {$ENDIF}
 
 
@@ -11634,13 +11634,13 @@ type VkPipelineFragmentShadingRateEnumStateCreateInfoNV = record
        combinerOps :array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR;
      end;
 
-type PFN_vkCmdSetFragmentShadingRateEnumNV = procedure(VkCommandBuffer           commandBuffer, VkFragmentShadingRateNV                     shadingRate, const VkFragmentShadingRateCombinerOpKHR    combinerOps[2]);
+type PFN_vkCmdSetFragmentShadingRateEnumNV = procedure( commandBuffer_:VkCommandBuffer; shadingRate_:VkFragmentShadingRateNV; const combinerOps_:array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdSetFragmentShadingRateEnumNV(
-    VkCommandBuffer                             commandBuffer,
-    VkFragmentShadingRateNV                     shadingRate,
-    const VkFragmentShadingRateCombinerOpKHR    combinerOps[2]);
+    commandBuffer_:VkCommandBuffer;
+    shadingRate_:VkFragmentShadingRateNV;
+    const combinerOps_:array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR );
 {$ENDIF}
 
 
@@ -11701,18 +11701,18 @@ type VkPhysicalDevice4444FormatsFeaturesEXT = record
 const VK_NV_acquire_winrt_display = 1;
 const VK_NV_ACQUIRE_WINRT_DISPLAY_SPEC_VERSION = 1;
 const VK_NV_ACQUIRE_WINRT_DISPLAY_EXTENSION_NAME = 'VK_NV_acquire_winrt_display';
-type PFN_vkAcquireWinrtDisplayNV = function(VkPhysicalDevice physicalDevice, VkDisplayKHR display) :VkResult;
-type PFN_vkGetWinrtDisplayNV = function(VkPhysicalDevice physicalDevice, uint32_t deviceRelativeId, P_VkDisplayKHR pDisplay) :VkResult;
+type PFN_vkAcquireWinrtDisplayNV = function( physicalDevice_:VkPhysicalDevice; display_:VkDisplayKHR ) :VkResult;
+type PFN_vkGetWinrtDisplayNV = function( physicalDevice_:VkPhysicalDevice; deviceRelativeId_:uint32_t; pDisplay_:P_VkDisplayKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkAcquireWinrtDisplayNV(
-    VkPhysicalDevice                            physicalDevice,
-    VkDisplayKHR                                display);
+    physicalDevice_:VkPhysicalDevice;
+    display_:VkDisplayKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetWinrtDisplayNV(
-    VkPhysicalDevice                            physicalDevice,
-    uint32_t                                    deviceRelativeId,
-    P_VkDisplayKHR                              pDisplay);
+    physicalDevice_:VkPhysicalDevice;
+    deviceRelativeId_:uint32_t;
+    pDisplay_:P_VkDisplayKHR );
 {$ENDIF}
 
 
@@ -11927,115 +11927,115 @@ type VkAccelerationStructureBuildSizesInfoKHR = record
        buildScratchSize :VkDeviceSize;
      end;
 
-type PFN_vkCreateAccelerationStructureKHR = function(VkDevice                                           device, const P_VkAccelerationStructureCreateInfoKHR        pCreateInfo, const P_VkAllocationCallbacks       pAllocator, P_VkAccelerationStructureKHR                        pAccelerationStructure) :VkResult;
-type PFN_vkDestroyAccelerationStructureKHR = procedure(VkDevice device, VkAccelerationStructureKHR accelerationStructure, const P_VkAllocationCallbacks pAllocator);
-type PFN_vkCmdBuildAccelerationStructuresKHR = procedure(VkCommandBuffer                                    commandBuffer, uint32_t infoCount, const P_VkAccelerationStructureBuildGeometryInfoKHR pInfos, const P_VkAccelerationStructureBuildRangeInfoKHR P_const ppBuildRangeInfos);
-type PFN_vkCmdBuildAccelerationStructuresIndirectKHR = procedure(VkCommandBuffer                  commandBuffer, uint32_t                                           infoCount, const P_VkAccelerationStructureBuildGeometryInfoKHR pInfos, const P_VkDeviceAddress             pIndirectDeviceAddresses, const P_uint32_t                    pIndirectStrides, const P_uint32_t P_const             ppMaxPrimitiveCounts);
-type PFN_vkBuildAccelerationStructuresKHR = function(VkDevice                                           device, VkDeferredOperationKHR deferredOperation, uint32_t infoCount, const P_VkAccelerationStructureBuildGeometryInfoKHR pInfos, const P_VkAccelerationStructureBuildRangeInfoKHR P_const ppBuildRangeInfos) :VkResult;
-type PFN_vkCopyAccelerationStructureKHR = function(VkDevice device, VkDeferredOperationKHR deferredOperation, const P_VkCopyAccelerationStructureInfoKHR pInfo) :VkResult;
-type PFN_vkCopyAccelerationStructureToMemoryKHR = function(VkDevice device, VkDeferredOperationKHR deferredOperation, const P_VkCopyAccelerationStructureToMemoryInfoKHR pInfo) :VkResult;
-type PFN_vkCopyMemoryToAccelerationStructureKHR = function(VkDevice device, VkDeferredOperationKHR deferredOperation, const P_VkCopyMemoryToAccelerationStructureInfoKHR pInfo) :VkResult;
-type PFN_vkWriteAccelerationStructuresPropertiesKHR = function(VkDevice device, uint32_t accelerationStructureCount, const P_VkAccelerationStructureKHR pAccelerationStructures, VkQueryType  queryType, size_t       dataSize, P_void pData, size_t stride) :VkResult;
-type PFN_vkCmdCopyAccelerationStructureKHR = procedure(VkCommandBuffer commandBuffer, const P_VkCopyAccelerationStructureInfoKHR pInfo);
-type PFN_vkCmdCopyAccelerationStructureToMemoryKHR = procedure(VkCommandBuffer commandBuffer, const P_VkCopyAccelerationStructureToMemoryInfoKHR pInfo);
-type PFN_vkCmdCopyMemoryToAccelerationStructureKHR = procedure(VkCommandBuffer commandBuffer, const P_VkCopyMemoryToAccelerationStructureInfoKHR pInfo);
-type PFN_vkGetAccelerationStructureDeviceAddressKHR = function(VkDevice device, const P_VkAccelerationStructureDeviceAddressInfoKHR pInfo) :VkDeviceAddress;
-type PFN_vkCmdWriteAccelerationStructuresPropertiesKHR = procedure(VkCommandBuffer commandBuffer, uint32_t accelerationStructureCount, const P_VkAccelerationStructureKHR pAccelerationStructures, VkQueryType queryType, VkQueryPool queryPool, uint32_t firstQuery);
-type PFN_vkGetDeviceAccelerationStructureCompatibilityKHR = procedure(VkDevice device, const P_VkAccelerationStructureVersionInfoKHR pVersionInfo, P_VkAccelerationStructureCompatibilityKHR pCompatibility);
-type PFN_vkGetAccelerationStructureBuildSizesKHR = procedure(VkDevice                                            device, VkAccelerationStructureBuildTypeKHR                 buildType, const P_VkAccelerationStructureBuildGeometryInfoKHR  pBuildInfo, const P_uint32_t  pMaxPrimitiveCounts, P_VkAccelerationStructureBuildSizesInfoKHR           pSizeInfo);
+type PFN_vkCreateAccelerationStructureKHR = function( device_:VkDevice; const pCreateInfo_:P_VkAccelerationStructureCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pAccelerationStructure_:P_VkAccelerationStructureKHR ) :VkResult;
+type PFN_vkDestroyAccelerationStructureKHR = procedure( device_:VkDevice; accelerationStructure_:VkAccelerationStructureKHR; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCmdBuildAccelerationStructuresKHR = procedure( commandBuffer_:VkCommandBuffer; infoCount_:uint32_t; const pInfos_:P_VkAccelerationStructureBuildGeometryInfoKHR; const P_VkAccelerationStructureBuildRangeInfoKHR ppBuildRangeInfos_:P_const );
+type PFN_vkCmdBuildAccelerationStructuresIndirectKHR = procedure( commandBuffer_:VkCommandBuffer; infoCount_:uint32_t; const pInfos_:P_VkAccelerationStructureBuildGeometryInfoKHR; const pIndirectDeviceAddresses_:P_VkDeviceAddress; const pIndirectStrides_:P_uint32_t; const P_uint32_t ppMaxPrimitiveCounts_:P_const );
+type PFN_vkBuildAccelerationStructuresKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; infoCount_:uint32_t; const pInfos_:P_VkAccelerationStructureBuildGeometryInfoKHR; const P_VkAccelerationStructureBuildRangeInfoKHR ppBuildRangeInfos_:P_const ) :VkResult;
+type PFN_vkCopyAccelerationStructureKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; const pInfo_:P_VkCopyAccelerationStructureInfoKHR ) :VkResult;
+type PFN_vkCopyAccelerationStructureToMemoryKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; const pInfo_:P_VkCopyAccelerationStructureToMemoryInfoKHR ) :VkResult;
+type PFN_vkCopyMemoryToAccelerationStructureKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; const pInfo_:P_VkCopyMemoryToAccelerationStructureInfoKHR ) :VkResult;
+type PFN_vkWriteAccelerationStructuresPropertiesKHR = function( device_:VkDevice; accelerationStructureCount_:uint32_t; const pAccelerationStructures_:P_VkAccelerationStructureKHR; queryType_:VkQueryType; dataSize_:size_t; pData_:P_void; stride_:size_t ) :VkResult;
+type PFN_vkCmdCopyAccelerationStructureKHR = procedure( commandBuffer_:VkCommandBuffer; const pInfo_:P_VkCopyAccelerationStructureInfoKHR );
+type PFN_vkCmdCopyAccelerationStructureToMemoryKHR = procedure( commandBuffer_:VkCommandBuffer; const pInfo_:P_VkCopyAccelerationStructureToMemoryInfoKHR );
+type PFN_vkCmdCopyMemoryToAccelerationStructureKHR = procedure( commandBuffer_:VkCommandBuffer; const pInfo_:P_VkCopyMemoryToAccelerationStructureInfoKHR );
+type PFN_vkGetAccelerationStructureDeviceAddressKHR = function( device_:VkDevice; const pInfo_:P_VkAccelerationStructureDeviceAddressInfoKHR ) :VkDeviceAddress;
+type PFN_vkCmdWriteAccelerationStructuresPropertiesKHR = procedure( commandBuffer_:VkCommandBuffer; accelerationStructureCount_:uint32_t; const pAccelerationStructures_:P_VkAccelerationStructureKHR; queryType_:VkQueryType; queryPool_:VkQueryPool; firstQuery_:uint32_t );
+type PFN_vkGetDeviceAccelerationStructureCompatibilityKHR = procedure( device_:VkDevice; const pVersionInfo_:P_VkAccelerationStructureVersionInfoKHR; pCompatibility_:P_VkAccelerationStructureCompatibilityKHR );
+type PFN_vkGetAccelerationStructureBuildSizesKHR = procedure( device_:VkDevice; buildType_:VkAccelerationStructureBuildTypeKHR; const pBuildInfo_:P_VkAccelerationStructureBuildGeometryInfoKHR; const pMaxPrimitiveCounts_:P_uint32_t; pSizeInfo_:P_VkAccelerationStructureBuildSizesInfoKHR );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateAccelerationStructureKHR(
-    VkDevice                                    device,
-    P_VkAccelerationStructureCreateInfoKHR      pCreateInfo,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkAccelerationStructureKHR                pAccelerationStructure);
+    device_:VkDevice;
+    pCreateInfo_:P_VkAccelerationStructureCreateInfoKHR;
+    pAllocator_:P_VkAllocationCallbacks;
+    pAccelerationStructure_:P_VkAccelerationStructureKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkDestroyAccelerationStructureKHR(
-    VkDevice                                    device,
-    VkAccelerationStructureKHR                  accelerationStructure,
-    P_VkAllocationCallbacks                     pAllocator);
+    device_:VkDevice;
+    accelerationStructure_:VkAccelerationStructureKHR;
+    pAllocator_:P_VkAllocationCallbacks );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBuildAccelerationStructuresKHR(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    infoCount,
-    P_VkAccelerationStructureBuildGeometryInfoKHR      pInfos,
-    PP_VkAccelerationStructureBuildRangeInfoKHR            ppBuildRangeInfos);
+    commandBuffer_:VkCommandBuffer;
+    infoCount_:uint32_t;
+    pInfos_:P_VkAccelerationStructureBuildGeometryInfoKHR;
+    ppBuildRangeInfos_:PP_VkAccelerationStructureBuildRangeInfoKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdBuildAccelerationStructuresIndirectKHR(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    infoCount,
-    P_VkAccelerationStructureBuildGeometryInfoKHR      pInfos,
-    P_VkDeviceAddress                           pIndirectDeviceAddresses,
-    P_uint32_t                                  pIndirectStrides,
-    PP_uint32_t                                 ppMaxPrimitiveCounts);
+    commandBuffer_:VkCommandBuffer;
+    infoCount_:uint32_t;
+    pInfos_:P_VkAccelerationStructureBuildGeometryInfoKHR;
+    pIndirectDeviceAddresses_:P_VkDeviceAddress;
+    pIndirectStrides_:P_uint32_t;
+    ppMaxPrimitiveCounts_:PP_uint32_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkBuildAccelerationStructuresKHR(
-    VkDevice                                    device,
-    VkDeferredOperationKHR                      deferredOperation,
-    uint32_t                                    infoCount,
-    P_VkAccelerationStructureBuildGeometryInfoKHR      pInfos,
-    PP_VkAccelerationStructureBuildRangeInfoKHR            ppBuildRangeInfos);
+    device_:VkDevice;
+    deferredOperation_:VkDeferredOperationKHR;
+    infoCount_:uint32_t;
+    pInfos_:P_VkAccelerationStructureBuildGeometryInfoKHR;
+    ppBuildRangeInfos_:PP_VkAccelerationStructureBuildRangeInfoKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCopyAccelerationStructureKHR(
-    VkDevice                                    device,
-    VkDeferredOperationKHR                      deferredOperation,
-    P_VkCopyAccelerationStructureInfoKHR        pInfo);
+    device_:VkDevice;
+    deferredOperation_:VkDeferredOperationKHR;
+    pInfo_:P_VkCopyAccelerationStructureInfoKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCopyAccelerationStructureToMemoryKHR(
-    VkDevice                                    device,
-    VkDeferredOperationKHR                      deferredOperation,
-    P_VkCopyAccelerationStructureToMemoryInfoKHR      pInfo);
+    device_:VkDevice;
+    deferredOperation_:VkDeferredOperationKHR;
+    pInfo_:P_VkCopyAccelerationStructureToMemoryInfoKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCopyMemoryToAccelerationStructureKHR(
-    VkDevice                                    device,
-    VkDeferredOperationKHR                      deferredOperation,
-    P_VkCopyMemoryToAccelerationStructureInfoKHR      pInfo);
+    device_:VkDevice;
+    deferredOperation_:VkDeferredOperationKHR;
+    pInfo_:P_VkCopyMemoryToAccelerationStructureInfoKHR );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkWriteAccelerationStructuresPropertiesKHR(
-    VkDevice                                    device,
-    uint32_t                                    accelerationStructureCount,
-    P_VkAccelerationStructureKHR                pAccelerationStructures,
-    VkQueryType                                 queryType,
-    size_t                                      dataSize,
-    P_void                                      pData,
-    size_t                                      stride);
+    device_:VkDevice;
+    accelerationStructureCount_:uint32_t;
+    pAccelerationStructures_:P_VkAccelerationStructureKHR;
+    queryType_:VkQueryType;
+    dataSize_:size_t;
+    pData_:P_void;
+    stride_:size_t );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdCopyAccelerationStructureKHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkCopyAccelerationStructureInfoKHR        pInfo);
+    commandBuffer_:VkCommandBuffer;
+    pInfo_:P_VkCopyAccelerationStructureInfoKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdCopyAccelerationStructureToMemoryKHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkCopyAccelerationStructureToMemoryInfoKHR      pInfo);
+    commandBuffer_:VkCommandBuffer;
+    pInfo_:P_VkCopyAccelerationStructureToMemoryInfoKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdCopyMemoryToAccelerationStructureKHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkCopyMemoryToAccelerationStructureInfoKHR      pInfo);
+    commandBuffer_:VkCommandBuffer;
+    pInfo_:P_VkCopyMemoryToAccelerationStructureInfoKHR );
 
 VKAPI_ATTR VkDeviceAddress VKAPI_CALL vkGetAccelerationStructureDeviceAddressKHR(
-    VkDevice                                    device,
-    P_VkAccelerationStructureDeviceAddressInfoKHR      pInfo);
+    device_:VkDevice;
+    pInfo_:P_VkAccelerationStructureDeviceAddressInfoKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdWriteAccelerationStructuresPropertiesKHR(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    accelerationStructureCount,
-    P_VkAccelerationStructureKHR                pAccelerationStructures,
-    VkQueryType                                 queryType,
-    VkQueryPool                                 queryPool,
-    uint32_t                                    firstQuery);
+    commandBuffer_:VkCommandBuffer;
+    accelerationStructureCount_:uint32_t;
+    pAccelerationStructures_:P_VkAccelerationStructureKHR;
+    queryType_:VkQueryType;
+    queryPool_:VkQueryPool;
+    firstQuery_:uint32_t );
 
 VKAPI_ATTR void VKAPI_CALL vkGetDeviceAccelerationStructureCompatibilityKHR(
-    VkDevice                                    device,
-    P_VkAccelerationStructureVersionInfoKHR      pVersionInfo,
-    P_VkAccelerationStructureCompatibilityKHR   pCompatibility);
+    device_:VkDevice;
+    pVersionInfo_:P_VkAccelerationStructureVersionInfoKHR;
+    pCompatibility_:P_VkAccelerationStructureCompatibilityKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkGetAccelerationStructureBuildSizesKHR(
-    VkDevice                                    device,
-    VkAccelerationStructureBuildTypeKHR         buildType,
-    P_VkAccelerationStructureBuildGeometryInfoKHR      pBuildInfo,
-    P_uint32_t                                  pMaxPrimitiveCounts,
-    P_VkAccelerationStructureBuildSizesInfoKHR  pSizeInfo);
+    device_:VkDevice;
+    buildType_:VkAccelerationStructureBuildTypeKHR;
+    pBuildInfo_:P_VkAccelerationStructureBuildGeometryInfoKHR;
+    pMaxPrimitiveCounts_:P_uint32_t;
+    pSizeInfo_:P_VkAccelerationStructureBuildSizesInfoKHR );
 {$ENDIF}
 
 
@@ -12120,58 +12120,58 @@ type VkTraceRaysIndirectCommandKHR = record
        depth :uint32_t;
      end;
 
-type PFN_vkCmdTraceRaysKHR = procedure(VkCommandBuffer commandBuffer, const P_VkStridedDeviceAddressRegionKHR pRaygenShaderBindingTable, const P_VkStridedDeviceAddressRegionKHR pMissShaderBindingTable, const P_VkStridedDeviceAddressRegionKHR pHitShaderBindingTable, const P_VkStridedDeviceAddressRegionKHR pCallableShaderBindingTable, uint32_t width, uint32_t height, uint32_t depth);
-type PFN_vkCreateRayTracingPipelinesKHR = function(VkDevice device, VkDeferredOperationKHR deferredOperation, VkPipelineCache pipelineCache, uint32_t createInfoCount, const P_VkRayTracingPipelineCreateInfoKHR pCreateInfos, const P_VkAllocationCallbacks pAllocator, P_VkPipeline pPipelines) :VkResult;
-type PFN_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR = function(VkDevice device, VkPipeline pipeline, uint32_t firstGroup, uint32_t groupCount, size_t dataSize, P_void pData) :VkResult;
-type PFN_vkCmdTraceRaysIndirectKHR = procedure(VkCommandBuffer commandBuffer, const P_VkStridedDeviceAddressRegionKHR pRaygenShaderBindingTable, const P_VkStridedDeviceAddressRegionKHR pMissShaderBindingTable, const P_VkStridedDeviceAddressRegionKHR pHitShaderBindingTable, const P_VkStridedDeviceAddressRegionKHR pCallableShaderBindingTable, VkDeviceAddress indirectDeviceAddress);
-type PFN_vkGetRayTracingShaderGroupStackSizeKHR = function(VkDevice device, VkPipeline pipeline, uint32_t group, VkShaderGroupShaderKHR groupShader) :VkDeviceSize;
-type PFN_vkCmdSetRayTracingPipelineStackSizeKHR = procedure(VkCommandBuffer commandBuffer, uint32_t pipelineStackSize);
+type PFN_vkCmdTraceRaysKHR = procedure( commandBuffer_:VkCommandBuffer; const pRaygenShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; const pMissShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; const pHitShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; const pCallableShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; width_:uint32_t; height_:uint32_t; depth_:uint32_t );
+type PFN_vkCreateRayTracingPipelinesKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; pipelineCache_:VkPipelineCache; createInfoCount_:uint32_t; const pCreateInfos_:P_VkRayTracingPipelineCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pPipelines_:P_VkPipeline ) :VkResult;
+type PFN_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR = function( device_:VkDevice; pipeline_:VkPipeline; firstGroup_:uint32_t; groupCount_:uint32_t; dataSize_:size_t; pData_:P_void ) :VkResult;
+type PFN_vkCmdTraceRaysIndirectKHR = procedure( commandBuffer_:VkCommandBuffer; const pRaygenShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; const pMissShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; const pHitShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; const pCallableShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; indirectDeviceAddress_:VkDeviceAddress );
+type PFN_vkGetRayTracingShaderGroupStackSizeKHR = function( device_:VkDevice; pipeline_:VkPipeline; group_:uint32_t; groupShader_:VkShaderGroupShaderKHR ) :VkDeviceSize;
+type PFN_vkCmdSetRayTracingPipelineStackSizeKHR = procedure( commandBuffer_:VkCommandBuffer; pipelineStackSize_:uint32_t );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 VKAPI_ATTR void VKAPI_CALL vkCmdTraceRaysKHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkStridedDeviceAddressRegionKHR           pRaygenShaderBindingTable,
-    P_VkStridedDeviceAddressRegionKHR           pMissShaderBindingTable,
-    P_VkStridedDeviceAddressRegionKHR           pHitShaderBindingTable,
-    P_VkStridedDeviceAddressRegionKHR           pCallableShaderBindingTable,
-    uint32_t                                    width,
-    uint32_t                                    height,
-    uint32_t                                    depth);
+    commandBuffer_:VkCommandBuffer;
+    pRaygenShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR;
+    pMissShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR;
+    pHitShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR;
+    pCallableShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR;
+    width_:uint32_t;
+    height_:uint32_t;
+    depth_:uint32_t );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkCreateRayTracingPipelinesKHR(
-    VkDevice                                    device,
-    VkDeferredOperationKHR                      deferredOperation,
-    VkPipelineCache                             pipelineCache,
-    uint32_t                                    createInfoCount,
-    P_VkRayTracingPipelineCreateInfoKHR         pCreateInfos,
-    P_VkAllocationCallbacks                     pAllocator,
-    P_VkPipeline                                pPipelines);
+    device_:VkDevice;
+    deferredOperation_:VkDeferredOperationKHR;
+    pipelineCache_:VkPipelineCache;
+    createInfoCount_:uint32_t;
+    pCreateInfos_:P_VkRayTracingPipelineCreateInfoKHR;
+    pAllocator_:P_VkAllocationCallbacks;
+    pPipelines_:P_VkPipeline );
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetRayTracingCaptureReplayShaderGroupHandlesKHR(
-    VkDevice                                    device,
-    VkPipeline                                  pipeline,
-    uint32_t                                    firstGroup,
-    uint32_t                                    groupCount,
-    size_t                                      dataSize,
-    P_void                                      pData);
+    device_:VkDevice;
+    pipeline_:VkPipeline;
+    firstGroup_:uint32_t;
+    groupCount_:uint32_t;
+    dataSize_:size_t;
+    pData_:P_void );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdTraceRaysIndirectKHR(
-    VkCommandBuffer                             commandBuffer,
-    P_VkStridedDeviceAddressRegionKHR           pRaygenShaderBindingTable,
-    P_VkStridedDeviceAddressRegionKHR           pMissShaderBindingTable,
-    P_VkStridedDeviceAddressRegionKHR           pHitShaderBindingTable,
-    P_VkStridedDeviceAddressRegionKHR           pCallableShaderBindingTable,
-    VkDeviceAddress                             indirectDeviceAddress);
+    commandBuffer_:VkCommandBuffer;
+    pRaygenShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR;
+    pMissShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR;
+    pHitShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR;
+    pCallableShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR;
+    indirectDeviceAddress_:VkDeviceAddress );
 
 VKAPI_ATTR VkDeviceSize VKAPI_CALL vkGetRayTracingShaderGroupStackSizeKHR(
-    VkDevice                                    device,
-    VkPipeline                                  pipeline,
-    uint32_t                                    group,
-    VkShaderGroupShaderKHR                      groupShader);
+    device_:VkDevice;
+    pipeline_:VkPipeline;
+    group_:uint32_t;
+    groupShader_:VkShaderGroupShaderKHR );
 
 VKAPI_ATTR void VKAPI_CALL vkCmdSetRayTracingPipelineStackSizeKHR(
-    VkCommandBuffer                             commandBuffer,
-    uint32_t                                    pipelineStackSize);
+    commandBuffer_:VkCommandBuffer;
+    pipelineStackSize_:uint32_t );
 {$ENDIF}
 
 
