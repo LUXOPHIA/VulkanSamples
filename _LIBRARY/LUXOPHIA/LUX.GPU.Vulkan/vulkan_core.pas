@@ -2554,7 +2554,7 @@ type P_VkPhysicalDeviceProperties = ^VkPhysicalDeviceProperties;
        vendorID :T_uint32_t;
        deviceID :T_uint32_t;
        deviceType :VkPhysicalDeviceType;
-       deviceName :array [ 0..VK_MAX_PHYSICAL_DEVICE_NAME_SIZE-1 ] of char;
+       deviceName :array [ 0..VK_MAX_PHYSICAL_DEVICE_NAME_SIZE-1 ] of T_char;
        pipelineCacheUUID :array [ 0..VK_UUID_SIZE-1 ] of T_uint8_t;
        limits :VkPhysicalDeviceLimits;
        sparseProperties :VkPhysicalDeviceSparseProperties;
@@ -2594,16 +2594,16 @@ type P_VkDeviceCreateInfo = ^VkDeviceCreateInfo;
 
 type P_VkExtensionProperties = ^VkExtensionProperties;
      VkExtensionProperties = record
-       extensionName :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of char;
+       extensionName :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of T_char;
        specVersion :T_uint32_t;
      end;
 
 type P_VkLayerProperties = ^VkLayerProperties;
      VkLayerProperties = record
-       layerName :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of char;
+       layerName :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of T_char;
        specVersion :T_uint32_t;
        implementationVersion :T_uint32_t;
-       description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
+       description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
      end;
 
 type P_VkSubmitInfo = ^VkSubmitInfo;
@@ -5501,8 +5501,8 @@ type P_VkPhysicalDeviceVulkan12Properties = ^VkPhysicalDeviceVulkan12Properties;
        sType :VkStructureType;
        pNext :P_void;
        driverID :VkDriverId;
-       driverName :array [ 0..VK_MAX_DRIVER_NAME_SIZE-1 ] of char;
-       driverInfo :array [ 0..VK_MAX_DRIVER_INFO_SIZE-1 ] of char;
+       driverName :array [ 0..VK_MAX_DRIVER_NAME_SIZE-1 ] of T_char;
+       driverInfo :array [ 0..VK_MAX_DRIVER_INFO_SIZE-1 ] of T_char;
        conformanceVersion :VkConformanceVersion;
        denormBehaviorIndependence :VkShaderFloatControlsIndependence;
        roundingModeIndependence :VkShaderFloatControlsIndependence;
@@ -5659,8 +5659,8 @@ type P_VkPhysicalDeviceDriverProperties = ^VkPhysicalDeviceDriverProperties;
        sType :VkStructureType;
        pNext :P_void;
        driverID :VkDriverId;
-       driverName :array [ 0..VK_MAX_DRIVER_NAME_SIZE-1 ] of char;
-       driverInfo :array [ 0..VK_MAX_DRIVER_INFO_SIZE-1 ] of char;
+       driverName :array [ 0..VK_MAX_DRIVER_NAME_SIZE-1 ] of T_char;
+       driverInfo :array [ 0..VK_MAX_DRIVER_INFO_SIZE-1 ] of T_char;
        conformanceVersion :VkConformanceVersion;
      end;
 
@@ -7304,9 +7304,9 @@ type P_VkPerformanceCounterDescriptionKHR = ^VkPerformanceCounterDescriptionKHR;
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPerformanceCounterDescriptionFlagsKHR;
-       name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
-       category :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
-       description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
+       name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
+       category :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
+       description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
      end;
 
 type P_VkQueryPoolPerformanceCreateInfoKHR = ^VkQueryPoolPerformanceCreateInfoKHR;
@@ -8094,8 +8094,8 @@ type P_VkPipelineExecutablePropertiesKHR = ^VkPipelineExecutablePropertiesKHR;
        sType :VkStructureType;
        pNext :P_void;
        stages :VkShaderStageFlags;
-       name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
-       description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
+       name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
+       description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
        subgroupSize :T_uint32_t;
      end;
 
@@ -8120,8 +8120,8 @@ type P_VkPipelineExecutableStatisticKHR = ^VkPipelineExecutableStatisticKHR;
      VkPipelineExecutableStatisticKHR = record
        sType :VkStructureType;
        pNext :P_void;
-       name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
-       description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
+       name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
+       description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
        format :VkPipelineExecutableStatisticFormatKHR;
        value :VkPipelineExecutableStatisticValueKHR;
      end;
@@ -8130,8 +8130,8 @@ type P_VkPipelineExecutableInternalRepresentationKHR = ^VkPipelineExecutableInte
      VkPipelineExecutableInternalRepresentationKHR = record
        sType :VkStructureType;
        pNext :P_void;
-       name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
-       description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
+       name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
+       description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
        isText :VkBool32;
        dataSize :T_size_t;
        pData :P_void;
@@ -11686,11 +11686,11 @@ type P_VkPhysicalDeviceToolPropertiesEXT = ^VkPhysicalDeviceToolPropertiesEXT;
      VkPhysicalDeviceToolPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
-       name :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of char;
-       version :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of char;
+       name :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of T_char;
+       version :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of T_char;
        purposes :VkToolPurposeFlagsEXT;
-       description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
-       layer :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of char;
+       description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
+       layer :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of T_char;
      end;
 
 type PFN_vkGetPhysicalDeviceToolPropertiesEXT = function( physicalDevice_:VkPhysicalDevice; pToolCount_:P_uint32_t; pToolProperties_:P_VkPhysicalDeviceToolPropertiesEXT ) :VkResult;
