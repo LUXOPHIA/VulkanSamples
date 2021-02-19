@@ -2324,11 +2324,11 @@ type VkPhysicalDeviceLimits = record
        mipmapPrecisionBits :T_uint32_t;
        maxDrawIndexedIndexValue :T_uint32_t;
        maxDrawIndirectCount :T_uint32_t;
-       maxSamplerLodBias :float;
-       maxSamplerAnisotropy :float;
+       maxSamplerLodBias :T_float;
+       maxSamplerAnisotropy :T_float;
        maxViewports :T_uint32_t;
        maxViewportDimensions :array [ 0..2-1 ] of T_uint32_t;
-       viewportBoundsRange :array [ 0..2-1 ] of float;
+       viewportBoundsRange :array [ 0..2-1 ] of T_float;
        viewportSubPixelBits :T_uint32_t;
        minMemoryMapAlignment :T_size_t;
        minTexelBufferOffsetAlignment :VkDeviceSize;
@@ -2338,8 +2338,8 @@ type VkPhysicalDeviceLimits = record
        maxTexelOffset :T_uint32_t;
        minTexelGatherOffset :T_int32_t;
        maxTexelGatherOffset :T_uint32_t;
-       minInterpolationOffset :float;
-       maxInterpolationOffset :float;
+       minInterpolationOffset :T_float;
+       maxInterpolationOffset :T_float;
        subPixelInterpolationOffsetBits :T_uint32_t;
        maxFramebufferWidth :T_uint32_t;
        maxFramebufferHeight :T_uint32_t;
@@ -2356,15 +2356,15 @@ type VkPhysicalDeviceLimits = record
        storageImageSampleCounts :VkSampleCountFlags;
        maxSampleMaskWords :T_uint32_t;
        timestampComputeAndGraphics :VkBool32;
-       timestampPeriod :float;
+       timestampPeriod :T_float;
        maxClipDistances :T_uint32_t;
        maxCullDistances :T_uint32_t;
        maxCombinedClipAndCullDistances :T_uint32_t;
        discreteQueuePriorities :T_uint32_t;
-       pointSizeRange :array [ 0..2-1 ] of float;
-       lineWidthRange :array [ 0..2-1 ] of float;
-       pointSizeGranularity :float;
-       lineWidthGranularity :float;
+       pointSizeRange :array [ 0..2-1 ] of T_float;
+       lineWidthRange :array [ 0..2-1 ] of T_float;
+       pointSizeGranularity :T_float;
+       lineWidthGranularity :T_float;
        strictLines :VkBool32;
        standardSampleLocations :VkBool32;
        optimalBufferCopyOffsetAlignment :VkDeviceSize;
@@ -2723,12 +2723,12 @@ type VkPipelineTessellationStateCreateInfo = record
      end;
 
 type VkViewport = record
-       x :float;
-       y :float;
-       width :float;
-       height :float;
-       minDepth :float;
-       maxDepth :float;
+       x :T_float;
+       y :T_float;
+       width :T_float;
+       height :T_float;
+       minDepth :T_float;
+       maxDepth :T_float;
      end;
 
 type VkPipelineViewportStateCreateInfo = record
@@ -2751,10 +2751,10 @@ type VkPipelineRasterizationStateCreateInfo = record
        cullMode :VkCullModeFlags;
        frontFace :VkFrontFace;
        depthBiasEnable :VkBool32;
-       depthBiasConstantFactor :float;
-       depthBiasClamp :float;
-       depthBiasSlopeFactor :float;
-       lineWidth :float;
+       depthBiasConstantFactor :T_float;
+       depthBiasClamp :T_float;
+       depthBiasSlopeFactor :T_float;
+       lineWidth :T_float;
      end;
 
 type VkPipelineMultisampleStateCreateInfo = record
@@ -2763,7 +2763,7 @@ type VkPipelineMultisampleStateCreateInfo = record
        flags :VkPipelineMultisampleStateCreateFlags;
        rasterizationSamples :VkSampleCountFlagBits;
        sampleShadingEnable :VkBool32;
-       minSampleShading :float;
+       minSampleShading :T_float;
        pSampleMask :P_VkSampleMask;
        alphaToCoverageEnable :VkBool32;
        alphaToOneEnable :VkBool32;
@@ -2790,8 +2790,8 @@ type VkPipelineDepthStencilStateCreateInfo = record
        stencilTestEnable :VkBool32;
        front :VkStencilOpState;
        back :VkStencilOpState;
-       minDepthBounds :float;
-       maxDepthBounds :float;
+       minDepthBounds :T_float;
+       maxDepthBounds :T_float;
      end;
 
 type VkPipelineColorBlendAttachmentState = record
@@ -2813,7 +2813,7 @@ type VkPipelineColorBlendStateCreateInfo = record
        logicOp :VkLogicOp;
        attachmentCount :T_uint32_t;
        pAttachments :P_VkPipelineColorBlendAttachmentState;
-       blendConstants :array [ 0..4-1 ] of float;
+       blendConstants :array [ 0..4-1 ] of T_float;
      end;
 
 type VkPipelineDynamicStateCreateInfo = record
@@ -2872,13 +2872,13 @@ type VkSamplerCreateInfo = record
        addressModeU :VkSamplerAddressMode;
        addressModeV :VkSamplerAddressMode;
        addressModeW :VkSamplerAddressMode;
-       mipLodBias :float;
+       mipLodBias :T_float;
        anisotropyEnable :VkBool32;
-       maxAnisotropy :float;
+       maxAnisotropy :T_float;
        compareEnable :VkBool32;
        compareOp :VkCompareOp;
-       minLod :float;
-       maxLod :float;
+       minLod :T_float;
+       maxLod :T_float;
        borderColor :VkBorderColor;
        unnormalizedCoordinates :VkBool32;
      end;
@@ -3079,13 +3079,13 @@ type VkBufferImageCopy = record
 
 type VkClearColorValue = record
      case Byte of
-       0:( float32 :array [ 0..4-1 ] of float    );
+       0:( float32 :array [ 0..4-1 ] of T_float    );
        1:( int32   :array [ 0..4-1 ] of T_int32_t  );
        2:( uint32  :array [ 0..4-1 ] of T_uint32_t );
      end;
 
 type VkClearDepthStencilValue = record
-       depth :float;
+       depth :T_float;
        stencil :T_uint32_t;
      end;
 
@@ -3236,10 +3236,10 @@ type PFN_vkResetCommandBuffer = function( commandBuffer_:VkCommandBuffer; flags_
 type PFN_vkCmdBindPipeline = procedure( commandBuffer_:VkCommandBuffer; pipelineBindPoint_:VkPipelineBindPoint; pipeline_:VkPipeline );
 type PFN_vkCmdSetViewport = procedure( commandBuffer_:VkCommandBuffer; firstViewport_:T_uint32_t; viewportCount_:T_uint32_t; const pViewports_:P_VkViewport );
 type PFN_vkCmdSetScissor = procedure( commandBuffer_:VkCommandBuffer; firstScissor_:T_uint32_t; scissorCount_:T_uint32_t; const pScissors_:P_VkRect2D );
-type PFN_vkCmdSetLineWidth = procedure( commandBuffer_:VkCommandBuffer; lineWidth_:float );
-type PFN_vkCmdSetDepthBias = procedure( commandBuffer_:VkCommandBuffer; depthBiasConstantFactor_:float; depthBiasClamp_:float; depthBiasSlopeFactor_:float );
-type PFN_vkCmdSetBlendConstants = procedure( commandBuffer_:VkCommandBuffer; const blendConstants_:array [ 0..4-1 ] of float );
-type PFN_vkCmdSetDepthBounds = procedure( commandBuffer_:VkCommandBuffer; minDepthBounds_:float; maxDepthBounds_:float );
+type PFN_vkCmdSetLineWidth = procedure( commandBuffer_:VkCommandBuffer; lineWidth_:T_float );
+type PFN_vkCmdSetDepthBias = procedure( commandBuffer_:VkCommandBuffer; depthBiasConstantFactor_:T_float; depthBiasClamp_:T_float; depthBiasSlopeFactor_:T_float );
+type PFN_vkCmdSetBlendConstants = procedure( commandBuffer_:VkCommandBuffer; const blendConstants_:array [ 0..4-1 ] of T_float );
+type PFN_vkCmdSetDepthBounds = procedure( commandBuffer_:VkCommandBuffer; minDepthBounds_:T_float; maxDepthBounds_:T_float );
 type PFN_vkCmdSetStencilCompareMask = procedure( commandBuffer_:VkCommandBuffer; faceMask_:VkStencilFaceFlags; compareMask_:T_uint32_t );
 type PFN_vkCmdSetStencilWriteMask = procedure( commandBuffer_:VkCommandBuffer; faceMask_:VkStencilFaceFlags; writeMask_:T_uint32_t );
 type PFN_vkCmdSetStencilReference = procedure( commandBuffer_:VkCommandBuffer; faceMask_:VkStencilFaceFlags; reference_:T_uint32_t );
@@ -3800,22 +3800,22 @@ procedure vkCmdSetScissor(
 
 procedure vkCmdSetLineWidth(
     commandBuffer_:VkCommandBuffer;
-    lineWidth_:float ); stdcall; external DLLNAME;
+    lineWidth_:T_float ); stdcall; external DLLNAME;
 
 procedure vkCmdSetDepthBias(
     commandBuffer_:VkCommandBuffer;
-    depthBiasConstantFactor_:float;
-    depthBiasClamp_:float;
-    depthBiasSlopeFactor_:float ); stdcall; external DLLNAME;
+    depthBiasConstantFactor_:T_float;
+    depthBiasClamp_:T_float;
+    depthBiasSlopeFactor_:T_float ); stdcall; external DLLNAME;
 
 procedure vkCmdSetBlendConstants(
     commandBuffer_:VkCommandBuffer;
-    const blendConstants_:array [ 0..4-1 ] of float ); stdcall; external DLLNAME;
+    const blendConstants_:array [ 0..4-1 ] of T_float ); stdcall; external DLLNAME;
 
 procedure vkCmdSetDepthBounds(
     commandBuffer_:VkCommandBuffer;
-    minDepthBounds_:float;
-    maxDepthBounds_:float ); stdcall; external DLLNAME;
+    minDepthBounds_:T_float;
+    maxDepthBounds_:T_float ); stdcall; external DLLNAME;
 
 procedure vkCmdSetStencilCompareMask(
     commandBuffer_:VkCommandBuffer;
@@ -6024,7 +6024,7 @@ type VkDisplaySurfaceCreateInfoKHR = record
        planeIndex :T_uint32_t;
        planeStackIndex :T_uint32_t;
        transform :VkSurfaceTransformFlagBitsKHR;
-       globalAlpha :float;
+       globalAlpha :T_float;
        alphaMode :VkDisplayPlaneAlphaFlagBitsKHR;
        imageExtent :VkExtent2D;
      end;
@@ -6780,7 +6780,7 @@ type VkPerformanceCounterResultKHR = record
        1:( int64   :int64_t  );
        2:( uint32  :T_uint32_t );
        3:( uint64  :uint64_t );
-       4:( float32 :float    );
+       4:( float32 :T_float    );
        5:( float64 :double   );
      end;
 
@@ -8131,7 +8131,7 @@ type VkDebugMarkerMarkerInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        pMarkerName :P_char;
-       color :array [ 0..4-1 ] of float;
+       color :array [ 0..4-1 ] of T_float;
      end;
 
 type PFN_vkDebugMarkerSetObjectTagEXT = function( device_:VkDevice; const pTagInfo_:P_VkDebugMarkerObjectTagInfoEXT ) :VkResult;
@@ -8588,8 +8588,8 @@ const VK_NV_clip_space_w_scaling = 1;
 const VK_NV_CLIP_SPACE_W_SCALING_SPEC_VERSION = 1;
 const VK_NV_CLIP_SPACE_W_SCALING_EXTENSION_NAME = 'VK_NV_clip_space_w_scaling';
 type VkViewportWScalingNV = record
-       xcoeff :float;
-       ycoeff :float;
+       xcoeff :T_float;
+       ycoeff :T_float;
      end;
 
 type VkPipelineViewportWScalingStateCreateInfoNV = record
@@ -8888,9 +8888,9 @@ type VkPipelineRasterizationConservativeStateCreateFlagsEXT = VkFlags;
 type VkPhysicalDeviceConservativeRasterizationPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
-       primitiveOverestimationSize :float;
-       maxExtraPrimitiveOverestimationSize :float;
-       extraPrimitiveOverestimationSizeGranularity :float;
+       primitiveOverestimationSize :T_float;
+       maxExtraPrimitiveOverestimationSize :T_float;
+       extraPrimitiveOverestimationSizeGranularity :T_float;
        primitiveUnderestimation :VkBool32;
        conservativePointAndLineRasterization :VkBool32;
        degenerateTrianglesRasterized :VkBool32;
@@ -8904,7 +8904,7 @@ type VkPipelineRasterizationConservativeStateCreateInfoEXT = record
        pNext :P_void;
        flags :VkPipelineRasterizationConservativeStateCreateFlagsEXT;
        conservativeRasterizationMode :VkConservativeRasterizationModeEXT;
-       extraPrimitiveOverestimationSize :float;
+       extraPrimitiveOverestimationSize :T_float;
      end;
 
 
@@ -8937,8 +8937,8 @@ const VK_EXT_hdr_metadata = 1;
 const VK_EXT_HDR_METADATA_SPEC_VERSION  = 2;
 const VK_EXT_HDR_METADATA_EXTENSION_NAME = 'VK_EXT_hdr_metadata';
 type VkXYColorEXT = record
-       x :float;
-       y :float;
+       x :T_float;
+       y :T_float;
      end;
 
 type VkHdrMetadataEXT = record
@@ -8948,10 +8948,10 @@ type VkHdrMetadataEXT = record
        displayPrimaryGreen :VkXYColorEXT;
        displayPrimaryBlue :VkXYColorEXT;
        whitePoint :VkXYColorEXT;
-       maxLuminance :float;
-       minLuminance :float;
-       maxContentLightLevel :float;
-       maxFrameAverageLightLevel :float;
+       maxLuminance :T_float;
+       minLuminance :T_float;
+       maxContentLightLevel :T_float;
+       maxFrameAverageLightLevel :T_float;
      end;
 
 type PFN_vkSetHdrMetadataEXT = procedure( device_:VkDevice; swapchainCount_:T_uint32_t; const pSwapchains_:P_VkSwapchainKHR; const pMetadata_:P_VkHdrMetadataEXT );
@@ -9003,7 +9003,7 @@ type VkDebugUtilsLabelEXT = record
        sType :VkStructureType;
        pNext :P_void;
        pLabelName :P_char;
-       color :array [ 0..4-1 ] of float;
+       color :array [ 0..4-1 ] of T_float;
      end;
 
 type VkDebugUtilsObjectNameInfoEXT = record
@@ -9187,8 +9187,8 @@ const VK_EXT_sample_locations = 1;
 const VK_EXT_SAMPLE_LOCATIONS_SPEC_VERSION = 1;
 const VK_EXT_SAMPLE_LOCATIONS_EXTENSION_NAME = 'VK_EXT_sample_locations';
 type VkSampleLocationEXT = record
-       x :float;
-       y :float;
+       x :T_float;
+       y :T_float;
      end;
 
 type VkSampleLocationsInfoEXT = record
@@ -9231,7 +9231,7 @@ type VkPhysicalDeviceSampleLocationsPropertiesEXT = record
        pNext :P_void;
        sampleLocationSampleCounts :VkSampleCountFlags;
        maxSampleLocationGridSize :VkExtent2D;
-       sampleLocationCoordinateRange :array [ 0..2-1 ] of float;
+       sampleLocationCoordinateRange :array [ 0..2-1 ] of T_float;
        sampleLocationSubPixelBits :T_uint32_t;
        variableSampleLocations :VkBool32;
      end;
@@ -9820,18 +9820,18 @@ type VkPhysicalDeviceRayTracingPropertiesNV = record
      end;
 
 type VkTransformMatrixKHR = record
-       matrix_:array [ 0..3-1, 0..4-1 ] of float;
+       matrix_:array [ 0..3-1, 0..4-1 ] of T_float;
      end;
 
 type VkTransformMatrixNV = VkTransformMatrixKHR;
 
 type VkAabbPositionsKHR = record
-       minX :float;
-       minY :float;
-       minZ :float;
-       maxX :float;
-       maxY :float;
-       maxZ :float;
+       minX :T_float;
+       minY :T_float;
+       minZ :T_float;
+       maxX :T_float;
+       maxY :T_float;
+       maxZ :T_float;
      end;
 
 type VkAabbPositionsNV = VkAabbPositionsKHR;
@@ -10426,7 +10426,7 @@ type VkPerformanceValueDataINTEL = record
      case Byte of
        0:( value32     :T_uint32_t );
        1:( value64     :uint64_t );
-       2:( valueFloat  :float    );
+       2:( valueFloat  :T_float    );
        3:( valueBool   :VkBool32 );
        4:( valueString :P_char   );
      end;
@@ -10700,7 +10700,7 @@ type VkPhysicalDeviceMemoryPriorityFeaturesEXT = record
 type VkMemoryPriorityAllocateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
-       priority :float;
+       priority :T_float;
      end;
 
 
