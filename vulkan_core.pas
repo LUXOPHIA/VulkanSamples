@@ -1527,7 +1527,8 @@ type VkAccessFlagBits = (
        VK_ACCESS_FRAGMENT_SHADING_RATE_ATTACHMENT_READ_BIT_KHR = VK_ACCESS_SHADING_RATE_IMAGE_READ_BIT_NV,
        VK_ACCESS_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkAccessFlags = VkFlags;
+type P_VkAccessFlags = ^VkAccessFlags;
+     VkAccessFlags = VkFlags;
 
 type VkImageAspectFlagBits = (
        VK_IMAGE_ASPECT_COLOR_BIT = $00000001,
@@ -1546,7 +1547,8 @@ type VkImageAspectFlagBits = (
        VK_IMAGE_ASPECT_PLANE_2_BIT_KHR = VK_IMAGE_ASPECT_PLANE_2_BIT,
        VK_IMAGE_ASPECT_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkImageAspectFlags = VkFlags;
+type P_VkImageAspectFlags = ^VkImageAspectFlags;
+     VkImageAspectFlags = VkFlags;
 
 type VkFormatFeatureFlagBits = (
        VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT = $00000001,
@@ -1589,7 +1591,8 @@ type VkFormatFeatureFlagBits = (
        VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_CUBIC_BIT_EXT = VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_CUBIC_BIT_IMG,
        VK_FORMAT_FEATURE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkFormatFeatureFlags = VkFlags;
+type P_VkFormatFeatureFlags = ^VkFormatFeatureFlags;
+     VkFormatFeatureFlags = VkFlags;
 
 type VkImageCreateFlagBits = (
        VK_IMAGE_CREATE_SPARSE_BINDING_BIT = $00000001,
@@ -1615,7 +1618,8 @@ type VkImageCreateFlagBits = (
        VK_IMAGE_CREATE_ALIAS_BIT_KHR = VK_IMAGE_CREATE_ALIAS_BIT,
        VK_IMAGE_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkImageCreateFlags = VkFlags;
+type P_VkImageCreateFlags = ^VkImageCreateFlags;
+     VkImageCreateFlags = VkFlags;
 
 type VkSampleCountFlagBits = (
        VK_SAMPLE_COUNT_1_BIT = $00000001,
@@ -1627,7 +1631,8 @@ type VkSampleCountFlagBits = (
        VK_SAMPLE_COUNT_64_BIT = $00000040,
        VK_SAMPLE_COUNT_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkSampleCountFlags = VkFlags;
+type P_VkSampleCountFlags = ^VkSampleCountFlags;
+     VkSampleCountFlags = VkFlags;
 
 type VkImageUsageFlagBits = (
        VK_IMAGE_USAGE_TRANSFER_SRC_BIT = $00000001,
@@ -1643,8 +1648,10 @@ type VkImageUsageFlagBits = (
        VK_IMAGE_USAGE_FRAGMENT_SHADING_RATE_ATTACHMENT_BIT_KHR = VK_IMAGE_USAGE_SHADING_RATE_IMAGE_BIT_NV,
        VK_IMAGE_USAGE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkImageUsageFlags = VkFlags;
-type VkInstanceCreateFlags = VkFlags;
+type P_VkImageUsageFlags = ^VkImageUsageFlags;
+     VkImageUsageFlags = VkFlags;
+type P_VkInstanceCreateFlags = ^VkInstanceCreateFlags;
+     VkInstanceCreateFlags = VkFlags;
 
 type VkMemoryHeapFlagBits = (
        VK_MEMORY_HEAP_DEVICE_LOCAL_BIT = $00000001,
@@ -1652,7 +1659,8 @@ type VkMemoryHeapFlagBits = (
        VK_MEMORY_HEAP_MULTI_INSTANCE_BIT_KHR = VK_MEMORY_HEAP_MULTI_INSTANCE_BIT,
        VK_MEMORY_HEAP_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkMemoryHeapFlags = VkFlags;
+type P_VkMemoryHeapFlags = ^VkMemoryHeapFlags;
+     VkMemoryHeapFlags = VkFlags;
 
 type VkMemoryPropertyFlagBits = (
        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT = $00000001,
@@ -1665,7 +1673,8 @@ type VkMemoryPropertyFlagBits = (
        VK_MEMORY_PROPERTY_DEVICE_UNCACHED_BIT_AMD = $00000080,
        VK_MEMORY_PROPERTY_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkMemoryPropertyFlags = VkFlags;
+type P_VkMemoryPropertyFlags = ^VkMemoryPropertyFlags;
+     VkMemoryPropertyFlags = VkFlags;
 
 type VkQueueFlagBits = (
        VK_QUEUE_GRAPHICS_BIT = $00000001,
@@ -1675,14 +1684,17 @@ type VkQueueFlagBits = (
        VK_QUEUE_PROTECTED_BIT = $00000010,
        VK_QUEUE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkQueueFlags = VkFlags;
-type VkDeviceCreateFlags = VkFlags;
+type P_VkQueueFlags = ^VkQueueFlags;
+     VkQueueFlags = VkFlags;
+type P_VkDeviceCreateFlags = ^VkDeviceCreateFlags;
+     VkDeviceCreateFlags = VkFlags;
 
 type VkDeviceQueueCreateFlagBits = (
        VK_DEVICE_QUEUE_CREATE_PROTECTED_BIT = $00000001,
        VK_DEVICE_QUEUE_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkDeviceQueueCreateFlags = VkFlags;
+type P_VkDeviceQueueCreateFlags = ^VkDeviceQueueCreateFlags;
+     VkDeviceQueueCreateFlags = VkFlags;
 
 type VkPipelineStageFlagBits = (
        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT = $00000001,
@@ -1718,13 +1730,15 @@ type VkPipelineStageFlagBits = (
        VK_PIPELINE_STAGE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
 type VkPipelineStageFlags = VkFlags;  P_VkPipelineStageFlags = ^VkPipelineStageFlags;
-type VkMemoryMapFlags = VkFlags;
+type P_VkMemoryMapFlags = ^VkMemoryMapFlags;
+     VkMemoryMapFlags = VkFlags;
 
 type VkSparseMemoryBindFlagBits = (
        VK_SPARSE_MEMORY_BIND_METADATA_BIT = $00000001,
        VK_SPARSE_MEMORY_BIND_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkSparseMemoryBindFlags = VkFlags;
+type P_VkSparseMemoryBindFlags = ^VkSparseMemoryBindFlags;
+     VkSparseMemoryBindFlags = VkFlags;
 
 type VkSparseImageFormatFlagBits = (
        VK_SPARSE_IMAGE_FORMAT_SINGLE_MIPTAIL_BIT = $00000001,
@@ -1732,20 +1746,24 @@ type VkSparseImageFormatFlagBits = (
        VK_SPARSE_IMAGE_FORMAT_NONSTANDARD_BLOCK_SIZE_BIT = $00000004,
        VK_SPARSE_IMAGE_FORMAT_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkSparseImageFormatFlags = VkFlags;
+type P_VkSparseImageFormatFlags = ^VkSparseImageFormatFlags;
+     VkSparseImageFormatFlags = VkFlags;
 
 type VkFenceCreateFlagBits = (
        VK_FENCE_CREATE_SIGNALED_BIT = $00000001,
        VK_FENCE_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkFenceCreateFlags = VkFlags;
-type VkSemaphoreCreateFlags = VkFlags;
+type P_VkFenceCreateFlags = ^VkFenceCreateFlags;
+     VkFenceCreateFlags = VkFlags;
+type P_VkSemaphoreCreateFlags = ^VkSemaphoreCreateFlags;
+     VkSemaphoreCreateFlags = VkFlags;
 
 type VkEventCreateFlagBits = (
        VK_EVENT_CREATE_DEVICE_ONLY_BIT_KHR = $00000001,
        VK_EVENT_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkEventCreateFlags = VkFlags;
+type P_VkEventCreateFlags = ^VkEventCreateFlags;
+     VkEventCreateFlags = VkFlags;
 
 type VkQueryPipelineStatisticFlagBits = (
        VK_QUERY_PIPELINE_STATISTIC_INPUT_ASSEMBLY_VERTICES_BIT = $00000001,
@@ -1761,8 +1779,10 @@ type VkQueryPipelineStatisticFlagBits = (
        VK_QUERY_PIPELINE_STATISTIC_COMPUTE_SHADER_INVOCATIONS_BIT = $00000400,
        VK_QUERY_PIPELINE_STATISTIC_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkQueryPipelineStatisticFlags = VkFlags;
-type VkQueryPoolCreateFlags = VkFlags;
+type P_VkQueryPipelineStatisticFlags = ^VkQueryPipelineStatisticFlags;
+     VkQueryPipelineStatisticFlags = VkFlags;
+type P_VkQueryPoolCreateFlags = ^VkQueryPoolCreateFlags;
+     VkQueryPoolCreateFlags = VkFlags;
 
 type VkQueryResultFlagBits = (
        VK_QUERY_RESULT_64_BIT = $00000001,
@@ -1771,7 +1791,8 @@ type VkQueryResultFlagBits = (
        VK_QUERY_RESULT_PARTIAL_BIT = $00000008,
        VK_QUERY_RESULT_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkQueryResultFlags = VkFlags;
+type P_VkQueryResultFlags = ^VkQueryResultFlags;
+     VkQueryResultFlags = VkFlags;
 
 type VkBufferCreateFlagBits = (
        VK_BUFFER_CREATE_SPARSE_BINDING_BIT = $00000001,
@@ -1783,7 +1804,8 @@ type VkBufferCreateFlagBits = (
        VK_BUFFER_CREATE_DEVICE_ADDRESS_CAPTURE_REPLAY_BIT_KHR = VK_BUFFER_CREATE_DEVICE_ADDRESS_CAPTURE_REPLAY_BIT,
        VK_BUFFER_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkBufferCreateFlags = VkFlags;
+type P_VkBufferCreateFlags = ^VkBufferCreateFlags;
+     VkBufferCreateFlags = VkFlags;
 
 type VkBufferUsageFlagBits = (
        VK_BUFFER_USAGE_TRANSFER_SRC_BIT = $00000001,
@@ -1807,26 +1829,31 @@ type VkBufferUsageFlagBits = (
        VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT_KHR = VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
        VK_BUFFER_USAGE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkBufferUsageFlags = VkFlags;
-type VkBufferViewCreateFlags = VkFlags;
+type P_VkBufferUsageFlags = ^VkBufferUsageFlags;
+     VkBufferUsageFlags = VkFlags;
+type P_VkBufferViewCreateFlags = ^VkBufferViewCreateFlags;
+     VkBufferViewCreateFlags = VkFlags;
 
 type VkImageViewCreateFlagBits = (
        VK_IMAGE_VIEW_CREATE_FRAGMENT_DENSITY_MAP_DYNAMIC_BIT_EXT = $00000001,
        VK_IMAGE_VIEW_CREATE_FRAGMENT_DENSITY_MAP_DEFERRED_BIT_EXT = $00000002,
        VK_IMAGE_VIEW_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkImageViewCreateFlags = VkFlags;
+type P_VkImageViewCreateFlags = ^VkImageViewCreateFlags;
+     VkImageViewCreateFlags = VkFlags;
 
 type VkShaderModuleCreateFlagBits = (
        VK_SHADER_MODULE_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkShaderModuleCreateFlags = VkFlags;
+type P_VkShaderModuleCreateFlags = ^VkShaderModuleCreateFlags;
+     VkShaderModuleCreateFlags = VkFlags;
 
 type VkPipelineCacheCreateFlagBits = (
        VK_PIPELINE_CACHE_CREATE_EXTERNALLY_SYNCHRONIZED_BIT_EXT = $00000001,
        VK_PIPELINE_CACHE_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkPipelineCacheCreateFlags = VkFlags;
+type P_VkPipelineCacheCreateFlags = ^VkPipelineCacheCreateFlags;
+     VkPipelineCacheCreateFlags = VkFlags;
 
 type VkColorComponentFlagBits = (
        VK_COLOR_COMPONENT_R_BIT = $00000001,
@@ -1835,7 +1862,8 @@ type VkColorComponentFlagBits = (
        VK_COLOR_COMPONENT_A_BIT = $00000008,
        VK_COLOR_COMPONENT_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkColorComponentFlags = VkFlags;
+type P_VkColorComponentFlags = ^VkColorComponentFlags;
+     VkColorComponentFlags = VkFlags;
 
 type VkPipelineCreateFlagBits = (
        VK_PIPELINE_CREATE_DISABLE_OPTIMIZATION_BIT = $00000001,
@@ -1862,14 +1890,16 @@ type VkPipelineCreateFlagBits = (
        VK_PIPELINE_CREATE_DISPATCH_BASE_KHR = VK_PIPELINE_CREATE_DISPATCH_BASE,
        VK_PIPELINE_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkPipelineCreateFlags = VkFlags;
+type P_VkPipelineCreateFlags = ^VkPipelineCreateFlags;
+     VkPipelineCreateFlags = VkFlags;
 
 type VkPipelineShaderStageCreateFlagBits = (
        VK_PIPELINE_SHADER_STAGE_CREATE_ALLOW_VARYING_SUBGROUP_SIZE_BIT_EXT = $00000001,
        VK_PIPELINE_SHADER_STAGE_CREATE_REQUIRE_FULL_SUBGROUPS_BIT_EXT = $00000002,
        VK_PIPELINE_SHADER_STAGE_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkPipelineShaderStageCreateFlags = VkFlags;
+type P_VkPipelineShaderStageCreateFlags = ^VkPipelineShaderStageCreateFlags;
+     VkPipelineShaderStageCreateFlags = VkFlags;
 
 type VkShaderStageFlagBits = (
        VK_SHADER_STAGE_VERTEX_BIT = $00000001,
@@ -1904,25 +1934,38 @@ type VkCullModeFlagBits = (
        VK_CULL_MODE_FRONT_AND_BACK = $00000003,
        VK_CULL_MODE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkCullModeFlags = VkFlags;
-type VkPipelineVertexInputStateCreateFlags = VkFlags;
-type VkPipelineInputAssemblyStateCreateFlags = VkFlags;
-type VkPipelineTessellationStateCreateFlags = VkFlags;
-type VkPipelineViewportStateCreateFlags = VkFlags;
-type VkPipelineRasterizationStateCreateFlags = VkFlags;
-type VkPipelineMultisampleStateCreateFlags = VkFlags;
-type VkPipelineDepthStencilStateCreateFlags = VkFlags;
-type VkPipelineColorBlendStateCreateFlags = VkFlags;
-type VkPipelineDynamicStateCreateFlags = VkFlags;
-type VkPipelineLayoutCreateFlags = VkFlags;
-type VkShaderStageFlags = VkFlags;
+type P_VkCullModeFlags = ^VkCullModeFlags;
+     VkCullModeFlags = VkFlags;
+type P_VkPipelineVertexInputStateCreateFlags = ^VkPipelineVertexInputStateCreateFlags;
+     VkPipelineVertexInputStateCreateFlags = VkFlags;
+type P_VkPipelineInputAssemblyStateCreateFlags = ^VkPipelineInputAssemblyStateCreateFlags;
+     VkPipelineInputAssemblyStateCreateFlags = VkFlags;
+type P_VkPipelineTessellationStateCreateFlags = ^VkPipelineTessellationStateCreateFlags;
+     VkPipelineTessellationStateCreateFlags = VkFlags;
+type P_VkPipelineViewportStateCreateFlags = ^VkPipelineViewportStateCreateFlags;
+     VkPipelineViewportStateCreateFlags = VkFlags;
+type P_VkPipelineRasterizationStateCreateFlags = ^VkPipelineRasterizationStateCreateFlags;
+     VkPipelineRasterizationStateCreateFlags = VkFlags;
+type P_VkPipelineMultisampleStateCreateFlags = ^VkPipelineMultisampleStateCreateFlags;
+     VkPipelineMultisampleStateCreateFlags = VkFlags;
+type P_VkPipelineDepthStencilStateCreateFlags = ^VkPipelineDepthStencilStateCreateFlags;
+     VkPipelineDepthStencilStateCreateFlags = VkFlags;
+type P_VkPipelineColorBlendStateCreateFlags = ^VkPipelineColorBlendStateCreateFlags;
+     VkPipelineColorBlendStateCreateFlags = VkFlags;
+type P_VkPipelineDynamicStateCreateFlags = ^VkPipelineDynamicStateCreateFlags;
+     VkPipelineDynamicStateCreateFlags = VkFlags;
+type P_VkPipelineLayoutCreateFlags = ^VkPipelineLayoutCreateFlags;
+     VkPipelineLayoutCreateFlags = VkFlags;
+type P_VkShaderStageFlags = ^VkShaderStageFlags;
+     VkShaderStageFlags = VkFlags;
 
 type VkSamplerCreateFlagBits = (
        VK_SAMPLER_CREATE_SUBSAMPLED_BIT_EXT = $00000001,
        VK_SAMPLER_CREATE_SUBSAMPLED_COARSE_RECONSTRUCTION_BIT_EXT = $00000002,
        VK_SAMPLER_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkSamplerCreateFlags = VkFlags;
+type P_VkSamplerCreateFlags = ^VkSamplerCreateFlags;
+     VkSamplerCreateFlags = VkFlags;
 
 type VkDescriptorPoolCreateFlagBits = (
        VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT = $00000001,
@@ -1931,8 +1974,10 @@ type VkDescriptorPoolCreateFlagBits = (
        VK_DESCRIPTOR_POOL_CREATE_UPDATE_AFTER_BIND_BIT_EXT = VK_DESCRIPTOR_POOL_CREATE_UPDATE_AFTER_BIND_BIT,
        VK_DESCRIPTOR_POOL_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkDescriptorPoolCreateFlags = VkFlags;
-type VkDescriptorPoolResetFlags = VkFlags;
+type P_VkDescriptorPoolCreateFlags = ^VkDescriptorPoolCreateFlags;
+     VkDescriptorPoolCreateFlags = VkFlags;
+type P_VkDescriptorPoolResetFlags = ^VkDescriptorPoolResetFlags;
+     VkDescriptorPoolResetFlags = VkFlags;
 
 type VkDescriptorSetLayoutCreateFlagBits = (
        VK_DESCRIPTOR_SET_LAYOUT_CREATE_UPDATE_AFTER_BIND_POOL_BIT = $00000002,
@@ -1941,13 +1986,15 @@ type VkDescriptorSetLayoutCreateFlagBits = (
        VK_DESCRIPTOR_SET_LAYOUT_CREATE_UPDATE_AFTER_BIND_POOL_BIT_EXT = VK_DESCRIPTOR_SET_LAYOUT_CREATE_UPDATE_AFTER_BIND_POOL_BIT,
        VK_DESCRIPTOR_SET_LAYOUT_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkDescriptorSetLayoutCreateFlags = VkFlags;
+type P_VkDescriptorSetLayoutCreateFlags = ^VkDescriptorSetLayoutCreateFlags;
+     VkDescriptorSetLayoutCreateFlags = VkFlags;
 
 type VkAttachmentDescriptionFlagBits = (
        VK_ATTACHMENT_DESCRIPTION_MAY_ALIAS_BIT = $00000001,
        VK_ATTACHMENT_DESCRIPTION_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkAttachmentDescriptionFlags = VkFlags;
+type P_VkAttachmentDescriptionFlags = ^VkAttachmentDescriptionFlags;
+     VkAttachmentDescriptionFlags = VkFlags;
 
 type VkDependencyFlagBits = (
        VK_DEPENDENCY_BY_REGION_BIT = $00000001,
@@ -1957,20 +2004,23 @@ type VkDependencyFlagBits = (
        VK_DEPENDENCY_DEVICE_GROUP_BIT_KHR = VK_DEPENDENCY_DEVICE_GROUP_BIT,
        VK_DEPENDENCY_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkDependencyFlags = VkFlags;
+type P_VkDependencyFlags = ^VkDependencyFlags;
+     VkDependencyFlags = VkFlags;
 
 type VkFramebufferCreateFlagBits = (
        VK_FRAMEBUFFER_CREATE_IMAGELESS_BIT = $00000001,
        VK_FRAMEBUFFER_CREATE_IMAGELESS_BIT_KHR = VK_FRAMEBUFFER_CREATE_IMAGELESS_BIT,
        VK_FRAMEBUFFER_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkFramebufferCreateFlags = VkFlags;
+type P_VkFramebufferCreateFlags = ^VkFramebufferCreateFlags;
+     VkFramebufferCreateFlags = VkFlags;
 
 type VkRenderPassCreateFlagBits = (
        VK_RENDER_PASS_CREATE_TRANSFORM_BIT_QCOM = $00000002,
        VK_RENDER_PASS_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkRenderPassCreateFlags = VkFlags;
+type P_VkRenderPassCreateFlags = ^VkRenderPassCreateFlags;
+     VkRenderPassCreateFlags = VkFlags;
 
 type VkSubpassDescriptionFlagBits = (
        VK_SUBPASS_DESCRIPTION_PER_VIEW_ATTRIBUTES_BIT_NVX = $00000001,
@@ -1979,7 +2029,8 @@ type VkSubpassDescriptionFlagBits = (
        VK_SUBPASS_DESCRIPTION_SHADER_RESOLVE_BIT_QCOM = $00000008,
        VK_SUBPASS_DESCRIPTION_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkSubpassDescriptionFlags = VkFlags;
+type P_VkSubpassDescriptionFlags = ^VkSubpassDescriptionFlags;
+     VkSubpassDescriptionFlags = VkFlags;
 
 type VkCommandPoolCreateFlagBits = (
        VK_COMMAND_POOL_CREATE_TRANSIENT_BIT = $00000001,
@@ -1987,13 +2038,15 @@ type VkCommandPoolCreateFlagBits = (
        VK_COMMAND_POOL_CREATE_PROTECTED_BIT = $00000004,
        VK_COMMAND_POOL_CREATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkCommandPoolCreateFlags = VkFlags;
+type P_VkCommandPoolCreateFlags = ^VkCommandPoolCreateFlags;
+     VkCommandPoolCreateFlags = VkFlags;
 
 type VkCommandPoolResetFlagBits = (
        VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT = $00000001,
        VK_COMMAND_POOL_RESET_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkCommandPoolResetFlags = VkFlags;
+type P_VkCommandPoolResetFlags = ^VkCommandPoolResetFlags;
+     VkCommandPoolResetFlags = VkFlags;
 
 type VkCommandBufferUsageFlagBits = (
        VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT = $00000001,
@@ -2001,19 +2054,22 @@ type VkCommandBufferUsageFlagBits = (
        VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT = $00000004,
        VK_COMMAND_BUFFER_USAGE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkCommandBufferUsageFlags = VkFlags;
+type P_VkCommandBufferUsageFlags = ^VkCommandBufferUsageFlags;
+     VkCommandBufferUsageFlags = VkFlags;
 
 type VkQueryControlFlagBits = (
        VK_QUERY_CONTROL_PRECISE_BIT = $00000001,
        VK_QUERY_CONTROL_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkQueryControlFlags = VkFlags;
+type P_VkQueryControlFlags = ^VkQueryControlFlags;
+     VkQueryControlFlags = VkFlags;
 
 type VkCommandBufferResetFlagBits = (
        VK_COMMAND_BUFFER_RESET_RELEASE_RESOURCES_BIT = $00000001,
        VK_COMMAND_BUFFER_RESET_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkCommandBufferResetFlags = VkFlags;
+type P_VkCommandBufferResetFlags = ^VkCommandBufferResetFlags;
+     VkCommandBufferResetFlags = VkFlags;
 
 type VkStencilFaceFlagBits = (
        VK_STENCIL_FACE_FRONT_BIT = $00000001,
@@ -2022,7 +2078,8 @@ type VkStencilFaceFlagBits = (
        VK_STENCIL_FRONT_AND_BACK = VK_STENCIL_FACE_FRONT_AND_BACK,
        VK_STENCIL_FACE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkStencilFaceFlags = VkFlags;
+type P_VkStencilFaceFlags = ^VkStencilFaceFlags;
+     VkStencilFaceFlags = VkFlags;
 type P_VkExtent2D = ^VkExtent2D;
      VkExtent2D = record
        width :T_uint32_t;
@@ -2164,7 +2221,8 @@ type PFN_vkReallocationFunction = function(
     alignment_:T_size_t;
     allocationScope_:VkSystemAllocationScope ) :P_void;
 
-type PFN_vkVoidFunction = procedure;
+type P_PFN_vkVoidFunction = ^PFN_vkVoidFunction;
+     PFN_vkVoidFunction = procedure;
 type P_VkAllocationCallbacks = ^VkAllocationCallbacks;
      VkAllocationCallbacks = record
        pUserData :P_void;
@@ -4192,8 +4250,10 @@ const VK_VERSION_1_1 = 1;
 // Vulkan 1.1 version number
 const VK_API_VERSION_1_1 = {VK_MAKE_VERSION( 1, 1, 0 )} ( 1 shl 22 ) or ( 1 shl 12 ) or 0; // Patch version should always be set to 0
 
-type VkSamplerYcbcrConversion = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkDescriptorUpdateTemplate = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkSamplerYcbcrConversion = ^VkSamplerYcbcrConversion;
+     VkSamplerYcbcrConversion = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkDescriptorUpdateTemplate = ^VkDescriptorUpdateTemplate;
+     VkDescriptorUpdateTemplate = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_MAX_DEVICE_GROUP_SIZE          = 32;
 const VK_LUID_SIZE                      = 8;
 const VK_QUEUE_FAMILY_EXTERNAL          = UInt32( $FFFFFFFF )-1; {(~0U-1)}
@@ -4263,7 +4323,8 @@ type VkSubgroupFeatureFlagBits = (
        VK_SUBGROUP_FEATURE_PARTITIONED_BIT_NV = $00000100,
        VK_SUBGROUP_FEATURE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkSubgroupFeatureFlags = VkFlags;
+type P_VkSubgroupFeatureFlags = ^VkSubgroupFeatureFlags;
+     VkSubgroupFeatureFlags = VkFlags;
 
 type VkPeerMemoryFeatureFlagBits = (
        VK_PEER_MEMORY_FEATURE_COPY_SRC_BIT = $00000001,
@@ -4276,7 +4337,8 @@ type VkPeerMemoryFeatureFlagBits = (
        VK_PEER_MEMORY_FEATURE_GENERIC_DST_BIT_KHR = VK_PEER_MEMORY_FEATURE_GENERIC_DST_BIT,
        VK_PEER_MEMORY_FEATURE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkPeerMemoryFeatureFlags = VkFlags;
+type P_VkPeerMemoryFeatureFlags = ^VkPeerMemoryFeatureFlags;
+     VkPeerMemoryFeatureFlags = VkFlags;
 
 type VkMemoryAllocateFlagBits = (
        VK_MEMORY_ALLOCATE_DEVICE_MASK_BIT = $00000001,
@@ -4287,9 +4349,12 @@ type VkMemoryAllocateFlagBits = (
        VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_CAPTURE_REPLAY_BIT_KHR = VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_CAPTURE_REPLAY_BIT,
        VK_MEMORY_ALLOCATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkMemoryAllocateFlags = VkFlags;
-type VkCommandPoolTrimFlags = VkFlags;
-type VkDescriptorUpdateTemplateCreateFlags = VkFlags;
+type P_VkMemoryAllocateFlags = ^VkMemoryAllocateFlags;
+     VkMemoryAllocateFlags = VkFlags;
+type P_VkCommandPoolTrimFlags = ^VkCommandPoolTrimFlags;
+     VkCommandPoolTrimFlags = VkFlags;
+type P_VkDescriptorUpdateTemplateCreateFlags = ^VkDescriptorUpdateTemplateCreateFlags;
+     VkDescriptorUpdateTemplateCreateFlags = VkFlags;
 
 type VkExternalMemoryHandleTypeFlagBits = (
        VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_FD_BIT = $00000001,
@@ -4312,7 +4377,8 @@ type VkExternalMemoryHandleTypeFlagBits = (
        VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_RESOURCE_BIT_KHR = VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_RESOURCE_BIT,
        VK_EXTERNAL_MEMORY_HANDLE_TYPE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkExternalMemoryHandleTypeFlags = VkFlags;
+type P_VkExternalMemoryHandleTypeFlags = ^VkExternalMemoryHandleTypeFlags;
+     VkExternalMemoryHandleTypeFlags = VkFlags;
 
 type VkExternalMemoryFeatureFlagBits = (
        VK_EXTERNAL_MEMORY_FEATURE_DEDICATED_ONLY_BIT = $00000001,
@@ -4323,7 +4389,8 @@ type VkExternalMemoryFeatureFlagBits = (
        VK_EXTERNAL_MEMORY_FEATURE_IMPORTABLE_BIT_KHR = VK_EXTERNAL_MEMORY_FEATURE_IMPORTABLE_BIT,
        VK_EXTERNAL_MEMORY_FEATURE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkExternalMemoryFeatureFlags = VkFlags;
+type P_VkExternalMemoryFeatureFlags = ^VkExternalMemoryFeatureFlags;
+     VkExternalMemoryFeatureFlags = VkFlags;
 
 type VkExternalFenceHandleTypeFlagBits = (
        VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_FD_BIT = $00000001,
@@ -4336,7 +4403,8 @@ type VkExternalFenceHandleTypeFlagBits = (
        VK_EXTERNAL_FENCE_HANDLE_TYPE_SYNC_FD_BIT_KHR = VK_EXTERNAL_FENCE_HANDLE_TYPE_SYNC_FD_BIT,
        VK_EXTERNAL_FENCE_HANDLE_TYPE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkExternalFenceHandleTypeFlags = VkFlags;
+type P_VkExternalFenceHandleTypeFlags = ^VkExternalFenceHandleTypeFlags;
+     VkExternalFenceHandleTypeFlags = VkFlags;
 
 type VkExternalFenceFeatureFlagBits = (
        VK_EXTERNAL_FENCE_FEATURE_EXPORTABLE_BIT = $00000001,
@@ -4345,21 +4413,24 @@ type VkExternalFenceFeatureFlagBits = (
        VK_EXTERNAL_FENCE_FEATURE_IMPORTABLE_BIT_KHR = VK_EXTERNAL_FENCE_FEATURE_IMPORTABLE_BIT,
        VK_EXTERNAL_FENCE_FEATURE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkExternalFenceFeatureFlags = VkFlags;
+type P_VkExternalFenceFeatureFlags = ^VkExternalFenceFeatureFlags;
+     VkExternalFenceFeatureFlags = VkFlags;
 
 type VkFenceImportFlagBits = (
        VK_FENCE_IMPORT_TEMPORARY_BIT = $00000001,
        VK_FENCE_IMPORT_TEMPORARY_BIT_KHR = VK_FENCE_IMPORT_TEMPORARY_BIT,
        VK_FENCE_IMPORT_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkFenceImportFlags = VkFlags;
+type P_VkFenceImportFlags = ^VkFenceImportFlags;
+     VkFenceImportFlags = VkFlags;
 
 type VkSemaphoreImportFlagBits = (
        VK_SEMAPHORE_IMPORT_TEMPORARY_BIT = $00000001,
        VK_SEMAPHORE_IMPORT_TEMPORARY_BIT_KHR = VK_SEMAPHORE_IMPORT_TEMPORARY_BIT,
        VK_SEMAPHORE_IMPORT_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkSemaphoreImportFlags = VkFlags;
+type P_VkSemaphoreImportFlags = ^VkSemaphoreImportFlags;
+     VkSemaphoreImportFlags = VkFlags;
 
 type VkExternalSemaphoreHandleTypeFlagBits = (
        VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_FD_BIT = $00000001,
@@ -4375,7 +4446,8 @@ type VkExternalSemaphoreHandleTypeFlagBits = (
        VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_SYNC_FD_BIT_KHR = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_SYNC_FD_BIT,
        VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkExternalSemaphoreHandleTypeFlags = VkFlags;
+type P_VkExternalSemaphoreHandleTypeFlags = ^VkExternalSemaphoreHandleTypeFlags;
+     VkExternalSemaphoreHandleTypeFlags = VkFlags;
 
 type VkExternalSemaphoreFeatureFlagBits = (
        VK_EXTERNAL_SEMAPHORE_FEATURE_EXPORTABLE_BIT = $00000001,
@@ -4384,7 +4456,8 @@ type VkExternalSemaphoreFeatureFlagBits = (
        VK_EXTERNAL_SEMAPHORE_FEATURE_IMPORTABLE_BIT_KHR = VK_EXTERNAL_SEMAPHORE_FEATURE_IMPORTABLE_BIT,
        VK_EXTERNAL_SEMAPHORE_FEATURE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkExternalSemaphoreFeatureFlags = VkFlags;
+type P_VkExternalSemaphoreFeatureFlags = ^VkExternalSemaphoreFeatureFlags;
+     VkExternalSemaphoreFeatureFlags = VkFlags;
 type P_VkPhysicalDeviceSubgroupProperties = ^VkPhysicalDeviceSubgroupProperties;
      VkPhysicalDeviceSubgroupProperties = record
        sType :VkStructureType;
@@ -4697,7 +4770,8 @@ type P_VkPhysicalDeviceVariablePointersFeatures = ^VkPhysicalDeviceVariablePoint
        variablePointers :VkBool32;
      end;
 
-type VkPhysicalDeviceVariablePointerFeatures = VkPhysicalDeviceVariablePointersFeatures;
+type P_VkPhysicalDeviceVariablePointerFeatures = ^VkPhysicalDeviceVariablePointerFeatures;
+     VkPhysicalDeviceVariablePointerFeatures = VkPhysicalDeviceVariablePointersFeatures;
 
 type P_VkPhysicalDeviceProtectedMemoryFeatures = ^VkPhysicalDeviceProtectedMemoryFeatures;
      VkPhysicalDeviceProtectedMemoryFeatures = record
@@ -4939,7 +5013,8 @@ type P_VkPhysicalDeviceShaderDrawParametersFeatures = ^VkPhysicalDeviceShaderDra
        shaderDrawParameters :VkBool32;
      end;
 
-type VkPhysicalDeviceShaderDrawParameterFeatures = VkPhysicalDeviceShaderDrawParametersFeatures;
+type P_VkPhysicalDeviceShaderDrawParameterFeatures = ^VkPhysicalDeviceShaderDrawParameterFeatures;
+     VkPhysicalDeviceShaderDrawParameterFeatures = VkPhysicalDeviceShaderDrawParametersFeatures;
 
 type PFN_vkEnumerateInstanceVersion = function( pApiVersion_:P_uint32_t ) :VkResult;
 type PFN_vkBindBufferMemory2 = function( device_:VkDevice; bindInfoCount_:T_uint32_t; const pBindInfos_:P_VkBindBufferMemoryInfo ) :VkResult;
@@ -5196,7 +5271,8 @@ type VkResolveModeFlagBits = (
        VK_RESOLVE_MODE_MAX_BIT_KHR = VK_RESOLVE_MODE_MAX_BIT,
        VK_RESOLVE_MODE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkResolveModeFlags = VkFlags;
+type P_VkResolveModeFlags = ^VkResolveModeFlags;
+     VkResolveModeFlags = VkFlags;
 
 type VkDescriptorBindingFlagBits = (
        VK_DESCRIPTOR_BINDING_UPDATE_AFTER_BIND_BIT = $00000001,
@@ -5209,14 +5285,16 @@ type VkDescriptorBindingFlagBits = (
        VK_DESCRIPTOR_BINDING_VARIABLE_DESCRIPTOR_COUNT_BIT_EXT = VK_DESCRIPTOR_BINDING_VARIABLE_DESCRIPTOR_COUNT_BIT,
        VK_DESCRIPTOR_BINDING_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkDescriptorBindingFlags = VkFlags;
+type P_VkDescriptorBindingFlags = ^VkDescriptorBindingFlags;
+     VkDescriptorBindingFlags = VkFlags;
 
 type VkSemaphoreWaitFlagBits = (
        VK_SEMAPHORE_WAIT_ANY_BIT = $00000001,
        VK_SEMAPHORE_WAIT_ANY_BIT_KHR = VK_SEMAPHORE_WAIT_ANY_BIT,
        VK_SEMAPHORE_WAIT_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkSemaphoreWaitFlags = VkFlags;
+type P_VkSemaphoreWaitFlags = ^VkSemaphoreWaitFlags;
+     VkSemaphoreWaitFlags = VkFlags;
 type P_VkPhysicalDeviceVulkan11Features = ^VkPhysicalDeviceVulkan11Features;
      VkPhysicalDeviceVulkan11Features = record
        sType :VkStructureType;
@@ -5913,7 +5991,8 @@ function vkGetDeviceMemoryOpaqueCaptureAddress(
 
 
 const VK_KHR_surface = 1;
-type VkSurfaceKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkSurfaceKHR = ^VkSurfaceKHR;
+     VkSurfaceKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_KHR_SURFACE_SPEC_VERSION       = 25;
 const VK_KHR_SURFACE_EXTENSION_NAME = 'VK_KHR_surface';
 
@@ -5969,8 +6048,10 @@ type VkCompositeAlphaFlagBitsKHR = (
        VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR = $00000008,
        VK_COMPOSITE_ALPHA_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkCompositeAlphaFlagsKHR = VkFlags;
-type VkSurfaceTransformFlagsKHR = VkFlags;
+type P_VkCompositeAlphaFlagsKHR = ^VkCompositeAlphaFlagsKHR;
+     VkCompositeAlphaFlagsKHR = VkFlags;
+type P_VkSurfaceTransformFlagsKHR = ^VkSurfaceTransformFlagsKHR;
+     VkSurfaceTransformFlagsKHR = VkFlags;
 type P_VkSurfaceCapabilitiesKHR = ^VkSurfaceCapabilitiesKHR;
      VkSurfaceCapabilitiesKHR = record
        minImageCount :T_uint32_t;
@@ -6029,7 +6110,8 @@ function vkGetPhysicalDeviceSurfacePresentModesKHR(
 
 
 const VK_KHR_swapchain = 1;
-type VkSwapchainKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkSwapchainKHR = ^VkSwapchainKHR;
+     VkSwapchainKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_KHR_SWAPCHAIN_SPEC_VERSION     = 70;
 const VK_KHR_SWAPCHAIN_EXTENSION_NAME = 'VK_KHR_swapchain';
 
@@ -6039,7 +6121,8 @@ type VkSwapchainCreateFlagBitsKHR = (
        VK_SWAPCHAIN_CREATE_MUTABLE_FORMAT_BIT_KHR = $00000004,
        VK_SWAPCHAIN_CREATE_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkSwapchainCreateFlagsKHR = VkFlags;
+type P_VkSwapchainCreateFlagsKHR = ^VkSwapchainCreateFlagsKHR;
+     VkSwapchainCreateFlagsKHR = VkFlags;
 
 type VkDeviceGroupPresentModeFlagBitsKHR = (
        VK_DEVICE_GROUP_PRESENT_MODE_LOCAL_BIT_KHR = $00000001,
@@ -6048,7 +6131,8 @@ type VkDeviceGroupPresentModeFlagBitsKHR = (
        VK_DEVICE_GROUP_PRESENT_MODE_LOCAL_MULTI_DEVICE_BIT_KHR = $00000008,
        VK_DEVICE_GROUP_PRESENT_MODE_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkDeviceGroupPresentModeFlagsKHR = VkFlags;
+type P_VkDeviceGroupPresentModeFlagsKHR = ^VkDeviceGroupPresentModeFlagsKHR;
+     VkDeviceGroupPresentModeFlagsKHR = VkFlags;
 type P_VkSwapchainCreateInfoKHR = ^VkSwapchainCreateInfoKHR;
      VkSwapchainCreateInfoKHR = record
        sType :VkStructureType;
@@ -6196,11 +6280,14 @@ function vkAcquireNextImage2KHR(
 
 
 const VK_KHR_display = 1;
-type VkDisplayKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkDisplayModeKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkDisplayKHR = ^VkDisplayKHR;
+     VkDisplayKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkDisplayModeKHR = ^VkDisplayModeKHR;
+     VkDisplayModeKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_KHR_DISPLAY_SPEC_VERSION       = 23;
 const VK_KHR_DISPLAY_EXTENSION_NAME = 'VK_KHR_display';
-type VkDisplayModeCreateFlagsKHR = VkFlags;
+type P_VkDisplayModeCreateFlagsKHR = ^VkDisplayModeCreateFlagsKHR;
+     VkDisplayModeCreateFlagsKHR = VkFlags;
 
 type VkDisplayPlaneAlphaFlagBitsKHR = (
        VK_DISPLAY_PLANE_ALPHA_OPAQUE_BIT_KHR = $00000001,
@@ -6209,8 +6296,10 @@ type VkDisplayPlaneAlphaFlagBitsKHR = (
        VK_DISPLAY_PLANE_ALPHA_PER_PIXEL_PREMULTIPLIED_BIT_KHR = $00000008,
        VK_DISPLAY_PLANE_ALPHA_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkDisplayPlaneAlphaFlagsKHR = VkFlags;
-type VkDisplaySurfaceCreateFlagsKHR = VkFlags;
+type P_VkDisplayPlaneAlphaFlagsKHR = ^VkDisplayPlaneAlphaFlagsKHR;
+     VkDisplayPlaneAlphaFlagsKHR = VkFlags;
+type P_VkDisplaySurfaceCreateFlagsKHR = ^VkDisplaySurfaceCreateFlagsKHR;
+     VkDisplaySurfaceCreateFlagsKHR = VkFlags;
 type P_VkDisplayModeParametersKHR = ^VkDisplayModeParametersKHR;
      VkDisplayModeParametersKHR = record
        visibleRegion :VkExtent2D;
@@ -6359,34 +6448,46 @@ const VK_KHR_SAMPLER_MIRROR_CLAMP_TO_EDGE_EXTENSION_NAME = 'VK_KHR_sampler_mirro
 const VK_KHR_multiview = 1;
 const VK_KHR_MULTIVIEW_SPEC_VERSION     = 1;
 const VK_KHR_MULTIVIEW_EXTENSION_NAME = 'VK_KHR_multiview';
-type VkRenderPassMultiviewCreateInfoKHR = VkRenderPassMultiviewCreateInfo;
+type P_VkRenderPassMultiviewCreateInfoKHR = ^VkRenderPassMultiviewCreateInfoKHR;
+     VkRenderPassMultiviewCreateInfoKHR = VkRenderPassMultiviewCreateInfo;
 
-type VkPhysicalDeviceMultiviewFeaturesKHR = VkPhysicalDeviceMultiviewFeatures;
+type P_VkPhysicalDeviceMultiviewFeaturesKHR = ^VkPhysicalDeviceMultiviewFeaturesKHR;
+     VkPhysicalDeviceMultiviewFeaturesKHR = VkPhysicalDeviceMultiviewFeatures;
 
-type VkPhysicalDeviceMultiviewPropertiesKHR = VkPhysicalDeviceMultiviewProperties;
+type P_VkPhysicalDeviceMultiviewPropertiesKHR = ^VkPhysicalDeviceMultiviewPropertiesKHR;
+     VkPhysicalDeviceMultiviewPropertiesKHR = VkPhysicalDeviceMultiviewProperties;
 
 
 
 const VK_KHR_get_physical_device_properties2 = 1;
 const VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_SPEC_VERSION = 2;
 const VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME = 'VK_KHR_get_physical_device_properties2';
-type VkPhysicalDeviceFeatures2KHR = VkPhysicalDeviceFeatures2;
+type P_VkPhysicalDeviceFeatures2KHR = ^VkPhysicalDeviceFeatures2KHR;
+     VkPhysicalDeviceFeatures2KHR = VkPhysicalDeviceFeatures2;
 
-type VkPhysicalDeviceProperties2KHR = VkPhysicalDeviceProperties2;
+type P_VkPhysicalDeviceProperties2KHR = ^VkPhysicalDeviceProperties2KHR;
+     VkPhysicalDeviceProperties2KHR = VkPhysicalDeviceProperties2;
 
-type VkFormatProperties2KHR = VkFormatProperties2;
+type P_VkFormatProperties2KHR = ^VkFormatProperties2KHR;
+     VkFormatProperties2KHR = VkFormatProperties2;
 
-type VkImageFormatProperties2KHR = VkImageFormatProperties2;
+type P_VkImageFormatProperties2KHR = ^VkImageFormatProperties2KHR;
+     VkImageFormatProperties2KHR = VkImageFormatProperties2;
 
-type VkPhysicalDeviceImageFormatInfo2KHR = VkPhysicalDeviceImageFormatInfo2;
+type P_VkPhysicalDeviceImageFormatInfo2KHR = ^VkPhysicalDeviceImageFormatInfo2KHR;
+     VkPhysicalDeviceImageFormatInfo2KHR = VkPhysicalDeviceImageFormatInfo2;
 
-type VkQueueFamilyProperties2KHR = VkQueueFamilyProperties2;
+type P_VkQueueFamilyProperties2KHR = ^VkQueueFamilyProperties2KHR;
+     VkQueueFamilyProperties2KHR = VkQueueFamilyProperties2;
 
-type VkPhysicalDeviceMemoryProperties2KHR = VkPhysicalDeviceMemoryProperties2;
+type P_VkPhysicalDeviceMemoryProperties2KHR = ^VkPhysicalDeviceMemoryProperties2KHR;
+     VkPhysicalDeviceMemoryProperties2KHR = VkPhysicalDeviceMemoryProperties2;
 
-type VkSparseImageFormatProperties2KHR = VkSparseImageFormatProperties2;
+type P_VkSparseImageFormatProperties2KHR = ^VkSparseImageFormatProperties2KHR;
+     VkSparseImageFormatProperties2KHR = VkSparseImageFormatProperties2;
 
-type VkPhysicalDeviceSparseImageFormatInfo2KHR = VkPhysicalDeviceSparseImageFormatInfo2;
+type P_VkPhysicalDeviceSparseImageFormatInfo2KHR = ^VkPhysicalDeviceSparseImageFormatInfo2KHR;
+     VkPhysicalDeviceSparseImageFormatInfo2KHR = VkPhysicalDeviceSparseImageFormatInfo2;
 
 type PFN_vkGetPhysicalDeviceFeatures2KHR = procedure( physicalDevice_:VkPhysicalDevice; pFeatures_:P_VkPhysicalDeviceFeatures2 );
 type PFN_vkGetPhysicalDeviceProperties2KHR = procedure( physicalDevice_:VkPhysicalDevice; pProperties_:P_VkPhysicalDeviceProperties2 );
@@ -6435,27 +6536,38 @@ procedure vkGetPhysicalDeviceSparseImageFormatProperties2KHR(
 const VK_KHR_device_group = 1;
 const VK_KHR_DEVICE_GROUP_SPEC_VERSION  = 4;
 const VK_KHR_DEVICE_GROUP_EXTENSION_NAME = 'VK_KHR_device_group';
-type VkPeerMemoryFeatureFlagsKHR = VkPeerMemoryFeatureFlags;
+type P_VkPeerMemoryFeatureFlagsKHR = ^VkPeerMemoryFeatureFlagsKHR;
+     VkPeerMemoryFeatureFlagsKHR = VkPeerMemoryFeatureFlags;
 
-type VkPeerMemoryFeatureFlagBitsKHR = VkPeerMemoryFeatureFlagBits;
+type P_VkPeerMemoryFeatureFlagBitsKHR = ^VkPeerMemoryFeatureFlagBitsKHR;
+     VkPeerMemoryFeatureFlagBitsKHR = VkPeerMemoryFeatureFlagBits;
 
-type VkMemoryAllocateFlagsKHR = VkMemoryAllocateFlags;
+type P_VkMemoryAllocateFlagsKHR = ^VkMemoryAllocateFlagsKHR;
+     VkMemoryAllocateFlagsKHR = VkMemoryAllocateFlags;
 
-type VkMemoryAllocateFlagBitsKHR = VkMemoryAllocateFlagBits;
+type P_VkMemoryAllocateFlagBitsKHR = ^VkMemoryAllocateFlagBitsKHR;
+     VkMemoryAllocateFlagBitsKHR = VkMemoryAllocateFlagBits;
 
-type VkMemoryAllocateFlagsInfoKHR = VkMemoryAllocateFlagsInfo;
+type P_VkMemoryAllocateFlagsInfoKHR = ^VkMemoryAllocateFlagsInfoKHR;
+     VkMemoryAllocateFlagsInfoKHR = VkMemoryAllocateFlagsInfo;
 
-type VkDeviceGroupRenderPassBeginInfoKHR = VkDeviceGroupRenderPassBeginInfo;
+type P_VkDeviceGroupRenderPassBeginInfoKHR = ^VkDeviceGroupRenderPassBeginInfoKHR;
+     VkDeviceGroupRenderPassBeginInfoKHR = VkDeviceGroupRenderPassBeginInfo;
 
-type VkDeviceGroupCommandBufferBeginInfoKHR = VkDeviceGroupCommandBufferBeginInfo;
+type P_VkDeviceGroupCommandBufferBeginInfoKHR = ^VkDeviceGroupCommandBufferBeginInfoKHR;
+     VkDeviceGroupCommandBufferBeginInfoKHR = VkDeviceGroupCommandBufferBeginInfo;
 
-type VkDeviceGroupSubmitInfoKHR = VkDeviceGroupSubmitInfo;
+type P_VkDeviceGroupSubmitInfoKHR = ^VkDeviceGroupSubmitInfoKHR;
+     VkDeviceGroupSubmitInfoKHR = VkDeviceGroupSubmitInfo;
 
-type VkDeviceGroupBindSparseInfoKHR = VkDeviceGroupBindSparseInfo;
+type P_VkDeviceGroupBindSparseInfoKHR = ^VkDeviceGroupBindSparseInfoKHR;
+     VkDeviceGroupBindSparseInfoKHR = VkDeviceGroupBindSparseInfo;
 
-type VkBindBufferMemoryDeviceGroupInfoKHR = VkBindBufferMemoryDeviceGroupInfo;
+type P_VkBindBufferMemoryDeviceGroupInfoKHR = ^VkBindBufferMemoryDeviceGroupInfoKHR;
+     VkBindBufferMemoryDeviceGroupInfoKHR = VkBindBufferMemoryDeviceGroupInfo;
 
-type VkBindImageMemoryDeviceGroupInfoKHR = VkBindImageMemoryDeviceGroupInfo;
+type P_VkBindImageMemoryDeviceGroupInfoKHR = ^VkBindImageMemoryDeviceGroupInfoKHR;
+     VkBindImageMemoryDeviceGroupInfoKHR = VkBindImageMemoryDeviceGroupInfo;
 
 type PFN_vkGetDeviceGroupPeerMemoryFeaturesKHR = procedure( device_:VkDevice; heapIndex_:T_uint32_t; localDeviceIndex_:T_uint32_t; remoteDeviceIndex_:T_uint32_t; pPeerMemoryFeatures_:P_VkPeerMemoryFeatureFlags );
 type PFN_vkCmdSetDeviceMaskKHR = procedure( commandBuffer_:VkCommandBuffer; deviceMask_:T_uint32_t );
@@ -6492,7 +6604,8 @@ const VK_KHR_SHADER_DRAW_PARAMETERS_EXTENSION_NAME = 'VK_KHR_shader_draw_paramet
 const VK_KHR_maintenance1 = 1;
 const VK_KHR_MAINTENANCE1_SPEC_VERSION  = 2;
 const VK_KHR_MAINTENANCE1_EXTENSION_NAME = 'VK_KHR_maintenance1';
-type VkCommandPoolTrimFlagsKHR = VkCommandPoolTrimFlags;
+type P_VkCommandPoolTrimFlagsKHR = ^VkCommandPoolTrimFlagsKHR;
+     VkCommandPoolTrimFlagsKHR = VkCommandPoolTrimFlags;
 
 type PFN_vkTrimCommandPoolKHR = procedure( device_:VkDevice; commandPool_:VkCommandPool; flags_:VkCommandPoolTrimFlags );
 
@@ -6508,9 +6621,11 @@ const VK_KHR_device_group_creation = 1;
 const VK_KHR_DEVICE_GROUP_CREATION_SPEC_VERSION = 1;
 const VK_KHR_DEVICE_GROUP_CREATION_EXTENSION_NAME = 'VK_KHR_device_group_creation';
 const VK_MAX_DEVICE_GROUP_SIZE_KHR      = VK_MAX_DEVICE_GROUP_SIZE;
-type VkPhysicalDeviceGroupPropertiesKHR = VkPhysicalDeviceGroupProperties;
+type P_VkPhysicalDeviceGroupPropertiesKHR = ^VkPhysicalDeviceGroupPropertiesKHR;
+     VkPhysicalDeviceGroupPropertiesKHR = VkPhysicalDeviceGroupProperties;
 
-type VkDeviceGroupDeviceCreateInfoKHR = VkDeviceGroupDeviceCreateInfo;
+type P_VkDeviceGroupDeviceCreateInfoKHR = ^VkDeviceGroupDeviceCreateInfoKHR;
+     VkDeviceGroupDeviceCreateInfoKHR = VkDeviceGroupDeviceCreateInfo;
 
 type PFN_vkEnumeratePhysicalDeviceGroupsKHR = function( instance_:VkInstance; pPhysicalDeviceGroupCount_:P_uint32_t; pPhysicalDeviceGroupProperties_:P_VkPhysicalDeviceGroupProperties ) :VkResult;
 
@@ -6526,25 +6641,35 @@ const VK_KHR_external_memory_capabilities = 1;
 const VK_KHR_EXTERNAL_MEMORY_CAPABILITIES_SPEC_VERSION = 1;
 const VK_KHR_EXTERNAL_MEMORY_CAPABILITIES_EXTENSION_NAME = 'VK_KHR_external_memory_capabilities';
 const VK_LUID_SIZE_KHR                  = VK_LUID_SIZE;
-type VkExternalMemoryHandleTypeFlagsKHR = VkExternalMemoryHandleTypeFlags;
+type P_VkExternalMemoryHandleTypeFlagsKHR = ^VkExternalMemoryHandleTypeFlagsKHR;
+     VkExternalMemoryHandleTypeFlagsKHR = VkExternalMemoryHandleTypeFlags;
 
-type VkExternalMemoryHandleTypeFlagBitsKHR = VkExternalMemoryHandleTypeFlagBits;
+type P_VkExternalMemoryHandleTypeFlagBitsKHR = ^VkExternalMemoryHandleTypeFlagBitsKHR;
+     VkExternalMemoryHandleTypeFlagBitsKHR = VkExternalMemoryHandleTypeFlagBits;
 
-type VkExternalMemoryFeatureFlagsKHR = VkExternalMemoryFeatureFlags;
+type P_VkExternalMemoryFeatureFlagsKHR = ^VkExternalMemoryFeatureFlagsKHR;
+     VkExternalMemoryFeatureFlagsKHR = VkExternalMemoryFeatureFlags;
 
-type VkExternalMemoryFeatureFlagBitsKHR = VkExternalMemoryFeatureFlagBits;
+type P_VkExternalMemoryFeatureFlagBitsKHR = ^VkExternalMemoryFeatureFlagBitsKHR;
+     VkExternalMemoryFeatureFlagBitsKHR = VkExternalMemoryFeatureFlagBits;
 
-type VkExternalMemoryPropertiesKHR = VkExternalMemoryProperties;
+type P_VkExternalMemoryPropertiesKHR = ^VkExternalMemoryPropertiesKHR;
+     VkExternalMemoryPropertiesKHR = VkExternalMemoryProperties;
 
-type VkPhysicalDeviceExternalImageFormatInfoKHR = VkPhysicalDeviceExternalImageFormatInfo;
+type P_VkPhysicalDeviceExternalImageFormatInfoKHR = ^VkPhysicalDeviceExternalImageFormatInfoKHR;
+     VkPhysicalDeviceExternalImageFormatInfoKHR = VkPhysicalDeviceExternalImageFormatInfo;
 
-type VkExternalImageFormatPropertiesKHR = VkExternalImageFormatProperties;
+type P_VkExternalImageFormatPropertiesKHR = ^VkExternalImageFormatPropertiesKHR;
+     VkExternalImageFormatPropertiesKHR = VkExternalImageFormatProperties;
 
-type VkPhysicalDeviceExternalBufferInfoKHR = VkPhysicalDeviceExternalBufferInfo;
+type P_VkPhysicalDeviceExternalBufferInfoKHR = ^VkPhysicalDeviceExternalBufferInfoKHR;
+     VkPhysicalDeviceExternalBufferInfoKHR = VkPhysicalDeviceExternalBufferInfo;
 
-type VkExternalBufferPropertiesKHR = VkExternalBufferProperties;
+type P_VkExternalBufferPropertiesKHR = ^VkExternalBufferPropertiesKHR;
+     VkExternalBufferPropertiesKHR = VkExternalBufferProperties;
 
-type VkPhysicalDeviceIDPropertiesKHR = VkPhysicalDeviceIDProperties;
+type P_VkPhysicalDeviceIDPropertiesKHR = ^VkPhysicalDeviceIDPropertiesKHR;
+     VkPhysicalDeviceIDPropertiesKHR = VkPhysicalDeviceIDProperties;
 
 type PFN_vkGetPhysicalDeviceExternalBufferPropertiesKHR = procedure( physicalDevice_:VkPhysicalDevice; const pExternalBufferInfo_:P_VkPhysicalDeviceExternalBufferInfo; pExternalBufferProperties_:P_VkExternalBufferProperties );
 
@@ -6560,11 +6685,14 @@ const VK_KHR_external_memory = 1;
 const VK_KHR_EXTERNAL_MEMORY_SPEC_VERSION = 1;
 const VK_KHR_EXTERNAL_MEMORY_EXTENSION_NAME = 'VK_KHR_external_memory';
 const VK_QUEUE_FAMILY_EXTERNAL_KHR      = VK_QUEUE_FAMILY_EXTERNAL;
-type VkExternalMemoryImageCreateInfoKHR = VkExternalMemoryImageCreateInfo;
+type P_VkExternalMemoryImageCreateInfoKHR = ^VkExternalMemoryImageCreateInfoKHR;
+     VkExternalMemoryImageCreateInfoKHR = VkExternalMemoryImageCreateInfo;
 
-type VkExternalMemoryBufferCreateInfoKHR = VkExternalMemoryBufferCreateInfo;
+type P_VkExternalMemoryBufferCreateInfoKHR = ^VkExternalMemoryBufferCreateInfoKHR;
+     VkExternalMemoryBufferCreateInfoKHR = VkExternalMemoryBufferCreateInfo;
 
-type VkExportMemoryAllocateInfoKHR = VkExportMemoryAllocateInfo;
+type P_VkExportMemoryAllocateInfoKHR = ^VkExportMemoryAllocateInfoKHR;
+     VkExportMemoryAllocateInfoKHR = VkExportMemoryAllocateInfo;
 
 
 
@@ -6614,17 +6742,23 @@ function vkGetMemoryFdPropertiesKHR(
 const VK_KHR_external_semaphore_capabilities = 1;
 const VK_KHR_EXTERNAL_SEMAPHORE_CAPABILITIES_SPEC_VERSION = 1;
 const VK_KHR_EXTERNAL_SEMAPHORE_CAPABILITIES_EXTENSION_NAME = 'VK_KHR_external_semaphore_capabilities';
-type VkExternalSemaphoreHandleTypeFlagsKHR = VkExternalSemaphoreHandleTypeFlags;
+type P_VkExternalSemaphoreHandleTypeFlagsKHR = ^VkExternalSemaphoreHandleTypeFlagsKHR;
+     VkExternalSemaphoreHandleTypeFlagsKHR = VkExternalSemaphoreHandleTypeFlags;
 
-type VkExternalSemaphoreHandleTypeFlagBitsKHR = VkExternalSemaphoreHandleTypeFlagBits;
+type P_VkExternalSemaphoreHandleTypeFlagBitsKHR = ^VkExternalSemaphoreHandleTypeFlagBitsKHR;
+     VkExternalSemaphoreHandleTypeFlagBitsKHR = VkExternalSemaphoreHandleTypeFlagBits;
 
-type VkExternalSemaphoreFeatureFlagsKHR = VkExternalSemaphoreFeatureFlags;
+type P_VkExternalSemaphoreFeatureFlagsKHR = ^VkExternalSemaphoreFeatureFlagsKHR;
+     VkExternalSemaphoreFeatureFlagsKHR = VkExternalSemaphoreFeatureFlags;
 
-type VkExternalSemaphoreFeatureFlagBitsKHR = VkExternalSemaphoreFeatureFlagBits;
+type P_VkExternalSemaphoreFeatureFlagBitsKHR = ^VkExternalSemaphoreFeatureFlagBitsKHR;
+     VkExternalSemaphoreFeatureFlagBitsKHR = VkExternalSemaphoreFeatureFlagBits;
 
-type VkPhysicalDeviceExternalSemaphoreInfoKHR = VkPhysicalDeviceExternalSemaphoreInfo;
+type P_VkPhysicalDeviceExternalSemaphoreInfoKHR = ^VkPhysicalDeviceExternalSemaphoreInfoKHR;
+     VkPhysicalDeviceExternalSemaphoreInfoKHR = VkPhysicalDeviceExternalSemaphoreInfo;
 
-type VkExternalSemaphorePropertiesKHR = VkExternalSemaphoreProperties;
+type P_VkExternalSemaphorePropertiesKHR = ^VkExternalSemaphorePropertiesKHR;
+     VkExternalSemaphorePropertiesKHR = VkExternalSemaphoreProperties;
 
 type PFN_vkGetPhysicalDeviceExternalSemaphorePropertiesKHR = procedure( physicalDevice_:VkPhysicalDevice; const pExternalSemaphoreInfo_:P_VkPhysicalDeviceExternalSemaphoreInfo; pExternalSemaphoreProperties_:P_VkExternalSemaphoreProperties );
 
@@ -6639,11 +6773,14 @@ procedure vkGetPhysicalDeviceExternalSemaphorePropertiesKHR(
 const VK_KHR_external_semaphore = 1;
 const VK_KHR_EXTERNAL_SEMAPHORE_SPEC_VERSION = 1;
 const VK_KHR_EXTERNAL_SEMAPHORE_EXTENSION_NAME = 'VK_KHR_external_semaphore';
-type VkSemaphoreImportFlagsKHR = VkSemaphoreImportFlags;
+type P_VkSemaphoreImportFlagsKHR = ^VkSemaphoreImportFlagsKHR;
+     VkSemaphoreImportFlagsKHR = VkSemaphoreImportFlags;
 
-type VkSemaphoreImportFlagBitsKHR = VkSemaphoreImportFlagBits;
+type P_VkSemaphoreImportFlagBitsKHR = ^VkSemaphoreImportFlagBitsKHR;
+     VkSemaphoreImportFlagBitsKHR = VkSemaphoreImportFlagBits;
 
-type VkExportSemaphoreCreateInfoKHR = VkExportSemaphoreCreateInfo;
+type P_VkExportSemaphoreCreateInfoKHR = ^VkExportSemaphoreCreateInfoKHR;
+     VkExportSemaphoreCreateInfoKHR = VkExportSemaphoreCreateInfo;
 
 
 
@@ -6717,16 +6854,19 @@ procedure vkCmdPushDescriptorSetWithTemplateKHR(
 const VK_KHR_shader_float16_int8 = 1;
 const VK_KHR_SHADER_FLOAT16_INT8_SPEC_VERSION = 1;
 const VK_KHR_SHADER_FLOAT16_INT8_EXTENSION_NAME = 'VK_KHR_shader_float16_int8';
-type VkPhysicalDeviceShaderFloat16Int8FeaturesKHR = VkPhysicalDeviceShaderFloat16Int8Features;
+type P_VkPhysicalDeviceShaderFloat16Int8FeaturesKHR = ^VkPhysicalDeviceShaderFloat16Int8FeaturesKHR;
+     VkPhysicalDeviceShaderFloat16Int8FeaturesKHR = VkPhysicalDeviceShaderFloat16Int8Features;
 
-type VkPhysicalDeviceFloat16Int8FeaturesKHR = VkPhysicalDeviceShaderFloat16Int8Features;
+type P_VkPhysicalDeviceFloat16Int8FeaturesKHR = ^VkPhysicalDeviceFloat16Int8FeaturesKHR;
+     VkPhysicalDeviceFloat16Int8FeaturesKHR = VkPhysicalDeviceShaderFloat16Int8Features;
 
 
 
 const VK_KHR_16bit_storage = 1;
 const VK_KHR_16BIT_STORAGE_SPEC_VERSION = 1;
 const VK_KHR_16BIT_STORAGE_EXTENSION_NAME = 'VK_KHR_16bit_storage';
-type VkPhysicalDevice16BitStorageFeaturesKHR = VkPhysicalDevice16BitStorageFeatures;
+type P_VkPhysicalDevice16BitStorageFeaturesKHR = ^VkPhysicalDevice16BitStorageFeaturesKHR;
+     VkPhysicalDevice16BitStorageFeaturesKHR = VkPhysicalDevice16BitStorageFeatures;
 
 
 
@@ -6757,17 +6897,22 @@ type P_VkPresentRegionsKHR = ^VkPresentRegionsKHR;
 
 
 const VK_KHR_descriptor_update_template = 1;
-type VkDescriptorUpdateTemplateKHR = VkDescriptorUpdateTemplate;
+type P_VkDescriptorUpdateTemplateKHR = ^VkDescriptorUpdateTemplateKHR;
+     VkDescriptorUpdateTemplateKHR = VkDescriptorUpdateTemplate;
 
 const VK_KHR_DESCRIPTOR_UPDATE_TEMPLATE_SPEC_VERSION = 1;
 const VK_KHR_DESCRIPTOR_UPDATE_TEMPLATE_EXTENSION_NAME = 'VK_KHR_descriptor_update_template';
-type VkDescriptorUpdateTemplateTypeKHR = VkDescriptorUpdateTemplateType;
+type P_VkDescriptorUpdateTemplateTypeKHR = ^VkDescriptorUpdateTemplateTypeKHR;
+     VkDescriptorUpdateTemplateTypeKHR = VkDescriptorUpdateTemplateType;
 
-type VkDescriptorUpdateTemplateCreateFlagsKHR = VkDescriptorUpdateTemplateCreateFlags;
+type P_VkDescriptorUpdateTemplateCreateFlagsKHR = ^VkDescriptorUpdateTemplateCreateFlagsKHR;
+     VkDescriptorUpdateTemplateCreateFlagsKHR = VkDescriptorUpdateTemplateCreateFlags;
 
-type VkDescriptorUpdateTemplateEntryKHR = VkDescriptorUpdateTemplateEntry;
+type P_VkDescriptorUpdateTemplateEntryKHR = ^VkDescriptorUpdateTemplateEntryKHR;
+     VkDescriptorUpdateTemplateEntryKHR = VkDescriptorUpdateTemplateEntry;
 
-type VkDescriptorUpdateTemplateCreateInfoKHR = VkDescriptorUpdateTemplateCreateInfo;
+type P_VkDescriptorUpdateTemplateCreateInfoKHR = ^VkDescriptorUpdateTemplateCreateInfoKHR;
+     VkDescriptorUpdateTemplateCreateInfoKHR = VkDescriptorUpdateTemplateCreateInfo;
 
 type PFN_vkCreateDescriptorUpdateTemplateKHR = function( device_:VkDevice; const pCreateInfo_:P_VkDescriptorUpdateTemplateCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pDescriptorUpdateTemplate_:P_VkDescriptorUpdateTemplate ) :VkResult;
 type PFN_vkDestroyDescriptorUpdateTemplateKHR = procedure( device_:VkDevice; descriptorUpdateTemplate_:VkDescriptorUpdateTemplate; const pAllocator_:P_VkAllocationCallbacks );
@@ -6796,32 +6941,43 @@ procedure vkUpdateDescriptorSetWithTemplateKHR(
 const VK_KHR_imageless_framebuffer = 1;
 const VK_KHR_IMAGELESS_FRAMEBUFFER_SPEC_VERSION = 1;
 const VK_KHR_IMAGELESS_FRAMEBUFFER_EXTENSION_NAME = 'VK_KHR_imageless_framebuffer';
-type VkPhysicalDeviceImagelessFramebufferFeaturesKHR = VkPhysicalDeviceImagelessFramebufferFeatures;
+type P_VkPhysicalDeviceImagelessFramebufferFeaturesKHR = ^VkPhysicalDeviceImagelessFramebufferFeaturesKHR;
+     VkPhysicalDeviceImagelessFramebufferFeaturesKHR = VkPhysicalDeviceImagelessFramebufferFeatures;
 
-type VkFramebufferAttachmentsCreateInfoKHR = VkFramebufferAttachmentsCreateInfo;
+type P_VkFramebufferAttachmentsCreateInfoKHR = ^VkFramebufferAttachmentsCreateInfoKHR;
+     VkFramebufferAttachmentsCreateInfoKHR = VkFramebufferAttachmentsCreateInfo;
 
-type VkFramebufferAttachmentImageInfoKHR = VkFramebufferAttachmentImageInfo;
+type P_VkFramebufferAttachmentImageInfoKHR = ^VkFramebufferAttachmentImageInfoKHR;
+     VkFramebufferAttachmentImageInfoKHR = VkFramebufferAttachmentImageInfo;
 
-type VkRenderPassAttachmentBeginInfoKHR = VkRenderPassAttachmentBeginInfo;
+type P_VkRenderPassAttachmentBeginInfoKHR = ^VkRenderPassAttachmentBeginInfoKHR;
+     VkRenderPassAttachmentBeginInfoKHR = VkRenderPassAttachmentBeginInfo;
 
 
 
 const VK_KHR_create_renderpass2 = 1;
 const VK_KHR_CREATE_RENDERPASS_2_SPEC_VERSION = 1;
 const VK_KHR_CREATE_RENDERPASS_2_EXTENSION_NAME = 'VK_KHR_create_renderpass2';
-type VkRenderPassCreateInfo2KHR = VkRenderPassCreateInfo2;
+type P_VkRenderPassCreateInfo2KHR = ^VkRenderPassCreateInfo2KHR;
+     VkRenderPassCreateInfo2KHR = VkRenderPassCreateInfo2;
 
-type VkAttachmentDescription2KHR = VkAttachmentDescription2;
+type P_VkAttachmentDescription2KHR = ^VkAttachmentDescription2KHR;
+     VkAttachmentDescription2KHR = VkAttachmentDescription2;
 
-type VkAttachmentReference2KHR = VkAttachmentReference2;
+type P_VkAttachmentReference2KHR = ^VkAttachmentReference2KHR;
+     VkAttachmentReference2KHR = VkAttachmentReference2;
 
-type VkSubpassDescription2KHR = VkSubpassDescription2;
+type P_VkSubpassDescription2KHR = ^VkSubpassDescription2KHR;
+     VkSubpassDescription2KHR = VkSubpassDescription2;
 
-type VkSubpassDependency2KHR = VkSubpassDependency2;
+type P_VkSubpassDependency2KHR = ^VkSubpassDependency2KHR;
+     VkSubpassDependency2KHR = VkSubpassDependency2;
 
-type VkSubpassBeginInfoKHR = VkSubpassBeginInfo;
+type P_VkSubpassBeginInfoKHR = ^VkSubpassBeginInfoKHR;
+     VkSubpassBeginInfoKHR = VkSubpassBeginInfo;
 
-type VkSubpassEndInfoKHR = VkSubpassEndInfo;
+type P_VkSubpassEndInfoKHR = ^VkSubpassEndInfoKHR;
+     VkSubpassEndInfoKHR = VkSubpassEndInfo;
 
 type PFN_vkCreateRenderPass2KHR = function( device_:VkDevice; const pCreateInfo_:P_VkRenderPassCreateInfo2; const pAllocator_:P_VkAllocationCallbacks; pRenderPass_:P_VkRenderPass ) :VkResult;
 type PFN_vkCmdBeginRenderPass2KHR = procedure( commandBuffer_:VkCommandBuffer; const pRenderPassBegin_:P_VkRenderPassBeginInfo; const pSubpassBeginInfo_:P_VkSubpassBeginInfo );
@@ -6873,17 +7029,23 @@ function vkGetSwapchainStatusKHR(
 const VK_KHR_external_fence_capabilities = 1;
 const VK_KHR_EXTERNAL_FENCE_CAPABILITIES_SPEC_VERSION = 1;
 const VK_KHR_EXTERNAL_FENCE_CAPABILITIES_EXTENSION_NAME = 'VK_KHR_external_fence_capabilities';
-type VkExternalFenceHandleTypeFlagsKHR = VkExternalFenceHandleTypeFlags;
+type P_VkExternalFenceHandleTypeFlagsKHR = ^VkExternalFenceHandleTypeFlagsKHR;
+     VkExternalFenceHandleTypeFlagsKHR = VkExternalFenceHandleTypeFlags;
 
-type VkExternalFenceHandleTypeFlagBitsKHR = VkExternalFenceHandleTypeFlagBits;
+type P_VkExternalFenceHandleTypeFlagBitsKHR = ^VkExternalFenceHandleTypeFlagBitsKHR;
+     VkExternalFenceHandleTypeFlagBitsKHR = VkExternalFenceHandleTypeFlagBits;
 
-type VkExternalFenceFeatureFlagsKHR = VkExternalFenceFeatureFlags;
+type P_VkExternalFenceFeatureFlagsKHR = ^VkExternalFenceFeatureFlagsKHR;
+     VkExternalFenceFeatureFlagsKHR = VkExternalFenceFeatureFlags;
 
-type VkExternalFenceFeatureFlagBitsKHR = VkExternalFenceFeatureFlagBits;
+type P_VkExternalFenceFeatureFlagBitsKHR = ^VkExternalFenceFeatureFlagBitsKHR;
+     VkExternalFenceFeatureFlagBitsKHR = VkExternalFenceFeatureFlagBits;
 
-type VkPhysicalDeviceExternalFenceInfoKHR = VkPhysicalDeviceExternalFenceInfo;
+type P_VkPhysicalDeviceExternalFenceInfoKHR = ^VkPhysicalDeviceExternalFenceInfoKHR;
+     VkPhysicalDeviceExternalFenceInfoKHR = VkPhysicalDeviceExternalFenceInfo;
 
-type VkExternalFencePropertiesKHR = VkExternalFenceProperties;
+type P_VkExternalFencePropertiesKHR = ^VkExternalFencePropertiesKHR;
+     VkExternalFencePropertiesKHR = VkExternalFenceProperties;
 
 type PFN_vkGetPhysicalDeviceExternalFencePropertiesKHR = procedure( physicalDevice_:VkPhysicalDevice; const pExternalFenceInfo_:P_VkPhysicalDeviceExternalFenceInfo; pExternalFenceProperties_:P_VkExternalFenceProperties );
 
@@ -6898,11 +7060,14 @@ procedure vkGetPhysicalDeviceExternalFencePropertiesKHR(
 const VK_KHR_external_fence = 1;
 const VK_KHR_EXTERNAL_FENCE_SPEC_VERSION = 1;
 const VK_KHR_EXTERNAL_FENCE_EXTENSION_NAME = 'VK_KHR_external_fence';
-type VkFenceImportFlagsKHR = VkFenceImportFlags;
+type P_VkFenceImportFlagsKHR = ^VkFenceImportFlagsKHR;
+     VkFenceImportFlagsKHR = VkFenceImportFlags;
 
-type VkFenceImportFlagBitsKHR = VkFenceImportFlagBits;
+type P_VkFenceImportFlagBitsKHR = ^VkFenceImportFlagBitsKHR;
+     VkFenceImportFlagBitsKHR = VkFenceImportFlagBits;
 
-type VkExportFenceCreateInfoKHR = VkExportFenceCreateInfo;
+type P_VkExportFenceCreateInfoKHR = ^VkExportFenceCreateInfoKHR;
+     VkExportFenceCreateInfoKHR = VkExportFenceCreateInfo;
 
 
 
@@ -6988,12 +7153,14 @@ type VkPerformanceCounterDescriptionFlagBitsKHR = (
        VK_PERFORMANCE_COUNTER_DESCRIPTION_CONCURRENTLY_IMPACTED_KHR = VK_PERFORMANCE_COUNTER_DESCRIPTION_CONCURRENTLY_IMPACTED_BIT_KHR,
        VK_PERFORMANCE_COUNTER_DESCRIPTION_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkPerformanceCounterDescriptionFlagsKHR = VkFlags;
+type P_VkPerformanceCounterDescriptionFlagsKHR = ^VkPerformanceCounterDescriptionFlagsKHR;
+     VkPerformanceCounterDescriptionFlagsKHR = VkFlags;
 
 type VkAcquireProfilingLockFlagBitsKHR = (
        VK_ACQUIRE_PROFILING_LOCK_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkAcquireProfilingLockFlagsKHR = VkFlags;
+type P_VkAcquireProfilingLockFlagsKHR = ^VkAcquireProfilingLockFlagsKHR;
+     VkAcquireProfilingLockFlagsKHR = VkFlags;
 type P_VkPhysicalDevicePerformanceQueryFeaturesKHR = ^VkPhysicalDevicePerformanceQueryFeaturesKHR;
      VkPhysicalDevicePerformanceQueryFeaturesKHR = record
        sType :VkStructureType;
@@ -7094,19 +7261,26 @@ procedure vkReleaseProfilingLockKHR(
 const VK_KHR_maintenance2 = 1;
 const VK_KHR_MAINTENANCE2_SPEC_VERSION  = 1;
 const VK_KHR_MAINTENANCE2_EXTENSION_NAME = 'VK_KHR_maintenance2';
-type VkPointClippingBehaviorKHR = VkPointClippingBehavior;
+type P_VkPointClippingBehaviorKHR = ^VkPointClippingBehaviorKHR;
+     VkPointClippingBehaviorKHR = VkPointClippingBehavior;
 
-type VkTessellationDomainOriginKHR = VkTessellationDomainOrigin;
+type P_VkTessellationDomainOriginKHR = ^VkTessellationDomainOriginKHR;
+     VkTessellationDomainOriginKHR = VkTessellationDomainOrigin;
 
-type VkPhysicalDevicePointClippingPropertiesKHR = VkPhysicalDevicePointClippingProperties;
+type P_VkPhysicalDevicePointClippingPropertiesKHR = ^VkPhysicalDevicePointClippingPropertiesKHR;
+     VkPhysicalDevicePointClippingPropertiesKHR = VkPhysicalDevicePointClippingProperties;
 
-type VkRenderPassInputAttachmentAspectCreateInfoKHR = VkRenderPassInputAttachmentAspectCreateInfo;
+type P_VkRenderPassInputAttachmentAspectCreateInfoKHR = ^VkRenderPassInputAttachmentAspectCreateInfoKHR;
+     VkRenderPassInputAttachmentAspectCreateInfoKHR = VkRenderPassInputAttachmentAspectCreateInfo;
 
-type VkInputAttachmentAspectReferenceKHR = VkInputAttachmentAspectReference;
+type P_VkInputAttachmentAspectReferenceKHR = ^VkInputAttachmentAspectReferenceKHR;
+     VkInputAttachmentAspectReferenceKHR = VkInputAttachmentAspectReference;
 
-type VkImageViewUsageCreateInfoKHR = VkImageViewUsageCreateInfo;
+type P_VkImageViewUsageCreateInfoKHR = ^VkImageViewUsageCreateInfoKHR;
+     VkImageViewUsageCreateInfoKHR = VkImageViewUsageCreateInfo;
 
-type VkPipelineTessellationDomainOriginStateCreateInfoKHR = VkPipelineTessellationDomainOriginStateCreateInfo;
+type P_VkPipelineTessellationDomainOriginStateCreateInfoKHR = ^VkPipelineTessellationDomainOriginStateCreateInfoKHR;
+     VkPipelineTessellationDomainOriginStateCreateInfoKHR = VkPipelineTessellationDomainOriginStateCreateInfo;
 
 
 
@@ -7154,9 +7328,11 @@ function vkGetPhysicalDeviceSurfaceFormats2KHR(
 const VK_KHR_variable_pointers = 1;
 const VK_KHR_VARIABLE_POINTERS_SPEC_VERSION = 1;
 const VK_KHR_VARIABLE_POINTERS_EXTENSION_NAME = 'VK_KHR_variable_pointers';
-type VkPhysicalDeviceVariablePointerFeaturesKHR = VkPhysicalDeviceVariablePointersFeatures;
+type P_VkPhysicalDeviceVariablePointerFeaturesKHR = ^VkPhysicalDeviceVariablePointerFeaturesKHR;
+     VkPhysicalDeviceVariablePointerFeaturesKHR = VkPhysicalDeviceVariablePointersFeatures;
 
-type VkPhysicalDeviceVariablePointersFeaturesKHR = VkPhysicalDeviceVariablePointersFeatures;
+type P_VkPhysicalDeviceVariablePointersFeaturesKHR = ^VkPhysicalDeviceVariablePointersFeaturesKHR;
+     VkPhysicalDeviceVariablePointersFeaturesKHR = VkPhysicalDeviceVariablePointersFeatures;
 
 
 
@@ -7231,9 +7407,11 @@ function vkGetDisplayPlaneCapabilities2KHR(
 const VK_KHR_dedicated_allocation = 1;
 const VK_KHR_DEDICATED_ALLOCATION_SPEC_VERSION = 3;
 const VK_KHR_DEDICATED_ALLOCATION_EXTENSION_NAME = 'VK_KHR_dedicated_allocation';
-type VkMemoryDedicatedRequirementsKHR = VkMemoryDedicatedRequirements;
+type P_VkMemoryDedicatedRequirementsKHR = ^VkMemoryDedicatedRequirementsKHR;
+     VkMemoryDedicatedRequirementsKHR = VkMemoryDedicatedRequirements;
 
-type VkMemoryDedicatedAllocateInfoKHR = VkMemoryDedicatedAllocateInfo;
+type P_VkMemoryDedicatedAllocateInfoKHR = ^VkMemoryDedicatedAllocateInfoKHR;
+     VkMemoryDedicatedAllocateInfoKHR = VkMemoryDedicatedAllocateInfo;
 
 
 
@@ -7250,15 +7428,20 @@ const VK_KHR_RELAXED_BLOCK_LAYOUT_EXTENSION_NAME = 'VK_KHR_relaxed_block_layout'
 const VK_KHR_get_memory_requirements2 = 1;
 const VK_KHR_GET_MEMORY_REQUIREMENTS_2_SPEC_VERSION = 1;
 const VK_KHR_GET_MEMORY_REQUIREMENTS_2_EXTENSION_NAME = 'VK_KHR_get_memory_requirements2';
-type VkBufferMemoryRequirementsInfo2KHR = VkBufferMemoryRequirementsInfo2;
+type P_VkBufferMemoryRequirementsInfo2KHR = ^VkBufferMemoryRequirementsInfo2KHR;
+     VkBufferMemoryRequirementsInfo2KHR = VkBufferMemoryRequirementsInfo2;
 
-type VkImageMemoryRequirementsInfo2KHR = VkImageMemoryRequirementsInfo2;
+type P_VkImageMemoryRequirementsInfo2KHR = ^VkImageMemoryRequirementsInfo2KHR;
+     VkImageMemoryRequirementsInfo2KHR = VkImageMemoryRequirementsInfo2;
 
-type VkImageSparseMemoryRequirementsInfo2KHR = VkImageSparseMemoryRequirementsInfo2;
+type P_VkImageSparseMemoryRequirementsInfo2KHR = ^VkImageSparseMemoryRequirementsInfo2KHR;
+     VkImageSparseMemoryRequirementsInfo2KHR = VkImageSparseMemoryRequirementsInfo2;
 
-type VkMemoryRequirements2KHR = VkMemoryRequirements2;
+type P_VkMemoryRequirements2KHR = ^VkMemoryRequirements2KHR;
+     VkMemoryRequirements2KHR = VkMemoryRequirements2;
 
-type VkSparseImageMemoryRequirements2KHR = VkSparseImageMemoryRequirements2;
+type P_VkSparseImageMemoryRequirements2KHR = ^VkSparseImageMemoryRequirements2KHR;
+     VkSparseImageMemoryRequirements2KHR = VkSparseImageMemoryRequirements2;
 
 type PFN_vkGetImageMemoryRequirements2KHR = procedure( device_:VkDevice; const pInfo_:P_VkImageMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
 type PFN_vkGetBufferMemoryRequirements2KHR = procedure( device_:VkDevice; const pInfo_:P_VkBufferMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
@@ -7286,32 +7469,43 @@ procedure vkGetImageSparseMemoryRequirements2KHR(
 const VK_KHR_image_format_list = 1;
 const VK_KHR_IMAGE_FORMAT_LIST_SPEC_VERSION = 1;
 const VK_KHR_IMAGE_FORMAT_LIST_EXTENSION_NAME = 'VK_KHR_image_format_list';
-type VkImageFormatListCreateInfoKHR = VkImageFormatListCreateInfo;
+type P_VkImageFormatListCreateInfoKHR = ^VkImageFormatListCreateInfoKHR;
+     VkImageFormatListCreateInfoKHR = VkImageFormatListCreateInfo;
 
 
 
 const VK_KHR_sampler_ycbcr_conversion = 1;
-type VkSamplerYcbcrConversionKHR = VkSamplerYcbcrConversion;
+type P_VkSamplerYcbcrConversionKHR = ^VkSamplerYcbcrConversionKHR;
+     VkSamplerYcbcrConversionKHR = VkSamplerYcbcrConversion;
 
 const VK_KHR_SAMPLER_YCBCR_CONVERSION_SPEC_VERSION = 14;
 const VK_KHR_SAMPLER_YCBCR_CONVERSION_EXTENSION_NAME = 'VK_KHR_sampler_ycbcr_conversion';
-type VkSamplerYcbcrModelConversionKHR = VkSamplerYcbcrModelConversion;
+type P_VkSamplerYcbcrModelConversionKHR = ^VkSamplerYcbcrModelConversionKHR;
+     VkSamplerYcbcrModelConversionKHR = VkSamplerYcbcrModelConversion;
 
-type VkSamplerYcbcrRangeKHR = VkSamplerYcbcrRange;
+type P_VkSamplerYcbcrRangeKHR = ^VkSamplerYcbcrRangeKHR;
+     VkSamplerYcbcrRangeKHR = VkSamplerYcbcrRange;
 
-type VkChromaLocationKHR = VkChromaLocation;
+type P_VkChromaLocationKHR = ^VkChromaLocationKHR;
+     VkChromaLocationKHR = VkChromaLocation;
 
-type VkSamplerYcbcrConversionCreateInfoKHR = VkSamplerYcbcrConversionCreateInfo;
+type P_VkSamplerYcbcrConversionCreateInfoKHR = ^VkSamplerYcbcrConversionCreateInfoKHR;
+     VkSamplerYcbcrConversionCreateInfoKHR = VkSamplerYcbcrConversionCreateInfo;
 
-type VkSamplerYcbcrConversionInfoKHR = VkSamplerYcbcrConversionInfo;
+type P_VkSamplerYcbcrConversionInfoKHR = ^VkSamplerYcbcrConversionInfoKHR;
+     VkSamplerYcbcrConversionInfoKHR = VkSamplerYcbcrConversionInfo;
 
-type VkBindImagePlaneMemoryInfoKHR = VkBindImagePlaneMemoryInfo;
+type P_VkBindImagePlaneMemoryInfoKHR = ^VkBindImagePlaneMemoryInfoKHR;
+     VkBindImagePlaneMemoryInfoKHR = VkBindImagePlaneMemoryInfo;
 
-type VkImagePlaneMemoryRequirementsInfoKHR = VkImagePlaneMemoryRequirementsInfo;
+type P_VkImagePlaneMemoryRequirementsInfoKHR = ^VkImagePlaneMemoryRequirementsInfoKHR;
+     VkImagePlaneMemoryRequirementsInfoKHR = VkImagePlaneMemoryRequirementsInfo;
 
-type VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR = VkPhysicalDeviceSamplerYcbcrConversionFeatures;
+type P_VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR = ^VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR;
+     VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR = VkPhysicalDeviceSamplerYcbcrConversionFeatures;
 
-type VkSamplerYcbcrConversionImageFormatPropertiesKHR = VkSamplerYcbcrConversionImageFormatProperties;
+type P_VkSamplerYcbcrConversionImageFormatPropertiesKHR = ^VkSamplerYcbcrConversionImageFormatPropertiesKHR;
+     VkSamplerYcbcrConversionImageFormatPropertiesKHR = VkSamplerYcbcrConversionImageFormatProperties;
 
 type PFN_vkCreateSamplerYcbcrConversionKHR = function( device_:VkDevice; const pCreateInfo_:P_VkSamplerYcbcrConversionCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pYcbcrConversion_:P_VkSamplerYcbcrConversion ) :VkResult;
 type PFN_vkDestroySamplerYcbcrConversionKHR = procedure( device_:VkDevice; ycbcrConversion_:VkSamplerYcbcrConversion; const pAllocator_:P_VkAllocationCallbacks );
@@ -7333,9 +7527,11 @@ procedure vkDestroySamplerYcbcrConversionKHR(
 const VK_KHR_bind_memory2 = 1;
 const VK_KHR_BIND_MEMORY_2_SPEC_VERSION = 1;
 const VK_KHR_BIND_MEMORY_2_EXTENSION_NAME = 'VK_KHR_bind_memory2';
-type VkBindBufferMemoryInfoKHR = VkBindBufferMemoryInfo;
+type P_VkBindBufferMemoryInfoKHR = ^VkBindBufferMemoryInfoKHR;
+     VkBindBufferMemoryInfoKHR = VkBindBufferMemoryInfo;
 
-type VkBindImageMemoryInfoKHR = VkBindImageMemoryInfo;
+type P_VkBindImageMemoryInfoKHR = ^VkBindImageMemoryInfoKHR;
+     VkBindImageMemoryInfoKHR = VkBindImageMemoryInfo;
 
 type PFN_vkBindBufferMemory2KHR = function( device_:VkDevice; bindInfoCount_:T_uint32_t; const pBindInfos_:P_VkBindBufferMemoryInfo ) :VkResult;
 type PFN_vkBindImageMemory2KHR = function( device_:VkDevice; bindInfoCount_:T_uint32_t; const pBindInfos_:P_VkBindImageMemoryInfo ) :VkResult;
@@ -7356,9 +7552,11 @@ function vkBindImageMemory2KHR(
 const VK_KHR_maintenance3 = 1;
 const VK_KHR_MAINTENANCE3_SPEC_VERSION  = 1;
 const VK_KHR_MAINTENANCE3_EXTENSION_NAME = 'VK_KHR_maintenance3';
-type VkPhysicalDeviceMaintenance3PropertiesKHR = VkPhysicalDeviceMaintenance3Properties;
+type P_VkPhysicalDeviceMaintenance3PropertiesKHR = ^VkPhysicalDeviceMaintenance3PropertiesKHR;
+     VkPhysicalDeviceMaintenance3PropertiesKHR = VkPhysicalDeviceMaintenance3Properties;
 
-type VkDescriptorSetLayoutSupportKHR = VkDescriptorSetLayoutSupport;
+type P_VkDescriptorSetLayoutSupportKHR = ^VkDescriptorSetLayoutSupportKHR;
+     VkDescriptorSetLayoutSupportKHR = VkDescriptorSetLayoutSupport;
 
 type PFN_vkGetDescriptorSetLayoutSupportKHR = procedure( device_:VkDevice; const pCreateInfo_:P_VkDescriptorSetLayoutCreateInfo; pSupport_:P_VkDescriptorSetLayoutSupport );
 
@@ -7400,21 +7598,24 @@ procedure vkCmdDrawIndexedIndirectCountKHR(
 const VK_KHR_shader_subgroup_extended_types = 1;
 const VK_KHR_SHADER_SUBGROUP_EXTENDED_TYPES_SPEC_VERSION = 1;
 const VK_KHR_SHADER_SUBGROUP_EXTENDED_TYPES_EXTENSION_NAME = 'VK_KHR_shader_subgroup_extended_types';
-type VkPhysicalDeviceShaderSubgroupExtendedTypesFeaturesKHR = VkPhysicalDeviceShaderSubgroupExtendedTypesFeatures;
+type P_VkPhysicalDeviceShaderSubgroupExtendedTypesFeaturesKHR = ^VkPhysicalDeviceShaderSubgroupExtendedTypesFeaturesKHR;
+     VkPhysicalDeviceShaderSubgroupExtendedTypesFeaturesKHR = VkPhysicalDeviceShaderSubgroupExtendedTypesFeatures;
 
 
 
 const VK_KHR_8bit_storage = 1;
 const VK_KHR_8BIT_STORAGE_SPEC_VERSION  = 1;
 const VK_KHR_8BIT_STORAGE_EXTENSION_NAME = 'VK_KHR_8bit_storage';
-type VkPhysicalDevice8BitStorageFeaturesKHR = VkPhysicalDevice8BitStorageFeatures;
+type P_VkPhysicalDevice8BitStorageFeaturesKHR = ^VkPhysicalDevice8BitStorageFeaturesKHR;
+     VkPhysicalDevice8BitStorageFeaturesKHR = VkPhysicalDevice8BitStorageFeatures;
 
 
 
 const VK_KHR_shader_atomic_int64 = 1;
 const VK_KHR_SHADER_ATOMIC_INT64_SPEC_VERSION = 1;
 const VK_KHR_SHADER_ATOMIC_INT64_EXTENSION_NAME = 'VK_KHR_shader_atomic_int64';
-type VkPhysicalDeviceShaderAtomicInt64FeaturesKHR = VkPhysicalDeviceShaderAtomicInt64Features;
+type P_VkPhysicalDeviceShaderAtomicInt64FeaturesKHR = ^VkPhysicalDeviceShaderAtomicInt64FeaturesKHR;
+     VkPhysicalDeviceShaderAtomicInt64FeaturesKHR = VkPhysicalDeviceShaderAtomicInt64Features;
 
 
 
@@ -7436,33 +7637,42 @@ const VK_KHR_DRIVER_PROPERTIES_SPEC_VERSION = 1;
 const VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME = 'VK_KHR_driver_properties';
 const VK_MAX_DRIVER_NAME_SIZE_KHR       = VK_MAX_DRIVER_NAME_SIZE;
 const VK_MAX_DRIVER_INFO_SIZE_KHR       = VK_MAX_DRIVER_INFO_SIZE;
-type VkDriverIdKHR = VkDriverId;
+type P_VkDriverIdKHR = ^VkDriverIdKHR;
+     VkDriverIdKHR = VkDriverId;
 
-type VkConformanceVersionKHR = VkConformanceVersion;
+type P_VkConformanceVersionKHR = ^VkConformanceVersionKHR;
+     VkConformanceVersionKHR = VkConformanceVersion;
 
-type VkPhysicalDeviceDriverPropertiesKHR = VkPhysicalDeviceDriverProperties;
+type P_VkPhysicalDeviceDriverPropertiesKHR = ^VkPhysicalDeviceDriverPropertiesKHR;
+     VkPhysicalDeviceDriverPropertiesKHR = VkPhysicalDeviceDriverProperties;
 
 
 
 const VK_KHR_shader_float_controls = 1;
 const VK_KHR_SHADER_FLOAT_CONTROLS_SPEC_VERSION = 4;
 const VK_KHR_SHADER_FLOAT_CONTROLS_EXTENSION_NAME = 'VK_KHR_shader_float_controls';
-type VkShaderFloatControlsIndependenceKHR = VkShaderFloatControlsIndependence;
+type P_VkShaderFloatControlsIndependenceKHR = ^VkShaderFloatControlsIndependenceKHR;
+     VkShaderFloatControlsIndependenceKHR = VkShaderFloatControlsIndependence;
 
-type VkPhysicalDeviceFloatControlsPropertiesKHR = VkPhysicalDeviceFloatControlsProperties;
+type P_VkPhysicalDeviceFloatControlsPropertiesKHR = ^VkPhysicalDeviceFloatControlsPropertiesKHR;
+     VkPhysicalDeviceFloatControlsPropertiesKHR = VkPhysicalDeviceFloatControlsProperties;
 
 
 
 const VK_KHR_depth_stencil_resolve = 1;
 const VK_KHR_DEPTH_STENCIL_RESOLVE_SPEC_VERSION = 1;
 const VK_KHR_DEPTH_STENCIL_RESOLVE_EXTENSION_NAME = 'VK_KHR_depth_stencil_resolve';
-type VkResolveModeFlagBitsKHR = VkResolveModeFlagBits;
+type P_VkResolveModeFlagBitsKHR = ^VkResolveModeFlagBitsKHR;
+     VkResolveModeFlagBitsKHR = VkResolveModeFlagBits;
 
-type VkResolveModeFlagsKHR = VkResolveModeFlags;
+type P_VkResolveModeFlagsKHR = ^VkResolveModeFlagsKHR;
+     VkResolveModeFlagsKHR = VkResolveModeFlags;
 
-type VkSubpassDescriptionDepthStencilResolveKHR = VkSubpassDescriptionDepthStencilResolve;
+type P_VkSubpassDescriptionDepthStencilResolveKHR = ^VkSubpassDescriptionDepthStencilResolveKHR;
+     VkSubpassDescriptionDepthStencilResolveKHR = VkSubpassDescriptionDepthStencilResolve;
 
-type VkPhysicalDeviceDepthStencilResolvePropertiesKHR = VkPhysicalDeviceDepthStencilResolveProperties;
+type P_VkPhysicalDeviceDepthStencilResolvePropertiesKHR = ^VkPhysicalDeviceDepthStencilResolvePropertiesKHR;
+     VkPhysicalDeviceDepthStencilResolvePropertiesKHR = VkPhysicalDeviceDepthStencilResolveProperties;
 
 
 
@@ -7474,23 +7684,32 @@ const VK_KHR_SWAPCHAIN_MUTABLE_FORMAT_EXTENSION_NAME = 'VK_KHR_swapchain_mutable
 const VK_KHR_timeline_semaphore = 1;
 const VK_KHR_TIMELINE_SEMAPHORE_SPEC_VERSION = 2;
 const VK_KHR_TIMELINE_SEMAPHORE_EXTENSION_NAME = 'VK_KHR_timeline_semaphore';
-type VkSemaphoreTypeKHR = VkSemaphoreType;
+type P_VkSemaphoreTypeKHR = ^VkSemaphoreTypeKHR;
+     VkSemaphoreTypeKHR = VkSemaphoreType;
 
-type VkSemaphoreWaitFlagBitsKHR = VkSemaphoreWaitFlagBits;
+type P_VkSemaphoreWaitFlagBitsKHR = ^VkSemaphoreWaitFlagBitsKHR;
+     VkSemaphoreWaitFlagBitsKHR = VkSemaphoreWaitFlagBits;
 
-type VkSemaphoreWaitFlagsKHR = VkSemaphoreWaitFlags;
+type P_VkSemaphoreWaitFlagsKHR = ^VkSemaphoreWaitFlagsKHR;
+     VkSemaphoreWaitFlagsKHR = VkSemaphoreWaitFlags;
 
-type VkPhysicalDeviceTimelineSemaphoreFeaturesKHR = VkPhysicalDeviceTimelineSemaphoreFeatures;
+type P_VkPhysicalDeviceTimelineSemaphoreFeaturesKHR = ^VkPhysicalDeviceTimelineSemaphoreFeaturesKHR;
+     VkPhysicalDeviceTimelineSemaphoreFeaturesKHR = VkPhysicalDeviceTimelineSemaphoreFeatures;
 
-type VkPhysicalDeviceTimelineSemaphorePropertiesKHR = VkPhysicalDeviceTimelineSemaphoreProperties;
+type P_VkPhysicalDeviceTimelineSemaphorePropertiesKHR = ^VkPhysicalDeviceTimelineSemaphorePropertiesKHR;
+     VkPhysicalDeviceTimelineSemaphorePropertiesKHR = VkPhysicalDeviceTimelineSemaphoreProperties;
 
-type VkSemaphoreTypeCreateInfoKHR = VkSemaphoreTypeCreateInfo;
+type P_VkSemaphoreTypeCreateInfoKHR = ^VkSemaphoreTypeCreateInfoKHR;
+     VkSemaphoreTypeCreateInfoKHR = VkSemaphoreTypeCreateInfo;
 
-type VkTimelineSemaphoreSubmitInfoKHR = VkTimelineSemaphoreSubmitInfo;
+type P_VkTimelineSemaphoreSubmitInfoKHR = ^VkTimelineSemaphoreSubmitInfoKHR;
+     VkTimelineSemaphoreSubmitInfoKHR = VkTimelineSemaphoreSubmitInfo;
 
-type VkSemaphoreWaitInfoKHR = VkSemaphoreWaitInfo;
+type P_VkSemaphoreWaitInfoKHR = ^VkSemaphoreWaitInfoKHR;
+     VkSemaphoreWaitInfoKHR = VkSemaphoreWaitInfo;
 
-type VkSemaphoreSignalInfoKHR = VkSemaphoreSignalInfo;
+type P_VkSemaphoreSignalInfoKHR = ^VkSemaphoreSignalInfoKHR;
+     VkSemaphoreSignalInfoKHR = VkSemaphoreSignalInfo;
 
 type PFN_vkGetSemaphoreCounterValueKHR = function( device_:VkDevice; semaphore_:VkSemaphore; pValue_:P_uint64_t ) :VkResult;
 type PFN_vkWaitSemaphoresKHR = function( device_:VkDevice; const pWaitInfo_:P_VkSemaphoreWaitInfo; timeout_:T_uint64_t ) :VkResult;
@@ -7516,7 +7735,8 @@ function vkSignalSemaphoreKHR(
 const VK_KHR_vulkan_memory_model = 1;
 const VK_KHR_VULKAN_MEMORY_MODEL_SPEC_VERSION = 3;
 const VK_KHR_VULKAN_MEMORY_MODEL_EXTENSION_NAME = 'VK_KHR_vulkan_memory_model';
-type VkPhysicalDeviceVulkanMemoryModelFeaturesKHR = VkPhysicalDeviceVulkanMemoryModelFeatures;
+type P_VkPhysicalDeviceVulkanMemoryModelFeaturesKHR = ^VkPhysicalDeviceVulkanMemoryModelFeaturesKHR;
+     VkPhysicalDeviceVulkanMemoryModelFeaturesKHR = VkPhysicalDeviceVulkanMemoryModelFeatures;
 
 
 
@@ -7636,33 +7856,42 @@ type P_VkSurfaceProtectedCapabilitiesKHR = ^VkSurfaceProtectedCapabilitiesKHR;
 const VK_KHR_separate_depth_stencil_layouts = 1;
 const VK_KHR_SEPARATE_DEPTH_STENCIL_LAYOUTS_SPEC_VERSION = 1;
 const VK_KHR_SEPARATE_DEPTH_STENCIL_LAYOUTS_EXTENSION_NAME = 'VK_KHR_separate_depth_stencil_layouts';
-type VkPhysicalDeviceSeparateDepthStencilLayoutsFeaturesKHR = VkPhysicalDeviceSeparateDepthStencilLayoutsFeatures;
+type P_VkPhysicalDeviceSeparateDepthStencilLayoutsFeaturesKHR = ^VkPhysicalDeviceSeparateDepthStencilLayoutsFeaturesKHR;
+     VkPhysicalDeviceSeparateDepthStencilLayoutsFeaturesKHR = VkPhysicalDeviceSeparateDepthStencilLayoutsFeatures;
 
-type VkAttachmentReferenceStencilLayoutKHR = VkAttachmentReferenceStencilLayout;
+type P_VkAttachmentReferenceStencilLayoutKHR = ^VkAttachmentReferenceStencilLayoutKHR;
+     VkAttachmentReferenceStencilLayoutKHR = VkAttachmentReferenceStencilLayout;
 
-type VkAttachmentDescriptionStencilLayoutKHR = VkAttachmentDescriptionStencilLayout;
+type P_VkAttachmentDescriptionStencilLayoutKHR = ^VkAttachmentDescriptionStencilLayoutKHR;
+     VkAttachmentDescriptionStencilLayoutKHR = VkAttachmentDescriptionStencilLayout;
 
 
 
 const VK_KHR_uniform_buffer_standard_layout = 1;
 const VK_KHR_UNIFORM_BUFFER_STANDARD_LAYOUT_SPEC_VERSION = 1;
 const VK_KHR_UNIFORM_BUFFER_STANDARD_LAYOUT_EXTENSION_NAME = 'VK_KHR_uniform_buffer_standard_layout';
-type VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR = VkPhysicalDeviceUniformBufferStandardLayoutFeatures;
+type P_VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR = ^VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR;
+     VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR = VkPhysicalDeviceUniformBufferStandardLayoutFeatures;
 
 
 
 const VK_KHR_buffer_device_address = 1;
 const VK_KHR_BUFFER_DEVICE_ADDRESS_SPEC_VERSION = 1;
 const VK_KHR_BUFFER_DEVICE_ADDRESS_EXTENSION_NAME = 'VK_KHR_buffer_device_address';
-type VkPhysicalDeviceBufferDeviceAddressFeaturesKHR = VkPhysicalDeviceBufferDeviceAddressFeatures;
+type P_VkPhysicalDeviceBufferDeviceAddressFeaturesKHR = ^VkPhysicalDeviceBufferDeviceAddressFeaturesKHR;
+     VkPhysicalDeviceBufferDeviceAddressFeaturesKHR = VkPhysicalDeviceBufferDeviceAddressFeatures;
 
-type VkBufferDeviceAddressInfoKHR = VkBufferDeviceAddressInfo;
+type P_VkBufferDeviceAddressInfoKHR = ^VkBufferDeviceAddressInfoKHR;
+     VkBufferDeviceAddressInfoKHR = VkBufferDeviceAddressInfo;
 
-type VkBufferOpaqueCaptureAddressCreateInfoKHR = VkBufferOpaqueCaptureAddressCreateInfo;
+type P_VkBufferOpaqueCaptureAddressCreateInfoKHR = ^VkBufferOpaqueCaptureAddressCreateInfoKHR;
+     VkBufferOpaqueCaptureAddressCreateInfoKHR = VkBufferOpaqueCaptureAddressCreateInfo;
 
-type VkMemoryOpaqueCaptureAddressAllocateInfoKHR = VkMemoryOpaqueCaptureAddressAllocateInfo;
+type P_VkMemoryOpaqueCaptureAddressAllocateInfoKHR = ^VkMemoryOpaqueCaptureAddressAllocateInfoKHR;
+     VkMemoryOpaqueCaptureAddressAllocateInfoKHR = VkMemoryOpaqueCaptureAddressAllocateInfo;
 
-type VkDeviceMemoryOpaqueCaptureAddressInfoKHR = VkDeviceMemoryOpaqueCaptureAddressInfo;
+type P_VkDeviceMemoryOpaqueCaptureAddressInfoKHR = ^VkDeviceMemoryOpaqueCaptureAddressInfoKHR;
+     VkDeviceMemoryOpaqueCaptureAddressInfoKHR = VkDeviceMemoryOpaqueCaptureAddressInfo;
 
 type PFN_vkGetBufferDeviceAddressKHR = function( device_:VkDevice; const pInfo_:P_VkBufferDeviceAddressInfo ) :VkDeviceAddress;
 type PFN_vkGetBufferOpaqueCaptureAddressKHR = function( device_:VkDevice; const pInfo_:P_VkBufferDeviceAddressInfo ) :T_uint64_t;
@@ -7684,7 +7913,8 @@ function vkGetDeviceMemoryOpaqueCaptureAddressKHR(
 
 
 const VK_KHR_deferred_host_operations = 1;
-type VkDeferredOperationKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkDeferredOperationKHR = ^VkDeferredOperationKHR;
+     VkDeferredOperationKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_KHR_DEFERRED_HOST_OPERATIONS_SPEC_VERSION = 4;
 const VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME = 'VK_KHR_deferred_host_operations';
 type PFN_vkCreateDeferredOperationKHR = function( device_:VkDevice; const pAllocator_:P_VkAllocationCallbacks; pDeferredOperation_:P_VkDeferredOperationKHR ) :VkResult;
@@ -7835,10 +8065,12 @@ const VK_KHR_SHADER_NON_SEMANTIC_INFO_EXTENSION_NAME = 'VK_KHR_shader_non_semant
 
 
 const VK_KHR_synchronization2 = 1;
-type VkFlags64 = T_uint64_t;
+type P_VkFlags64 = ^VkFlags64;
+     VkFlags64 = T_uint64_t;
 const VK_KHR_SYNCHRONIZATION_2_SPEC_VERSION = 1;
 const VK_KHR_SYNCHRONIZATION_2_EXTENSION_NAME = 'VK_KHR_synchronization2';
-type VkPipelineStageFlags2KHR = VkFlags64;
+type P_VkPipelineStageFlags2KHR = ^VkPipelineStageFlags2KHR;
+     VkPipelineStageFlags2KHR = VkFlags64;
 
 // Flag bits for VkPipelineStageFlags2KHR
 static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_NONE_KHR = 0;
@@ -7880,7 +8112,8 @@ static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_FRAGMENT_DENSITY_PROCE
 static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_TASK_SHADER_BIT_NV = $00080000;
 static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_MESH_SHADER_BIT_NV = $00100000;
 
-type VkAccessFlags2KHR = VkFlags64;
+type P_VkAccessFlags2KHR = ^VkAccessFlags2KHR;
+     VkAccessFlags2KHR = VkFlags64;
 
 // Flag bits for VkAccessFlags2KHR
 static const VkAccessFlags2KHR VK_ACCESS_2_NONE_KHR = 0;
@@ -7924,7 +8157,8 @@ type VkSubmitFlagBitsKHR = (
        VK_SUBMIT_PROTECTED_BIT_KHR = $00000001,
        VK_SUBMIT_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkSubmitFlagsKHR = VkFlags;
+type P_VkSubmitFlagsKHR = ^VkSubmitFlagsKHR;
+     VkSubmitFlagsKHR = VkFlags;
 type P_VkMemoryBarrier2KHR = ^VkMemoryBarrier2KHR;
      VkMemoryBarrier2KHR = record
        sType :VkStructureType;
@@ -8275,7 +8509,8 @@ procedure vkCmdResolveImage2KHR(
 
 
 const VK_EXT_debug_report = 1;
-type VkDebugReportCallbackEXT = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkDebugReportCallbackEXT = ^VkDebugReportCallbackEXT;
+     VkDebugReportCallbackEXT = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_EXT_DEBUG_REPORT_SPEC_VERSION  = 9;
 const VK_EXT_DEBUG_REPORT_EXTENSION_NAME = 'VK_EXT_debug_report';
 
@@ -8331,7 +8566,8 @@ type VkDebugReportFlagBitsEXT = (
        VK_DEBUG_REPORT_DEBUG_BIT_EXT = $00000010,
        VK_DEBUG_REPORT_FLAG_BITS_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkDebugReportFlagsEXT = VkFlags;
+type P_VkDebugReportFlagsEXT = ^VkDebugReportFlagsEXT;
+     VkDebugReportFlagsEXT = VkFlags;
 type PFN_vkDebugReportCallbackEXT = function(
     flags_:VkDebugReportFlagsEXT;
     objectType_:VkDebugReportObjectTypeEXT;
@@ -8516,7 +8752,8 @@ type P_VkDedicatedAllocationMemoryAllocateInfoNV = ^VkDedicatedAllocationMemoryA
 const VK_EXT_transform_feedback = 1;
 const VK_EXT_TRANSFORM_FEEDBACK_SPEC_VERSION = 1;
 const VK_EXT_TRANSFORM_FEEDBACK_EXTENSION_NAME = 'VK_EXT_transform_feedback';
-type VkPipelineRasterizationStateStreamCreateFlagsEXT = VkFlags;
+type P_VkPipelineRasterizationStateStreamCreateFlagsEXT = ^VkPipelineRasterizationStateStreamCreateFlagsEXT;
+     VkPipelineRasterizationStateStreamCreateFlagsEXT = VkFlags;
 type P_VkPhysicalDeviceTransformFeedbackFeaturesEXT = ^VkPhysicalDeviceTransformFeedbackFeaturesEXT;
      VkPhysicalDeviceTransformFeedbackFeaturesEXT = record
        sType :VkStructureType;
@@ -8768,7 +9005,8 @@ type VkExternalMemoryHandleTypeFlagBitsNV = (
        VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D11_IMAGE_KMT_BIT_NV = $00000008,
        VK_EXTERNAL_MEMORY_HANDLE_TYPE_FLAG_BITS_MAX_ENUM_NV = $7FFFFFFF
      );
-type VkExternalMemoryHandleTypeFlagsNV = VkFlags;
+type P_VkExternalMemoryHandleTypeFlagsNV = ^VkExternalMemoryHandleTypeFlagsNV;
+     VkExternalMemoryHandleTypeFlagsNV = VkFlags;
 
 type VkExternalMemoryFeatureFlagBitsNV = (
        VK_EXTERNAL_MEMORY_FEATURE_DEDICATED_ONLY_BIT_NV = $00000001,
@@ -8776,7 +9014,8 @@ type VkExternalMemoryFeatureFlagBitsNV = (
        VK_EXTERNAL_MEMORY_FEATURE_IMPORTABLE_BIT_NV = $00000004,
        VK_EXTERNAL_MEMORY_FEATURE_FLAG_BITS_MAX_ENUM_NV = $7FFFFFFF
      );
-type VkExternalMemoryFeatureFlagsNV = VkFlags;
+type P_VkExternalMemoryFeatureFlagsNV = ^VkExternalMemoryFeatureFlagsNV;
+     VkExternalMemoryFeatureFlagsNV = VkFlags;
 type P_VkExternalImageFormatPropertiesNV = ^VkExternalImageFormatPropertiesNV;
      VkExternalImageFormatPropertiesNV = record
        imageFormatProperties :VkImageFormatProperties;
@@ -8887,7 +9126,8 @@ type VkConditionalRenderingFlagBitsEXT = (
        VK_CONDITIONAL_RENDERING_INVERTED_BIT_EXT = $00000001,
        VK_CONDITIONAL_RENDERING_FLAG_BITS_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkConditionalRenderingFlagsEXT = VkFlags;
+type P_VkConditionalRenderingFlagsEXT = ^VkConditionalRenderingFlagsEXT;
+     VkConditionalRenderingFlagsEXT = VkFlags;
 type P_VkConditionalRenderingBeginInfoEXT = ^VkConditionalRenderingBeginInfoEXT;
      VkConditionalRenderingBeginInfoEXT = record
        sType :VkStructureType;
@@ -8975,7 +9215,8 @@ type VkSurfaceCounterFlagBitsEXT = (
        VK_SURFACE_COUNTER_VBLANK_EXT = VK_SURFACE_COUNTER_VBLANK_BIT_EXT,
        VK_SURFACE_COUNTER_FLAG_BITS_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkSurfaceCounterFlagsEXT = VkFlags;
+type P_VkSurfaceCounterFlagsEXT = ^VkSurfaceCounterFlagsEXT;
+     VkSurfaceCounterFlagsEXT = VkFlags;
 type P_VkSurfaceCapabilities2EXT = ^VkSurfaceCapabilities2EXT;
      VkSurfaceCapabilities2EXT = record
        sType :VkStructureType;
@@ -9173,7 +9414,8 @@ type VkViewportCoordinateSwizzleNV = (
        VK_VIEWPORT_COORDINATE_SWIZZLE_NEGATIVE_W_NV = 7,
        VK_VIEWPORT_COORDINATE_SWIZZLE_MAX_ENUM_NV = $7FFFFFFF
      );
-type VkPipelineViewportSwizzleStateCreateFlagsNV = VkFlags;
+type P_VkPipelineViewportSwizzleStateCreateFlagsNV = ^VkPipelineViewportSwizzleStateCreateFlagsNV;
+     VkPipelineViewportSwizzleStateCreateFlagsNV = VkFlags;
 type P_VkViewportSwizzleNV = ^VkViewportSwizzleNV;
      VkViewportSwizzleNV = record
        x :VkViewportCoordinateSwizzleNV;
@@ -9202,7 +9444,8 @@ type VkDiscardRectangleModeEXT = (
        VK_DISCARD_RECTANGLE_MODE_EXCLUSIVE_EXT = 1,
        VK_DISCARD_RECTANGLE_MODE_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkPipelineDiscardRectangleStateCreateFlagsEXT = VkFlags;
+type P_VkPipelineDiscardRectangleStateCreateFlagsEXT = ^VkPipelineDiscardRectangleStateCreateFlagsEXT;
+     VkPipelineDiscardRectangleStateCreateFlagsEXT = VkFlags;
 type P_VkPhysicalDeviceDiscardRectanglePropertiesEXT = ^VkPhysicalDeviceDiscardRectanglePropertiesEXT;
      VkPhysicalDeviceDiscardRectanglePropertiesEXT = record
        sType :VkStructureType;
@@ -9241,7 +9484,8 @@ type VkConservativeRasterizationModeEXT = (
        VK_CONSERVATIVE_RASTERIZATION_MODE_UNDERESTIMATE_EXT = 2,
        VK_CONSERVATIVE_RASTERIZATION_MODE_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkPipelineRasterizationConservativeStateCreateFlagsEXT = VkFlags;
+type P_VkPipelineRasterizationConservativeStateCreateFlagsEXT = ^VkPipelineRasterizationConservativeStateCreateFlagsEXT;
+     VkPipelineRasterizationConservativeStateCreateFlagsEXT = VkFlags;
 type P_VkPhysicalDeviceConservativeRasterizationPropertiesEXT = ^VkPhysicalDeviceConservativeRasterizationPropertiesEXT;
      VkPhysicalDeviceConservativeRasterizationPropertiesEXT = record
        sType :VkStructureType;
@@ -9271,7 +9515,8 @@ type P_VkPipelineRasterizationConservativeStateCreateInfoEXT = ^VkPipelineRaster
 const VK_EXT_depth_clip_enable = 1;
 const VK_EXT_DEPTH_CLIP_ENABLE_SPEC_VERSION = 1;
 const VK_EXT_DEPTH_CLIP_ENABLE_EXTENSION_NAME = 'VK_EXT_depth_clip_enable';
-type VkPipelineRasterizationDepthClipStateCreateFlagsEXT = VkFlags;
+type P_VkPipelineRasterizationDepthClipStateCreateFlagsEXT = ^VkPipelineRasterizationDepthClipStateCreateFlagsEXT;
+     VkPipelineRasterizationDepthClipStateCreateFlagsEXT = VkFlags;
 type P_VkPhysicalDeviceDepthClipEnableFeaturesEXT = ^VkPhysicalDeviceDepthClipEnableFeaturesEXT;
      VkPhysicalDeviceDepthClipEnableFeaturesEXT = record
        sType :VkStructureType;
@@ -9340,10 +9585,12 @@ const VK_QUEUE_FAMILY_FOREIGN_EXT       = (~0U-2);
 
 
 const VK_EXT_debug_utils = 1;
-type VkDebugUtilsMessengerEXT = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkDebugUtilsMessengerEXT = ^VkDebugUtilsMessengerEXT;
+     VkDebugUtilsMessengerEXT = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_EXT_DEBUG_UTILS_SPEC_VERSION   = 2;
 const VK_EXT_DEBUG_UTILS_EXTENSION_NAME = 'VK_EXT_debug_utils';
-type VkDebugUtilsMessengerCallbackDataFlagsEXT = VkFlags;
+type P_VkDebugUtilsMessengerCallbackDataFlagsEXT = ^VkDebugUtilsMessengerCallbackDataFlagsEXT;
+     VkDebugUtilsMessengerCallbackDataFlagsEXT = VkFlags;
 
 type VkDebugUtilsMessageSeverityFlagBitsEXT = (
        VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT = $00000001,
@@ -9359,9 +9606,12 @@ type VkDebugUtilsMessageTypeFlagBitsEXT = (
        VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT = $00000004,
        VK_DEBUG_UTILS_MESSAGE_TYPE_FLAG_BITS_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkDebugUtilsMessageTypeFlagsEXT = VkFlags;
-type VkDebugUtilsMessageSeverityFlagsEXT = VkFlags;
-type VkDebugUtilsMessengerCreateFlagsEXT = VkFlags;
+type P_VkDebugUtilsMessageTypeFlagsEXT = ^VkDebugUtilsMessageTypeFlagsEXT;
+     VkDebugUtilsMessageTypeFlagsEXT = VkFlags;
+type P_VkDebugUtilsMessageSeverityFlagsEXT = ^VkDebugUtilsMessageSeverityFlagsEXT;
+     VkDebugUtilsMessageSeverityFlagsEXT = VkFlags;
+type P_VkDebugUtilsMessengerCreateFlagsEXT = ^VkDebugUtilsMessengerCreateFlagsEXT;
+     VkDebugUtilsMessengerCreateFlagsEXT = VkFlags;
 type P_VkDebugUtilsLabelEXT = ^VkDebugUtilsLabelEXT;
      VkDebugUtilsLabelEXT = record
        sType :VkStructureType;
@@ -9488,11 +9738,14 @@ procedure vkSubmitDebugUtilsMessageEXT(
 const VK_EXT_sampler_filter_minmax = 1;
 const VK_EXT_SAMPLER_FILTER_MINMAX_SPEC_VERSION = 2;
 const VK_EXT_SAMPLER_FILTER_MINMAX_EXTENSION_NAME = 'VK_EXT_sampler_filter_minmax';
-type VkSamplerReductionModeEXT = VkSamplerReductionMode;
+type P_VkSamplerReductionModeEXT = ^VkSamplerReductionModeEXT;
+     VkSamplerReductionModeEXT = VkSamplerReductionMode;
 
-type VkSamplerReductionModeCreateInfoEXT = VkSamplerReductionModeCreateInfo;
+type P_VkSamplerReductionModeCreateInfoEXT = ^VkSamplerReductionModeCreateInfoEXT;
+     VkSamplerReductionModeCreateInfoEXT = VkSamplerReductionModeCreateInfo;
 
-type VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT = VkPhysicalDeviceSamplerFilterMinmaxProperties;
+type P_VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT = ^VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT;
+     VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT = VkPhysicalDeviceSamplerFilterMinmaxProperties;
 
 
 
@@ -9680,7 +9933,8 @@ type P_VkPipelineColorBlendAdvancedStateCreateInfoEXT = ^VkPipelineColorBlendAdv
 const VK_NV_fragment_coverage_to_color = 1;
 const VK_NV_FRAGMENT_COVERAGE_TO_COLOR_SPEC_VERSION = 1;
 const VK_NV_FRAGMENT_COVERAGE_TO_COLOR_EXTENSION_NAME = 'VK_NV_fragment_coverage_to_color';
-type VkPipelineCoverageToColorStateCreateFlagsNV = VkFlags;
+type P_VkPipelineCoverageToColorStateCreateFlagsNV = ^VkPipelineCoverageToColorStateCreateFlagsNV;
+     VkPipelineCoverageToColorStateCreateFlagsNV = VkFlags;
 type P_VkPipelineCoverageToColorStateCreateInfoNV = ^VkPipelineCoverageToColorStateCreateInfoNV;
      VkPipelineCoverageToColorStateCreateInfoNV = record
        sType :VkStructureType;
@@ -9703,7 +9957,8 @@ type VkCoverageModulationModeNV = (
        VK_COVERAGE_MODULATION_MODE_RGBA_NV = 3,
        VK_COVERAGE_MODULATION_MODE_MAX_ENUM_NV = $7FFFFFFF
      );
-type VkPipelineCoverageModulationStateCreateFlagsNV = VkFlags;
+type P_VkPipelineCoverageModulationStateCreateFlagsNV = ^VkPipelineCoverageModulationStateCreateFlagsNV;
+     VkPipelineCoverageModulationStateCreateFlagsNV = VkFlags;
 type P_VkPipelineCoverageModulationStateCreateInfoNV = ^VkPipelineCoverageModulationStateCreateInfoNV;
      VkPipelineCoverageModulationStateCreateInfoNV = record
        sType :VkStructureType;
@@ -9810,7 +10065,8 @@ function vkGetImageDrmFormatModifierPropertiesEXT(
 
 
 const VK_EXT_validation_cache = 1;
-type VkValidationCacheEXT = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkValidationCacheEXT = ^VkValidationCacheEXT;
+     VkValidationCacheEXT = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_EXT_VALIDATION_CACHE_SPEC_VERSION = 1;
 const VK_EXT_VALIDATION_CACHE_EXTENSION_NAME = 'VK_EXT_validation_cache';
 
@@ -9818,7 +10074,8 @@ type VkValidationCacheHeaderVersionEXT = (
        VK_VALIDATION_CACHE_HEADER_VERSION_ONE_EXT = 1,
        VK_VALIDATION_CACHE_HEADER_VERSION_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkValidationCacheCreateFlagsEXT = VkFlags;
+type P_VkValidationCacheCreateFlagsEXT = ^VkValidationCacheCreateFlagsEXT;
+     VkValidationCacheCreateFlagsEXT = VkFlags;
 type P_VkValidationCacheCreateInfoEXT = ^VkValidationCacheCreateInfoEXT;
      VkValidationCacheCreateInfoEXT = record
        sType :VkStructureType;
@@ -9869,19 +10126,26 @@ function vkGetValidationCacheDataEXT(
 const VK_EXT_descriptor_indexing = 1;
 const VK_EXT_DESCRIPTOR_INDEXING_SPEC_VERSION = 2;
 const VK_EXT_DESCRIPTOR_INDEXING_EXTENSION_NAME = 'VK_EXT_descriptor_indexing';
-type VkDescriptorBindingFlagBitsEXT = VkDescriptorBindingFlagBits;
+type P_VkDescriptorBindingFlagBitsEXT = ^VkDescriptorBindingFlagBitsEXT;
+     VkDescriptorBindingFlagBitsEXT = VkDescriptorBindingFlagBits;
 
-type VkDescriptorBindingFlagsEXT = VkDescriptorBindingFlags;
+type P_VkDescriptorBindingFlagsEXT = ^VkDescriptorBindingFlagsEXT;
+     VkDescriptorBindingFlagsEXT = VkDescriptorBindingFlags;
 
-type VkDescriptorSetLayoutBindingFlagsCreateInfoEXT = VkDescriptorSetLayoutBindingFlagsCreateInfo;
+type P_VkDescriptorSetLayoutBindingFlagsCreateInfoEXT = ^VkDescriptorSetLayoutBindingFlagsCreateInfoEXT;
+     VkDescriptorSetLayoutBindingFlagsCreateInfoEXT = VkDescriptorSetLayoutBindingFlagsCreateInfo;
 
-type VkPhysicalDeviceDescriptorIndexingFeaturesEXT = VkPhysicalDeviceDescriptorIndexingFeatures;
+type P_VkPhysicalDeviceDescriptorIndexingFeaturesEXT = ^VkPhysicalDeviceDescriptorIndexingFeaturesEXT;
+     VkPhysicalDeviceDescriptorIndexingFeaturesEXT = VkPhysicalDeviceDescriptorIndexingFeatures;
 
-type VkPhysicalDeviceDescriptorIndexingPropertiesEXT = VkPhysicalDeviceDescriptorIndexingProperties;
+type P_VkPhysicalDeviceDescriptorIndexingPropertiesEXT = ^VkPhysicalDeviceDescriptorIndexingPropertiesEXT;
+     VkPhysicalDeviceDescriptorIndexingPropertiesEXT = VkPhysicalDeviceDescriptorIndexingProperties;
 
-type VkDescriptorSetVariableDescriptorCountAllocateInfoEXT = VkDescriptorSetVariableDescriptorCountAllocateInfo;
+type P_VkDescriptorSetVariableDescriptorCountAllocateInfoEXT = ^VkDescriptorSetVariableDescriptorCountAllocateInfoEXT;
+     VkDescriptorSetVariableDescriptorCountAllocateInfoEXT = VkDescriptorSetVariableDescriptorCountAllocateInfo;
 
-type VkDescriptorSetVariableDescriptorCountLayoutSupportEXT = VkDescriptorSetVariableDescriptorCountLayoutSupport;
+type P_VkDescriptorSetVariableDescriptorCountLayoutSupportEXT = ^VkDescriptorSetVariableDescriptorCountLayoutSupportEXT;
+     VkDescriptorSetVariableDescriptorCountLayoutSupportEXT = VkDescriptorSetVariableDescriptorCountLayoutSupport;
 
 
 
@@ -9998,7 +10262,8 @@ procedure vkCmdSetCoarseSampleOrderNV(
 
 
 const VK_NV_ray_tracing = 1;
-type VkAccelerationStructureNV = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkAccelerationStructureNV = ^VkAccelerationStructureNV;
+     VkAccelerationStructureNV = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_NV_RAY_TRACING_SPEC_VERSION    = 3;
 const VK_NV_RAY_TRACING_EXTENSION_NAME = 'VK_NV_ray_tracing';
 const VK_SHADER_UNUSED_KHR              = (~0U);
@@ -10013,7 +10278,8 @@ type VkRayTracingShaderGroupTypeKHR = (
        VK_RAY_TRACING_SHADER_GROUP_TYPE_PROCEDURAL_HIT_GROUP_NV = VK_RAY_TRACING_SHADER_GROUP_TYPE_PROCEDURAL_HIT_GROUP_KHR,
        VK_RAY_TRACING_SHADER_GROUP_TYPE_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkRayTracingShaderGroupTypeNV = VkRayTracingShaderGroupTypeKHR;
+type P_VkRayTracingShaderGroupTypeNV = ^VkRayTracingShaderGroupTypeNV;
+     VkRayTracingShaderGroupTypeNV = VkRayTracingShaderGroupTypeKHR;
 
 
 type VkGeometryTypeKHR = (
@@ -10024,7 +10290,8 @@ type VkGeometryTypeKHR = (
        VK_GEOMETRY_TYPE_AABBS_NV = VK_GEOMETRY_TYPE_AABBS_KHR,
        VK_GEOMETRY_TYPE_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkGeometryTypeNV = VkGeometryTypeKHR;
+type P_VkGeometryTypeNV = ^VkGeometryTypeNV;
+     VkGeometryTypeNV = VkGeometryTypeKHR;
 
 
 type VkAccelerationStructureTypeKHR = (
@@ -10035,7 +10302,8 @@ type VkAccelerationStructureTypeKHR = (
        VK_ACCELERATION_STRUCTURE_TYPE_BOTTOM_LEVEL_NV = VK_ACCELERATION_STRUCTURE_TYPE_BOTTOM_LEVEL_KHR,
        VK_ACCELERATION_STRUCTURE_TYPE_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkAccelerationStructureTypeNV = VkAccelerationStructureTypeKHR;
+type P_VkAccelerationStructureTypeNV = ^VkAccelerationStructureTypeNV;
+     VkAccelerationStructureTypeNV = VkAccelerationStructureTypeKHR;
 
 
 type VkCopyAccelerationStructureModeKHR = (
@@ -10047,7 +10315,8 @@ type VkCopyAccelerationStructureModeKHR = (
        VK_COPY_ACCELERATION_STRUCTURE_MODE_COMPACT_NV = VK_COPY_ACCELERATION_STRUCTURE_MODE_COMPACT_KHR,
        VK_COPY_ACCELERATION_STRUCTURE_MODE_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkCopyAccelerationStructureModeNV = VkCopyAccelerationStructureModeKHR;
+type P_VkCopyAccelerationStructureModeNV = ^VkCopyAccelerationStructureModeNV;
+     VkCopyAccelerationStructureModeNV = VkCopyAccelerationStructureModeKHR;
 
 
 type VkAccelerationStructureMemoryRequirementsTypeNV = (
@@ -10064,10 +10333,13 @@ type VkGeometryFlagBitsKHR = (
        VK_GEOMETRY_NO_DUPLICATE_ANY_HIT_INVOCATION_BIT_NV = VK_GEOMETRY_NO_DUPLICATE_ANY_HIT_INVOCATION_BIT_KHR,
        VK_GEOMETRY_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkGeometryFlagsKHR = VkFlags;
-type VkGeometryFlagsNV = VkGeometryFlagsKHR;
+type P_VkGeometryFlagsKHR = ^VkGeometryFlagsKHR;
+     VkGeometryFlagsKHR = VkFlags;
+type P_VkGeometryFlagsNV = ^VkGeometryFlagsNV;
+     VkGeometryFlagsNV = VkGeometryFlagsKHR;
 
-type VkGeometryFlagBitsNV = VkGeometryFlagBitsKHR;
+type P_VkGeometryFlagBitsNV = ^VkGeometryFlagBitsNV;
+     VkGeometryFlagBitsNV = VkGeometryFlagBitsKHR;
 
 
 type VkGeometryInstanceFlagBitsKHR = (
@@ -10081,10 +10353,13 @@ type VkGeometryInstanceFlagBitsKHR = (
        VK_GEOMETRY_INSTANCE_FORCE_NO_OPAQUE_BIT_NV = VK_GEOMETRY_INSTANCE_FORCE_NO_OPAQUE_BIT_KHR,
        VK_GEOMETRY_INSTANCE_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkGeometryInstanceFlagsKHR = VkFlags;
-type VkGeometryInstanceFlagsNV = VkGeometryInstanceFlagsKHR;
+type P_VkGeometryInstanceFlagsKHR = ^VkGeometryInstanceFlagsKHR;
+     VkGeometryInstanceFlagsKHR = VkFlags;
+type P_VkGeometryInstanceFlagsNV = ^VkGeometryInstanceFlagsNV;
+     VkGeometryInstanceFlagsNV = VkGeometryInstanceFlagsKHR;
 
-type VkGeometryInstanceFlagBitsNV = VkGeometryInstanceFlagBitsKHR;
+type P_VkGeometryInstanceFlagBitsNV = ^VkGeometryInstanceFlagBitsNV;
+     VkGeometryInstanceFlagBitsNV = VkGeometryInstanceFlagBitsKHR;
 
 
 type VkBuildAccelerationStructureFlagBitsKHR = (
@@ -10100,10 +10375,13 @@ type VkBuildAccelerationStructureFlagBitsKHR = (
        VK_BUILD_ACCELERATION_STRUCTURE_LOW_MEMORY_BIT_NV = VK_BUILD_ACCELERATION_STRUCTURE_LOW_MEMORY_BIT_KHR,
        VK_BUILD_ACCELERATION_STRUCTURE_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkBuildAccelerationStructureFlagsKHR = VkFlags;
-type VkBuildAccelerationStructureFlagsNV = VkBuildAccelerationStructureFlagsKHR;
+type P_VkBuildAccelerationStructureFlagsKHR = ^VkBuildAccelerationStructureFlagsKHR;
+     VkBuildAccelerationStructureFlagsKHR = VkFlags;
+type P_VkBuildAccelerationStructureFlagsNV = ^VkBuildAccelerationStructureFlagsNV;
+     VkBuildAccelerationStructureFlagsNV = VkBuildAccelerationStructureFlagsKHR;
 
-type VkBuildAccelerationStructureFlagBitsNV = VkBuildAccelerationStructureFlagBitsKHR;
+type P_VkBuildAccelerationStructureFlagBitsNV = ^VkBuildAccelerationStructureFlagBitsNV;
+     VkBuildAccelerationStructureFlagBitsNV = VkBuildAccelerationStructureFlagBitsKHR;
 
 type P_VkRayTracingShaderGroupCreateInfoNV = ^VkRayTracingShaderGroupCreateInfoNV;
      VkRayTracingShaderGroupCreateInfoNV = record
@@ -10238,7 +10516,8 @@ type P_VkTransformMatrixKHR = ^VkTransformMatrixKHR;
        matrix_:array [ 0..3-1, 0..4-1 ] of T_float;
      end;
 
-type VkTransformMatrixNV = VkTransformMatrixKHR;
+type P_VkTransformMatrixNV = ^VkTransformMatrixNV;
+     VkTransformMatrixNV = VkTransformMatrixKHR;
 
 type P_VkAabbPositionsKHR = ^VkAabbPositionsKHR;
      VkAabbPositionsKHR = record
@@ -10250,7 +10529,8 @@ type P_VkAabbPositionsKHR = ^VkAabbPositionsKHR;
        maxZ :T_float;
      end;
 
-type VkAabbPositionsNV = VkAabbPositionsKHR;
+type P_VkAabbPositionsNV = ^VkAabbPositionsNV;
+     VkAabbPositionsNV = VkAabbPositionsKHR;
 
 type P_VkAccelerationStructureInstanceKHR = ^VkAccelerationStructureInstanceKHR;
      VkAccelerationStructureInstanceKHR = record
@@ -10262,7 +10542,8 @@ type P_VkAccelerationStructureInstanceKHR = ^VkAccelerationStructureInstanceKHR;
        accelerationStructureReference :T_uint64_t;
      end;
 
-type VkAccelerationStructureInstanceNV = VkAccelerationStructureInstanceKHR;
+type P_VkAccelerationStructureInstanceNV = ^VkAccelerationStructureInstanceNV;
+     VkAccelerationStructureInstanceNV = VkAccelerationStructureInstanceKHR;
 
 type PFN_vkCreateAccelerationStructureNV = function( device_:VkDevice; const pCreateInfo_:P_VkAccelerationStructureCreateInfoNV; const pAllocator_:P_VkAllocationCallbacks; pAccelerationStructure_:P_VkAccelerationStructureNV ) :VkResult;
 type PFN_vkDestroyAccelerationStructureNV = procedure( device_:VkDevice; accelerationStructure_:VkAccelerationStructureNV; const pAllocator_:P_VkAllocationCallbacks );
@@ -10501,7 +10782,8 @@ const VK_AMD_PIPELINE_COMPILER_CONTROL_EXTENSION_NAME = 'VK_AMD_pipeline_compile
 type VkPipelineCompilerControlFlagBitsAMD = (
        VK_PIPELINE_COMPILER_CONTROL_FLAG_BITS_MAX_ENUM_AMD = $7FFFFFFF
      );
-type VkPipelineCompilerControlFlagsAMD = VkFlags;
+type P_VkPipelineCompilerControlFlagsAMD = ^VkPipelineCompilerControlFlagsAMD;
+     VkPipelineCompilerControlFlagsAMD = VkFlags;
 type P_VkPipelineCompilerControlCreateInfoAMD = ^VkPipelineCompilerControlCreateInfoAMD;
      VkPipelineCompilerControlCreateInfoAMD = record
        sType :VkStructureType;
@@ -10635,7 +10917,8 @@ type VkPipelineCreationFeedbackFlagBitsEXT = (
        VK_PIPELINE_CREATION_FEEDBACK_BASE_PIPELINE_ACCELERATION_BIT_EXT = $00000004,
        VK_PIPELINE_CREATION_FEEDBACK_FLAG_BITS_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkPipelineCreationFeedbackFlagsEXT = VkFlags;
+type P_VkPipelineCreationFeedbackFlagsEXT = ^VkPipelineCreationFeedbackFlagsEXT;
+     VkPipelineCreationFeedbackFlagsEXT = VkFlags;
 type P_VkPipelineCreationFeedbackEXT = ^VkPipelineCreationFeedbackEXT;
      VkPipelineCreationFeedbackEXT = record
        flags :VkPipelineCreationFeedbackFlagsEXT;
@@ -10834,7 +11117,8 @@ type P_VkPhysicalDeviceShaderIntegerFunctions2FeaturesINTEL = ^VkPhysicalDeviceS
 
 
 const VK_INTEL_performance_query = 1;
-type VkPerformanceConfigurationINTEL = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkPerformanceConfigurationINTEL = ^VkPerformanceConfigurationINTEL;
+     VkPerformanceConfigurationINTEL = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_INTEL_PERFORMANCE_QUERY_SPEC_VERSION = 2;
 const VK_INTEL_PERFORMANCE_QUERY_EXTENSION_NAME = 'VK_INTEL_performance_query';
 
@@ -10898,7 +11182,8 @@ type P_VkQueryPoolPerformanceQueryCreateInfoINTEL = ^VkQueryPoolPerformanceQuery
        performanceCountersSampling :VkQueryPoolSamplingModeINTEL;
      end;
 
-type VkQueryPoolCreateInfoINTEL = VkQueryPoolPerformanceQueryCreateInfoINTEL;
+type P_VkQueryPoolCreateInfoINTEL = ^VkQueryPoolCreateInfoINTEL;
+     VkQueryPoolCreateInfoINTEL = VkQueryPoolPerformanceQueryCreateInfoINTEL;
 
 type P_VkPerformanceMarkerInfoINTEL = ^VkPerformanceMarkerInfoINTEL;
      VkPerformanceMarkerInfoINTEL = record
@@ -11055,7 +11340,8 @@ type P_VkRenderPassFragmentDensityMapCreateInfoEXT = ^VkRenderPassFragmentDensit
 const VK_EXT_scalar_block_layout = 1;
 const VK_EXT_SCALAR_BLOCK_LAYOUT_SPEC_VERSION = 1;
 const VK_EXT_SCALAR_BLOCK_LAYOUT_EXTENSION_NAME = 'VK_EXT_scalar_block_layout';
-type VkPhysicalDeviceScalarBlockLayoutFeaturesEXT = VkPhysicalDeviceScalarBlockLayoutFeatures;
+type P_VkPhysicalDeviceScalarBlockLayoutFeaturesEXT = ^VkPhysicalDeviceScalarBlockLayoutFeaturesEXT;
+     VkPhysicalDeviceScalarBlockLayoutFeaturesEXT = VkPhysicalDeviceScalarBlockLayoutFeatures;
 
 
 
@@ -11106,7 +11392,8 @@ const VK_AMD_SHADER_CORE_PROPERTIES_2_EXTENSION_NAME = 'VK_AMD_shader_core_prope
 type VkShaderCorePropertiesFlagBitsAMD = (
        VK_SHADER_CORE_PROPERTIES_FLAG_BITS_MAX_ENUM_AMD = $7FFFFFFF
      );
-type VkShaderCorePropertiesFlagsAMD = VkFlags;
+type P_VkShaderCorePropertiesFlagsAMD = ^VkShaderCorePropertiesFlagsAMD;
+     VkShaderCorePropertiesFlagsAMD = VkFlags;
 type P_VkPhysicalDeviceShaderCoreProperties2AMD = ^VkPhysicalDeviceShaderCoreProperties2AMD;
      VkPhysicalDeviceShaderCoreProperties2AMD = record
        sType :VkStructureType;
@@ -11198,9 +11485,11 @@ type P_VkPhysicalDeviceBufferDeviceAddressFeaturesEXT = ^VkPhysicalDeviceBufferD
        bufferDeviceAddressMultiDevice :VkBool32;
      end;
 
-type VkPhysicalDeviceBufferAddressFeaturesEXT = VkPhysicalDeviceBufferDeviceAddressFeaturesEXT;
+type P_VkPhysicalDeviceBufferAddressFeaturesEXT = ^VkPhysicalDeviceBufferAddressFeaturesEXT;
+     VkPhysicalDeviceBufferAddressFeaturesEXT = VkPhysicalDeviceBufferDeviceAddressFeaturesEXT;
 
-type VkBufferDeviceAddressInfoEXT = VkBufferDeviceAddressInfo;
+type P_VkBufferDeviceAddressInfoEXT = ^VkBufferDeviceAddressInfoEXT;
+     VkBufferDeviceAddressInfoEXT = VkBufferDeviceAddressInfo;
 
 type P_VkBufferDeviceAddressCreateInfoEXT = ^VkBufferDeviceAddressCreateInfoEXT;
      VkBufferDeviceAddressCreateInfoEXT = record
@@ -11232,7 +11521,8 @@ type VkToolPurposeFlagBitsEXT = (
        VK_TOOL_PURPOSE_DEBUG_MARKERS_BIT_EXT = $00000040,
        VK_TOOL_PURPOSE_FLAG_BITS_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkToolPurposeFlagsEXT = VkFlags;
+type P_VkToolPurposeFlagsEXT = ^VkToolPurposeFlagsEXT;
+     VkToolPurposeFlagsEXT = VkFlags;
 type P_VkPhysicalDeviceToolPropertiesEXT = ^VkPhysicalDeviceToolPropertiesEXT;
      VkPhysicalDeviceToolPropertiesEXT = record
        sType :VkStructureType;
@@ -11257,7 +11547,8 @@ function vkGetPhysicalDeviceToolPropertiesEXT(
 const VK_EXT_separate_stencil_usage = 1;
 const VK_EXT_SEPARATE_STENCIL_USAGE_SPEC_VERSION = 1;
 const VK_EXT_SEPARATE_STENCIL_USAGE_EXTENSION_NAME = 'VK_EXT_separate_stencil_usage';
-type VkImageStencilUsageCreateInfoEXT = VkImageStencilUsageCreateInfo;
+type P_VkImageStencilUsageCreateInfoEXT = ^VkImageStencilUsageCreateInfoEXT;
+     VkImageStencilUsageCreateInfoEXT = VkImageStencilUsageCreateInfo;
 
 
 
@@ -11370,7 +11661,8 @@ type VkCoverageReductionModeNV = (
        VK_COVERAGE_REDUCTION_MODE_TRUNCATE_NV = 1,
        VK_COVERAGE_REDUCTION_MODE_MAX_ENUM_NV = $7FFFFFFF
      );
-type VkPipelineCoverageReductionStateCreateFlagsNV = VkFlags;
+type P_VkPipelineCoverageReductionStateCreateFlagsNV = ^VkPipelineCoverageReductionStateCreateFlagsNV;
+     VkPipelineCoverageReductionStateCreateFlagsNV = VkFlags;
 type P_VkPhysicalDeviceCoverageReductionModeFeaturesNV = ^VkPhysicalDeviceCoverageReductionModeFeaturesNV;
      VkPhysicalDeviceCoverageReductionModeFeaturesNV = record
        sType :VkStructureType;
@@ -11435,7 +11727,8 @@ type P_VkPhysicalDeviceYcbcrImageArraysFeaturesEXT = ^VkPhysicalDeviceYcbcrImage
 const VK_EXT_headless_surface = 1;
 const VK_EXT_HEADLESS_SURFACE_SPEC_VERSION = 1;
 const VK_EXT_HEADLESS_SURFACE_EXTENSION_NAME = 'VK_EXT_headless_surface';
-type VkHeadlessSurfaceCreateFlagsEXT = VkFlags;
+type P_VkHeadlessSurfaceCreateFlagsEXT = ^VkHeadlessSurfaceCreateFlagsEXT;
+     VkHeadlessSurfaceCreateFlagsEXT = VkFlags;
 type P_VkHeadlessSurfaceCreateInfoEXT = ^VkHeadlessSurfaceCreateInfoEXT;
      VkHeadlessSurfaceCreateInfoEXT = record
        sType :VkStructureType;
@@ -11530,7 +11823,8 @@ type P_VkPhysicalDeviceShaderAtomicFloatFeaturesEXT = ^VkPhysicalDeviceShaderAto
 const VK_EXT_host_query_reset = 1;
 const VK_EXT_HOST_QUERY_RESET_SPEC_VERSION = 1;
 const VK_EXT_HOST_QUERY_RESET_EXTENSION_NAME = 'VK_EXT_host_query_reset';
-type VkPhysicalDeviceHostQueryResetFeaturesEXT = VkPhysicalDeviceHostQueryResetFeatures;
+type P_VkPhysicalDeviceHostQueryResetFeaturesEXT = ^VkPhysicalDeviceHostQueryResetFeaturesEXT;
+     VkPhysicalDeviceHostQueryResetFeaturesEXT = VkPhysicalDeviceHostQueryResetFeatures;
 
 type PFN_vkResetQueryPoolEXT = procedure( device_:VkDevice; queryPool_:VkQueryPool; firstQuery_:T_uint32_t; queryCount_:T_uint32_t );
 
@@ -11653,7 +11947,8 @@ type P_VkPhysicalDeviceShaderDemoteToHelperInvocationFeaturesEXT = ^VkPhysicalDe
 
 
 const VK_NV_device_generated_commands = 1;
-type VkIndirectCommandsLayoutNV = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkIndirectCommandsLayoutNV = ^VkIndirectCommandsLayoutNV;
+     VkIndirectCommandsLayoutNV = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_NV_DEVICE_GENERATED_COMMANDS_SPEC_VERSION = 3;
 const VK_NV_DEVICE_GENERATED_COMMANDS_EXTENSION_NAME = 'VK_NV_device_generated_commands';
 
@@ -11673,7 +11968,8 @@ type VkIndirectStateFlagBitsNV = (
        VK_INDIRECT_STATE_FLAG_FRONTFACE_BIT_NV = $00000001,
        VK_INDIRECT_STATE_FLAG_BITS_MAX_ENUM_NV = $7FFFFFFF
      );
-type VkIndirectStateFlagsNV = VkFlags;
+type P_VkIndirectStateFlagsNV = ^VkIndirectStateFlagsNV;
+     VkIndirectStateFlagsNV = VkFlags;
 
 type VkIndirectCommandsLayoutUsageFlagBitsNV = (
        VK_INDIRECT_COMMANDS_LAYOUT_USAGE_EXPLICIT_PREPROCESS_BIT_NV = $00000001,
@@ -11681,7 +11977,8 @@ type VkIndirectCommandsLayoutUsageFlagBitsNV = (
        VK_INDIRECT_COMMANDS_LAYOUT_USAGE_UNORDERED_SEQUENCES_BIT_NV = $00000004,
        VK_INDIRECT_COMMANDS_LAYOUT_USAGE_FLAG_BITS_MAX_ENUM_NV = $7FFFFFFF
      );
-type VkIndirectCommandsLayoutUsageFlagsNV = VkFlags;
+type P_VkIndirectCommandsLayoutUsageFlagsNV = ^VkIndirectCommandsLayoutUsageFlagsNV;
+     VkIndirectCommandsLayoutUsageFlagsNV = VkFlags;
 type P_VkPhysicalDeviceDeviceGeneratedCommandsPropertiesNV = ^VkPhysicalDeviceDeviceGeneratedCommandsPropertiesNV;
      VkPhysicalDeviceDeviceGeneratedCommandsPropertiesNV = record
        sType :VkStructureType;
@@ -11909,7 +12206,8 @@ type VkDeviceMemoryReportEventTypeEXT = (
        VK_DEVICE_MEMORY_REPORT_EVENT_TYPE_ALLOCATION_FAILED_EXT = 4,
        VK_DEVICE_MEMORY_REPORT_EVENT_TYPE_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkDeviceMemoryReportFlagsEXT = VkFlags;
+type P_VkDeviceMemoryReportFlagsEXT = ^VkDeviceMemoryReportFlagsEXT;
+     VkDeviceMemoryReportFlagsEXT = VkFlags;
 type P_VkPhysicalDeviceDeviceMemoryReportFeaturesEXT = ^VkPhysicalDeviceDeviceMemoryReportFeaturesEXT;
      VkPhysicalDeviceDeviceMemoryReportFeaturesEXT = record
        sType :VkStructureType;
@@ -12001,14 +12299,16 @@ const VK_GOOGLE_USER_TYPE_EXTENSION_NAME = 'VK_GOOGLE_user_type';
 
 
 const VK_EXT_private_data = 1;
-type VkPrivateDataSlotEXT = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkPrivateDataSlotEXT = ^VkPrivateDataSlotEXT;
+     VkPrivateDataSlotEXT = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_EXT_PRIVATE_DATA_SPEC_VERSION  = 1;
 const VK_EXT_PRIVATE_DATA_EXTENSION_NAME = 'VK_EXT_private_data';
 
 type VkPrivateDataSlotCreateFlagBitsEXT = (
        VK_PRIVATE_DATA_SLOT_CREATE_FLAG_BITS_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkPrivateDataSlotCreateFlagsEXT = VkFlags;
+type P_VkPrivateDataSlotCreateFlagsEXT = ^VkPrivateDataSlotCreateFlagsEXT;
+     VkPrivateDataSlotCreateFlagsEXT = VkFlags;
 type P_VkPhysicalDevicePrivateDataFeaturesEXT = ^VkPhysicalDevicePrivateDataFeaturesEXT;
      VkPhysicalDevicePrivateDataFeaturesEXT = record
        sType :VkStructureType;
@@ -12085,7 +12385,8 @@ type VkDeviceDiagnosticsConfigFlagBitsNV = (
        VK_DEVICE_DIAGNOSTICS_CONFIG_ENABLE_AUTOMATIC_CHECKPOINTS_BIT_NV = $00000004,
        VK_DEVICE_DIAGNOSTICS_CONFIG_FLAG_BITS_MAX_ENUM_NV = $7FFFFFFF
      );
-type VkDeviceDiagnosticsConfigFlagsNV = VkFlags;
+type P_VkDeviceDiagnosticsConfigFlagsNV = ^VkDeviceDiagnosticsConfigFlagsNV;
+     VkDeviceDiagnosticsConfigFlagsNV = VkFlags;
 type P_VkPhysicalDeviceDiagnosticsConfigFeaturesNV = ^VkPhysicalDeviceDiagnosticsConfigFeaturesNV;
      VkPhysicalDeviceDiagnosticsConfigFeaturesNV = record
        sType :VkStructureType;
@@ -12271,7 +12572,8 @@ type P_VkMutableDescriptorTypeCreateInfoVALVE = ^VkMutableDescriptorTypeCreateIn
 
 
 const VK_KHR_acceleration_structure = 1;
-type VkAccelerationStructureKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkAccelerationStructureKHR = ^VkAccelerationStructureKHR;
+     VkAccelerationStructureKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_KHR_ACCELERATION_STRUCTURE_SPEC_VERSION = 11;
 const VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME = 'VK_KHR_acceleration_structure';
 
@@ -12298,7 +12600,8 @@ type VkAccelerationStructureCreateFlagBitsKHR = (
        VK_ACCELERATION_STRUCTURE_CREATE_DEVICE_ADDRESS_CAPTURE_REPLAY_BIT_KHR = $00000001,
        VK_ACCELERATION_STRUCTURE_CREATE_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkAccelerationStructureCreateFlagsKHR = VkFlags;
+type P_VkAccelerationStructureCreateFlagsKHR = ^VkAccelerationStructureCreateFlagsKHR;
+     VkAccelerationStructureCreateFlagsKHR = VkFlags;
 type P_VkDeviceOrHostAddressKHR = ^VkDeviceOrHostAddressKHR;
      VkDeviceOrHostAddressKHR = record
      case Byte of
