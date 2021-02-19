@@ -2021,23 +2021,27 @@ type VkStencilFaceFlagBits = (
        VK_STENCIL_FACE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
 type VkStencilFaceFlags = VkFlags;
-type VkExtent2D = record
+type P_VkExtent2D = ^VkExtent2D;
+     VkExtent2D = record
        width :T_uint32_t;
        height :T_uint32_t;
      end;
 
-type VkExtent3D = record
+type P_VkExtent3D = ^VkExtent3D;
+     VkExtent3D = record
        width :T_uint32_t;
        height :T_uint32_t;
        depth :T_uint32_t;
      end;
 
-type VkOffset2D = record
+type P_VkOffset2D = ^VkOffset2D;
+     VkOffset2D = record
        x :T_int32_t;
        y :T_int32_t;
      end;
 
-type VkOffset3D = record
+type P_VkOffset3D = ^VkOffset3D;
+     VkOffset3D = record
        x :T_int32_t;
        y :T_int32_t;
        z :T_int32_t;
@@ -2061,7 +2065,8 @@ type P_VkBaseOutStructure = ^VkBaseOutStructure;
        pNext :P_VkBaseOutStructure;
      end;
 
-type VkBufferMemoryBarrier = record
+type P_VkBufferMemoryBarrier = ^VkBufferMemoryBarrier;
+     VkBufferMemoryBarrier = record
        sType :VkStructureType;
        pNext :P_void;
        srcAccessMask :VkAccessFlags;
@@ -2073,13 +2078,15 @@ type VkBufferMemoryBarrier = record
        size :VkDeviceSize;
      end;
 
-type VkDispatchIndirectCommand = record
+type P_VkDispatchIndirectCommand = ^VkDispatchIndirectCommand;
+     VkDispatchIndirectCommand = record
        x :T_uint32_t;
        y :T_uint32_t;
        z :T_uint32_t;
      end;
 
-type VkDrawIndexedIndirectCommand = record
+type P_VkDrawIndexedIndirectCommand = ^VkDrawIndexedIndirectCommand;
+     VkDrawIndexedIndirectCommand = record
        indexCount :T_uint32_t;
        instanceCount :T_uint32_t;
        firstIndex :T_uint32_t;
@@ -2087,14 +2094,16 @@ type VkDrawIndexedIndirectCommand = record
        firstInstance :T_uint32_t;
      end;
 
-type VkDrawIndirectCommand = record
+type P_VkDrawIndirectCommand = ^VkDrawIndirectCommand;
+     VkDrawIndirectCommand = record
        vertexCount :T_uint32_t;
        instanceCount :T_uint32_t;
        firstVertex :T_uint32_t;
        firstInstance :T_uint32_t;
      end;
 
-type VkImageSubresourceRange = record
+type P_VkImageSubresourceRange = ^VkImageSubresourceRange;
+     VkImageSubresourceRange = record
        aspectMask :VkImageAspectFlags;
        baseMipLevel :T_uint32_t;
        levelCount :T_uint32_t;
@@ -2102,7 +2111,8 @@ type VkImageSubresourceRange = record
        layerCount :T_uint32_t;
      end;
 
-type VkImageMemoryBarrier = record
+type P_VkImageMemoryBarrier = ^VkImageMemoryBarrier;
+     VkImageMemoryBarrier = record
        sType :VkStructureType;
        pNext :P_void;
        srcAccessMask :VkAccessFlags;
@@ -2115,7 +2125,8 @@ type VkImageMemoryBarrier = record
        subresourceRange :VkImageSubresourceRange;
      end;
 
-type VkMemoryBarrier = record
+type P_VkMemoryBarrier = ^VkMemoryBarrier;
+     VkMemoryBarrier = record
        sType :VkStructureType;
        pNext :P_void;
        srcAccessMask :VkAccessFlags;
@@ -2152,7 +2163,8 @@ type PFN_vkReallocationFunction = function(
     allocationScope_:VkSystemAllocationScope ) :P_void;
 
 type PFN_vkVoidFunction = procedure;
-type VkAllocationCallbacks = record
+type P_VkAllocationCallbacks = ^VkAllocationCallbacks;
+     VkAllocationCallbacks = record
        pUserData :P_void;
        pfnAllocation :PFN_vkAllocationFunction;
        pfnReallocation :PFN_vkReallocationFunction;
@@ -2172,13 +2184,15 @@ type P_VkApplicationInfo = ^VkApplicationInfo;
        apiVersion :T_uint32_t;
      end;
 
-type VkFormatProperties = record
+type P_VkFormatProperties = ^VkFormatProperties;
+     VkFormatProperties = record
        linearTilingFeatures :VkFormatFeatureFlags;
        optimalTilingFeatures :VkFormatFeatureFlags;
        bufferFeatures :VkFormatFeatureFlags;
      end;
 
-type VkImageFormatProperties = record
+type P_VkImageFormatProperties = ^VkImageFormatProperties;
+     VkImageFormatProperties = record
        maxExtent :VkExtent3D;
        maxMipLevels :T_uint32_t;
        maxArrayLayers :T_uint32_t;
@@ -2186,7 +2200,8 @@ type VkImageFormatProperties = record
        maxResourceSize :VkDeviceSize;
      end;
 
-type VkInstanceCreateInfo = record
+type P_VkInstanceCreateInfo = ^VkInstanceCreateInfo;
+     VkInstanceCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkInstanceCreateFlags;
@@ -2197,12 +2212,14 @@ type VkInstanceCreateInfo = record
        ppEnabledExtensionNames :PP_char;
      end;
 
-type VkMemoryHeap = record
+type P_VkMemoryHeap = ^VkMemoryHeap;
+     VkMemoryHeap = record
        size :VkDeviceSize;
        flags :VkMemoryHeapFlags;
      end;
 
-type VkMemoryType = record
+type P_VkMemoryType = ^VkMemoryType;
+     VkMemoryType = record
        propertyFlags :VkMemoryPropertyFlags;
        heapIndex :T_uint32_t;
      end;
@@ -2266,7 +2283,8 @@ type P_VkPhysicalDeviceFeatures = ^VkPhysicalDeviceFeatures;
        inheritedQueries :VkBool32;
      end;
 
-type VkPhysicalDeviceLimits = record
+type P_VkPhysicalDeviceLimits = ^VkPhysicalDeviceLimits;
+     VkPhysicalDeviceLimits = record
        maxImageDimension1D :T_uint32_t;
        maxImageDimension2D :T_uint32_t;
        maxImageDimension3D :T_uint32_t;
@@ -2375,14 +2393,16 @@ type VkPhysicalDeviceLimits = record
        nonCoherentAtomSize :VkDeviceSize;
      end;
 
-type VkPhysicalDeviceMemoryProperties = record
+type P_VkPhysicalDeviceMemoryProperties = ^VkPhysicalDeviceMemoryProperties;
+     VkPhysicalDeviceMemoryProperties = record
        memoryTypeCount :T_uint32_t;
        memoryTypes :array [ 0..VK_MAX_MEMORY_TYPES-1 ] of VkMemoryType;
        memoryHeapCount :T_uint32_t;
        memoryHeaps :array [ 0..VK_MAX_MEMORY_HEAPS-1 ] of VkMemoryHeap;
      end;
 
-type VkPhysicalDeviceSparseProperties = record
+type P_VkPhysicalDeviceSparseProperties = ^VkPhysicalDeviceSparseProperties;
+     VkPhysicalDeviceSparseProperties = record
        residencyStandard2DBlockShape :VkBool32;
        residencyStandard2DMultisampleBlockShape :VkBool32;
        residencyStandard3DBlockShape :VkBool32;
@@ -2390,7 +2410,8 @@ type VkPhysicalDeviceSparseProperties = record
        residencyNonResidentStrict :VkBool32;
      end;
 
-type VkPhysicalDeviceProperties = record
+type P_VkPhysicalDeviceProperties = ^VkPhysicalDeviceProperties;
+     VkPhysicalDeviceProperties = record
        apiVersion :T_uint32_t;
        driverVersion :T_uint32_t;
        vendorID :T_uint32_t;
@@ -2402,7 +2423,8 @@ type VkPhysicalDeviceProperties = record
        sparseProperties :VkPhysicalDeviceSparseProperties;
      end;
 
-type VkQueueFamilyProperties = record
+type P_VkQueueFamilyProperties = ^VkQueueFamilyProperties;
+     VkQueueFamilyProperties = record
        queueFlags :VkQueueFlags;
        queueCount :T_uint32_t;
        timestampValidBits :T_uint32_t;
@@ -2419,7 +2441,8 @@ type P_VkDeviceQueueCreateInfo = ^VkDeviceQueueCreateInfo;
        pQueuePriorities :P_float;
      end;
 
-type VkDeviceCreateInfo = record
+type P_VkDeviceCreateInfo = ^VkDeviceCreateInfo;
+     VkDeviceCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDeviceCreateFlags;
@@ -2432,19 +2455,22 @@ type VkDeviceCreateInfo = record
        pEnabledFeatures :P_VkPhysicalDeviceFeatures;
      end;
 
-type VkExtensionProperties = record
+type P_VkExtensionProperties = ^VkExtensionProperties;
+     VkExtensionProperties = record
        extensionName :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of char;
        specVersion :T_uint32_t;
      end;
 
-type VkLayerProperties = record
+type P_VkLayerProperties = ^VkLayerProperties;
+     VkLayerProperties = record
        layerName :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of char;
        specVersion :T_uint32_t;
        implementationVersion :T_uint32_t;
        description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
      end;
 
-type VkSubmitInfo = record
+type P_VkSubmitInfo = ^VkSubmitInfo;
+     VkSubmitInfo = record
        sType :VkStructureType;
        pNext :P_void;
        waitSemaphoreCount :T_uint32_t;
@@ -2456,7 +2482,8 @@ type VkSubmitInfo = record
        pSignalSemaphores :P_VkSemaphore;
      end;
 
-type VkMappedMemoryRange = record
+type P_VkMappedMemoryRange = ^VkMappedMemoryRange;
+     VkMappedMemoryRange = record
        sType :VkStructureType;
        pNext :P_void;
        memory :VkDeviceMemory;
@@ -2464,14 +2491,16 @@ type VkMappedMemoryRange = record
        size :VkDeviceSize;
      end;
 
-type VkMemoryAllocateInfo = record
+type P_VkMemoryAllocateInfo = ^VkMemoryAllocateInfo;
+     VkMemoryAllocateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        allocationSize :VkDeviceSize;
        memoryTypeIndex :T_uint32_t;
      end;
 
-type VkMemoryRequirements = record
+type P_VkMemoryRequirements = ^VkMemoryRequirements;
+     VkMemoryRequirements = record
        size :VkDeviceSize;
        alignment :VkDeviceSize;
        memoryTypeBits :T_uint32_t;
@@ -2500,7 +2529,8 @@ type P_VkSparseImageOpaqueMemoryBindInfo = ^VkSparseImageOpaqueMemoryBindInfo;
        pBinds :P_VkSparseMemoryBind;
      end;
 
-type VkImageSubresource = record
+type P_VkImageSubresource = ^VkImageSubresource;
+     VkImageSubresource = record
        aspectMask :VkImageAspectFlags;
        mipLevel :T_uint32_t;
        arrayLayer :T_uint32_t;
@@ -2523,7 +2553,8 @@ type P_VkSparseImageMemoryBindInfo = ^VkSparseImageMemoryBindInfo;
        pBinds :P_VkSparseImageMemoryBind;
      end;
 
-type VkBindSparseInfo = record
+type P_VkBindSparseInfo = ^VkBindSparseInfo;
+     VkBindSparseInfo = record
        sType :VkStructureType;
        pNext :P_void;
        waitSemaphoreCount :T_uint32_t;
@@ -2538,13 +2569,15 @@ type VkBindSparseInfo = record
        pSignalSemaphores :P_VkSemaphore;
      end;
 
-type VkSparseImageFormatProperties = record
+type P_VkSparseImageFormatProperties = ^VkSparseImageFormatProperties;
+     VkSparseImageFormatProperties = record
        aspectMask :VkImageAspectFlags;
        imageGranularity :VkExtent3D;
        flags :VkSparseImageFormatFlags;
      end;
 
-type VkSparseImageMemoryRequirements = record
+type P_VkSparseImageMemoryRequirements = ^VkSparseImageMemoryRequirements;
+     VkSparseImageMemoryRequirements = record
        formatProperties :VkSparseImageFormatProperties;
        imageMipTailFirstLod :T_uint32_t;
        imageMipTailSize :VkDeviceSize;
@@ -2552,25 +2585,29 @@ type VkSparseImageMemoryRequirements = record
        imageMipTailStride :VkDeviceSize;
      end;
 
-type VkFenceCreateInfo = record
+type P_VkFenceCreateInfo = ^VkFenceCreateInfo;
+     VkFenceCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkFenceCreateFlags;
      end;
 
-type VkSemaphoreCreateInfo = record
+type P_VkSemaphoreCreateInfo = ^VkSemaphoreCreateInfo;
+     VkSemaphoreCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkSemaphoreCreateFlags;
      end;
 
-type VkEventCreateInfo = record
+type P_VkEventCreateInfo = ^VkEventCreateInfo;
+     VkEventCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkEventCreateFlags;
      end;
 
-type VkQueryPoolCreateInfo = record
+type P_VkQueryPoolCreateInfo = ^VkQueryPoolCreateInfo;
+     VkQueryPoolCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkQueryPoolCreateFlags;
@@ -2579,7 +2616,8 @@ type VkQueryPoolCreateInfo = record
        pipelineStatistics :VkQueryPipelineStatisticFlags;
      end;
 
-type VkBufferCreateInfo = record
+type P_VkBufferCreateInfo = ^VkBufferCreateInfo;
+     VkBufferCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkBufferCreateFlags;
@@ -2590,7 +2628,8 @@ type VkBufferCreateInfo = record
        pQueueFamilyIndices :P_uint32_t;
      end;
 
-type VkBufferViewCreateInfo = record
+type P_VkBufferViewCreateInfo = ^VkBufferViewCreateInfo;
+     VkBufferViewCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkBufferViewCreateFlags;
@@ -2600,7 +2639,8 @@ type VkBufferViewCreateInfo = record
        range :VkDeviceSize;
      end;
 
-type VkImageCreateInfo = record
+type P_VkImageCreateInfo = ^VkImageCreateInfo;
+     VkImageCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkImageCreateFlags;
@@ -2618,7 +2658,8 @@ type VkImageCreateInfo = record
        initialLayout :VkImageLayout;
      end;
 
-type VkSubresourceLayout = record
+type P_VkSubresourceLayout = ^VkSubresourceLayout;
+     VkSubresourceLayout = record
        offset :VkDeviceSize;
        size :VkDeviceSize;
        rowPitch :VkDeviceSize;
@@ -2626,14 +2667,16 @@ type VkSubresourceLayout = record
        depthPitch :VkDeviceSize;
      end;
 
-type VkComponentMapping = record
+type P_VkComponentMapping = ^VkComponentMapping;
+     VkComponentMapping = record
        r :VkComponentSwizzle;
        g :VkComponentSwizzle;
        b :VkComponentSwizzle;
        a :VkComponentSwizzle;
      end;
 
-type VkImageViewCreateInfo = record
+type P_VkImageViewCreateInfo = ^VkImageViewCreateInfo;
+     VkImageViewCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkImageViewCreateFlags;
@@ -2644,7 +2687,8 @@ type VkImageViewCreateInfo = record
        subresourceRange :VkImageSubresourceRange;
      end;
 
-type VkShaderModuleCreateInfo = record
+type P_VkShaderModuleCreateInfo = ^VkShaderModuleCreateInfo;
+     VkShaderModuleCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkShaderModuleCreateFlags;
@@ -2652,7 +2696,8 @@ type VkShaderModuleCreateInfo = record
        pCode :P_uint32_t;
      end;
 
-type VkPipelineCacheCreateInfo = record
+type P_VkPipelineCacheCreateInfo = ^VkPipelineCacheCreateInfo;
+     VkPipelineCacheCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineCacheCreateFlags;
@@ -2686,7 +2731,8 @@ type P_VkPipelineShaderStageCreateInfo = ^VkPipelineShaderStageCreateInfo;
        pSpecializationInfo :P_VkSpecializationInfo;
      end;
 
-type VkComputePipelineCreateInfo = record
+type P_VkComputePipelineCreateInfo = ^VkComputePipelineCreateInfo;
+     VkComputePipelineCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineCreateFlags;
@@ -2790,7 +2836,8 @@ type P_VkPipelineMultisampleStateCreateInfo = ^VkPipelineMultisampleStateCreateI
        alphaToOneEnable :VkBool32;
      end;
 
-type VkStencilOpState = record
+type P_VkStencilOpState = ^VkStencilOpState;
+     VkStencilOpState = record
        failOp :VkStencilOp;
        passOp :VkStencilOp;
        depthFailOp :VkStencilOp;
@@ -2849,7 +2896,8 @@ type P_VkPipelineDynamicStateCreateInfo = ^VkPipelineDynamicStateCreateInfo;
        pDynamicStates :P_VkDynamicState;
      end;
 
-type VkGraphicsPipelineCreateInfo = record
+type P_VkGraphicsPipelineCreateInfo = ^VkGraphicsPipelineCreateInfo;
+     VkGraphicsPipelineCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineCreateFlags;
@@ -2878,7 +2926,8 @@ type P_VkPushConstantRange = ^VkPushConstantRange;
        size :T_uint32_t;
      end;
 
-type VkPipelineLayoutCreateInfo = record
+type P_VkPipelineLayoutCreateInfo = ^VkPipelineLayoutCreateInfo;
+     VkPipelineLayoutCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineLayoutCreateFlags;
@@ -2888,7 +2937,8 @@ type VkPipelineLayoutCreateInfo = record
        pPushConstantRanges :P_VkPushConstantRange;
      end;
 
-type VkSamplerCreateInfo = record
+type P_VkSamplerCreateInfo = ^VkSamplerCreateInfo;
+     VkSamplerCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkSamplerCreateFlags;
@@ -2909,7 +2959,8 @@ type VkSamplerCreateInfo = record
        unnormalizedCoordinates :VkBool32;
      end;
 
-type VkCopyDescriptorSet = record
+type P_VkCopyDescriptorSet = ^VkCopyDescriptorSet;
+     VkCopyDescriptorSet = record
        sType :VkStructureType;
        pNext :P_void;
        srcSet :VkDescriptorSet;
@@ -2941,7 +2992,8 @@ type P_VkDescriptorPoolSize = ^VkDescriptorPoolSize;
        descriptorCount :T_uint32_t;
      end;
 
-type VkDescriptorPoolCreateInfo = record
+type P_VkDescriptorPoolCreateInfo = ^VkDescriptorPoolCreateInfo;
+     VkDescriptorPoolCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDescriptorPoolCreateFlags;
@@ -2950,7 +3002,8 @@ type VkDescriptorPoolCreateInfo = record
        pPoolSizes :P_VkDescriptorPoolSize;
      end;
 
-type VkDescriptorSetAllocateInfo = record
+type P_VkDescriptorSetAllocateInfo = ^VkDescriptorSetAllocateInfo;
+     VkDescriptorSetAllocateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        descriptorPool :VkDescriptorPool;
@@ -2967,7 +3020,8 @@ type P_VkDescriptorSetLayoutBinding = ^VkDescriptorSetLayoutBinding;
        pImmutableSamplers :P_VkSampler;
      end;
 
-type VkDescriptorSetLayoutCreateInfo = record
+type P_VkDescriptorSetLayoutCreateInfo = ^VkDescriptorSetLayoutCreateInfo;
+     VkDescriptorSetLayoutCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDescriptorSetLayoutCreateFlags;
@@ -2975,7 +3029,8 @@ type VkDescriptorSetLayoutCreateInfo = record
        pBindings :P_VkDescriptorSetLayoutBinding;
      end;
 
-type VkWriteDescriptorSet = record
+type P_VkWriteDescriptorSet = ^VkWriteDescriptorSet;
+     VkWriteDescriptorSet = record
        sType :VkStructureType;
        pNext :P_void;
        dstSet :VkDescriptorSet;
@@ -3007,7 +3062,8 @@ type P_VkAttachmentReference = ^VkAttachmentReference;
        layout :VkImageLayout;
      end;
 
-type VkFramebufferCreateInfo = record
+type P_VkFramebufferCreateInfo = ^VkFramebufferCreateInfo;
+     VkFramebufferCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkFramebufferCreateFlags;
@@ -3044,7 +3100,8 @@ type P_VkSubpassDependency = ^VkSubpassDependency;
        dependencyFlags :VkDependencyFlags;
      end;
 
-type VkRenderPassCreateInfo = record
+type P_VkRenderPassCreateInfo = ^VkRenderPassCreateInfo;
+     VkRenderPassCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkRenderPassCreateFlags;
@@ -3056,14 +3113,16 @@ type VkRenderPassCreateInfo = record
        pDependencies :P_VkSubpassDependency;
      end;
 
-type VkCommandPoolCreateInfo = record
+type P_VkCommandPoolCreateInfo = ^VkCommandPoolCreateInfo;
+     VkCommandPoolCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkCommandPoolCreateFlags;
        queueFamilyIndex :T_uint32_t;
      end;
 
-type VkCommandBufferAllocateInfo = record
+type P_VkCommandBufferAllocateInfo = ^VkCommandBufferAllocateInfo;
+     VkCommandBufferAllocateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        commandPool :VkCommandPool;
@@ -3083,27 +3142,31 @@ type P_VkCommandBufferInheritanceInfo = ^VkCommandBufferInheritanceInfo;
        pipelineStatistics :VkQueryPipelineStatisticFlags;
      end;
 
-type VkCommandBufferBeginInfo = record
+type P_VkCommandBufferBeginInfo = ^VkCommandBufferBeginInfo;
+     VkCommandBufferBeginInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkCommandBufferUsageFlags;
        pInheritanceInfo :P_VkCommandBufferInheritanceInfo;
      end;
 
-type VkBufferCopy = record
+type P_VkBufferCopy = ^VkBufferCopy;
+     VkBufferCopy = record
        srcOffset :VkDeviceSize;
        dstOffset :VkDeviceSize;
        size :VkDeviceSize;
      end;
 
-type VkImageSubresourceLayers = record
+type P_VkImageSubresourceLayers = ^VkImageSubresourceLayers;
+     VkImageSubresourceLayers = record
        aspectMask :VkImageAspectFlags;
        mipLevel :T_uint32_t;
        baseArrayLayer :T_uint32_t;
        layerCount :T_uint32_t;
      end;
 
-type VkBufferImageCopy = record
+type P_VkBufferImageCopy = ^VkBufferImageCopy;
+     VkBufferImageCopy = record
        bufferOffset :VkDeviceSize;
        bufferRowLength :T_uint32_t;
        bufferImageHeight :T_uint32_t;
@@ -3112,14 +3175,16 @@ type VkBufferImageCopy = record
        imageExtent :VkExtent3D;
      end;
 
-type VkClearColorValue = record
+type P_VkClearColorValue = ^VkClearColorValue;
+     VkClearColorValue = record
      case Byte of
        0:( float32 :array [ 0..4-1 ] of T_float    );
        1:( int32   :array [ 0..4-1 ] of T_int32_t  );
        2:( uint32  :array [ 0..4-1 ] of T_uint32_t );
      end;
 
-type VkClearDepthStencilValue = record
+type P_VkClearDepthStencilValue = ^VkClearDepthStencilValue;
+     VkClearDepthStencilValue = record
        depth :T_float;
        stencil :T_uint32_t;
      end;
@@ -3131,26 +3196,30 @@ type P_VkClearValue = ^VkClearValue;
        1:( depthStencil :VkClearDepthStencilValue );
      end;
 
-type VkClearAttachment = record
+type P_VkClearAttachment = ^VkClearAttachment;
+     VkClearAttachment = record
        aspectMask :VkImageAspectFlags;
        colorAttachment :T_uint32_t;
        clearValue :VkClearValue;
      end;
 
-type VkClearRect = record
+type P_VkClearRect = ^VkClearRect;
+     VkClearRect = record
        rect :VkRect2D;
        baseArrayLayer :T_uint32_t;
        layerCount :T_uint32_t;
      end;
 
-type VkImageBlit = record
+type P_VkImageBlit = ^VkImageBlit;
+     VkImageBlit = record
        srcSubresource :VkImageSubresourceLayers;
        srcOffsets :array [ 0..2-1 ] of VkOffset3D;
        dstSubresource :VkImageSubresourceLayers;
        dstOffsets :array [ 0..2-1 ] of VkOffset3D;
      end;
 
-type VkImageCopy = record
+type P_VkImageCopy = ^VkImageCopy;
+     VkImageCopy = record
        srcSubresource :VkImageSubresourceLayers;
        srcOffset :VkOffset3D;
        dstSubresource :VkImageSubresourceLayers;
@@ -3158,7 +3227,8 @@ type VkImageCopy = record
        extent :VkExtent3D;
      end;
 
-type VkImageResolve = record
+type P_VkImageResolve = ^VkImageResolve;
+     VkImageResolve = record
        srcSubresource :VkImageSubresourceLayers;
        srcOffset :VkOffset3D;
        dstSubresource :VkImageSubresourceLayers;
@@ -3166,7 +3236,8 @@ type VkImageResolve = record
        extent :VkExtent3D;
      end;
 
-type VkRenderPassBeginInfo = record
+type P_VkRenderPassBeginInfo = ^VkRenderPassBeginInfo;
+     VkRenderPassBeginInfo = record
        sType :VkStructureType;
        pNext :P_void;
        renderPass :VkRenderPass;
@@ -4311,7 +4382,8 @@ type VkExternalSemaphoreFeatureFlagBits = (
        VK_EXTERNAL_SEMAPHORE_FEATURE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
 type VkExternalSemaphoreFeatureFlags = VkFlags;
-type VkPhysicalDeviceSubgroupProperties = record
+type P_VkPhysicalDeviceSubgroupProperties = ^VkPhysicalDeviceSubgroupProperties;
+     VkPhysicalDeviceSubgroupProperties = record
        sType :VkStructureType;
        pNext :P_void;
        subgroupSize :T_uint32_t;
@@ -4320,7 +4392,8 @@ type VkPhysicalDeviceSubgroupProperties = record
        quadOperationsInAllStages :VkBool32;
      end;
 
-type VkBindBufferMemoryInfo = record
+type P_VkBindBufferMemoryInfo = ^VkBindBufferMemoryInfo;
+     VkBindBufferMemoryInfo = record
        sType :VkStructureType;
        pNext :P_void;
        buffer :VkBuffer;
@@ -4328,7 +4401,8 @@ type VkBindBufferMemoryInfo = record
        memoryOffset :VkDeviceSize;
      end;
 
-type VkBindImageMemoryInfo = record
+type P_VkBindImageMemoryInfo = ^VkBindImageMemoryInfo;
+     VkBindImageMemoryInfo = record
        sType :VkStructureType;
        pNext :P_void;
        image :VkImage;
@@ -4336,7 +4410,8 @@ type VkBindImageMemoryInfo = record
        memoryOffset :VkDeviceSize;
      end;
 
-type VkPhysicalDevice16BitStorageFeatures = record
+type P_VkPhysicalDevice16BitStorageFeatures = ^VkPhysicalDevice16BitStorageFeatures;
+     VkPhysicalDevice16BitStorageFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        storageBuffer16BitAccess :VkBool32;
@@ -4345,28 +4420,32 @@ type VkPhysicalDevice16BitStorageFeatures = record
        storageInputOutput16 :VkBool32;
      end;
 
-type VkMemoryDedicatedRequirements = record
+type P_VkMemoryDedicatedRequirements = ^VkMemoryDedicatedRequirements;
+     VkMemoryDedicatedRequirements = record
        sType :VkStructureType;
        pNext :P_void;
        prefersDedicatedAllocation :VkBool32;
        requiresDedicatedAllocation :VkBool32;
      end;
 
-type VkMemoryDedicatedAllocateInfo = record
+type P_VkMemoryDedicatedAllocateInfo = ^VkMemoryDedicatedAllocateInfo;
+     VkMemoryDedicatedAllocateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        image :VkImage;
        buffer :VkBuffer;
      end;
 
-type VkMemoryAllocateFlagsInfo = record
+type P_VkMemoryAllocateFlagsInfo = ^VkMemoryAllocateFlagsInfo;
+     VkMemoryAllocateFlagsInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkMemoryAllocateFlags;
        deviceMask :T_uint32_t;
      end;
 
-type VkDeviceGroupRenderPassBeginInfo = record
+type P_VkDeviceGroupRenderPassBeginInfo = ^VkDeviceGroupRenderPassBeginInfo;
+     VkDeviceGroupRenderPassBeginInfo = record
        sType :VkStructureType;
        pNext :P_void;
        deviceMask :T_uint32_t;
@@ -4374,13 +4453,15 @@ type VkDeviceGroupRenderPassBeginInfo = record
        pDeviceRenderAreas :P_VkRect2D;
      end;
 
-type VkDeviceGroupCommandBufferBeginInfo = record
+type P_VkDeviceGroupCommandBufferBeginInfo = ^VkDeviceGroupCommandBufferBeginInfo;
+     VkDeviceGroupCommandBufferBeginInfo = record
        sType :VkStructureType;
        pNext :P_void;
        deviceMask :T_uint32_t;
      end;
 
-type VkDeviceGroupSubmitInfo = record
+type P_VkDeviceGroupSubmitInfo = ^VkDeviceGroupSubmitInfo;
+     VkDeviceGroupSubmitInfo = record
        sType :VkStructureType;
        pNext :P_void;
        waitSemaphoreCount :T_uint32_t;
@@ -4391,21 +4472,24 @@ type VkDeviceGroupSubmitInfo = record
        pSignalSemaphoreDeviceIndices :P_uint32_t;
      end;
 
-type VkDeviceGroupBindSparseInfo = record
+type P_VkDeviceGroupBindSparseInfo = ^VkDeviceGroupBindSparseInfo;
+     VkDeviceGroupBindSparseInfo = record
        sType :VkStructureType;
        pNext :P_void;
        resourceDeviceIndex :T_uint32_t;
        memoryDeviceIndex :T_uint32_t;
      end;
 
-type VkBindBufferMemoryDeviceGroupInfo = record
+type P_VkBindBufferMemoryDeviceGroupInfo = ^VkBindBufferMemoryDeviceGroupInfo;
+     VkBindBufferMemoryDeviceGroupInfo = record
        sType :VkStructureType;
        pNext :P_void;
        deviceIndexCount :T_uint32_t;
        pDeviceIndices :P_uint32_t;
      end;
 
-type VkBindImageMemoryDeviceGroupInfo = record
+type P_VkBindImageMemoryDeviceGroupInfo = ^VkBindImageMemoryDeviceGroupInfo;
+     VkBindImageMemoryDeviceGroupInfo = record
        sType :VkStructureType;
        pNext :P_void;
        deviceIndexCount :T_uint32_t;
@@ -4414,7 +4498,8 @@ type VkBindImageMemoryDeviceGroupInfo = record
        pSplitInstanceBindRegions :P_VkRect2D;
      end;
 
-type VkPhysicalDeviceGroupProperties = record
+type P_VkPhysicalDeviceGroupProperties = ^VkPhysicalDeviceGroupProperties;
+     VkPhysicalDeviceGroupProperties = record
        sType :VkStructureType;
        pNext :P_void;
        physicalDeviceCount :T_uint32_t;
@@ -4422,68 +4507,79 @@ type VkPhysicalDeviceGroupProperties = record
        subsetAllocation :VkBool32;
      end;
 
-type VkDeviceGroupDeviceCreateInfo = record
+type P_VkDeviceGroupDeviceCreateInfo = ^VkDeviceGroupDeviceCreateInfo;
+     VkDeviceGroupDeviceCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        physicalDeviceCount :T_uint32_t;
        pPhysicalDevices :P_VkPhysicalDevice;
      end;
 
-type VkBufferMemoryRequirementsInfo2 = record
+type P_VkBufferMemoryRequirementsInfo2 = ^VkBufferMemoryRequirementsInfo2;
+     VkBufferMemoryRequirementsInfo2 = record
        sType :VkStructureType;
        pNext :P_void;
        buffer :VkBuffer;
      end;
 
-type VkImageMemoryRequirementsInfo2 = record
+type P_VkImageMemoryRequirementsInfo2 = ^VkImageMemoryRequirementsInfo2;
+     VkImageMemoryRequirementsInfo2 = record
        sType :VkStructureType;
        pNext :P_void;
        image :VkImage;
      end;
 
-type VkImageSparseMemoryRequirementsInfo2 = record
+type P_VkImageSparseMemoryRequirementsInfo2 = ^VkImageSparseMemoryRequirementsInfo2;
+     VkImageSparseMemoryRequirementsInfo2 = record
        sType :VkStructureType;
        pNext :P_void;
        image :VkImage;
      end;
 
-type VkMemoryRequirements2 = record
+type P_VkMemoryRequirements2 = ^VkMemoryRequirements2;
+     VkMemoryRequirements2 = record
        sType :VkStructureType;
        pNext :P_void;
        memoryRequirements :VkMemoryRequirements;
      end;
 
-type VkSparseImageMemoryRequirements2 = record
+type P_VkSparseImageMemoryRequirements2 = ^VkSparseImageMemoryRequirements2;
+     VkSparseImageMemoryRequirements2 = record
        sType :VkStructureType;
        pNext :P_void;
        memoryRequirements :VkSparseImageMemoryRequirements;
      end;
 
-type VkPhysicalDeviceFeatures2 = record
+type P_VkPhysicalDeviceFeatures2 = ^VkPhysicalDeviceFeatures2;
+     VkPhysicalDeviceFeatures2 = record
        sType :VkStructureType;
        pNext :P_void;
        features :VkPhysicalDeviceFeatures;
      end;
 
-type VkPhysicalDeviceProperties2 = record
+type P_VkPhysicalDeviceProperties2 = ^VkPhysicalDeviceProperties2;
+     VkPhysicalDeviceProperties2 = record
        sType :VkStructureType;
        pNext :P_void;
        properties :VkPhysicalDeviceProperties;
      end;
 
-type VkFormatProperties2 = record
+type P_VkFormatProperties2 = ^VkFormatProperties2;
+     VkFormatProperties2 = record
        sType :VkStructureType;
        pNext :P_void;
        formatProperties :VkFormatProperties;
      end;
 
-type VkImageFormatProperties2 = record
+type P_VkImageFormatProperties2 = ^VkImageFormatProperties2;
+     VkImageFormatProperties2 = record
        sType :VkStructureType;
        pNext :P_void;
        imageFormatProperties :VkImageFormatProperties;
      end;
 
-type VkPhysicalDeviceImageFormatInfo2 = record
+type P_VkPhysicalDeviceImageFormatInfo2 = ^VkPhysicalDeviceImageFormatInfo2;
+     VkPhysicalDeviceImageFormatInfo2 = record
        sType :VkStructureType;
        pNext :P_void;
        format :VkFormat;
@@ -4493,25 +4589,29 @@ type VkPhysicalDeviceImageFormatInfo2 = record
        flags :VkImageCreateFlags;
      end;
 
-type VkQueueFamilyProperties2 = record
+type P_VkQueueFamilyProperties2 = ^VkQueueFamilyProperties2;
+     VkQueueFamilyProperties2 = record
        sType :VkStructureType;
        pNext :P_void;
        queueFamilyProperties :VkQueueFamilyProperties;
      end;
 
-type VkPhysicalDeviceMemoryProperties2 = record
+type P_VkPhysicalDeviceMemoryProperties2 = ^VkPhysicalDeviceMemoryProperties2;
+     VkPhysicalDeviceMemoryProperties2 = record
        sType :VkStructureType;
        pNext :P_void;
        memoryProperties :VkPhysicalDeviceMemoryProperties;
      end;
 
-type VkSparseImageFormatProperties2 = record
+type P_VkSparseImageFormatProperties2 = ^VkSparseImageFormatProperties2;
+     VkSparseImageFormatProperties2 = record
        sType :VkStructureType;
        pNext :P_void;
        properties :VkSparseImageFormatProperties;
      end;
 
-type VkPhysicalDeviceSparseImageFormatInfo2 = record
+type P_VkPhysicalDeviceSparseImageFormatInfo2 = ^VkPhysicalDeviceSparseImageFormatInfo2;
+     VkPhysicalDeviceSparseImageFormatInfo2 = record
        sType :VkStructureType;
        pNext :P_void;
        format :VkFormat;
@@ -4521,38 +4621,44 @@ type VkPhysicalDeviceSparseImageFormatInfo2 = record
        tiling :VkImageTiling;
      end;
 
-type VkPhysicalDevicePointClippingProperties = record
+type P_VkPhysicalDevicePointClippingProperties = ^VkPhysicalDevicePointClippingProperties;
+     VkPhysicalDevicePointClippingProperties = record
        sType :VkStructureType;
        pNext :P_void;
        pointClippingBehavior :VkPointClippingBehavior;
      end;
 
-type VkInputAttachmentAspectReference = record
+type P_VkInputAttachmentAspectReference = ^VkInputAttachmentAspectReference;
+     VkInputAttachmentAspectReference = record
        subpass :T_uint32_t;
        inputAttachmentIndex :T_uint32_t;
        aspectMask :VkImageAspectFlags;
      end;
 
-type VkRenderPassInputAttachmentAspectCreateInfo = record
+type P_VkRenderPassInputAttachmentAspectCreateInfo = ^VkRenderPassInputAttachmentAspectCreateInfo;
+     VkRenderPassInputAttachmentAspectCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        aspectReferenceCount :T_uint32_t;
        pAspectReferences :P_VkInputAttachmentAspectReference;
      end;
 
-type VkImageViewUsageCreateInfo = record
+type P_VkImageViewUsageCreateInfo = ^VkImageViewUsageCreateInfo;
+     VkImageViewUsageCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        usage :VkImageUsageFlags;
      end;
 
-type VkPipelineTessellationDomainOriginStateCreateInfo = record
+type P_VkPipelineTessellationDomainOriginStateCreateInfo = ^VkPipelineTessellationDomainOriginStateCreateInfo;
+     VkPipelineTessellationDomainOriginStateCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        domainOrigin :VkTessellationDomainOrigin;
      end;
 
-type VkRenderPassMultiviewCreateInfo = record
+type P_VkRenderPassMultiviewCreateInfo = ^VkRenderPassMultiviewCreateInfo;
+     VkRenderPassMultiviewCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        subpassCount :T_uint32_t;
@@ -4563,7 +4669,8 @@ type VkRenderPassMultiviewCreateInfo = record
        pCorrelationMasks :P_uint32_t;
      end;
 
-type VkPhysicalDeviceMultiviewFeatures = record
+type P_VkPhysicalDeviceMultiviewFeatures = ^VkPhysicalDeviceMultiviewFeatures;
+     VkPhysicalDeviceMultiviewFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        multiview :VkBool32;
@@ -4571,14 +4678,16 @@ type VkPhysicalDeviceMultiviewFeatures = record
        multiviewTessellationShader :VkBool32;
      end;
 
-type VkPhysicalDeviceMultiviewProperties = record
+type P_VkPhysicalDeviceMultiviewProperties = ^VkPhysicalDeviceMultiviewProperties;
+     VkPhysicalDeviceMultiviewProperties = record
        sType :VkStructureType;
        pNext :P_void;
        maxMultiviewViewCount :T_uint32_t;
        maxMultiviewInstanceIndex :T_uint32_t;
      end;
 
-type VkPhysicalDeviceVariablePointersFeatures = record
+type P_VkPhysicalDeviceVariablePointersFeatures = ^VkPhysicalDeviceVariablePointersFeatures;
+     VkPhysicalDeviceVariablePointersFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        variablePointersStorageBuffer :VkBool32;
@@ -4587,19 +4696,22 @@ type VkPhysicalDeviceVariablePointersFeatures = record
 
 type VkPhysicalDeviceVariablePointerFeatures = VkPhysicalDeviceVariablePointersFeatures;
 
-type VkPhysicalDeviceProtectedMemoryFeatures = record
+type P_VkPhysicalDeviceProtectedMemoryFeatures = ^VkPhysicalDeviceProtectedMemoryFeatures;
+     VkPhysicalDeviceProtectedMemoryFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        protectedMemory :VkBool32;
      end;
 
-type VkPhysicalDeviceProtectedMemoryProperties = record
+type P_VkPhysicalDeviceProtectedMemoryProperties = ^VkPhysicalDeviceProtectedMemoryProperties;
+     VkPhysicalDeviceProtectedMemoryProperties = record
        sType :VkStructureType;
        pNext :P_void;
        protectedNoFault :VkBool32;
      end;
 
-type VkDeviceQueueInfo2 = record
+type P_VkDeviceQueueInfo2 = ^VkDeviceQueueInfo2;
+     VkDeviceQueueInfo2 = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDeviceQueueCreateFlags;
@@ -4607,13 +4719,15 @@ type VkDeviceQueueInfo2 = record
        queueIndex :T_uint32_t;
      end;
 
-type VkProtectedSubmitInfo = record
+type P_VkProtectedSubmitInfo = ^VkProtectedSubmitInfo;
+     VkProtectedSubmitInfo = record
        sType :VkStructureType;
        pNext :P_void;
        protectedSubmit :VkBool32;
      end;
 
-type VkSamplerYcbcrConversionCreateInfo = record
+type P_VkSamplerYcbcrConversionCreateInfo = ^VkSamplerYcbcrConversionCreateInfo;
+     VkSamplerYcbcrConversionCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        format :VkFormat;
@@ -4626,37 +4740,43 @@ type VkSamplerYcbcrConversionCreateInfo = record
        forceExplicitReconstruction :VkBool32;
      end;
 
-type VkSamplerYcbcrConversionInfo = record
+type P_VkSamplerYcbcrConversionInfo = ^VkSamplerYcbcrConversionInfo;
+     VkSamplerYcbcrConversionInfo = record
        sType :VkStructureType;
        pNext :P_void;
        conversion :VkSamplerYcbcrConversion;
      end;
 
-type VkBindImagePlaneMemoryInfo = record
+type P_VkBindImagePlaneMemoryInfo = ^VkBindImagePlaneMemoryInfo;
+     VkBindImagePlaneMemoryInfo = record
        sType :VkStructureType;
        pNext :P_void;
        planeAspect :VkImageAspectFlagBits;
      end;
 
-type VkImagePlaneMemoryRequirementsInfo = record
+type P_VkImagePlaneMemoryRequirementsInfo = ^VkImagePlaneMemoryRequirementsInfo;
+     VkImagePlaneMemoryRequirementsInfo = record
        sType :VkStructureType;
        pNext :P_void;
        planeAspect :VkImageAspectFlagBits;
      end;
 
-type VkPhysicalDeviceSamplerYcbcrConversionFeatures = record
+type P_VkPhysicalDeviceSamplerYcbcrConversionFeatures = ^VkPhysicalDeviceSamplerYcbcrConversionFeatures;
+     VkPhysicalDeviceSamplerYcbcrConversionFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        samplerYcbcrConversion :VkBool32;
      end;
 
-type VkSamplerYcbcrConversionImageFormatProperties = record
+type P_VkSamplerYcbcrConversionImageFormatProperties = ^VkSamplerYcbcrConversionImageFormatProperties;
+     VkSamplerYcbcrConversionImageFormatProperties = record
        sType :VkStructureType;
        pNext :P_void;
        combinedImageSamplerDescriptorCount :T_uint32_t;
      end;
 
-type VkDescriptorUpdateTemplateEntry = record
+type P_VkDescriptorUpdateTemplateEntry = ^VkDescriptorUpdateTemplateEntry;
+     VkDescriptorUpdateTemplateEntry = record
        dstBinding :T_uint32_t;
        dstArrayElement :T_uint32_t;
        descriptorCount :T_uint32_t;
@@ -4665,7 +4785,8 @@ type VkDescriptorUpdateTemplateEntry = record
        stride :T_size_t;
      end;
 
-type VkDescriptorUpdateTemplateCreateInfo = record
+type P_VkDescriptorUpdateTemplateCreateInfo = ^VkDescriptorUpdateTemplateCreateInfo;
+     VkDescriptorUpdateTemplateCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDescriptorUpdateTemplateCreateFlags;
@@ -4678,25 +4799,29 @@ type VkDescriptorUpdateTemplateCreateInfo = record
        set :T_uint32_t;
      end;
 
-type VkExternalMemoryProperties = record
+type P_VkExternalMemoryProperties = ^VkExternalMemoryProperties;
+     VkExternalMemoryProperties = record
        externalMemoryFeatures :VkExternalMemoryFeatureFlags;
        exportFromImportedHandleTypes :VkExternalMemoryHandleTypeFlags;
        compatibleHandleTypes :VkExternalMemoryHandleTypeFlags;
      end;
 
-type VkPhysicalDeviceExternalImageFormatInfo = record
+type P_VkPhysicalDeviceExternalImageFormatInfo = ^VkPhysicalDeviceExternalImageFormatInfo;
+     VkPhysicalDeviceExternalImageFormatInfo = record
        sType :VkStructureType;
        pNext :P_void;
        handleType :VkExternalMemoryHandleTypeFlagBits;
      end;
 
-type VkExternalImageFormatProperties = record
+type P_VkExternalImageFormatProperties = ^VkExternalImageFormatProperties;
+     VkExternalImageFormatProperties = record
        sType :VkStructureType;
        pNext :P_void;
        externalMemoryProperties :VkExternalMemoryProperties;
      end;
 
-type VkPhysicalDeviceExternalBufferInfo = record
+type P_VkPhysicalDeviceExternalBufferInfo = ^VkPhysicalDeviceExternalBufferInfo;
+     VkPhysicalDeviceExternalBufferInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkBufferCreateFlags;
@@ -4704,13 +4829,15 @@ type VkPhysicalDeviceExternalBufferInfo = record
        handleType :VkExternalMemoryHandleTypeFlagBits;
      end;
 
-type VkExternalBufferProperties = record
+type P_VkExternalBufferProperties = ^VkExternalBufferProperties;
+     VkExternalBufferProperties = record
        sType :VkStructureType;
        pNext :P_void;
        externalMemoryProperties :VkExternalMemoryProperties;
      end;
 
-type VkPhysicalDeviceIDProperties = record
+type P_VkPhysicalDeviceIDProperties = ^VkPhysicalDeviceIDProperties;
+     VkPhysicalDeviceIDProperties = record
        sType :VkStructureType;
        pNext :P_void;
        deviceUUID :array [ 0..VK_UUID_SIZE-1 ] of T_uint8_t;
@@ -4720,31 +4847,36 @@ type VkPhysicalDeviceIDProperties = record
        deviceLUIDValid :VkBool32;
      end;
 
-type VkExternalMemoryImageCreateInfo = record
+type P_VkExternalMemoryImageCreateInfo = ^VkExternalMemoryImageCreateInfo;
+     VkExternalMemoryImageCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        handleTypes :VkExternalMemoryHandleTypeFlags;
      end;
 
-type VkExternalMemoryBufferCreateInfo = record
+type P_VkExternalMemoryBufferCreateInfo = ^VkExternalMemoryBufferCreateInfo;
+     VkExternalMemoryBufferCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        handleTypes :VkExternalMemoryHandleTypeFlags;
      end;
 
-type VkExportMemoryAllocateInfo = record
+type P_VkExportMemoryAllocateInfo = ^VkExportMemoryAllocateInfo;
+     VkExportMemoryAllocateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        handleTypes :VkExternalMemoryHandleTypeFlags;
      end;
 
-type VkPhysicalDeviceExternalFenceInfo = record
+type P_VkPhysicalDeviceExternalFenceInfo = ^VkPhysicalDeviceExternalFenceInfo;
+     VkPhysicalDeviceExternalFenceInfo = record
        sType :VkStructureType;
        pNext :P_void;
        handleType :VkExternalFenceHandleTypeFlagBits;
      end;
 
-type VkExternalFenceProperties = record
+type P_VkExternalFenceProperties = ^VkExternalFenceProperties;
+     VkExternalFenceProperties = record
        sType :VkStructureType;
        pNext :P_void;
        exportFromImportedHandleTypes :VkExternalFenceHandleTypeFlags;
@@ -4752,25 +4884,29 @@ type VkExternalFenceProperties = record
        externalFenceFeatures :VkExternalFenceFeatureFlags;
      end;
 
-type VkExportFenceCreateInfo = record
+type P_VkExportFenceCreateInfo = ^VkExportFenceCreateInfo;
+     VkExportFenceCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        handleTypes :VkExternalFenceHandleTypeFlags;
      end;
 
-type VkExportSemaphoreCreateInfo = record
+type P_VkExportSemaphoreCreateInfo = ^VkExportSemaphoreCreateInfo;
+     VkExportSemaphoreCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        handleTypes :VkExternalSemaphoreHandleTypeFlags;
      end;
 
-type VkPhysicalDeviceExternalSemaphoreInfo = record
+type P_VkPhysicalDeviceExternalSemaphoreInfo = ^VkPhysicalDeviceExternalSemaphoreInfo;
+     VkPhysicalDeviceExternalSemaphoreInfo = record
        sType :VkStructureType;
        pNext :P_void;
        handleType :VkExternalSemaphoreHandleTypeFlagBits;
      end;
 
-type VkExternalSemaphoreProperties = record
+type P_VkExternalSemaphoreProperties = ^VkExternalSemaphoreProperties;
+     VkExternalSemaphoreProperties = record
        sType :VkStructureType;
        pNext :P_void;
        exportFromImportedHandleTypes :VkExternalSemaphoreHandleTypeFlags;
@@ -4778,20 +4914,23 @@ type VkExternalSemaphoreProperties = record
        externalSemaphoreFeatures :VkExternalSemaphoreFeatureFlags;
      end;
 
-type VkPhysicalDeviceMaintenance3Properties = record
+type P_VkPhysicalDeviceMaintenance3Properties = ^VkPhysicalDeviceMaintenance3Properties;
+     VkPhysicalDeviceMaintenance3Properties = record
        sType :VkStructureType;
        pNext :P_void;
        maxPerSetDescriptors :T_uint32_t;
        maxMemoryAllocationSize :VkDeviceSize;
      end;
 
-type VkDescriptorSetLayoutSupport = record
+type P_VkDescriptorSetLayoutSupport = ^VkDescriptorSetLayoutSupport;
+     VkDescriptorSetLayoutSupport = record
        sType :VkStructureType;
        pNext :P_void;
        supported :VkBool32;
      end;
 
-type VkPhysicalDeviceShaderDrawParametersFeatures = record
+type P_VkPhysicalDeviceShaderDrawParametersFeatures = ^VkPhysicalDeviceShaderDrawParametersFeatures;
+     VkPhysicalDeviceShaderDrawParametersFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        shaderDrawParameters :VkBool32;
@@ -5075,7 +5214,8 @@ type VkSemaphoreWaitFlagBits = (
        VK_SEMAPHORE_WAIT_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
 type VkSemaphoreWaitFlags = VkFlags;
-type VkPhysicalDeviceVulkan11Features = record
+type P_VkPhysicalDeviceVulkan11Features = ^VkPhysicalDeviceVulkan11Features;
+     VkPhysicalDeviceVulkan11Features = record
        sType :VkStructureType;
        pNext :P_void;
        storageBuffer16BitAccess :VkBool32;
@@ -5092,7 +5232,8 @@ type VkPhysicalDeviceVulkan11Features = record
        shaderDrawParameters :VkBool32;
      end;
 
-type VkPhysicalDeviceVulkan11Properties = record
+type P_VkPhysicalDeviceVulkan11Properties = ^VkPhysicalDeviceVulkan11Properties;
+     VkPhysicalDeviceVulkan11Properties = record
        sType :VkStructureType;
        pNext :P_void;
        deviceUUID :array [ 0..VK_UUID_SIZE-1 ] of T_uint8_t;
@@ -5112,7 +5253,8 @@ type VkPhysicalDeviceVulkan11Properties = record
        maxMemoryAllocationSize :VkDeviceSize;
      end;
 
-type VkPhysicalDeviceVulkan12Features = record
+type P_VkPhysicalDeviceVulkan12Features = ^VkPhysicalDeviceVulkan12Features;
+     VkPhysicalDeviceVulkan12Features = record
        sType :VkStructureType;
        pNext :P_void;
        samplerMirrorClampToEdge :VkBool32;
@@ -5164,14 +5306,16 @@ type VkPhysicalDeviceVulkan12Features = record
        subgroupBroadcastDynamicId :VkBool32;
      end;
 
-type VkConformanceVersion = record
+type P_VkConformanceVersion = ^VkConformanceVersion;
+     VkConformanceVersion = record
        major :T_uint8_t;
        minor :T_uint8_t;
        subminor :T_uint8_t;
        patch :T_uint8_t;
      end;
 
-type VkPhysicalDeviceVulkan12Properties = record
+type P_VkPhysicalDeviceVulkan12Properties = ^VkPhysicalDeviceVulkan12Properties;
+     VkPhysicalDeviceVulkan12Properties = record
        sType :VkStructureType;
        pNext :P_void;
        driverID :VkDriverId;
@@ -5228,14 +5372,16 @@ type VkPhysicalDeviceVulkan12Properties = record
        framebufferIntegerColorSampleCounts :VkSampleCountFlags;
      end;
 
-type VkImageFormatListCreateInfo = record
+type P_VkImageFormatListCreateInfo = ^VkImageFormatListCreateInfo;
+     VkImageFormatListCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        viewFormatCount :T_uint32_t;
        pViewFormats :P_VkFormat;
      end;
 
-type VkAttachmentDescription2 = record
+type P_VkAttachmentDescription2 = ^VkAttachmentDescription2;
+     VkAttachmentDescription2 = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkAttachmentDescriptionFlags;
@@ -5249,7 +5395,8 @@ type VkAttachmentDescription2 = record
        finalLayout :VkImageLayout;
      end;
 
-type VkAttachmentReference2 = record
+type P_VkAttachmentReference2 = ^VkAttachmentReference2;
+     VkAttachmentReference2 = record
        sType :VkStructureType;
        pNext :P_void;
        attachment :T_uint32_t;
@@ -5257,7 +5404,8 @@ type VkAttachmentReference2 = record
        aspectMask :VkImageAspectFlags;
      end;
 
-type VkSubpassDescription2 = record
+type P_VkSubpassDescription2 = ^VkSubpassDescription2;
+     VkSubpassDescription2 = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkSubpassDescriptionFlags;
@@ -5273,7 +5421,8 @@ type VkSubpassDescription2 = record
        pPreserveAttachments :P_uint32_t;
      end;
 
-type VkSubpassDependency2 = record
+type P_VkSubpassDependency2 = ^VkSubpassDependency2;
+     VkSubpassDependency2 = record
        sType :VkStructureType;
        pNext :P_void;
        srcSubpass :T_uint32_t;
@@ -5286,7 +5435,8 @@ type VkSubpassDependency2 = record
        viewOffset :T_int32_t;
      end;
 
-type VkRenderPassCreateInfo2 = record
+type P_VkRenderPassCreateInfo2 = ^VkRenderPassCreateInfo2;
+     VkRenderPassCreateInfo2 = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkRenderPassCreateFlags;
@@ -5300,18 +5450,21 @@ type VkRenderPassCreateInfo2 = record
        pCorrelatedViewMasks :P_uint32_t;
      end;
 
-type VkSubpassBeginInfo = record
+type P_VkSubpassBeginInfo = ^VkSubpassBeginInfo;
+     VkSubpassBeginInfo = record
        sType :VkStructureType;
        pNext :P_void;
        contents :VkSubpassContents;
      end;
 
-type VkSubpassEndInfo = record
+type P_VkSubpassEndInfo = ^VkSubpassEndInfo;
+     VkSubpassEndInfo = record
        sType :VkStructureType;
        pNext :P_void;
      end;
 
-type VkPhysicalDevice8BitStorageFeatures = record
+type P_VkPhysicalDevice8BitStorageFeatures = ^VkPhysicalDevice8BitStorageFeatures;
+     VkPhysicalDevice8BitStorageFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        storageBuffer8BitAccess :VkBool32;
@@ -5319,7 +5472,8 @@ type VkPhysicalDevice8BitStorageFeatures = record
        storagePushConstant8 :VkBool32;
      end;
 
-type VkPhysicalDeviceDriverProperties = record
+type P_VkPhysicalDeviceDriverProperties = ^VkPhysicalDeviceDriverProperties;
+     VkPhysicalDeviceDriverProperties = record
        sType :VkStructureType;
        pNext :P_void;
        driverID :VkDriverId;
@@ -5328,21 +5482,24 @@ type VkPhysicalDeviceDriverProperties = record
        conformanceVersion :VkConformanceVersion;
      end;
 
-type VkPhysicalDeviceShaderAtomicInt64Features = record
+type P_VkPhysicalDeviceShaderAtomicInt64Features = ^VkPhysicalDeviceShaderAtomicInt64Features;
+     VkPhysicalDeviceShaderAtomicInt64Features = record
        sType :VkStructureType;
        pNext :P_void;
        shaderBufferInt64Atomics :VkBool32;
        shaderSharedInt64Atomics :VkBool32;
      end;
 
-type VkPhysicalDeviceShaderFloat16Int8Features = record
+type P_VkPhysicalDeviceShaderFloat16Int8Features = ^VkPhysicalDeviceShaderFloat16Int8Features;
+     VkPhysicalDeviceShaderFloat16Int8Features = record
        sType :VkStructureType;
        pNext :P_void;
        shaderFloat16 :VkBool32;
        shaderInt8 :VkBool32;
      end;
 
-type VkPhysicalDeviceFloatControlsProperties = record
+type P_VkPhysicalDeviceFloatControlsProperties = ^VkPhysicalDeviceFloatControlsProperties;
+     VkPhysicalDeviceFloatControlsProperties = record
        sType :VkStructureType;
        pNext :P_void;
        denormBehaviorIndependence :VkShaderFloatControlsIndependence;
@@ -5364,14 +5521,16 @@ type VkPhysicalDeviceFloatControlsProperties = record
        shaderRoundingModeRTZFloat64 :VkBool32;
      end;
 
-type VkDescriptorSetLayoutBindingFlagsCreateInfo = record
+type P_VkDescriptorSetLayoutBindingFlagsCreateInfo = ^VkDescriptorSetLayoutBindingFlagsCreateInfo;
+     VkDescriptorSetLayoutBindingFlagsCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        bindingCount :T_uint32_t;
        pBindingFlags :P_VkDescriptorBindingFlags;
      end;
 
-type VkPhysicalDeviceDescriptorIndexingFeatures = record
+type P_VkPhysicalDeviceDescriptorIndexingFeatures = ^VkPhysicalDeviceDescriptorIndexingFeatures;
+     VkPhysicalDeviceDescriptorIndexingFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        shaderInputAttachmentArrayDynamicIndexing :VkBool32;
@@ -5396,7 +5555,8 @@ type VkPhysicalDeviceDescriptorIndexingFeatures = record
        runtimeDescriptorArray :VkBool32;
      end;
 
-type VkPhysicalDeviceDescriptorIndexingProperties = record
+type P_VkPhysicalDeviceDescriptorIndexingProperties = ^VkPhysicalDeviceDescriptorIndexingProperties;
+     VkPhysicalDeviceDescriptorIndexingProperties = record
        sType :VkStructureType;
        pNext :P_void;
        maxUpdateAfterBindDescriptorsInAllPools :T_uint32_t;
@@ -5424,20 +5584,23 @@ type VkPhysicalDeviceDescriptorIndexingProperties = record
        maxDescriptorSetUpdateAfterBindInputAttachments :T_uint32_t;
      end;
 
-type VkDescriptorSetVariableDescriptorCountAllocateInfo = record
+type P_VkDescriptorSetVariableDescriptorCountAllocateInfo = ^VkDescriptorSetVariableDescriptorCountAllocateInfo;
+     VkDescriptorSetVariableDescriptorCountAllocateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        descriptorSetCount :T_uint32_t;
        pDescriptorCounts :P_uint32_t;
      end;
 
-type VkDescriptorSetVariableDescriptorCountLayoutSupport = record
+type P_VkDescriptorSetVariableDescriptorCountLayoutSupport = ^VkDescriptorSetVariableDescriptorCountLayoutSupport;
+     VkDescriptorSetVariableDescriptorCountLayoutSupport = record
        sType :VkStructureType;
        pNext :P_void;
        maxVariableDescriptorCount :T_uint32_t;
      end;
 
-type VkSubpassDescriptionDepthStencilResolve = record
+type P_VkSubpassDescriptionDepthStencilResolve = ^VkSubpassDescriptionDepthStencilResolve;
+     VkSubpassDescriptionDepthStencilResolve = record
        sType :VkStructureType;
        pNext :P_void;
        depthResolveMode :VkResolveModeFlagBits;
@@ -5445,7 +5608,8 @@ type VkSubpassDescriptionDepthStencilResolve = record
        pDepthStencilResolveAttachment :P_VkAttachmentReference2;
      end;
 
-type VkPhysicalDeviceDepthStencilResolveProperties = record
+type P_VkPhysicalDeviceDepthStencilResolveProperties = ^VkPhysicalDeviceDepthStencilResolveProperties;
+     VkPhysicalDeviceDepthStencilResolveProperties = record
        sType :VkStructureType;
        pNext :P_void;
        supportedDepthResolveModes :VkResolveModeFlags;
@@ -5454,32 +5618,37 @@ type VkPhysicalDeviceDepthStencilResolveProperties = record
        independentResolve :VkBool32;
      end;
 
-type VkPhysicalDeviceScalarBlockLayoutFeatures = record
+type P_VkPhysicalDeviceScalarBlockLayoutFeatures = ^VkPhysicalDeviceScalarBlockLayoutFeatures;
+     VkPhysicalDeviceScalarBlockLayoutFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        scalarBlockLayout :VkBool32;
      end;
 
-type VkImageStencilUsageCreateInfo = record
+type P_VkImageStencilUsageCreateInfo = ^VkImageStencilUsageCreateInfo;
+     VkImageStencilUsageCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        stencilUsage :VkImageUsageFlags;
      end;
 
-type VkSamplerReductionModeCreateInfo = record
+type P_VkSamplerReductionModeCreateInfo = ^VkSamplerReductionModeCreateInfo;
+     VkSamplerReductionModeCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        reductionMode :VkSamplerReductionMode;
      end;
 
-type VkPhysicalDeviceSamplerFilterMinmaxProperties = record
+type P_VkPhysicalDeviceSamplerFilterMinmaxProperties = ^VkPhysicalDeviceSamplerFilterMinmaxProperties;
+     VkPhysicalDeviceSamplerFilterMinmaxProperties = record
        sType :VkStructureType;
        pNext :P_void;
        filterMinmaxSingleComponentFormats :VkBool32;
        filterMinmaxImageComponentMapping :VkBool32;
      end;
 
-type VkPhysicalDeviceVulkanMemoryModelFeatures = record
+type P_VkPhysicalDeviceVulkanMemoryModelFeatures = ^VkPhysicalDeviceVulkanMemoryModelFeatures;
+     VkPhysicalDeviceVulkanMemoryModelFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        vulkanMemoryModel :VkBool32;
@@ -5487,13 +5656,15 @@ type VkPhysicalDeviceVulkanMemoryModelFeatures = record
        vulkanMemoryModelAvailabilityVisibilityChains :VkBool32;
      end;
 
-type VkPhysicalDeviceImagelessFramebufferFeatures = record
+type P_VkPhysicalDeviceImagelessFramebufferFeatures = ^VkPhysicalDeviceImagelessFramebufferFeatures;
+     VkPhysicalDeviceImagelessFramebufferFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        imagelessFramebuffer :VkBool32;
      end;
 
-type VkFramebufferAttachmentImageInfo = record
+type P_VkFramebufferAttachmentImageInfo = ^VkFramebufferAttachmentImageInfo;
+     VkFramebufferAttachmentImageInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkImageCreateFlags;
@@ -5505,77 +5676,89 @@ type VkFramebufferAttachmentImageInfo = record
        pViewFormats :P_VkFormat;
      end;
 
-type VkFramebufferAttachmentsCreateInfo = record
+type P_VkFramebufferAttachmentsCreateInfo = ^VkFramebufferAttachmentsCreateInfo;
+     VkFramebufferAttachmentsCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        attachmentImageInfoCount :T_uint32_t;
        pAttachmentImageInfos :P_VkFramebufferAttachmentImageInfo;
      end;
 
-type VkRenderPassAttachmentBeginInfo = record
+type P_VkRenderPassAttachmentBeginInfo = ^VkRenderPassAttachmentBeginInfo;
+     VkRenderPassAttachmentBeginInfo = record
        sType :VkStructureType;
        pNext :P_void;
        attachmentCount :T_uint32_t;
        pAttachments :P_VkImageView;
      end;
 
-type VkPhysicalDeviceUniformBufferStandardLayoutFeatures = record
+type P_VkPhysicalDeviceUniformBufferStandardLayoutFeatures = ^VkPhysicalDeviceUniformBufferStandardLayoutFeatures;
+     VkPhysicalDeviceUniformBufferStandardLayoutFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        uniformBufferStandardLayout :VkBool32;
      end;
 
-type VkPhysicalDeviceShaderSubgroupExtendedTypesFeatures = record
+type P_VkPhysicalDeviceShaderSubgroupExtendedTypesFeatures = ^VkPhysicalDeviceShaderSubgroupExtendedTypesFeatures;
+     VkPhysicalDeviceShaderSubgroupExtendedTypesFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        shaderSubgroupExtendedTypes :VkBool32;
      end;
 
-type VkPhysicalDeviceSeparateDepthStencilLayoutsFeatures = record
+type P_VkPhysicalDeviceSeparateDepthStencilLayoutsFeatures = ^VkPhysicalDeviceSeparateDepthStencilLayoutsFeatures;
+     VkPhysicalDeviceSeparateDepthStencilLayoutsFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        separateDepthStencilLayouts :VkBool32;
      end;
 
-type VkAttachmentReferenceStencilLayout = record
+type P_VkAttachmentReferenceStencilLayout = ^VkAttachmentReferenceStencilLayout;
+     VkAttachmentReferenceStencilLayout = record
        sType :VkStructureType;
        pNext :P_void;
        stencilLayout :VkImageLayout;
      end;
 
-type VkAttachmentDescriptionStencilLayout = record
+type P_VkAttachmentDescriptionStencilLayout = ^VkAttachmentDescriptionStencilLayout;
+     VkAttachmentDescriptionStencilLayout = record
        sType :VkStructureType;
        pNext :P_void;
        stencilInitialLayout :VkImageLayout;
        stencilFinalLayout :VkImageLayout;
      end;
 
-type VkPhysicalDeviceHostQueryResetFeatures = record
+type P_VkPhysicalDeviceHostQueryResetFeatures = ^VkPhysicalDeviceHostQueryResetFeatures;
+     VkPhysicalDeviceHostQueryResetFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        hostQueryReset :VkBool32;
      end;
 
-type VkPhysicalDeviceTimelineSemaphoreFeatures = record
+type P_VkPhysicalDeviceTimelineSemaphoreFeatures = ^VkPhysicalDeviceTimelineSemaphoreFeatures;
+     VkPhysicalDeviceTimelineSemaphoreFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        timelineSemaphore :VkBool32;
      end;
 
-type VkPhysicalDeviceTimelineSemaphoreProperties = record
+type P_VkPhysicalDeviceTimelineSemaphoreProperties = ^VkPhysicalDeviceTimelineSemaphoreProperties;
+     VkPhysicalDeviceTimelineSemaphoreProperties = record
        sType :VkStructureType;
        pNext :P_void;
        maxTimelineSemaphoreValueDifference :T_uint64_t;
      end;
 
-type VkSemaphoreTypeCreateInfo = record
+type P_VkSemaphoreTypeCreateInfo = ^VkSemaphoreTypeCreateInfo;
+     VkSemaphoreTypeCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        semaphoreType :VkSemaphoreType;
        initialValue :T_uint64_t;
      end;
 
-type VkTimelineSemaphoreSubmitInfo = record
+type P_VkTimelineSemaphoreSubmitInfo = ^VkTimelineSemaphoreSubmitInfo;
+     VkTimelineSemaphoreSubmitInfo = record
        sType :VkStructureType;
        pNext :P_void;
        waitSemaphoreValueCount :T_uint32_t;
@@ -5584,7 +5767,8 @@ type VkTimelineSemaphoreSubmitInfo = record
        pSignalSemaphoreValues :P_uint64_t;
      end;
 
-type VkSemaphoreWaitInfo = record
+type P_VkSemaphoreWaitInfo = ^VkSemaphoreWaitInfo;
+     VkSemaphoreWaitInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkSemaphoreWaitFlags;
@@ -5593,14 +5777,16 @@ type VkSemaphoreWaitInfo = record
        pValues :P_uint64_t;
      end;
 
-type VkSemaphoreSignalInfo = record
+type P_VkSemaphoreSignalInfo = ^VkSemaphoreSignalInfo;
+     VkSemaphoreSignalInfo = record
        sType :VkStructureType;
        pNext :P_void;
        semaphore :VkSemaphore;
        value :T_uint64_t;
      end;
 
-type VkPhysicalDeviceBufferDeviceAddressFeatures = record
+type P_VkPhysicalDeviceBufferDeviceAddressFeatures = ^VkPhysicalDeviceBufferDeviceAddressFeatures;
+     VkPhysicalDeviceBufferDeviceAddressFeatures = record
        sType :VkStructureType;
        pNext :P_void;
        bufferDeviceAddress :VkBool32;
@@ -5608,25 +5794,29 @@ type VkPhysicalDeviceBufferDeviceAddressFeatures = record
        bufferDeviceAddressMultiDevice :VkBool32;
      end;
 
-type VkBufferDeviceAddressInfo = record
+type P_VkBufferDeviceAddressInfo = ^VkBufferDeviceAddressInfo;
+     VkBufferDeviceAddressInfo = record
        sType :VkStructureType;
        pNext :P_void;
        buffer :VkBuffer;
      end;
 
-type VkBufferOpaqueCaptureAddressCreateInfo = record
+type P_VkBufferOpaqueCaptureAddressCreateInfo = ^VkBufferOpaqueCaptureAddressCreateInfo;
+     VkBufferOpaqueCaptureAddressCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        opaqueCaptureAddress :T_uint64_t;
      end;
 
-type VkMemoryOpaqueCaptureAddressAllocateInfo = record
+type P_VkMemoryOpaqueCaptureAddressAllocateInfo = ^VkMemoryOpaqueCaptureAddressAllocateInfo;
+     VkMemoryOpaqueCaptureAddressAllocateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        opaqueCaptureAddress :T_uint64_t;
      end;
 
-type VkDeviceMemoryOpaqueCaptureAddressInfo = record
+type P_VkDeviceMemoryOpaqueCaptureAddressInfo = ^VkDeviceMemoryOpaqueCaptureAddressInfo;
+     VkDeviceMemoryOpaqueCaptureAddressInfo = record
        sType :VkStructureType;
        pNext :P_void;
        memory :VkDeviceMemory;
@@ -5778,7 +5968,8 @@ type VkCompositeAlphaFlagBitsKHR = (
      );
 type VkCompositeAlphaFlagsKHR = VkFlags;
 type VkSurfaceTransformFlagsKHR = VkFlags;
-type VkSurfaceCapabilitiesKHR = record
+type P_VkSurfaceCapabilitiesKHR = ^VkSurfaceCapabilitiesKHR;
+     VkSurfaceCapabilitiesKHR = record
        minImageCount :T_uint32_t;
        maxImageCount :T_uint32_t;
        currentExtent :VkExtent2D;
@@ -5791,7 +5982,8 @@ type VkSurfaceCapabilitiesKHR = record
        supportedUsageFlags :VkImageUsageFlags;
      end;
 
-type VkSurfaceFormatKHR = record
+type P_VkSurfaceFormatKHR = ^VkSurfaceFormatKHR;
+     VkSurfaceFormatKHR = record
        format :VkFormat;
        colorSpace :VkColorSpaceKHR;
      end;
@@ -5854,7 +6046,8 @@ type VkDeviceGroupPresentModeFlagBitsKHR = (
        VK_DEVICE_GROUP_PRESENT_MODE_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
 type VkDeviceGroupPresentModeFlagsKHR = VkFlags;
-type VkSwapchainCreateInfoKHR = record
+type P_VkSwapchainCreateInfoKHR = ^VkSwapchainCreateInfoKHR;
+     VkSwapchainCreateInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkSwapchainCreateFlagsKHR;
@@ -5875,7 +6068,8 @@ type VkSwapchainCreateInfoKHR = record
        oldSwapchain :VkSwapchainKHR;
      end;
 
-type VkPresentInfoKHR = record
+type P_VkPresentInfoKHR = ^VkPresentInfoKHR;
+     VkPresentInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        waitSemaphoreCount :T_uint32_t;
@@ -5886,20 +6080,23 @@ type VkPresentInfoKHR = record
        pResults :P_VkResult;
      end;
 
-type VkImageSwapchainCreateInfoKHR = record
+type P_VkImageSwapchainCreateInfoKHR = ^VkImageSwapchainCreateInfoKHR;
+     VkImageSwapchainCreateInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        swapchain :VkSwapchainKHR;
      end;
 
-type VkBindImageMemorySwapchainInfoKHR = record
+type P_VkBindImageMemorySwapchainInfoKHR = ^VkBindImageMemorySwapchainInfoKHR;
+     VkBindImageMemorySwapchainInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        swapchain :VkSwapchainKHR;
        imageIndex :T_uint32_t;
      end;
 
-type VkAcquireNextImageInfoKHR = record
+type P_VkAcquireNextImageInfoKHR = ^VkAcquireNextImageInfoKHR;
+     VkAcquireNextImageInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        swapchain :VkSwapchainKHR;
@@ -5909,14 +6106,16 @@ type VkAcquireNextImageInfoKHR = record
        deviceMask :T_uint32_t;
      end;
 
-type VkDeviceGroupPresentCapabilitiesKHR = record
+type P_VkDeviceGroupPresentCapabilitiesKHR = ^VkDeviceGroupPresentCapabilitiesKHR;
+     VkDeviceGroupPresentCapabilitiesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        presentMask :array [ 0..VK_MAX_DEVICE_GROUP_SIZE-1 ] of T_uint32_t;
        modes :VkDeviceGroupPresentModeFlagsKHR;
      end;
 
-type VkDeviceGroupPresentInfoKHR = record
+type P_VkDeviceGroupPresentInfoKHR = ^VkDeviceGroupPresentInfoKHR;
+     VkDeviceGroupPresentInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        swapchainCount :T_uint32_t;
@@ -5924,7 +6123,8 @@ type VkDeviceGroupPresentInfoKHR = record
        mode :VkDeviceGroupPresentModeFlagBitsKHR;
      end;
 
-type VkDeviceGroupSwapchainCreateInfoKHR = record
+type P_VkDeviceGroupSwapchainCreateInfoKHR = ^VkDeviceGroupSwapchainCreateInfoKHR;
+     VkDeviceGroupSwapchainCreateInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        modes :VkDeviceGroupPresentModeFlagsKHR;
@@ -6008,24 +6208,28 @@ type VkDisplayPlaneAlphaFlagBitsKHR = (
      );
 type VkDisplayPlaneAlphaFlagsKHR = VkFlags;
 type VkDisplaySurfaceCreateFlagsKHR = VkFlags;
-type VkDisplayModeParametersKHR = record
+type P_VkDisplayModeParametersKHR = ^VkDisplayModeParametersKHR;
+     VkDisplayModeParametersKHR = record
        visibleRegion :VkExtent2D;
        refreshRate :T_uint32_t;
      end;
 
-type VkDisplayModeCreateInfoKHR = record
+type P_VkDisplayModeCreateInfoKHR = ^VkDisplayModeCreateInfoKHR;
+     VkDisplayModeCreateInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDisplayModeCreateFlagsKHR;
        parameters :VkDisplayModeParametersKHR;
      end;
 
-type VkDisplayModePropertiesKHR = record
+type P_VkDisplayModePropertiesKHR = ^VkDisplayModePropertiesKHR;
+     VkDisplayModePropertiesKHR = record
        displayMode :VkDisplayModeKHR;
        parameters :VkDisplayModeParametersKHR;
      end;
 
-type VkDisplayPlaneCapabilitiesKHR = record
+type P_VkDisplayPlaneCapabilitiesKHR = ^VkDisplayPlaneCapabilitiesKHR;
+     VkDisplayPlaneCapabilitiesKHR = record
        supportedAlpha :VkDisplayPlaneAlphaFlagsKHR;
        minSrcPosition :VkOffset2D;
        maxSrcPosition :VkOffset2D;
@@ -6037,12 +6241,14 @@ type VkDisplayPlaneCapabilitiesKHR = record
        maxDstExtent :VkExtent2D;
      end;
 
-type VkDisplayPlanePropertiesKHR = record
+type P_VkDisplayPlanePropertiesKHR = ^VkDisplayPlanePropertiesKHR;
+     VkDisplayPlanePropertiesKHR = record
        currentDisplay :VkDisplayKHR;
        currentStackIndex :T_uint32_t;
      end;
 
-type VkDisplayPropertiesKHR = record
+type P_VkDisplayPropertiesKHR = ^VkDisplayPropertiesKHR;
+     VkDisplayPropertiesKHR = record
        display :VkDisplayKHR;
        displayName :P_char;
        physicalDimensions :VkExtent2D;
@@ -6052,7 +6258,8 @@ type VkDisplayPropertiesKHR = record
        persistentContent :VkBool32;
      end;
 
-type VkDisplaySurfaceCreateInfoKHR = record
+type P_VkDisplaySurfaceCreateInfoKHR = ^VkDisplaySurfaceCreateInfoKHR;
+     VkDisplaySurfaceCreateInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDisplaySurfaceCreateFlagsKHR;
@@ -6120,7 +6327,8 @@ function vkCreateDisplayPlaneSurfaceKHR(
 const VK_KHR_display_swapchain = 1;
 const VK_KHR_DISPLAY_SWAPCHAIN_SPEC_VERSION = 10;
 const VK_KHR_DISPLAY_SWAPCHAIN_EXTENSION_NAME = 'VK_KHR_display_swapchain';
-type VkDisplayPresentInfoKHR = record
+type P_VkDisplayPresentInfoKHR = ^VkDisplayPresentInfoKHR;
+     VkDisplayPresentInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcRect :VkRect2D;
@@ -6360,20 +6568,23 @@ type VkExportMemoryAllocateInfoKHR = VkExportMemoryAllocateInfo;
 const VK_KHR_external_memory_fd = 1;
 const VK_KHR_EXTERNAL_MEMORY_FD_SPEC_VERSION = 1;
 const VK_KHR_EXTERNAL_MEMORY_FD_EXTENSION_NAME = 'VK_KHR_external_memory_fd';
-type VkImportMemoryFdInfoKHR = record
+type P_VkImportMemoryFdInfoKHR = ^VkImportMemoryFdInfoKHR;
+     VkImportMemoryFdInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        handleType :VkExternalMemoryHandleTypeFlagBits;
        fd :int;
      end;
 
-type VkMemoryFdPropertiesKHR = record
+type P_VkMemoryFdPropertiesKHR = ^VkMemoryFdPropertiesKHR;
+     VkMemoryFdPropertiesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        memoryTypeBits :T_uint32_t;
      end;
 
-type VkMemoryGetFdInfoKHR = record
+type P_VkMemoryGetFdInfoKHR = ^VkMemoryGetFdInfoKHR;
+     VkMemoryGetFdInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        memory :VkDeviceMemory;
@@ -6436,7 +6647,8 @@ type VkExportSemaphoreCreateInfoKHR = VkExportSemaphoreCreateInfo;
 const VK_KHR_external_semaphore_fd = 1;
 const VK_KHR_EXTERNAL_SEMAPHORE_FD_SPEC_VERSION = 1;
 const VK_KHR_EXTERNAL_SEMAPHORE_FD_EXTENSION_NAME = 'VK_KHR_external_semaphore_fd';
-type VkImportSemaphoreFdInfoKHR = record
+type P_VkImportSemaphoreFdInfoKHR = ^VkImportSemaphoreFdInfoKHR;
+     VkImportSemaphoreFdInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        semaphore :VkSemaphore;
@@ -6445,7 +6657,8 @@ type VkImportSemaphoreFdInfoKHR = record
        fd :int;
      end;
 
-type VkSemaphoreGetFdInfoKHR = record
+type P_VkSemaphoreGetFdInfoKHR = ^VkSemaphoreGetFdInfoKHR;
+     VkSemaphoreGetFdInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        semaphore :VkSemaphore;
@@ -6470,7 +6683,8 @@ function vkGetSemaphoreFdKHR(
 const VK_KHR_push_descriptor = 1;
 const VK_KHR_PUSH_DESCRIPTOR_SPEC_VERSION = 2;
 const VK_KHR_PUSH_DESCRIPTOR_EXTENSION_NAME = 'VK_KHR_push_descriptor';
-type VkPhysicalDevicePushDescriptorPropertiesKHR = record
+type P_VkPhysicalDevicePushDescriptorPropertiesKHR = ^VkPhysicalDevicePushDescriptorPropertiesKHR;
+     VkPhysicalDevicePushDescriptorPropertiesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        maxPushDescriptors :T_uint32_t;
@@ -6516,18 +6730,21 @@ type VkPhysicalDevice16BitStorageFeaturesKHR = VkPhysicalDevice16BitStorageFeatu
 const VK_KHR_incremental_present = 1;
 const VK_KHR_INCREMENTAL_PRESENT_SPEC_VERSION = 1;
 const VK_KHR_INCREMENTAL_PRESENT_EXTENSION_NAME = 'VK_KHR_incremental_present';
-type VkRectLayerKHR = record
+type P_VkRectLayerKHR = ^VkRectLayerKHR;
+     VkRectLayerKHR = record
        offset :VkOffset2D;
        extent :VkExtent2D;
        layer :T_uint32_t;
      end;
 
-type VkPresentRegionKHR = record
+type P_VkPresentRegionKHR = ^VkPresentRegionKHR;
+     VkPresentRegionKHR = record
        rectangleCount :T_uint32_t;
        pRectangles :P_VkRectLayerKHR;
      end;
 
-type VkPresentRegionsKHR = record
+type P_VkPresentRegionsKHR = ^VkPresentRegionsKHR;
+     VkPresentRegionsKHR = record
        sType :VkStructureType;
        pNext :P_void;
        swapchainCount :T_uint32_t;
@@ -6634,7 +6851,8 @@ procedure vkCmdEndRenderPass2KHR(
 const VK_KHR_shared_presentable_image = 1;
 const VK_KHR_SHARED_PRESENTABLE_IMAGE_SPEC_VERSION = 1;
 const VK_KHR_SHARED_PRESENTABLE_IMAGE_EXTENSION_NAME = 'VK_KHR_shared_presentable_image';
-type VkSharedPresentSurfaceCapabilitiesKHR = record
+type P_VkSharedPresentSurfaceCapabilitiesKHR = ^VkSharedPresentSurfaceCapabilitiesKHR;
+     VkSharedPresentSurfaceCapabilitiesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        sharedPresentSupportedUsageFlags :VkImageUsageFlags;
@@ -6688,7 +6906,8 @@ type VkExportFenceCreateInfoKHR = VkExportFenceCreateInfo;
 const VK_KHR_external_fence_fd = 1;
 const VK_KHR_EXTERNAL_FENCE_FD_SPEC_VERSION = 1;
 const VK_KHR_EXTERNAL_FENCE_FD_EXTENSION_NAME = 'VK_KHR_external_fence_fd';
-type VkImportFenceFdInfoKHR = record
+type P_VkImportFenceFdInfoKHR = ^VkImportFenceFdInfoKHR;
+     VkImportFenceFdInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        fence :VkFence;
@@ -6697,7 +6916,8 @@ type VkImportFenceFdInfoKHR = record
        fd :int;
      end;
 
-type VkFenceGetFdInfoKHR = record
+type P_VkFenceGetFdInfoKHR = ^VkFenceGetFdInfoKHR;
+     VkFenceGetFdInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        fence :VkFence;
@@ -6771,20 +6991,23 @@ type VkAcquireProfilingLockFlagBitsKHR = (
        VK_ACQUIRE_PROFILING_LOCK_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
 type VkAcquireProfilingLockFlagsKHR = VkFlags;
-type VkPhysicalDevicePerformanceQueryFeaturesKHR = record
+type P_VkPhysicalDevicePerformanceQueryFeaturesKHR = ^VkPhysicalDevicePerformanceQueryFeaturesKHR;
+     VkPhysicalDevicePerformanceQueryFeaturesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        performanceCounterQueryPools :VkBool32;
        performanceCounterMultipleQueryPools :VkBool32;
      end;
 
-type VkPhysicalDevicePerformanceQueryPropertiesKHR = record
+type P_VkPhysicalDevicePerformanceQueryPropertiesKHR = ^VkPhysicalDevicePerformanceQueryPropertiesKHR;
+     VkPhysicalDevicePerformanceQueryPropertiesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        allowCommandBufferQueryCopies :VkBool32;
      end;
 
-type VkPerformanceCounterKHR = record
+type P_VkPerformanceCounterKHR = ^VkPerformanceCounterKHR;
+     VkPerformanceCounterKHR = record
        sType :VkStructureType;
        pNext :P_void;
        unit :VkPerformanceCounterUnitKHR;
@@ -6793,7 +7016,8 @@ type VkPerformanceCounterKHR = record
        uuid :array [ 0..VK_UUID_SIZE-1 ] of T_uint8_t;
      end;
 
-type VkPerformanceCounterDescriptionKHR = record
+type P_VkPerformanceCounterDescriptionKHR = ^VkPerformanceCounterDescriptionKHR;
+     VkPerformanceCounterDescriptionKHR = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPerformanceCounterDescriptionFlagsKHR;
@@ -6802,7 +7026,8 @@ type VkPerformanceCounterDescriptionKHR = record
        description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
      end;
 
-type VkQueryPoolPerformanceCreateInfoKHR = record
+type P_VkQueryPoolPerformanceCreateInfoKHR = ^VkQueryPoolPerformanceCreateInfoKHR;
+     VkQueryPoolPerformanceCreateInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        queueFamilyIndex :T_uint32_t;
@@ -6810,7 +7035,8 @@ type VkQueryPoolPerformanceCreateInfoKHR = record
        pCounterIndices :P_uint32_t;
      end;
 
-type VkPerformanceCounterResultKHR = record
+type P_VkPerformanceCounterResultKHR = ^VkPerformanceCounterResultKHR;
+     VkPerformanceCounterResultKHR = record
      case Byte of
        0:( int32   :T_int32_t  );
        1:( int64   :T_int64_t  );
@@ -6820,14 +7046,16 @@ type VkPerformanceCounterResultKHR = record
        5:( float64 :double   );
      end;
 
-type VkAcquireProfilingLockInfoKHR = record
+type P_VkAcquireProfilingLockInfoKHR = ^VkAcquireProfilingLockInfoKHR;
+     VkAcquireProfilingLockInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkAcquireProfilingLockFlagsKHR;
        timeout :T_uint64_t;
      end;
 
-type VkPerformanceQuerySubmitInfoKHR = record
+type P_VkPerformanceQuerySubmitInfoKHR = ^VkPerformanceQuerySubmitInfoKHR;
+     VkPerformanceQuerySubmitInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        counterPassIndex :T_uint32_t;
@@ -6882,19 +7110,22 @@ type VkPipelineTessellationDomainOriginStateCreateInfoKHR = VkPipelineTessellati
 const VK_KHR_get_surface_capabilities2 = 1;
 const VK_KHR_GET_SURFACE_CAPABILITIES_2_SPEC_VERSION = 1;
 const VK_KHR_GET_SURFACE_CAPABILITIES_2_EXTENSION_NAME = 'VK_KHR_get_surface_capabilities2';
-type VkPhysicalDeviceSurfaceInfo2KHR = record
+type P_VkPhysicalDeviceSurfaceInfo2KHR = ^VkPhysicalDeviceSurfaceInfo2KHR;
+     VkPhysicalDeviceSurfaceInfo2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        surface :VkSurfaceKHR;
      end;
 
-type VkSurfaceCapabilities2KHR = record
+type P_VkSurfaceCapabilities2KHR = ^VkSurfaceCapabilities2KHR;
+     VkSurfaceCapabilities2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        surfaceCapabilities :VkSurfaceCapabilitiesKHR;
      end;
 
-type VkSurfaceFormat2KHR = record
+type P_VkSurfaceFormat2KHR = ^VkSurfaceFormat2KHR;
+     VkSurfaceFormat2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        surfaceFormat :VkSurfaceFormatKHR;
@@ -6929,32 +7160,37 @@ type VkPhysicalDeviceVariablePointersFeaturesKHR = VkPhysicalDeviceVariablePoint
 const VK_KHR_get_display_properties2 = 1;
 const VK_KHR_GET_DISPLAY_PROPERTIES_2_SPEC_VERSION = 1;
 const VK_KHR_GET_DISPLAY_PROPERTIES_2_EXTENSION_NAME = 'VK_KHR_get_display_properties2';
-type VkDisplayProperties2KHR = record
+type P_VkDisplayProperties2KHR = ^VkDisplayProperties2KHR;
+     VkDisplayProperties2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        displayProperties :VkDisplayPropertiesKHR;
      end;
 
-type VkDisplayPlaneProperties2KHR = record
+type P_VkDisplayPlaneProperties2KHR = ^VkDisplayPlaneProperties2KHR;
+     VkDisplayPlaneProperties2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        displayPlaneProperties :VkDisplayPlanePropertiesKHR;
      end;
 
-type VkDisplayModeProperties2KHR = record
+type P_VkDisplayModeProperties2KHR = ^VkDisplayModeProperties2KHR;
+     VkDisplayModeProperties2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        displayModeProperties :VkDisplayModePropertiesKHR;
      end;
 
-type VkDisplayPlaneInfo2KHR = record
+type P_VkDisplayPlaneInfo2KHR = ^VkDisplayPlaneInfo2KHR;
+     VkDisplayPlaneInfo2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        mode :VkDisplayModeKHR;
        planeIndex :T_uint32_t;
      end;
 
-type VkDisplayPlaneCapabilities2KHR = record
+type P_VkDisplayPlaneCapabilities2KHR = ^VkDisplayPlaneCapabilities2KHR;
+     VkDisplayPlaneCapabilities2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        capabilities :VkDisplayPlaneCapabilitiesKHR;
@@ -7182,7 +7418,8 @@ type VkPhysicalDeviceShaderAtomicInt64FeaturesKHR = VkPhysicalDeviceShaderAtomic
 const VK_KHR_shader_clock = 1;
 const VK_KHR_SHADER_CLOCK_SPEC_VERSION  = 1;
 const VK_KHR_SHADER_CLOCK_EXTENSION_NAME = 'VK_KHR_shader_clock';
-type VkPhysicalDeviceShaderClockFeaturesKHR = record
+type P_VkPhysicalDeviceShaderClockFeaturesKHR = ^VkPhysicalDeviceShaderClockFeaturesKHR;
+     VkPhysicalDeviceShaderClockFeaturesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        shaderSubgroupClock :VkBool32;
@@ -7283,7 +7520,8 @@ type VkPhysicalDeviceVulkanMemoryModelFeaturesKHR = VkPhysicalDeviceVulkanMemory
 const VK_KHR_shader_terminate_invocation = 1;
 const VK_KHR_SHADER_TERMINATE_INVOCATION_SPEC_VERSION = 1;
 const VK_KHR_SHADER_TERMINATE_INVOCATION_EXTENSION_NAME = 'VK_KHR_shader_terminate_invocation';
-type VkPhysicalDeviceShaderTerminateInvocationFeaturesKHR = record
+type P_VkPhysicalDeviceShaderTerminateInvocationFeaturesKHR = ^VkPhysicalDeviceShaderTerminateInvocationFeaturesKHR;
+     VkPhysicalDeviceShaderTerminateInvocationFeaturesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        shaderTerminateInvocation :VkBool32;
@@ -7303,21 +7541,24 @@ type VkFragmentShadingRateCombinerOpKHR = (
        VK_FRAGMENT_SHADING_RATE_COMBINER_OP_MUL_KHR = 4,
        VK_FRAGMENT_SHADING_RATE_COMBINER_OP_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkFragmentShadingRateAttachmentInfoKHR = record
+type P_VkFragmentShadingRateAttachmentInfoKHR = ^VkFragmentShadingRateAttachmentInfoKHR;
+     VkFragmentShadingRateAttachmentInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        pFragmentShadingRateAttachment :P_VkAttachmentReference2;
        shadingRateAttachmentTexelSize :VkExtent2D;
      end;
 
-type VkPipelineFragmentShadingRateStateCreateInfoKHR = record
+type P_VkPipelineFragmentShadingRateStateCreateInfoKHR = ^VkPipelineFragmentShadingRateStateCreateInfoKHR;
+     VkPipelineFragmentShadingRateStateCreateInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        fragmentSize :VkExtent2D;
        combinerOps :array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR;
      end;
 
-type VkPhysicalDeviceFragmentShadingRateFeaturesKHR = record
+type P_VkPhysicalDeviceFragmentShadingRateFeaturesKHR = ^VkPhysicalDeviceFragmentShadingRateFeaturesKHR;
+     VkPhysicalDeviceFragmentShadingRateFeaturesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        pipelineFragmentShadingRate :VkBool32;
@@ -7325,7 +7566,8 @@ type VkPhysicalDeviceFragmentShadingRateFeaturesKHR = record
        attachmentFragmentShadingRate :VkBool32;
      end;
 
-type VkPhysicalDeviceFragmentShadingRatePropertiesKHR = record
+type P_VkPhysicalDeviceFragmentShadingRatePropertiesKHR = ^VkPhysicalDeviceFragmentShadingRatePropertiesKHR;
+     VkPhysicalDeviceFragmentShadingRatePropertiesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        minFragmentShadingRateAttachmentTexelSize :VkExtent2D;
@@ -7347,7 +7589,8 @@ type VkPhysicalDeviceFragmentShadingRatePropertiesKHR = record
        fragmentShadingRateStrictMultiplyCombiner :VkBool32;
      end;
 
-type VkPhysicalDeviceFragmentShadingRateKHR = record
+type P_VkPhysicalDeviceFragmentShadingRateKHR = ^VkPhysicalDeviceFragmentShadingRateKHR;
+     VkPhysicalDeviceFragmentShadingRateKHR = record
        sType :VkStructureType;
        pNext :P_void;
        sampleCounts :VkSampleCountFlags;
@@ -7378,7 +7621,8 @@ const VK_KHR_SPIRV_1_4_EXTENSION_NAME = 'VK_KHR_spirv_1_4';
 const VK_KHR_surface_protected_capabilities = 1;
 const VK_KHR_SURFACE_PROTECTED_CAPABILITIES_SPEC_VERSION = 1;
 const VK_KHR_SURFACE_PROTECTED_CAPABILITIES_EXTENSION_NAME = 'VK_KHR_surface_protected_capabilities';
-type VkSurfaceProtectedCapabilitiesKHR = record
+type P_VkSurfaceProtectedCapabilitiesKHR = ^VkSurfaceProtectedCapabilitiesKHR;
+     VkSurfaceProtectedCapabilitiesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        supportsProtected :VkBool32;
@@ -7482,19 +7726,22 @@ type VkPipelineExecutableStatisticFormatKHR = (
        VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_FLOAT64_KHR = 3,
        VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkPhysicalDevicePipelineExecutablePropertiesFeaturesKHR = record
+type P_VkPhysicalDevicePipelineExecutablePropertiesFeaturesKHR = ^VkPhysicalDevicePipelineExecutablePropertiesFeaturesKHR;
+     VkPhysicalDevicePipelineExecutablePropertiesFeaturesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        pipelineExecutableInfo :VkBool32;
      end;
 
-type VkPipelineInfoKHR = record
+type P_VkPipelineInfoKHR = ^VkPipelineInfoKHR;
+     VkPipelineInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        pipeline :VkPipeline;
      end;
 
-type VkPipelineExecutablePropertiesKHR = record
+type P_VkPipelineExecutablePropertiesKHR = ^VkPipelineExecutablePropertiesKHR;
+     VkPipelineExecutablePropertiesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        stages :VkShaderStageFlags;
@@ -7503,14 +7750,16 @@ type VkPipelineExecutablePropertiesKHR = record
        subgroupSize :T_uint32_t;
      end;
 
-type VkPipelineExecutableInfoKHR = record
+type P_VkPipelineExecutableInfoKHR = ^VkPipelineExecutableInfoKHR;
+     VkPipelineExecutableInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        pipeline :VkPipeline;
        executableIndex :T_uint32_t;
      end;
 
-type VkPipelineExecutableStatisticValueKHR = record
+type P_VkPipelineExecutableStatisticValueKHR = ^VkPipelineExecutableStatisticValueKHR;
+     VkPipelineExecutableStatisticValueKHR = record
      case Byte of
        0:( b32 :VkBool32 );
        1:( i64 :T_int64_t  );
@@ -7518,7 +7767,8 @@ type VkPipelineExecutableStatisticValueKHR = record
        3:( f64 :double   );
      end;
 
-type VkPipelineExecutableStatisticKHR = record
+type P_VkPipelineExecutableStatisticKHR = ^VkPipelineExecutableStatisticKHR;
+     VkPipelineExecutableStatisticKHR = record
        sType :VkStructureType;
        pNext :P_void;
        name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
@@ -7527,7 +7777,8 @@ type VkPipelineExecutableStatisticKHR = record
        value :VkPipelineExecutableStatisticValueKHR;
      end;
 
-type VkPipelineExecutableInternalRepresentationKHR = record
+type P_VkPipelineExecutableInternalRepresentationKHR = ^VkPipelineExecutableInternalRepresentationKHR;
+     VkPipelineExecutableInternalRepresentationKHR = record
        sType :VkStructureType;
        pNext :P_void;
        name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
@@ -7565,7 +7816,8 @@ function vkGetPipelineExecutableInternalRepresentationsKHR(
 const VK_KHR_pipeline_library = 1;
 const VK_KHR_PIPELINE_LIBRARY_SPEC_VERSION = 1;
 const VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME = 'VK_KHR_pipeline_library';
-type VkPipelineLibraryCreateInfoKHR = record
+type P_VkPipelineLibraryCreateInfoKHR = ^VkPipelineLibraryCreateInfoKHR;
+     VkPipelineLibraryCreateInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        libraryCount :T_uint32_t;
@@ -7670,7 +7922,8 @@ type VkSubmitFlagBitsKHR = (
        VK_SUBMIT_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
 type VkSubmitFlagsKHR = VkFlags;
-type VkMemoryBarrier2KHR = record
+type P_VkMemoryBarrier2KHR = ^VkMemoryBarrier2KHR;
+     VkMemoryBarrier2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcStageMask :VkPipelineStageFlags2KHR;
@@ -7679,7 +7932,8 @@ type VkMemoryBarrier2KHR = record
        dstAccessMask :VkAccessFlags2KHR;
      end;
 
-type VkBufferMemoryBarrier2KHR = record
+type P_VkBufferMemoryBarrier2KHR = ^VkBufferMemoryBarrier2KHR;
+     VkBufferMemoryBarrier2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcStageMask :VkPipelineStageFlags2KHR;
@@ -7693,7 +7947,8 @@ type VkBufferMemoryBarrier2KHR = record
        size :VkDeviceSize;
      end;
 
-type VkImageMemoryBarrier2KHR = record
+type P_VkImageMemoryBarrier2KHR = ^VkImageMemoryBarrier2KHR;
+     VkImageMemoryBarrier2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcStageMask :VkPipelineStageFlags2KHR;
@@ -7708,7 +7963,8 @@ type VkImageMemoryBarrier2KHR = record
        subresourceRange :VkImageSubresourceRange;
      end;
 
-type VkDependencyInfoKHR = record
+type P_VkDependencyInfoKHR = ^VkDependencyInfoKHR;
+     VkDependencyInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        dependencyFlags :VkDependencyFlags;
@@ -7720,7 +7976,8 @@ type VkDependencyInfoKHR = record
        pImageMemoryBarriers :P_VkImageMemoryBarrier2KHR;
      end;
 
-type VkSemaphoreSubmitInfoKHR = record
+type P_VkSemaphoreSubmitInfoKHR = ^VkSemaphoreSubmitInfoKHR;
+     VkSemaphoreSubmitInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        semaphore :VkSemaphore;
@@ -7729,14 +7986,16 @@ type VkSemaphoreSubmitInfoKHR = record
        deviceIndex :T_uint32_t;
      end;
 
-type VkCommandBufferSubmitInfoKHR = record
+type P_VkCommandBufferSubmitInfoKHR = ^VkCommandBufferSubmitInfoKHR;
+     VkCommandBufferSubmitInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        commandBuffer :VkCommandBuffer;
        deviceMask :T_uint32_t;
      end;
 
-type VkSubmitInfo2KHR = record
+type P_VkSubmitInfo2KHR = ^VkSubmitInfo2KHR;
+     VkSubmitInfo2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkSubmitFlagsKHR;
@@ -7748,19 +8007,22 @@ type VkSubmitInfo2KHR = record
        pSignalSemaphoreInfos :P_VkSemaphoreSubmitInfoKHR;
      end;
 
-type VkPhysicalDeviceSynchronization2FeaturesKHR = record
+type P_VkPhysicalDeviceSynchronization2FeaturesKHR = ^VkPhysicalDeviceSynchronization2FeaturesKHR;
+     VkPhysicalDeviceSynchronization2FeaturesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        synchronization2 :VkBool32;
      end;
 
-type VkQueueFamilyCheckpointProperties2NV = record
+type P_VkQueueFamilyCheckpointProperties2NV = ^VkQueueFamilyCheckpointProperties2NV;
+     VkQueueFamilyCheckpointProperties2NV = record
        sType :VkStructureType;
        pNext :P_void;
        checkpointExecutionStageMask :VkPipelineStageFlags2KHR;
      end;
 
-type VkCheckpointData2NV = record
+type P_VkCheckpointData2NV = ^VkCheckpointData2NV;
+     VkCheckpointData2NV = record
        sType :VkStructureType;
        pNext :P_void;
        stage :VkPipelineStageFlags2KHR;
@@ -7826,7 +8088,8 @@ procedure vkGetQueueCheckpointData2NV(
 const VK_KHR_zero_initialize_workgroup_memory = 1;
 const VK_KHR_ZERO_INITIALIZE_WORKGROUP_MEMORY_SPEC_VERSION = 1;
 const VK_KHR_ZERO_INITIALIZE_WORKGROUP_MEMORY_EXTENSION_NAME = 'VK_KHR_zero_initialize_workgroup_memory';
-type VkPhysicalDeviceZeroInitializeWorkgroupMemoryFeaturesKHR = record
+type P_VkPhysicalDeviceZeroInitializeWorkgroupMemoryFeaturesKHR = ^VkPhysicalDeviceZeroInitializeWorkgroupMemoryFeaturesKHR;
+     VkPhysicalDeviceZeroInitializeWorkgroupMemoryFeaturesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        shaderZeroInitializeWorkgroupMemory :VkBool32;
@@ -7837,7 +8100,8 @@ type VkPhysicalDeviceZeroInitializeWorkgroupMemoryFeaturesKHR = record
 const VK_KHR_workgroup_memory_explicit_layout = 1;
 const VK_KHR_WORKGROUP_MEMORY_EXPLICIT_LAYOUT_SPEC_VERSION = 1;
 const VK_KHR_WORKGROUP_MEMORY_EXPLICIT_LAYOUT_EXTENSION_NAME = 'VK_KHR_workgroup_memory_explicit_layout';
-type VkPhysicalDeviceWorkgroupMemoryExplicitLayoutFeaturesKHR = record
+type P_VkPhysicalDeviceWorkgroupMemoryExplicitLayoutFeaturesKHR = ^VkPhysicalDeviceWorkgroupMemoryExplicitLayoutFeaturesKHR;
+     VkPhysicalDeviceWorkgroupMemoryExplicitLayoutFeaturesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        workgroupMemoryExplicitLayout :VkBool32;
@@ -7851,7 +8115,8 @@ type VkPhysicalDeviceWorkgroupMemoryExplicitLayoutFeaturesKHR = record
 const VK_KHR_copy_commands2 = 1;
 const VK_KHR_COPY_COMMANDS_2_SPEC_VERSION = 1;
 const VK_KHR_COPY_COMMANDS_2_EXTENSION_NAME = 'VK_KHR_copy_commands2';
-type VkBufferCopy2KHR = record
+type P_VkBufferCopy2KHR = ^VkBufferCopy2KHR;
+     VkBufferCopy2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcOffset :VkDeviceSize;
@@ -7859,7 +8124,8 @@ type VkBufferCopy2KHR = record
        size :VkDeviceSize;
      end;
 
-type VkCopyBufferInfo2KHR = record
+type P_VkCopyBufferInfo2KHR = ^VkCopyBufferInfo2KHR;
+     VkCopyBufferInfo2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcBuffer :VkBuffer;
@@ -7868,7 +8134,8 @@ type VkCopyBufferInfo2KHR = record
        pRegions :P_VkBufferCopy2KHR;
      end;
 
-type VkImageCopy2KHR = record
+type P_VkImageCopy2KHR = ^VkImageCopy2KHR;
+     VkImageCopy2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcSubresource :VkImageSubresourceLayers;
@@ -7878,7 +8145,8 @@ type VkImageCopy2KHR = record
        extent :VkExtent3D;
      end;
 
-type VkCopyImageInfo2KHR = record
+type P_VkCopyImageInfo2KHR = ^VkCopyImageInfo2KHR;
+     VkCopyImageInfo2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcImage :VkImage;
@@ -7889,7 +8157,8 @@ type VkCopyImageInfo2KHR = record
        pRegions :P_VkImageCopy2KHR;
      end;
 
-type VkBufferImageCopy2KHR = record
+type P_VkBufferImageCopy2KHR = ^VkBufferImageCopy2KHR;
+     VkBufferImageCopy2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        bufferOffset :VkDeviceSize;
@@ -7900,7 +8169,8 @@ type VkBufferImageCopy2KHR = record
        imageExtent :VkExtent3D;
      end;
 
-type VkCopyBufferToImageInfo2KHR = record
+type P_VkCopyBufferToImageInfo2KHR = ^VkCopyBufferToImageInfo2KHR;
+     VkCopyBufferToImageInfo2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcBuffer :VkBuffer;
@@ -7910,7 +8180,8 @@ type VkCopyBufferToImageInfo2KHR = record
        pRegions :P_VkBufferImageCopy2KHR;
      end;
 
-type VkCopyImageToBufferInfo2KHR = record
+type P_VkCopyImageToBufferInfo2KHR = ^VkCopyImageToBufferInfo2KHR;
+     VkCopyImageToBufferInfo2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcImage :VkImage;
@@ -7920,7 +8191,8 @@ type VkCopyImageToBufferInfo2KHR = record
        pRegions :P_VkBufferImageCopy2KHR;
      end;
 
-type VkImageBlit2KHR = record
+type P_VkImageBlit2KHR = ^VkImageBlit2KHR;
+     VkImageBlit2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcSubresource :VkImageSubresourceLayers;
@@ -7929,7 +8201,8 @@ type VkImageBlit2KHR = record
        dstOffsets :array [ 0..2-1 ] of VkOffset3D;
      end;
 
-type VkBlitImageInfo2KHR = record
+type P_VkBlitImageInfo2KHR = ^VkBlitImageInfo2KHR;
+     VkBlitImageInfo2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcImage :VkImage;
@@ -7941,7 +8214,8 @@ type VkBlitImageInfo2KHR = record
        filter :VkFilter;
      end;
 
-type VkImageResolve2KHR = record
+type P_VkImageResolve2KHR = ^VkImageResolve2KHR;
+     VkImageResolve2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcSubresource :VkImageSubresourceLayers;
@@ -7951,7 +8225,8 @@ type VkImageResolve2KHR = record
        extent :VkExtent3D;
      end;
 
-type VkResolveImageInfo2KHR = record
+type P_VkResolveImageInfo2KHR = ^VkResolveImageInfo2KHR;
+     VkResolveImageInfo2KHR = record
        sType :VkStructureType;
        pNext :P_void;
        srcImage :VkImage;
@@ -8064,7 +8339,8 @@ type PFN_vkDebugReportCallbackEXT = function(
     pMessage_:P_char;
     pUserData_:P_void ) :VkBool32;
 
-type VkDebugReportCallbackCreateInfoEXT = record
+type P_VkDebugReportCallbackCreateInfoEXT = ^VkDebugReportCallbackCreateInfoEXT;
+     VkDebugReportCallbackCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDebugReportFlagsEXT;
@@ -8124,7 +8400,8 @@ type VkRasterizationOrderAMD = (
        VK_RASTERIZATION_ORDER_RELAXED_AMD = 1,
        VK_RASTERIZATION_ORDER_MAX_ENUM_AMD = $7FFFFFFF
      );
-type VkPipelineRasterizationStateRasterizationOrderAMD = record
+type P_VkPipelineRasterizationStateRasterizationOrderAMD = ^VkPipelineRasterizationStateRasterizationOrderAMD;
+     VkPipelineRasterizationStateRasterizationOrderAMD = record
        sType :VkStructureType;
        pNext :P_void;
        rasterizationOrder :VkRasterizationOrderAMD;
@@ -8145,7 +8422,8 @@ const VK_AMD_SHADER_EXPLICIT_VERTEX_PARAMETER_EXTENSION_NAME = 'VK_AMD_shader_ex
 const VK_EXT_debug_marker = 1;
 const VK_EXT_DEBUG_MARKER_SPEC_VERSION  = 4;
 const VK_EXT_DEBUG_MARKER_EXTENSION_NAME = 'VK_EXT_debug_marker';
-type VkDebugMarkerObjectNameInfoEXT = record
+type P_VkDebugMarkerObjectNameInfoEXT = ^VkDebugMarkerObjectNameInfoEXT;
+     VkDebugMarkerObjectNameInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        objectType :VkDebugReportObjectTypeEXT;
@@ -8153,7 +8431,8 @@ type VkDebugMarkerObjectNameInfoEXT = record
        pObjectName :P_char;
      end;
 
-type VkDebugMarkerObjectTagInfoEXT = record
+type P_VkDebugMarkerObjectTagInfoEXT = ^VkDebugMarkerObjectTagInfoEXT;
+     VkDebugMarkerObjectTagInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        objectType :VkDebugReportObjectTypeEXT;
@@ -8163,7 +8442,8 @@ type VkDebugMarkerObjectTagInfoEXT = record
        pTag :P_void;
      end;
 
-type VkDebugMarkerMarkerInfoEXT = record
+type P_VkDebugMarkerMarkerInfoEXT = ^VkDebugMarkerMarkerInfoEXT;
+     VkDebugMarkerMarkerInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        pMarkerName :P_char;
@@ -8206,19 +8486,22 @@ const VK_AMD_GCN_SHADER_EXTENSION_NAME = 'VK_AMD_gcn_shader';
 const VK_NV_dedicated_allocation = 1;
 const VK_NV_DEDICATED_ALLOCATION_SPEC_VERSION = 1;
 const VK_NV_DEDICATED_ALLOCATION_EXTENSION_NAME = 'VK_NV_dedicated_allocation';
-type VkDedicatedAllocationImageCreateInfoNV = record
+type P_VkDedicatedAllocationImageCreateInfoNV = ^VkDedicatedAllocationImageCreateInfoNV;
+     VkDedicatedAllocationImageCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        dedicatedAllocation :VkBool32;
      end;
 
-type VkDedicatedAllocationBufferCreateInfoNV = record
+type P_VkDedicatedAllocationBufferCreateInfoNV = ^VkDedicatedAllocationBufferCreateInfoNV;
+     VkDedicatedAllocationBufferCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        dedicatedAllocation :VkBool32;
      end;
 
-type VkDedicatedAllocationMemoryAllocateInfoNV = record
+type P_VkDedicatedAllocationMemoryAllocateInfoNV = ^VkDedicatedAllocationMemoryAllocateInfoNV;
+     VkDedicatedAllocationMemoryAllocateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        image :VkImage;
@@ -8231,14 +8514,16 @@ const VK_EXT_transform_feedback = 1;
 const VK_EXT_TRANSFORM_FEEDBACK_SPEC_VERSION = 1;
 const VK_EXT_TRANSFORM_FEEDBACK_EXTENSION_NAME = 'VK_EXT_transform_feedback';
 type VkPipelineRasterizationStateStreamCreateFlagsEXT = VkFlags;
-type VkPhysicalDeviceTransformFeedbackFeaturesEXT = record
+type P_VkPhysicalDeviceTransformFeedbackFeaturesEXT = ^VkPhysicalDeviceTransformFeedbackFeaturesEXT;
+     VkPhysicalDeviceTransformFeedbackFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        transformFeedback :VkBool32;
        geometryStreams :VkBool32;
      end;
 
-type VkPhysicalDeviceTransformFeedbackPropertiesEXT = record
+type P_VkPhysicalDeviceTransformFeedbackPropertiesEXT = ^VkPhysicalDeviceTransformFeedbackPropertiesEXT;
+     VkPhysicalDeviceTransformFeedbackPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        maxTransformFeedbackStreams :T_uint32_t;
@@ -8253,7 +8538,8 @@ type VkPhysicalDeviceTransformFeedbackPropertiesEXT = record
        transformFeedbackDraw :VkBool32;
      end;
 
-type VkPipelineRasterizationStateStreamCreateInfoEXT = record
+type P_VkPipelineRasterizationStateStreamCreateInfoEXT = ^VkPipelineRasterizationStateStreamCreateInfoEXT;
+     VkPipelineRasterizationStateStreamCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineRasterizationStateStreamCreateFlagsEXT;
@@ -8317,7 +8603,8 @@ procedure vkCmdDrawIndirectByteCountEXT(
 const VK_NVX_image_view_handle = 1;
 const VK_NVX_IMAGE_VIEW_HANDLE_SPEC_VERSION = 2;
 const VK_NVX_IMAGE_VIEW_HANDLE_EXTENSION_NAME = 'VK_NVX_image_view_handle';
-type VkImageViewHandleInfoNVX = record
+type P_VkImageViewHandleInfoNVX = ^VkImageViewHandleInfoNVX;
+     VkImageViewHandleInfoNVX = record
        sType :VkStructureType;
        pNext :P_void;
        imageView :VkImageView;
@@ -8325,7 +8612,8 @@ type VkImageViewHandleInfoNVX = record
        sampler :VkSampler;
      end;
 
-type VkImageViewAddressPropertiesNVX = record
+type P_VkImageViewAddressPropertiesNVX = ^VkImageViewAddressPropertiesNVX;
+     VkImageViewAddressPropertiesNVX = record
        sType :VkStructureType;
        pNext :P_void;
        deviceAddress :VkDeviceAddress;
@@ -8392,7 +8680,8 @@ const VK_AMD_SHADER_BALLOT_EXTENSION_NAME = 'VK_AMD_shader_ballot';
 const VK_AMD_texture_gather_bias_lod = 1;
 const VK_AMD_TEXTURE_GATHER_BIAS_LOD_SPEC_VERSION = 1;
 const VK_AMD_TEXTURE_GATHER_BIAS_LOD_EXTENSION_NAME = 'VK_AMD_texture_gather_bias_lod';
-type VkTextureLODGatherFormatPropertiesAMD = record
+type P_VkTextureLODGatherFormatPropertiesAMD = ^VkTextureLODGatherFormatPropertiesAMD;
+     VkTextureLODGatherFormatPropertiesAMD = record
        sType :VkStructureType;
        pNext :P_void;
        supportsTextureGatherLODBiasAMD :VkBool32;
@@ -8410,7 +8699,8 @@ type VkShaderInfoTypeAMD = (
        VK_SHADER_INFO_TYPE_DISASSEMBLY_AMD = 2,
        VK_SHADER_INFO_TYPE_MAX_ENUM_AMD = $7FFFFFFF
      );
-type VkShaderResourceUsageAMD = record
+type P_VkShaderResourceUsageAMD = ^VkShaderResourceUsageAMD;
+     VkShaderResourceUsageAMD = record
        numUsedVgprs :T_uint32_t;
        numUsedSgprs :T_uint32_t;
        ldsSizePerLocalWorkGroup :T_uint32_t;
@@ -8418,7 +8708,8 @@ type VkShaderResourceUsageAMD = record
        scratchMemUsageInBytes :T_size_t;
      end;
 
-type VkShaderStatisticsInfoAMD = record
+type P_VkShaderStatisticsInfoAMD = ^VkShaderStatisticsInfoAMD;
+     VkShaderStatisticsInfoAMD = record
        shaderStageMask :VkShaderStageFlags;
        resourceUsage :VkShaderResourceUsageAMD;
        numPhysicalVgprs :T_uint32_t;
@@ -8449,7 +8740,8 @@ const VK_AMD_SHADER_IMAGE_LOAD_STORE_LOD_EXTENSION_NAME = 'VK_AMD_shader_image_l
 const VK_NV_corner_sampled_image = 1;
 const VK_NV_CORNER_SAMPLED_IMAGE_SPEC_VERSION = 2;
 const VK_NV_CORNER_SAMPLED_IMAGE_EXTENSION_NAME = 'VK_NV_corner_sampled_image';
-type VkPhysicalDeviceCornerSampledImageFeaturesNV = record
+type P_VkPhysicalDeviceCornerSampledImageFeaturesNV = ^VkPhysicalDeviceCornerSampledImageFeaturesNV;
+     VkPhysicalDeviceCornerSampledImageFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        cornerSampledImage :VkBool32;
@@ -8482,7 +8774,8 @@ type VkExternalMemoryFeatureFlagBitsNV = (
        VK_EXTERNAL_MEMORY_FEATURE_FLAG_BITS_MAX_ENUM_NV = $7FFFFFFF
      );
 type VkExternalMemoryFeatureFlagsNV = VkFlags;
-type VkExternalImageFormatPropertiesNV = record
+type P_VkExternalImageFormatPropertiesNV = ^VkExternalImageFormatPropertiesNV;
+     VkExternalImageFormatPropertiesNV = record
        imageFormatProperties :VkImageFormatProperties;
        externalMemoryFeatures :VkExternalMemoryFeatureFlagsNV;
        exportFromImportedHandleTypes :VkExternalMemoryHandleTypeFlagsNV;
@@ -8507,13 +8800,15 @@ function vkGetPhysicalDeviceExternalImageFormatPropertiesNV(
 const VK_NV_external_memory = 1;
 const VK_NV_EXTERNAL_MEMORY_SPEC_VERSION = 1;
 const VK_NV_EXTERNAL_MEMORY_EXTENSION_NAME = 'VK_NV_external_memory';
-type VkExternalMemoryImageCreateInfoNV = record
+type P_VkExternalMemoryImageCreateInfoNV = ^VkExternalMemoryImageCreateInfoNV;
+     VkExternalMemoryImageCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        handleTypes :VkExternalMemoryHandleTypeFlagsNV;
      end;
 
-type VkExportMemoryAllocateInfoNV = record
+type P_VkExportMemoryAllocateInfoNV = ^VkExportMemoryAllocateInfoNV;
+     VkExportMemoryAllocateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        handleTypes :VkExternalMemoryHandleTypeFlagsNV;
@@ -8530,7 +8825,8 @@ type VkValidationCheckEXT = (
        VK_VALIDATION_CHECK_SHADERS_EXT = 1,
        VK_VALIDATION_CHECK_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkValidationFlagsEXT = record
+type P_VkValidationFlagsEXT = ^VkValidationFlagsEXT;
+     VkValidationFlagsEXT = record
        sType :VkStructureType;
        pNext :P_void;
        disabledValidationCheckCount :T_uint32_t;
@@ -8552,7 +8848,8 @@ const VK_EXT_SHADER_SUBGROUP_VOTE_EXTENSION_NAME = 'VK_EXT_shader_subgroup_vote'
 const VK_EXT_texture_compression_astc_hdr = 1;
 const VK_EXT_TEXTURE_COMPRESSION_ASTC_HDR_SPEC_VERSION = 1;
 const VK_EXT_TEXTURE_COMPRESSION_ASTC_HDR_EXTENSION_NAME = 'VK_EXT_texture_compression_astc_hdr';
-type VkPhysicalDeviceTextureCompressionASTCHDRFeaturesEXT = record
+type P_VkPhysicalDeviceTextureCompressionASTCHDRFeaturesEXT = ^VkPhysicalDeviceTextureCompressionASTCHDRFeaturesEXT;
+     VkPhysicalDeviceTextureCompressionASTCHDRFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        textureCompressionASTC_HDR :VkBool32;
@@ -8563,13 +8860,15 @@ type VkPhysicalDeviceTextureCompressionASTCHDRFeaturesEXT = record
 const VK_EXT_astc_decode_mode = 1;
 const VK_EXT_ASTC_DECODE_MODE_SPEC_VERSION = 1;
 const VK_EXT_ASTC_DECODE_MODE_EXTENSION_NAME = 'VK_EXT_astc_decode_mode';
-type VkImageViewASTCDecodeModeEXT = record
+type P_VkImageViewASTCDecodeModeEXT = ^VkImageViewASTCDecodeModeEXT;
+     VkImageViewASTCDecodeModeEXT = record
        sType :VkStructureType;
        pNext :P_void;
        decodeMode :VkFormat;
      end;
 
-type VkPhysicalDeviceASTCDecodeFeaturesEXT = record
+type P_VkPhysicalDeviceASTCDecodeFeaturesEXT = ^VkPhysicalDeviceASTCDecodeFeaturesEXT;
+     VkPhysicalDeviceASTCDecodeFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        decodeModeSharedExponent :VkBool32;
@@ -8586,7 +8885,8 @@ type VkConditionalRenderingFlagBitsEXT = (
        VK_CONDITIONAL_RENDERING_FLAG_BITS_MAX_ENUM_EXT = $7FFFFFFF
      );
 type VkConditionalRenderingFlagsEXT = VkFlags;
-type VkConditionalRenderingBeginInfoEXT = record
+type P_VkConditionalRenderingBeginInfoEXT = ^VkConditionalRenderingBeginInfoEXT;
+     VkConditionalRenderingBeginInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        buffer :VkBuffer;
@@ -8594,14 +8894,16 @@ type VkConditionalRenderingBeginInfoEXT = record
        flags :VkConditionalRenderingFlagsEXT;
      end;
 
-type VkPhysicalDeviceConditionalRenderingFeaturesEXT = record
+type P_VkPhysicalDeviceConditionalRenderingFeaturesEXT = ^VkPhysicalDeviceConditionalRenderingFeaturesEXT;
+     VkPhysicalDeviceConditionalRenderingFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        conditionalRendering :VkBool32;
        inheritedConditionalRendering :VkBool32;
      end;
 
-type VkCommandBufferInheritanceConditionalRenderingInfoEXT = record
+type P_VkCommandBufferInheritanceConditionalRenderingInfoEXT = ^VkCommandBufferInheritanceConditionalRenderingInfoEXT;
+     VkCommandBufferInheritanceConditionalRenderingInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        conditionalRenderingEnable :VkBool32;
@@ -8623,12 +8925,14 @@ procedure vkCmdEndConditionalRenderingEXT(
 const VK_NV_clip_space_w_scaling = 1;
 const VK_NV_CLIP_SPACE_W_SCALING_SPEC_VERSION = 1;
 const VK_NV_CLIP_SPACE_W_SCALING_EXTENSION_NAME = 'VK_NV_clip_space_w_scaling';
-type VkViewportWScalingNV = record
+type P_VkViewportWScalingNV = ^VkViewportWScalingNV;
+     VkViewportWScalingNV = record
        xcoeff :T_float;
        ycoeff :T_float;
      end;
 
-type VkPipelineViewportWScalingStateCreateInfoNV = record
+type P_VkPipelineViewportWScalingStateCreateInfoNV = ^VkPipelineViewportWScalingStateCreateInfoNV;
+     VkPipelineViewportWScalingStateCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        viewportWScalingEnable :VkBool32;
@@ -8669,7 +8973,8 @@ type VkSurfaceCounterFlagBitsEXT = (
        VK_SURFACE_COUNTER_FLAG_BITS_MAX_ENUM_EXT = $7FFFFFFF
      );
 type VkSurfaceCounterFlagsEXT = VkFlags;
-type VkSurfaceCapabilities2EXT = record
+type P_VkSurfaceCapabilities2EXT = ^VkSurfaceCapabilities2EXT;
+     VkSurfaceCapabilities2EXT = record
        sType :VkStructureType;
        pNext :P_void;
        minImageCount :T_uint32_t;
@@ -8715,25 +9020,29 @@ type VkDisplayEventTypeEXT = (
        VK_DISPLAY_EVENT_TYPE_FIRST_PIXEL_OUT_EXT = 0,
        VK_DISPLAY_EVENT_TYPE_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkDisplayPowerInfoEXT = record
+type P_VkDisplayPowerInfoEXT = ^VkDisplayPowerInfoEXT;
+     VkDisplayPowerInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        powerState :VkDisplayPowerStateEXT;
      end;
 
-type VkDeviceEventInfoEXT = record
+type P_VkDeviceEventInfoEXT = ^VkDeviceEventInfoEXT;
+     VkDeviceEventInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        deviceEvent :VkDeviceEventTypeEXT;
      end;
 
-type VkDisplayEventInfoEXT = record
+type P_VkDisplayEventInfoEXT = ^VkDisplayEventInfoEXT;
+     VkDisplayEventInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        displayEvent :VkDisplayEventTypeEXT;
      end;
 
-type VkSwapchainCounterCreateInfoEXT = record
+type P_VkSwapchainCounterCreateInfoEXT = ^VkSwapchainCounterCreateInfoEXT;
+     VkSwapchainCounterCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        surfaceCounters :VkSurfaceCounterFlagsEXT;
@@ -8774,11 +9083,13 @@ function vkGetSwapchainCounterEXT(
 const VK_GOOGLE_display_timing = 1;
 const VK_GOOGLE_DISPLAY_TIMING_SPEC_VERSION = 1;
 const VK_GOOGLE_DISPLAY_TIMING_EXTENSION_NAME = 'VK_GOOGLE_display_timing';
-type VkRefreshCycleDurationGOOGLE = record
+type P_VkRefreshCycleDurationGOOGLE = ^VkRefreshCycleDurationGOOGLE;
+     VkRefreshCycleDurationGOOGLE = record
        refreshDuration :T_uint64_t;
      end;
 
-type VkPastPresentationTimingGOOGLE = record
+type P_VkPastPresentationTimingGOOGLE = ^VkPastPresentationTimingGOOGLE;
+     VkPastPresentationTimingGOOGLE = record
        presentID :T_uint32_t;
        desiredPresentTime :T_uint64_t;
        actualPresentTime :T_uint64_t;
@@ -8786,12 +9097,14 @@ type VkPastPresentationTimingGOOGLE = record
        presentMargin :T_uint64_t;
      end;
 
-type VkPresentTimeGOOGLE = record
+type P_VkPresentTimeGOOGLE = ^VkPresentTimeGOOGLE;
+     VkPresentTimeGOOGLE = record
        presentID :T_uint32_t;
        desiredPresentTime :T_uint64_t;
      end;
 
-type VkPresentTimesInfoGOOGLE = record
+type P_VkPresentTimesInfoGOOGLE = ^VkPresentTimesInfoGOOGLE;
+     VkPresentTimesInfoGOOGLE = record
        sType :VkStructureType;
        pNext :P_void;
        swapchainCount :T_uint32_t;
@@ -8833,7 +9146,8 @@ const VK_NV_VIEWPORT_ARRAY2_EXTENSION_NAME = 'VK_NV_viewport_array2';
 const VK_NVX_multiview_per_view_attributes = 1;
 const VK_NVX_MULTIVIEW_PER_VIEW_ATTRIBUTES_SPEC_VERSION = 1;
 const VK_NVX_MULTIVIEW_PER_VIEW_ATTRIBUTES_EXTENSION_NAME = 'VK_NVX_multiview_per_view_attributes';
-type VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX = record
+type P_VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX = ^VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX;
+     VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX = record
        sType :VkStructureType;
        pNext :P_void;
        perViewPositionAllComponents :VkBool32;
@@ -8857,14 +9171,16 @@ type VkViewportCoordinateSwizzleNV = (
        VK_VIEWPORT_COORDINATE_SWIZZLE_MAX_ENUM_NV = $7FFFFFFF
      );
 type VkPipelineViewportSwizzleStateCreateFlagsNV = VkFlags;
-type VkViewportSwizzleNV = record
+type P_VkViewportSwizzleNV = ^VkViewportSwizzleNV;
+     VkViewportSwizzleNV = record
        x :VkViewportCoordinateSwizzleNV;
        y :VkViewportCoordinateSwizzleNV;
        z :VkViewportCoordinateSwizzleNV;
        w :VkViewportCoordinateSwizzleNV;
      end;
 
-type VkPipelineViewportSwizzleStateCreateInfoNV = record
+type P_VkPipelineViewportSwizzleStateCreateInfoNV = ^VkPipelineViewportSwizzleStateCreateInfoNV;
+     VkPipelineViewportSwizzleStateCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineViewportSwizzleStateCreateFlagsNV;
@@ -8884,13 +9200,15 @@ type VkDiscardRectangleModeEXT = (
        VK_DISCARD_RECTANGLE_MODE_MAX_ENUM_EXT = $7FFFFFFF
      );
 type VkPipelineDiscardRectangleStateCreateFlagsEXT = VkFlags;
-type VkPhysicalDeviceDiscardRectanglePropertiesEXT = record
+type P_VkPhysicalDeviceDiscardRectanglePropertiesEXT = ^VkPhysicalDeviceDiscardRectanglePropertiesEXT;
+     VkPhysicalDeviceDiscardRectanglePropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        maxDiscardRectangles :T_uint32_t;
      end;
 
-type VkPipelineDiscardRectangleStateCreateInfoEXT = record
+type P_VkPipelineDiscardRectangleStateCreateInfoEXT = ^VkPipelineDiscardRectangleStateCreateInfoEXT;
+     VkPipelineDiscardRectangleStateCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineDiscardRectangleStateCreateFlagsEXT;
@@ -8921,7 +9239,8 @@ type VkConservativeRasterizationModeEXT = (
        VK_CONSERVATIVE_RASTERIZATION_MODE_MAX_ENUM_EXT = $7FFFFFFF
      );
 type VkPipelineRasterizationConservativeStateCreateFlagsEXT = VkFlags;
-type VkPhysicalDeviceConservativeRasterizationPropertiesEXT = record
+type P_VkPhysicalDeviceConservativeRasterizationPropertiesEXT = ^VkPhysicalDeviceConservativeRasterizationPropertiesEXT;
+     VkPhysicalDeviceConservativeRasterizationPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        primitiveOverestimationSize :T_float;
@@ -8935,7 +9254,8 @@ type VkPhysicalDeviceConservativeRasterizationPropertiesEXT = record
        conservativeRasterizationPostDepthCoverage :VkBool32;
      end;
 
-type VkPipelineRasterizationConservativeStateCreateInfoEXT = record
+type P_VkPipelineRasterizationConservativeStateCreateInfoEXT = ^VkPipelineRasterizationConservativeStateCreateInfoEXT;
+     VkPipelineRasterizationConservativeStateCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineRasterizationConservativeStateCreateFlagsEXT;
@@ -8949,13 +9269,15 @@ const VK_EXT_depth_clip_enable = 1;
 const VK_EXT_DEPTH_CLIP_ENABLE_SPEC_VERSION = 1;
 const VK_EXT_DEPTH_CLIP_ENABLE_EXTENSION_NAME = 'VK_EXT_depth_clip_enable';
 type VkPipelineRasterizationDepthClipStateCreateFlagsEXT = VkFlags;
-type VkPhysicalDeviceDepthClipEnableFeaturesEXT = record
+type P_VkPhysicalDeviceDepthClipEnableFeaturesEXT = ^VkPhysicalDeviceDepthClipEnableFeaturesEXT;
+     VkPhysicalDeviceDepthClipEnableFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        depthClipEnable :VkBool32;
      end;
 
-type VkPipelineRasterizationDepthClipStateCreateInfoEXT = record
+type P_VkPipelineRasterizationDepthClipStateCreateInfoEXT = ^VkPipelineRasterizationDepthClipStateCreateInfoEXT;
+     VkPipelineRasterizationDepthClipStateCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineRasterizationDepthClipStateCreateFlagsEXT;
@@ -8972,12 +9294,14 @@ const VK_EXT_SWAPCHAIN_COLOR_SPACE_EXTENSION_NAME = 'VK_EXT_swapchain_colorspace
 const VK_EXT_hdr_metadata = 1;
 const VK_EXT_HDR_METADATA_SPEC_VERSION  = 2;
 const VK_EXT_HDR_METADATA_EXTENSION_NAME = 'VK_EXT_hdr_metadata';
-type VkXYColorEXT = record
+type P_VkXYColorEXT = ^VkXYColorEXT;
+     VkXYColorEXT = record
        x :T_float;
        y :T_float;
      end;
 
-type VkHdrMetadataEXT = record
+type P_VkHdrMetadataEXT = ^VkHdrMetadataEXT;
+     VkHdrMetadataEXT = record
        sType :VkStructureType;
        pNext :P_void;
        displayPrimaryRed :VkXYColorEXT;
@@ -9035,14 +9359,16 @@ type VkDebugUtilsMessageTypeFlagBitsEXT = (
 type VkDebugUtilsMessageTypeFlagsEXT = VkFlags;
 type VkDebugUtilsMessageSeverityFlagsEXT = VkFlags;
 type VkDebugUtilsMessengerCreateFlagsEXT = VkFlags;
-type VkDebugUtilsLabelEXT = record
+type P_VkDebugUtilsLabelEXT = ^VkDebugUtilsLabelEXT;
+     VkDebugUtilsLabelEXT = record
        sType :VkStructureType;
        pNext :P_void;
        pLabelName :P_char;
        color :array [ 0..4-1 ] of T_float;
      end;
 
-type VkDebugUtilsObjectNameInfoEXT = record
+type P_VkDebugUtilsObjectNameInfoEXT = ^VkDebugUtilsObjectNameInfoEXT;
+     VkDebugUtilsObjectNameInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        objectType :VkObjectType;
@@ -9050,7 +9376,8 @@ type VkDebugUtilsObjectNameInfoEXT = record
        pObjectName :P_char;
      end;
 
-type VkDebugUtilsMessengerCallbackDataEXT = record
+type P_VkDebugUtilsMessengerCallbackDataEXT = ^VkDebugUtilsMessengerCallbackDataEXT;
+     VkDebugUtilsMessengerCallbackDataEXT = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDebugUtilsMessengerCallbackDataFlagsEXT;
@@ -9071,7 +9398,8 @@ type PFN_vkDebugUtilsMessengerCallbackEXT = function(
     pCallbackData_:P_VkDebugUtilsMessengerCallbackDataEXT;
     pUserData_:P_void ) :VkBool32;
 
-type VkDebugUtilsMessengerCreateInfoEXT = record
+type P_VkDebugUtilsMessengerCreateInfoEXT = ^VkDebugUtilsMessengerCreateInfoEXT;
+     VkDebugUtilsMessengerCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDebugUtilsMessengerCreateFlagsEXT;
@@ -9081,7 +9409,8 @@ type VkDebugUtilsMessengerCreateInfoEXT = record
        pUserData :P_void;
      end;
 
-type VkDebugUtilsObjectTagInfoEXT = record
+type P_VkDebugUtilsObjectTagInfoEXT = ^VkDebugUtilsObjectTagInfoEXT;
+     VkDebugUtilsObjectTagInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        objectType :VkObjectType;
@@ -9182,14 +9511,16 @@ const VK_AMD_SHADER_FRAGMENT_MASK_EXTENSION_NAME = 'VK_AMD_shader_fragment_mask'
 const VK_EXT_inline_uniform_block = 1;
 const VK_EXT_INLINE_UNIFORM_BLOCK_SPEC_VERSION = 1;
 const VK_EXT_INLINE_UNIFORM_BLOCK_EXTENSION_NAME = 'VK_EXT_inline_uniform_block';
-type VkPhysicalDeviceInlineUniformBlockFeaturesEXT = record
+type P_VkPhysicalDeviceInlineUniformBlockFeaturesEXT = ^VkPhysicalDeviceInlineUniformBlockFeaturesEXT;
+     VkPhysicalDeviceInlineUniformBlockFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        inlineUniformBlock :VkBool32;
        descriptorBindingInlineUniformBlockUpdateAfterBind :VkBool32;
      end;
 
-type VkPhysicalDeviceInlineUniformBlockPropertiesEXT = record
+type P_VkPhysicalDeviceInlineUniformBlockPropertiesEXT = ^VkPhysicalDeviceInlineUniformBlockPropertiesEXT;
+     VkPhysicalDeviceInlineUniformBlockPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        maxInlineUniformBlockSize :T_uint32_t;
@@ -9199,14 +9530,16 @@ type VkPhysicalDeviceInlineUniformBlockPropertiesEXT = record
        maxDescriptorSetUpdateAfterBindInlineUniformBlocks :T_uint32_t;
      end;
 
-type VkWriteDescriptorSetInlineUniformBlockEXT = record
+type P_VkWriteDescriptorSetInlineUniformBlockEXT = ^VkWriteDescriptorSetInlineUniformBlockEXT;
+     VkWriteDescriptorSetInlineUniformBlockEXT = record
        sType :VkStructureType;
        pNext :P_void;
        dataSize :T_uint32_t;
        pData :P_void;
      end;
 
-type VkDescriptorPoolInlineUniformBlockCreateInfoEXT = record
+type P_VkDescriptorPoolInlineUniformBlockCreateInfoEXT = ^VkDescriptorPoolInlineUniformBlockCreateInfoEXT;
+     VkDescriptorPoolInlineUniformBlockCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        maxInlineUniformBlockBindings :T_uint32_t;
@@ -9222,12 +9555,14 @@ const VK_EXT_SHADER_STENCIL_EXPORT_EXTENSION_NAME = 'VK_EXT_shader_stencil_expor
 const VK_EXT_sample_locations = 1;
 const VK_EXT_SAMPLE_LOCATIONS_SPEC_VERSION = 1;
 const VK_EXT_SAMPLE_LOCATIONS_EXTENSION_NAME = 'VK_EXT_sample_locations';
-type VkSampleLocationEXT = record
+type P_VkSampleLocationEXT = ^VkSampleLocationEXT;
+     VkSampleLocationEXT = record
        x :T_float;
        y :T_float;
      end;
 
-type VkSampleLocationsInfoEXT = record
+type P_VkSampleLocationsInfoEXT = ^VkSampleLocationsInfoEXT;
+     VkSampleLocationsInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        sampleLocationsPerPixel :VkSampleCountFlagBits;
@@ -9236,17 +9571,20 @@ type VkSampleLocationsInfoEXT = record
        pSampleLocations :P_VkSampleLocationEXT;
      end;
 
-type VkAttachmentSampleLocationsEXT = record
+type P_VkAttachmentSampleLocationsEXT = ^VkAttachmentSampleLocationsEXT;
+     VkAttachmentSampleLocationsEXT = record
        attachmentIndex :T_uint32_t;
        sampleLocationsInfo :VkSampleLocationsInfoEXT;
      end;
 
-type VkSubpassSampleLocationsEXT = record
+type P_VkSubpassSampleLocationsEXT = ^VkSubpassSampleLocationsEXT;
+     VkSubpassSampleLocationsEXT = record
        subpassIndex :T_uint32_t;
        sampleLocationsInfo :VkSampleLocationsInfoEXT;
      end;
 
-type VkRenderPassSampleLocationsBeginInfoEXT = record
+type P_VkRenderPassSampleLocationsBeginInfoEXT = ^VkRenderPassSampleLocationsBeginInfoEXT;
+     VkRenderPassSampleLocationsBeginInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        attachmentInitialSampleLocationsCount :T_uint32_t;
@@ -9255,14 +9593,16 @@ type VkRenderPassSampleLocationsBeginInfoEXT = record
        pPostSubpassSampleLocations :P_VkSubpassSampleLocationsEXT;
      end;
 
-type VkPipelineSampleLocationsStateCreateInfoEXT = record
+type P_VkPipelineSampleLocationsStateCreateInfoEXT = ^VkPipelineSampleLocationsStateCreateInfoEXT;
+     VkPipelineSampleLocationsStateCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        sampleLocationsEnable :VkBool32;
        sampleLocationsInfo :VkSampleLocationsInfoEXT;
      end;
 
-type VkPhysicalDeviceSampleLocationsPropertiesEXT = record
+type P_VkPhysicalDeviceSampleLocationsPropertiesEXT = ^VkPhysicalDeviceSampleLocationsPropertiesEXT;
+     VkPhysicalDeviceSampleLocationsPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        sampleLocationSampleCounts :VkSampleCountFlags;
@@ -9272,7 +9612,8 @@ type VkPhysicalDeviceSampleLocationsPropertiesEXT = record
        variableSampleLocations :VkBool32;
      end;
 
-type VkMultisamplePropertiesEXT = record
+type P_VkMultisamplePropertiesEXT = ^VkMultisamplePropertiesEXT;
+     VkMultisamplePropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        maxSampleLocationGridSize :VkExtent2D;
@@ -9303,13 +9644,15 @@ type VkBlendOverlapEXT = (
        VK_BLEND_OVERLAP_CONJOINT_EXT = 2,
        VK_BLEND_OVERLAP_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT = record
+type P_VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT = ^VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT;
+     VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        advancedBlendCoherentOperations :VkBool32;
      end;
 
-type VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT = record
+type P_VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT = ^VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT;
+     VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        advancedBlendMaxColorAttachments :T_uint32_t;
@@ -9320,7 +9663,8 @@ type VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT = record
        advancedBlendAllOperations :VkBool32;
      end;
 
-type VkPipelineColorBlendAdvancedStateCreateInfoEXT = record
+type P_VkPipelineColorBlendAdvancedStateCreateInfoEXT = ^VkPipelineColorBlendAdvancedStateCreateInfoEXT;
+     VkPipelineColorBlendAdvancedStateCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        srcPremultiplied :VkBool32;
@@ -9334,7 +9678,8 @@ const VK_NV_fragment_coverage_to_color = 1;
 const VK_NV_FRAGMENT_COVERAGE_TO_COLOR_SPEC_VERSION = 1;
 const VK_NV_FRAGMENT_COVERAGE_TO_COLOR_EXTENSION_NAME = 'VK_NV_fragment_coverage_to_color';
 type VkPipelineCoverageToColorStateCreateFlagsNV = VkFlags;
-type VkPipelineCoverageToColorStateCreateInfoNV = record
+type P_VkPipelineCoverageToColorStateCreateInfoNV = ^VkPipelineCoverageToColorStateCreateInfoNV;
+     VkPipelineCoverageToColorStateCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineCoverageToColorStateCreateFlagsNV;
@@ -9356,7 +9701,8 @@ type VkCoverageModulationModeNV = (
        VK_COVERAGE_MODULATION_MODE_MAX_ENUM_NV = $7FFFFFFF
      );
 type VkPipelineCoverageModulationStateCreateFlagsNV = VkFlags;
-type VkPipelineCoverageModulationStateCreateInfoNV = record
+type P_VkPipelineCoverageModulationStateCreateInfoNV = ^VkPipelineCoverageModulationStateCreateInfoNV;
+     VkPipelineCoverageModulationStateCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineCoverageModulationStateCreateFlagsNV;
@@ -9376,14 +9722,16 @@ const VK_NV_FILL_RECTANGLE_EXTENSION_NAME = 'VK_NV_fill_rectangle';
 const VK_NV_shader_sm_builtins = 1;
 const VK_NV_SHADER_SM_BUILTINS_SPEC_VERSION = 1;
 const VK_NV_SHADER_SM_BUILTINS_EXTENSION_NAME = 'VK_NV_shader_sm_builtins';
-type VkPhysicalDeviceShaderSMBuiltinsPropertiesNV = record
+type P_VkPhysicalDeviceShaderSMBuiltinsPropertiesNV = ^VkPhysicalDeviceShaderSMBuiltinsPropertiesNV;
+     VkPhysicalDeviceShaderSMBuiltinsPropertiesNV = record
        sType :VkStructureType;
        pNext :P_void;
        shaderSMCount :T_uint32_t;
        shaderWarpsPerSM :T_uint32_t;
      end;
 
-type VkPhysicalDeviceShaderSMBuiltinsFeaturesNV = record
+type P_VkPhysicalDeviceShaderSMBuiltinsFeaturesNV = ^VkPhysicalDeviceShaderSMBuiltinsFeaturesNV;
+     VkPhysicalDeviceShaderSMBuiltinsFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        shaderSMBuiltins :VkBool32;
@@ -9399,20 +9747,23 @@ const VK_EXT_POST_DEPTH_COVERAGE_EXTENSION_NAME = 'VK_EXT_post_depth_coverage';
 const VK_EXT_image_drm_format_modifier = 1;
 const VK_EXT_IMAGE_DRM_FORMAT_MODIFIER_SPEC_VERSION = 1;
 const VK_EXT_IMAGE_DRM_FORMAT_MODIFIER_EXTENSION_NAME = 'VK_EXT_image_drm_format_modifier';
-type VkDrmFormatModifierPropertiesEXT = record
+type P_VkDrmFormatModifierPropertiesEXT = ^VkDrmFormatModifierPropertiesEXT;
+     VkDrmFormatModifierPropertiesEXT = record
        drmFormatModifier :T_uint64_t;
        drmFormatModifierPlaneCount :T_uint32_t;
        drmFormatModifierTilingFeatures :VkFormatFeatureFlags;
      end;
 
-type VkDrmFormatModifierPropertiesListEXT = record
+type P_VkDrmFormatModifierPropertiesListEXT = ^VkDrmFormatModifierPropertiesListEXT;
+     VkDrmFormatModifierPropertiesListEXT = record
        sType :VkStructureType;
        pNext :P_void;
        drmFormatModifierCount :T_uint32_t;
        pDrmFormatModifierProperties :P_VkDrmFormatModifierPropertiesEXT;
      end;
 
-type VkPhysicalDeviceImageDrmFormatModifierInfoEXT = record
+type P_VkPhysicalDeviceImageDrmFormatModifierInfoEXT = ^VkPhysicalDeviceImageDrmFormatModifierInfoEXT;
+     VkPhysicalDeviceImageDrmFormatModifierInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        drmFormatModifier :T_uint64_t;
@@ -9421,14 +9772,16 @@ type VkPhysicalDeviceImageDrmFormatModifierInfoEXT = record
        pQueueFamilyIndices :P_uint32_t;
      end;
 
-type VkImageDrmFormatModifierListCreateInfoEXT = record
+type P_VkImageDrmFormatModifierListCreateInfoEXT = ^VkImageDrmFormatModifierListCreateInfoEXT;
+     VkImageDrmFormatModifierListCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        drmFormatModifierCount :T_uint32_t;
        pDrmFormatModifiers :P_uint64_t;
      end;
 
-type VkImageDrmFormatModifierExplicitCreateInfoEXT = record
+type P_VkImageDrmFormatModifierExplicitCreateInfoEXT = ^VkImageDrmFormatModifierExplicitCreateInfoEXT;
+     VkImageDrmFormatModifierExplicitCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        drmFormatModifier :T_uint64_t;
@@ -9436,7 +9789,8 @@ type VkImageDrmFormatModifierExplicitCreateInfoEXT = record
        pPlaneLayouts :P_VkSubresourceLayout;
      end;
 
-type VkImageDrmFormatModifierPropertiesEXT = record
+type P_VkImageDrmFormatModifierPropertiesEXT = ^VkImageDrmFormatModifierPropertiesEXT;
+     VkImageDrmFormatModifierPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        drmFormatModifier :T_uint64_t;
@@ -9462,7 +9816,8 @@ type VkValidationCacheHeaderVersionEXT = (
        VK_VALIDATION_CACHE_HEADER_VERSION_MAX_ENUM_EXT = $7FFFFFFF
      );
 type VkValidationCacheCreateFlagsEXT = VkFlags;
-type VkValidationCacheCreateInfoEXT = record
+type P_VkValidationCacheCreateInfoEXT = ^VkValidationCacheCreateInfoEXT;
+     VkValidationCacheCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkValidationCacheCreateFlagsEXT;
@@ -9470,7 +9825,8 @@ type VkValidationCacheCreateInfoEXT = record
        pInitialData :P_void;
      end;
 
-type VkShaderModuleValidationCacheCreateInfoEXT = record
+type P_VkShaderModuleValidationCacheCreateInfoEXT = ^VkShaderModuleValidationCacheCreateInfoEXT;
+     VkShaderModuleValidationCacheCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        validationCache :VkValidationCacheEXT;
@@ -9558,12 +9914,14 @@ type VkCoarseSampleOrderTypeNV = (
        VK_COARSE_SAMPLE_ORDER_TYPE_SAMPLE_MAJOR_NV = 3,
        VK_COARSE_SAMPLE_ORDER_TYPE_MAX_ENUM_NV = $7FFFFFFF
      );
-type VkShadingRatePaletteNV = record
+type P_VkShadingRatePaletteNV = ^VkShadingRatePaletteNV;
+     VkShadingRatePaletteNV = record
        shadingRatePaletteEntryCount :T_uint32_t;
        pShadingRatePaletteEntries :P_VkShadingRatePaletteEntryNV;
      end;
 
-type VkPipelineViewportShadingRateImageStateCreateInfoNV = record
+type P_VkPipelineViewportShadingRateImageStateCreateInfoNV = ^VkPipelineViewportShadingRateImageStateCreateInfoNV;
+     VkPipelineViewportShadingRateImageStateCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        shadingRateImageEnable :VkBool32;
@@ -9571,14 +9929,16 @@ type VkPipelineViewportShadingRateImageStateCreateInfoNV = record
        pShadingRatePalettes :P_VkShadingRatePaletteNV;
      end;
 
-type VkPhysicalDeviceShadingRateImageFeaturesNV = record
+type P_VkPhysicalDeviceShadingRateImageFeaturesNV = ^VkPhysicalDeviceShadingRateImageFeaturesNV;
+     VkPhysicalDeviceShadingRateImageFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        shadingRateImage :VkBool32;
        shadingRateCoarseSampleOrder :VkBool32;
      end;
 
-type VkPhysicalDeviceShadingRateImagePropertiesNV = record
+type P_VkPhysicalDeviceShadingRateImagePropertiesNV = ^VkPhysicalDeviceShadingRateImagePropertiesNV;
+     VkPhysicalDeviceShadingRateImagePropertiesNV = record
        sType :VkStructureType;
        pNext :P_void;
        shadingRateTexelSize :VkExtent2D;
@@ -9586,20 +9946,23 @@ type VkPhysicalDeviceShadingRateImagePropertiesNV = record
        shadingRateMaxCoarseSamples :T_uint32_t;
      end;
 
-type VkCoarseSampleLocationNV = record
+type P_VkCoarseSampleLocationNV = ^VkCoarseSampleLocationNV;
+     VkCoarseSampleLocationNV = record
        pixelX :T_uint32_t;
        pixelY :T_uint32_t;
        sample :T_uint32_t;
      end;
 
-type VkCoarseSampleOrderCustomNV = record
+type P_VkCoarseSampleOrderCustomNV = ^VkCoarseSampleOrderCustomNV;
+     VkCoarseSampleOrderCustomNV = record
        shadingRate :VkShadingRatePaletteEntryNV;
        sampleCount :T_uint32_t;
        sampleLocationCount :T_uint32_t;
        pSampleLocations :P_VkCoarseSampleLocationNV;
      end;
 
-type VkPipelineViewportCoarseSampleOrderStateCreateInfoNV = record
+type P_VkPipelineViewportCoarseSampleOrderStateCreateInfoNV = ^VkPipelineViewportCoarseSampleOrderStateCreateInfoNV;
+     VkPipelineViewportCoarseSampleOrderStateCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        sampleOrderType :VkCoarseSampleOrderTypeNV;
@@ -9739,7 +10102,8 @@ type VkBuildAccelerationStructureFlagsNV = VkBuildAccelerationStructureFlagsKHR;
 
 type VkBuildAccelerationStructureFlagBitsNV = VkBuildAccelerationStructureFlagBitsKHR;
 
-type VkRayTracingShaderGroupCreateInfoNV = record
+type P_VkRayTracingShaderGroupCreateInfoNV = ^VkRayTracingShaderGroupCreateInfoNV;
+     VkRayTracingShaderGroupCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        type :VkRayTracingShaderGroupTypeKHR;
@@ -9749,7 +10113,8 @@ type VkRayTracingShaderGroupCreateInfoNV = record
        intersectionShader :T_uint32_t;
      end;
 
-type VkRayTracingPipelineCreateInfoNV = record
+type P_VkRayTracingPipelineCreateInfoNV = ^VkRayTracingPipelineCreateInfoNV;
+     VkRayTracingPipelineCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineCreateFlags;
@@ -9763,7 +10128,8 @@ type VkRayTracingPipelineCreateInfoNV = record
        basePipelineIndex :T_int32_t;
      end;
 
-type VkGeometryTrianglesNV = record
+type P_VkGeometryTrianglesNV = ^VkGeometryTrianglesNV;
+     VkGeometryTrianglesNV = record
        sType :VkStructureType;
        pNext :P_void;
        vertexData :VkBuffer;
@@ -9779,7 +10145,8 @@ type VkGeometryTrianglesNV = record
        transformOffset :VkDeviceSize;
      end;
 
-type VkGeometryAABBNV = record
+type P_VkGeometryAABBNV = ^VkGeometryAABBNV;
+     VkGeometryAABBNV = record
        sType :VkStructureType;
        pNext :P_void;
        aabbData :VkBuffer;
@@ -9788,12 +10155,14 @@ type VkGeometryAABBNV = record
        offset :VkDeviceSize;
      end;
 
-type VkGeometryDataNV = record
+type P_VkGeometryDataNV = ^VkGeometryDataNV;
+     VkGeometryDataNV = record
        triangles :VkGeometryTrianglesNV;
        aabbs :VkGeometryAABBNV;
      end;
 
-type VkGeometryNV = record
+type P_VkGeometryNV = ^VkGeometryNV;
+     VkGeometryNV = record
        sType :VkStructureType;
        pNext :P_void;
        geometryType :VkGeometryTypeKHR;
@@ -9801,7 +10170,8 @@ type VkGeometryNV = record
        flags :VkGeometryFlagsKHR;
      end;
 
-type VkAccelerationStructureInfoNV = record
+type P_VkAccelerationStructureInfoNV = ^VkAccelerationStructureInfoNV;
+     VkAccelerationStructureInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        type :VkAccelerationStructureTypeNV;
@@ -9811,14 +10181,16 @@ type VkAccelerationStructureInfoNV = record
        pGeometries :P_VkGeometryNV;
      end;
 
-type VkAccelerationStructureCreateInfoNV = record
+type P_VkAccelerationStructureCreateInfoNV = ^VkAccelerationStructureCreateInfoNV;
+     VkAccelerationStructureCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        compactedSize :VkDeviceSize;
        info :VkAccelerationStructureInfoNV;
      end;
 
-type VkBindAccelerationStructureMemoryInfoNV = record
+type P_VkBindAccelerationStructureMemoryInfoNV = ^VkBindAccelerationStructureMemoryInfoNV;
+     VkBindAccelerationStructureMemoryInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        accelerationStructure :VkAccelerationStructureNV;
@@ -9828,21 +10200,24 @@ type VkBindAccelerationStructureMemoryInfoNV = record
        pDeviceIndices :P_uint32_t;
      end;
 
-type VkWriteDescriptorSetAccelerationStructureNV = record
+type P_VkWriteDescriptorSetAccelerationStructureNV = ^VkWriteDescriptorSetAccelerationStructureNV;
+     VkWriteDescriptorSetAccelerationStructureNV = record
        sType :VkStructureType;
        pNext :P_void;
        accelerationStructureCount :T_uint32_t;
        pAccelerationStructures :P_VkAccelerationStructureNV;
      end;
 
-type VkAccelerationStructureMemoryRequirementsInfoNV = record
+type P_VkAccelerationStructureMemoryRequirementsInfoNV = ^VkAccelerationStructureMemoryRequirementsInfoNV;
+     VkAccelerationStructureMemoryRequirementsInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        type :VkAccelerationStructureMemoryRequirementsTypeNV;
        accelerationStructure :VkAccelerationStructureNV;
      end;
 
-type VkPhysicalDeviceRayTracingPropertiesNV = record
+type P_VkPhysicalDeviceRayTracingPropertiesNV = ^VkPhysicalDeviceRayTracingPropertiesNV;
+     VkPhysicalDeviceRayTracingPropertiesNV = record
        sType :VkStructureType;
        pNext :P_void;
        shaderGroupHandleSize :T_uint32_t;
@@ -9855,13 +10230,15 @@ type VkPhysicalDeviceRayTracingPropertiesNV = record
        maxDescriptorSetAccelerationStructures :T_uint32_t;
      end;
 
-type VkTransformMatrixKHR = record
+type P_VkTransformMatrixKHR = ^VkTransformMatrixKHR;
+     VkTransformMatrixKHR = record
        matrix_:array [ 0..3-1, 0..4-1 ] of T_float;
      end;
 
 type VkTransformMatrixNV = VkTransformMatrixKHR;
 
-type VkAabbPositionsKHR = record
+type P_VkAabbPositionsKHR = ^VkAabbPositionsKHR;
+     VkAabbPositionsKHR = record
        minX :T_float;
        minY :T_float;
        minZ :T_float;
@@ -9872,7 +10249,8 @@ type VkAabbPositionsKHR = record
 
 type VkAabbPositionsNV = VkAabbPositionsKHR;
 
-type VkAccelerationStructureInstanceKHR = record
+type P_VkAccelerationStructureInstanceKHR = ^VkAccelerationStructureInstanceKHR;
+     VkAccelerationStructureInstanceKHR = record
        transform :VkTransformMatrixKHR;
     T_uint32_t                      instanceCustomIndex:24;
     T_uint32_t                      mask:8;
@@ -10001,13 +10379,15 @@ function vkCompileDeferredNV(
 const VK_NV_representative_fragment_test = 1;
 const VK_NV_REPRESENTATIVE_FRAGMENT_TEST_SPEC_VERSION = 2;
 const VK_NV_REPRESENTATIVE_FRAGMENT_TEST_EXTENSION_NAME = 'VK_NV_representative_fragment_test';
-type VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV = record
+type P_VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV = ^VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV;
+     VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        representativeFragmentTest :VkBool32;
      end;
 
-type VkPipelineRepresentativeFragmentTestStateCreateInfoNV = record
+type P_VkPipelineRepresentativeFragmentTestStateCreateInfoNV = ^VkPipelineRepresentativeFragmentTestStateCreateInfoNV;
+     VkPipelineRepresentativeFragmentTestStateCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        representativeFragmentTestEnable :VkBool32;
@@ -10018,13 +10398,15 @@ type VkPipelineRepresentativeFragmentTestStateCreateInfoNV = record
 const VK_EXT_filter_cubic = 1;
 const VK_EXT_FILTER_CUBIC_SPEC_VERSION  = 3;
 const VK_EXT_FILTER_CUBIC_EXTENSION_NAME = 'VK_EXT_filter_cubic';
-type VkPhysicalDeviceImageViewImageFormatInfoEXT = record
+type P_VkPhysicalDeviceImageViewImageFormatInfoEXT = ^VkPhysicalDeviceImageViewImageFormatInfoEXT;
+     VkPhysicalDeviceImageViewImageFormatInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        imageViewType :VkImageViewType;
      end;
 
-type VkFilterCubicImageViewImageFormatPropertiesEXT = record
+type P_VkFilterCubicImageViewImageFormatPropertiesEXT = ^VkFilterCubicImageViewImageFormatPropertiesEXT;
+     VkFilterCubicImageViewImageFormatPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        filterCubic :VkBool32;
@@ -10049,7 +10431,8 @@ type VkQueueGlobalPriorityEXT = (
        VK_QUEUE_GLOBAL_PRIORITY_REALTIME_EXT = 1024,
        VK_QUEUE_GLOBAL_PRIORITY_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkDeviceQueueGlobalPriorityCreateInfoEXT = record
+type P_VkDeviceQueueGlobalPriorityCreateInfoEXT = ^VkDeviceQueueGlobalPriorityCreateInfoEXT;
+     VkDeviceQueueGlobalPriorityCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        globalPriority :VkQueueGlobalPriorityEXT;
@@ -10060,20 +10443,23 @@ type VkDeviceQueueGlobalPriorityCreateInfoEXT = record
 const VK_EXT_external_memory_host = 1;
 const VK_EXT_EXTERNAL_MEMORY_HOST_SPEC_VERSION = 1;
 const VK_EXT_EXTERNAL_MEMORY_HOST_EXTENSION_NAME = 'VK_EXT_external_memory_host';
-type VkImportMemoryHostPointerInfoEXT = record
+type P_VkImportMemoryHostPointerInfoEXT = ^VkImportMemoryHostPointerInfoEXT;
+     VkImportMemoryHostPointerInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        handleType :VkExternalMemoryHandleTypeFlagBits;
        pHostPointer :P_void;
      end;
 
-type VkMemoryHostPointerPropertiesEXT = record
+type P_VkMemoryHostPointerPropertiesEXT = ^VkMemoryHostPointerPropertiesEXT;
+     VkMemoryHostPointerPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        memoryTypeBits :T_uint32_t;
      end;
 
-type VkPhysicalDeviceExternalMemoryHostPropertiesEXT = record
+type P_VkPhysicalDeviceExternalMemoryHostPropertiesEXT = ^VkPhysicalDeviceExternalMemoryHostPropertiesEXT;
+     VkPhysicalDeviceExternalMemoryHostPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        minImportedHostPointerAlignment :VkDeviceSize;
@@ -10113,7 +10499,8 @@ type VkPipelineCompilerControlFlagBitsAMD = (
        VK_PIPELINE_COMPILER_CONTROL_FLAG_BITS_MAX_ENUM_AMD = $7FFFFFFF
      );
 type VkPipelineCompilerControlFlagsAMD = VkFlags;
-type VkPipelineCompilerControlCreateInfoAMD = record
+type P_VkPipelineCompilerControlCreateInfoAMD = ^VkPipelineCompilerControlCreateInfoAMD;
+     VkPipelineCompilerControlCreateInfoAMD = record
        sType :VkStructureType;
        pNext :P_void;
        compilerControlFlags :VkPipelineCompilerControlFlagsAMD;
@@ -10132,7 +10519,8 @@ type VkTimeDomainEXT = (
        VK_TIME_DOMAIN_QUERY_PERFORMANCE_COUNTER_EXT = 3,
        VK_TIME_DOMAIN_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkCalibratedTimestampInfoEXT = record
+type P_VkCalibratedTimestampInfoEXT = ^VkCalibratedTimestampInfoEXT;
+     VkCalibratedTimestampInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        timeDomain :VkTimeDomainEXT;
@@ -10159,7 +10547,8 @@ function vkGetCalibratedTimestampsEXT(
 const VK_AMD_shader_core_properties = 1;
 const VK_AMD_SHADER_CORE_PROPERTIES_SPEC_VERSION = 2;
 const VK_AMD_SHADER_CORE_PROPERTIES_EXTENSION_NAME = 'VK_AMD_shader_core_properties';
-type VkPhysicalDeviceShaderCorePropertiesAMD = record
+type P_VkPhysicalDeviceShaderCorePropertiesAMD = ^VkPhysicalDeviceShaderCorePropertiesAMD;
+     VkPhysicalDeviceShaderCorePropertiesAMD = record
        sType :VkStructureType;
        pNext :P_void;
        shaderEngineCount :T_uint32_t;
@@ -10190,7 +10579,8 @@ type VkMemoryOverallocationBehaviorAMD = (
        VK_MEMORY_OVERALLOCATION_BEHAVIOR_DISALLOWED_AMD = 2,
        VK_MEMORY_OVERALLOCATION_BEHAVIOR_MAX_ENUM_AMD = $7FFFFFFF
      );
-type VkDeviceMemoryOverallocationCreateInfoAMD = record
+type P_VkDeviceMemoryOverallocationCreateInfoAMD = ^VkDeviceMemoryOverallocationCreateInfoAMD;
+     VkDeviceMemoryOverallocationCreateInfoAMD = record
        sType :VkStructureType;
        pNext :P_void;
        overallocationBehavior :VkMemoryOverallocationBehaviorAMD;
@@ -10201,25 +10591,29 @@ type VkDeviceMemoryOverallocationCreateInfoAMD = record
 const VK_EXT_vertex_attribute_divisor = 1;
 const VK_EXT_VERTEX_ATTRIBUTE_DIVISOR_SPEC_VERSION = 3;
 const VK_EXT_VERTEX_ATTRIBUTE_DIVISOR_EXTENSION_NAME = 'VK_EXT_vertex_attribute_divisor';
-type VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT = record
+type P_VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT = ^VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT;
+     VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        maxVertexAttribDivisor :T_uint32_t;
      end;
 
-type VkVertexInputBindingDivisorDescriptionEXT = record
+type P_VkVertexInputBindingDivisorDescriptionEXT = ^VkVertexInputBindingDivisorDescriptionEXT;
+     VkVertexInputBindingDivisorDescriptionEXT = record
        binding :T_uint32_t;
        divisor :T_uint32_t;
      end;
 
-type VkPipelineVertexInputDivisorStateCreateInfoEXT = record
+type P_VkPipelineVertexInputDivisorStateCreateInfoEXT = ^VkPipelineVertexInputDivisorStateCreateInfoEXT;
+     VkPipelineVertexInputDivisorStateCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        vertexBindingDivisorCount :T_uint32_t;
        pVertexBindingDivisors :P_VkVertexInputBindingDivisorDescriptionEXT;
      end;
 
-type VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT = record
+type P_VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT = ^VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT;
+     VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        vertexAttributeInstanceRateDivisor :VkBool32;
@@ -10239,12 +10633,14 @@ type VkPipelineCreationFeedbackFlagBitsEXT = (
        VK_PIPELINE_CREATION_FEEDBACK_FLAG_BITS_MAX_ENUM_EXT = $7FFFFFFF
      );
 type VkPipelineCreationFeedbackFlagsEXT = VkFlags;
-type VkPipelineCreationFeedbackEXT = record
+type P_VkPipelineCreationFeedbackEXT = ^VkPipelineCreationFeedbackEXT;
+     VkPipelineCreationFeedbackEXT = record
        flags :VkPipelineCreationFeedbackFlagsEXT;
        duration :T_uint64_t;
      end;
 
-type VkPipelineCreationFeedbackCreateInfoEXT = record
+type P_VkPipelineCreationFeedbackCreateInfoEXT = ^VkPipelineCreationFeedbackCreateInfoEXT;
+     VkPipelineCreationFeedbackCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        pPipelineCreationFeedback :P_VkPipelineCreationFeedbackEXT;
@@ -10262,7 +10658,8 @@ const VK_NV_SHADER_SUBGROUP_PARTITIONED_EXTENSION_NAME = 'VK_NV_shader_subgroup_
 const VK_NV_compute_shader_derivatives = 1;
 const VK_NV_COMPUTE_SHADER_DERIVATIVES_SPEC_VERSION = 1;
 const VK_NV_COMPUTE_SHADER_DERIVATIVES_EXTENSION_NAME = 'VK_NV_compute_shader_derivatives';
-type VkPhysicalDeviceComputeShaderDerivativesFeaturesNV = record
+type P_VkPhysicalDeviceComputeShaderDerivativesFeaturesNV = ^VkPhysicalDeviceComputeShaderDerivativesFeaturesNV;
+     VkPhysicalDeviceComputeShaderDerivativesFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        computeDerivativeGroupQuads :VkBool32;
@@ -10274,14 +10671,16 @@ type VkPhysicalDeviceComputeShaderDerivativesFeaturesNV = record
 const VK_NV_mesh_shader = 1;
 const VK_NV_MESH_SHADER_SPEC_VERSION    = 1;
 const VK_NV_MESH_SHADER_EXTENSION_NAME = 'VK_NV_mesh_shader';
-type VkPhysicalDeviceMeshShaderFeaturesNV = record
+type P_VkPhysicalDeviceMeshShaderFeaturesNV = ^VkPhysicalDeviceMeshShaderFeaturesNV;
+     VkPhysicalDeviceMeshShaderFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        taskShader :VkBool32;
        meshShader :VkBool32;
      end;
 
-type VkPhysicalDeviceMeshShaderPropertiesNV = record
+type P_VkPhysicalDeviceMeshShaderPropertiesNV = ^VkPhysicalDeviceMeshShaderPropertiesNV;
+     VkPhysicalDeviceMeshShaderPropertiesNV = record
        sType :VkStructureType;
        pNext :P_void;
        maxDrawMeshTasksCount :T_uint32_t;
@@ -10299,7 +10698,8 @@ type VkPhysicalDeviceMeshShaderPropertiesNV = record
        meshOutputPerPrimitiveGranularity :T_uint32_t;
      end;
 
-type VkDrawMeshTasksIndirectCommandNV = record
+type P_VkDrawMeshTasksIndirectCommandNV = ^VkDrawMeshTasksIndirectCommandNV;
+     VkDrawMeshTasksIndirectCommandNV = record
        taskCount :T_uint32_t;
        firstTask :T_uint32_t;
      end;
@@ -10335,7 +10735,8 @@ procedure vkCmdDrawMeshTasksIndirectCountNV(
 const VK_NV_fragment_shader_barycentric = 1;
 const VK_NV_FRAGMENT_SHADER_BARYCENTRIC_SPEC_VERSION = 1;
 const VK_NV_FRAGMENT_SHADER_BARYCENTRIC_EXTENSION_NAME = 'VK_NV_fragment_shader_barycentric';
-type VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV = record
+type P_VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV = ^VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV;
+     VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        fragmentShaderBarycentric :VkBool32;
@@ -10346,7 +10747,8 @@ type VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV = record
 const VK_NV_shader_image_footprint = 1;
 const VK_NV_SHADER_IMAGE_FOOTPRINT_SPEC_VERSION = 2;
 const VK_NV_SHADER_IMAGE_FOOTPRINT_EXTENSION_NAME = 'VK_NV_shader_image_footprint';
-type VkPhysicalDeviceShaderImageFootprintFeaturesNV = record
+type P_VkPhysicalDeviceShaderImageFootprintFeaturesNV = ^VkPhysicalDeviceShaderImageFootprintFeaturesNV;
+     VkPhysicalDeviceShaderImageFootprintFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        imageFootprint :VkBool32;
@@ -10357,14 +10759,16 @@ type VkPhysicalDeviceShaderImageFootprintFeaturesNV = record
 const VK_NV_scissor_exclusive = 1;
 const VK_NV_SCISSOR_EXCLUSIVE_SPEC_VERSION = 1;
 const VK_NV_SCISSOR_EXCLUSIVE_EXTENSION_NAME = 'VK_NV_scissor_exclusive';
-type VkPipelineViewportExclusiveScissorStateCreateInfoNV = record
+type P_VkPipelineViewportExclusiveScissorStateCreateInfoNV = ^VkPipelineViewportExclusiveScissorStateCreateInfoNV;
+     VkPipelineViewportExclusiveScissorStateCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        exclusiveScissorCount :T_uint32_t;
        pExclusiveScissors :P_VkRect2D;
      end;
 
-type VkPhysicalDeviceExclusiveScissorFeaturesNV = record
+type P_VkPhysicalDeviceExclusiveScissorFeaturesNV = ^VkPhysicalDeviceExclusiveScissorFeaturesNV;
+     VkPhysicalDeviceExclusiveScissorFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        exclusiveScissor :VkBool32;
@@ -10384,13 +10788,15 @@ procedure vkCmdSetExclusiveScissorNV(
 const VK_NV_device_diagnostic_checkpoints = 1;
 const VK_NV_DEVICE_DIAGNOSTIC_CHECKPOINTS_SPEC_VERSION = 2;
 const VK_NV_DEVICE_DIAGNOSTIC_CHECKPOINTS_EXTENSION_NAME = 'VK_NV_device_diagnostic_checkpoints';
-type VkQueueFamilyCheckpointPropertiesNV = record
+type P_VkQueueFamilyCheckpointPropertiesNV = ^VkQueueFamilyCheckpointPropertiesNV;
+     VkQueueFamilyCheckpointPropertiesNV = record
        sType :VkStructureType;
        pNext :P_void;
        checkpointExecutionStageMask :VkPipelineStageFlags;
      end;
 
-type VkCheckpointDataNV = record
+type P_VkCheckpointDataNV = ^VkCheckpointDataNV;
+     VkCheckpointDataNV = record
        sType :VkStructureType;
        pNext :P_void;
        stage :VkPipelineStageFlagBits;
@@ -10415,7 +10821,8 @@ procedure vkGetQueueCheckpointDataNV(
 const VK_INTEL_shader_integer_functions2 = 1;
 const VK_INTEL_SHADER_INTEGER_FUNCTIONS_2_SPEC_VERSION = 1;
 const VK_INTEL_SHADER_INTEGER_FUNCTIONS_2_EXTENSION_NAME = 'VK_INTEL_shader_integer_functions2';
-type VkPhysicalDeviceShaderIntegerFunctions2FeaturesINTEL = record
+type P_VkPhysicalDeviceShaderIntegerFunctions2FeaturesINTEL = ^VkPhysicalDeviceShaderIntegerFunctions2FeaturesINTEL;
+     VkPhysicalDeviceShaderIntegerFunctions2FeaturesINTEL = record
        sType :VkStructureType;
        pNext :P_void;
        shaderIntegerFunctions2 :VkBool32;
@@ -10458,7 +10865,8 @@ type VkPerformanceValueTypeINTEL = (
        VK_PERFORMANCE_VALUE_TYPE_STRING_INTEL = 4,
        VK_PERFORMANCE_VALUE_TYPE_MAX_ENUM_INTEL = $7FFFFFFF
      );
-type VkPerformanceValueDataINTEL = record
+type P_VkPerformanceValueDataINTEL = ^VkPerformanceValueDataINTEL;
+     VkPerformanceValueDataINTEL = record
      case Byte of
        0:( value32     :T_uint32_t );
        1:( value64     :T_uint64_t );
@@ -10467,18 +10875,21 @@ type VkPerformanceValueDataINTEL = record
        4:( valueString :P_char   );
      end;
 
-type VkPerformanceValueINTEL = record
+type P_VkPerformanceValueINTEL = ^VkPerformanceValueINTEL;
+     VkPerformanceValueINTEL = record
        type :VkPerformanceValueTypeINTEL;
        data :VkPerformanceValueDataINTEL;
      end;
 
-type VkInitializePerformanceApiInfoINTEL = record
+type P_VkInitializePerformanceApiInfoINTEL = ^VkInitializePerformanceApiInfoINTEL;
+     VkInitializePerformanceApiInfoINTEL = record
        sType :VkStructureType;
        pNext :P_void;
        pUserData :P_void;
      end;
 
-type VkQueryPoolPerformanceQueryCreateInfoINTEL = record
+type P_VkQueryPoolPerformanceQueryCreateInfoINTEL = ^VkQueryPoolPerformanceQueryCreateInfoINTEL;
+     VkQueryPoolPerformanceQueryCreateInfoINTEL = record
        sType :VkStructureType;
        pNext :P_void;
        performanceCountersSampling :VkQueryPoolSamplingModeINTEL;
@@ -10486,19 +10897,22 @@ type VkQueryPoolPerformanceQueryCreateInfoINTEL = record
 
 type VkQueryPoolCreateInfoINTEL = VkQueryPoolPerformanceQueryCreateInfoINTEL;
 
-type VkPerformanceMarkerInfoINTEL = record
+type P_VkPerformanceMarkerInfoINTEL = ^VkPerformanceMarkerInfoINTEL;
+     VkPerformanceMarkerInfoINTEL = record
        sType :VkStructureType;
        pNext :P_void;
        marker :T_uint64_t;
      end;
 
-type VkPerformanceStreamMarkerInfoINTEL = record
+type P_VkPerformanceStreamMarkerInfoINTEL = ^VkPerformanceStreamMarkerInfoINTEL;
+     VkPerformanceStreamMarkerInfoINTEL = record
        sType :VkStructureType;
        pNext :P_void;
        marker :T_uint32_t;
      end;
 
-type VkPerformanceOverrideInfoINTEL = record
+type P_VkPerformanceOverrideInfoINTEL = ^VkPerformanceOverrideInfoINTEL;
+     VkPerformanceOverrideInfoINTEL = record
        sType :VkStructureType;
        pNext :P_void;
        type :VkPerformanceOverrideTypeINTEL;
@@ -10506,7 +10920,8 @@ type VkPerformanceOverrideInfoINTEL = record
        parameter :T_uint64_t;
      end;
 
-type VkPerformanceConfigurationAcquireInfoINTEL = record
+type P_VkPerformanceConfigurationAcquireInfoINTEL = ^VkPerformanceConfigurationAcquireInfoINTEL;
+     VkPerformanceConfigurationAcquireInfoINTEL = record
        sType :VkStructureType;
        pNext :P_void;
        type :VkPerformanceConfigurationTypeINTEL;
@@ -10565,7 +10980,8 @@ function vkGetPerformanceParameterINTEL(
 const VK_EXT_pci_bus_info = 1;
 const VK_EXT_PCI_BUS_INFO_SPEC_VERSION  = 2;
 const VK_EXT_PCI_BUS_INFO_EXTENSION_NAME = 'VK_EXT_pci_bus_info';
-type VkPhysicalDevicePCIBusInfoPropertiesEXT = record
+type P_VkPhysicalDevicePCIBusInfoPropertiesEXT = ^VkPhysicalDevicePCIBusInfoPropertiesEXT;
+     VkPhysicalDevicePCIBusInfoPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        pciDomain :T_uint32_t;
@@ -10579,13 +10995,15 @@ type VkPhysicalDevicePCIBusInfoPropertiesEXT = record
 const VK_AMD_display_native_hdr = 1;
 const VK_AMD_DISPLAY_NATIVE_HDR_SPEC_VERSION = 1;
 const VK_AMD_DISPLAY_NATIVE_HDR_EXTENSION_NAME = 'VK_AMD_display_native_hdr';
-type VkDisplayNativeHdrSurfaceCapabilitiesAMD = record
+type P_VkDisplayNativeHdrSurfaceCapabilitiesAMD = ^VkDisplayNativeHdrSurfaceCapabilitiesAMD;
+     VkDisplayNativeHdrSurfaceCapabilitiesAMD = record
        sType :VkStructureType;
        pNext :P_void;
        localDimmingSupport :VkBool32;
      end;
 
-type VkSwapchainDisplayNativeHdrCreateInfoAMD = record
+type P_VkSwapchainDisplayNativeHdrCreateInfoAMD = ^VkSwapchainDisplayNativeHdrCreateInfoAMD;
+     VkSwapchainDisplayNativeHdrCreateInfoAMD = record
        sType :VkStructureType;
        pNext :P_void;
        localDimmingEnable :VkBool32;
@@ -10604,7 +11022,8 @@ procedure vkSetLocalDimmingAMD(
 const VK_EXT_fragment_density_map = 1;
 const VK_EXT_FRAGMENT_DENSITY_MAP_SPEC_VERSION = 1;
 const VK_EXT_FRAGMENT_DENSITY_MAP_EXTENSION_NAME = 'VK_EXT_fragment_density_map';
-type VkPhysicalDeviceFragmentDensityMapFeaturesEXT = record
+type P_VkPhysicalDeviceFragmentDensityMapFeaturesEXT = ^VkPhysicalDeviceFragmentDensityMapFeaturesEXT;
+     VkPhysicalDeviceFragmentDensityMapFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        fragmentDensityMap :VkBool32;
@@ -10612,7 +11031,8 @@ type VkPhysicalDeviceFragmentDensityMapFeaturesEXT = record
        fragmentDensityMapNonSubsampledImages :VkBool32;
      end;
 
-type VkPhysicalDeviceFragmentDensityMapPropertiesEXT = record
+type P_VkPhysicalDeviceFragmentDensityMapPropertiesEXT = ^VkPhysicalDeviceFragmentDensityMapPropertiesEXT;
+     VkPhysicalDeviceFragmentDensityMapPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        minFragmentDensityTexelSize :VkExtent2D;
@@ -10620,7 +11040,8 @@ type VkPhysicalDeviceFragmentDensityMapPropertiesEXT = record
        fragmentDensityInvocations :VkBool32;
      end;
 
-type VkRenderPassFragmentDensityMapCreateInfoEXT = record
+type P_VkRenderPassFragmentDensityMapCreateInfoEXT = ^VkRenderPassFragmentDensityMapCreateInfoEXT;
+     VkRenderPassFragmentDensityMapCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        fragmentDensityMapAttachment :VkAttachmentReference;
@@ -10648,14 +11069,16 @@ const VK_GOOGLE_DECORATE_STRING_EXTENSION_NAME = 'VK_GOOGLE_decorate_string';
 const VK_EXT_subgroup_size_control = 1;
 const VK_EXT_SUBGROUP_SIZE_CONTROL_SPEC_VERSION = 2;
 const VK_EXT_SUBGROUP_SIZE_CONTROL_EXTENSION_NAME = 'VK_EXT_subgroup_size_control';
-type VkPhysicalDeviceSubgroupSizeControlFeaturesEXT = record
+type P_VkPhysicalDeviceSubgroupSizeControlFeaturesEXT = ^VkPhysicalDeviceSubgroupSizeControlFeaturesEXT;
+     VkPhysicalDeviceSubgroupSizeControlFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        subgroupSizeControl :VkBool32;
        computeFullSubgroups :VkBool32;
      end;
 
-type VkPhysicalDeviceSubgroupSizeControlPropertiesEXT = record
+type P_VkPhysicalDeviceSubgroupSizeControlPropertiesEXT = ^VkPhysicalDeviceSubgroupSizeControlPropertiesEXT;
+     VkPhysicalDeviceSubgroupSizeControlPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        minSubgroupSize :T_uint32_t;
@@ -10664,7 +11087,8 @@ type VkPhysicalDeviceSubgroupSizeControlPropertiesEXT = record
        requiredSubgroupSizeStages :VkShaderStageFlags;
      end;
 
-type VkPipelineShaderStageRequiredSubgroupSizeCreateInfoEXT = record
+type P_VkPipelineShaderStageRequiredSubgroupSizeCreateInfoEXT = ^VkPipelineShaderStageRequiredSubgroupSizeCreateInfoEXT;
+     VkPipelineShaderStageRequiredSubgroupSizeCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        requiredSubgroupSize :T_uint32_t;
@@ -10680,7 +11104,8 @@ type VkShaderCorePropertiesFlagBitsAMD = (
        VK_SHADER_CORE_PROPERTIES_FLAG_BITS_MAX_ENUM_AMD = $7FFFFFFF
      );
 type VkShaderCorePropertiesFlagsAMD = VkFlags;
-type VkPhysicalDeviceShaderCoreProperties2AMD = record
+type P_VkPhysicalDeviceShaderCoreProperties2AMD = ^VkPhysicalDeviceShaderCoreProperties2AMD;
+     VkPhysicalDeviceShaderCoreProperties2AMD = record
        sType :VkStructureType;
        pNext :P_void;
        shaderCoreFeatures :VkShaderCorePropertiesFlagsAMD;
@@ -10692,7 +11117,8 @@ type VkPhysicalDeviceShaderCoreProperties2AMD = record
 const VK_AMD_device_coherent_memory = 1;
 const VK_AMD_DEVICE_COHERENT_MEMORY_SPEC_VERSION = 1;
 const VK_AMD_DEVICE_COHERENT_MEMORY_EXTENSION_NAME = 'VK_AMD_device_coherent_memory';
-type VkPhysicalDeviceCoherentMemoryFeaturesAMD = record
+type P_VkPhysicalDeviceCoherentMemoryFeaturesAMD = ^VkPhysicalDeviceCoherentMemoryFeaturesAMD;
+     VkPhysicalDeviceCoherentMemoryFeaturesAMD = record
        sType :VkStructureType;
        pNext :P_void;
        deviceCoherentMemory :VkBool32;
@@ -10703,7 +11129,8 @@ type VkPhysicalDeviceCoherentMemoryFeaturesAMD = record
 const VK_EXT_shader_image_atomic_int64 = 1;
 const VK_EXT_SHADER_IMAGE_ATOMIC_INT64_SPEC_VERSION = 1;
 const VK_EXT_SHADER_IMAGE_ATOMIC_INT64_EXTENSION_NAME = 'VK_EXT_shader_image_atomic_int64';
-type VkPhysicalDeviceShaderImageAtomicInt64FeaturesEXT = record
+type P_VkPhysicalDeviceShaderImageAtomicInt64FeaturesEXT = ^VkPhysicalDeviceShaderImageAtomicInt64FeaturesEXT;
+     VkPhysicalDeviceShaderImageAtomicInt64FeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        shaderImageInt64Atomics :VkBool32;
@@ -10715,7 +11142,8 @@ type VkPhysicalDeviceShaderImageAtomicInt64FeaturesEXT = record
 const VK_EXT_memory_budget = 1;
 const VK_EXT_MEMORY_BUDGET_SPEC_VERSION = 1;
 const VK_EXT_MEMORY_BUDGET_EXTENSION_NAME = 'VK_EXT_memory_budget';
-type VkPhysicalDeviceMemoryBudgetPropertiesEXT = record
+type P_VkPhysicalDeviceMemoryBudgetPropertiesEXT = ^VkPhysicalDeviceMemoryBudgetPropertiesEXT;
+     VkPhysicalDeviceMemoryBudgetPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        heapBudget :array [ 0..VK_MAX_MEMORY_HEAPS-1 ] of VkDeviceSize;
@@ -10727,13 +11155,15 @@ type VkPhysicalDeviceMemoryBudgetPropertiesEXT = record
 const VK_EXT_memory_priority = 1;
 const VK_EXT_MEMORY_PRIORITY_SPEC_VERSION = 1;
 const VK_EXT_MEMORY_PRIORITY_EXTENSION_NAME = 'VK_EXT_memory_priority';
-type VkPhysicalDeviceMemoryPriorityFeaturesEXT = record
+type P_VkPhysicalDeviceMemoryPriorityFeaturesEXT = ^VkPhysicalDeviceMemoryPriorityFeaturesEXT;
+     VkPhysicalDeviceMemoryPriorityFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        memoryPriority :VkBool32;
      end;
 
-type VkMemoryPriorityAllocateInfoEXT = record
+type P_VkMemoryPriorityAllocateInfoEXT = ^VkMemoryPriorityAllocateInfoEXT;
+     VkMemoryPriorityAllocateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        priority :T_float;
@@ -10744,7 +11174,8 @@ type VkMemoryPriorityAllocateInfoEXT = record
 const VK_NV_dedicated_allocation_image_aliasing = 1;
 const VK_NV_DEDICATED_ALLOCATION_IMAGE_ALIASING_SPEC_VERSION = 1;
 const VK_NV_DEDICATED_ALLOCATION_IMAGE_ALIASING_EXTENSION_NAME = 'VK_NV_dedicated_allocation_image_aliasing';
-type VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV = record
+type P_VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV = ^VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV;
+     VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        dedicatedAllocationImageAliasing :VkBool32;
@@ -10755,7 +11186,8 @@ type VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV = record
 const VK_EXT_buffer_device_address = 1;
 const VK_EXT_BUFFER_DEVICE_ADDRESS_SPEC_VERSION = 2;
 const VK_EXT_BUFFER_DEVICE_ADDRESS_EXTENSION_NAME = 'VK_EXT_buffer_device_address';
-type VkPhysicalDeviceBufferDeviceAddressFeaturesEXT = record
+type P_VkPhysicalDeviceBufferDeviceAddressFeaturesEXT = ^VkPhysicalDeviceBufferDeviceAddressFeaturesEXT;
+     VkPhysicalDeviceBufferDeviceAddressFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        bufferDeviceAddress :VkBool32;
@@ -10767,7 +11199,8 @@ type VkPhysicalDeviceBufferAddressFeaturesEXT = VkPhysicalDeviceBufferDeviceAddr
 
 type VkBufferDeviceAddressInfoEXT = VkBufferDeviceAddressInfo;
 
-type VkBufferDeviceAddressCreateInfoEXT = record
+type P_VkBufferDeviceAddressCreateInfoEXT = ^VkBufferDeviceAddressCreateInfoEXT;
+     VkBufferDeviceAddressCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        deviceAddress :VkDeviceAddress;
@@ -10797,7 +11230,8 @@ type VkToolPurposeFlagBitsEXT = (
        VK_TOOL_PURPOSE_FLAG_BITS_MAX_ENUM_EXT = $7FFFFFFF
      );
 type VkToolPurposeFlagsEXT = VkFlags;
-type VkPhysicalDeviceToolPropertiesEXT = record
+type P_VkPhysicalDeviceToolPropertiesEXT = ^VkPhysicalDeviceToolPropertiesEXT;
+     VkPhysicalDeviceToolPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        name :array [ 0..VK_MAX_EXTENSION_NAME_SIZE-1 ] of char;
@@ -10847,7 +11281,8 @@ type VkValidationFeatureDisableEXT = (
        VK_VALIDATION_FEATURE_DISABLE_UNIQUE_HANDLES_EXT = 6,
        VK_VALIDATION_FEATURE_DISABLE_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkValidationFeaturesEXT = record
+type P_VkValidationFeaturesEXT = ^VkValidationFeaturesEXT;
+     VkValidationFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        enabledValidationFeatureCount :T_uint32_t;
@@ -10884,7 +11319,8 @@ type VkScopeNV = (
        VK_SCOPE_QUEUE_FAMILY_NV = 5,
        VK_SCOPE_MAX_ENUM_NV = $7FFFFFFF
      );
-type VkCooperativeMatrixPropertiesNV = record
+type P_VkCooperativeMatrixPropertiesNV = ^VkCooperativeMatrixPropertiesNV;
+     VkCooperativeMatrixPropertiesNV = record
        sType :VkStructureType;
        pNext :P_void;
        MSize :T_uint32_t;
@@ -10897,14 +11333,16 @@ type VkCooperativeMatrixPropertiesNV = record
        scope :VkScopeNV;
      end;
 
-type VkPhysicalDeviceCooperativeMatrixFeaturesNV = record
+type P_VkPhysicalDeviceCooperativeMatrixFeaturesNV = ^VkPhysicalDeviceCooperativeMatrixFeaturesNV;
+     VkPhysicalDeviceCooperativeMatrixFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        cooperativeMatrix :VkBool32;
        cooperativeMatrixRobustBufferAccess :VkBool32;
      end;
 
-type VkPhysicalDeviceCooperativeMatrixPropertiesNV = record
+type P_VkPhysicalDeviceCooperativeMatrixPropertiesNV = ^VkPhysicalDeviceCooperativeMatrixPropertiesNV;
+     VkPhysicalDeviceCooperativeMatrixPropertiesNV = record
        sType :VkStructureType;
        pNext :P_void;
        cooperativeMatrixSupportedStages :VkShaderStageFlags;
@@ -10930,20 +11368,23 @@ type VkCoverageReductionModeNV = (
        VK_COVERAGE_REDUCTION_MODE_MAX_ENUM_NV = $7FFFFFFF
      );
 type VkPipelineCoverageReductionStateCreateFlagsNV = VkFlags;
-type VkPhysicalDeviceCoverageReductionModeFeaturesNV = record
+type P_VkPhysicalDeviceCoverageReductionModeFeaturesNV = ^VkPhysicalDeviceCoverageReductionModeFeaturesNV;
+     VkPhysicalDeviceCoverageReductionModeFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        coverageReductionMode :VkBool32;
      end;
 
-type VkPipelineCoverageReductionStateCreateInfoNV = record
+type P_VkPipelineCoverageReductionStateCreateInfoNV = ^VkPipelineCoverageReductionStateCreateInfoNV;
+     VkPipelineCoverageReductionStateCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineCoverageReductionStateCreateFlagsNV;
        coverageReductionMode :VkCoverageReductionModeNV;
      end;
 
-type VkFramebufferMixedSamplesCombinationNV = record
+type P_VkFramebufferMixedSamplesCombinationNV = ^VkFramebufferMixedSamplesCombinationNV;
+     VkFramebufferMixedSamplesCombinationNV = record
        sType :VkStructureType;
        pNext :P_void;
        coverageReductionMode :VkCoverageReductionModeNV;
@@ -10965,7 +11406,8 @@ function vkGetPhysicalDeviceSupportedFramebufferMixedSamplesCombinationsNV(
 const VK_EXT_fragment_shader_interlock = 1;
 const VK_EXT_FRAGMENT_SHADER_INTERLOCK_SPEC_VERSION = 1;
 const VK_EXT_FRAGMENT_SHADER_INTERLOCK_EXTENSION_NAME = 'VK_EXT_fragment_shader_interlock';
-type VkPhysicalDeviceFragmentShaderInterlockFeaturesEXT = record
+type P_VkPhysicalDeviceFragmentShaderInterlockFeaturesEXT = ^VkPhysicalDeviceFragmentShaderInterlockFeaturesEXT;
+     VkPhysicalDeviceFragmentShaderInterlockFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        fragmentShaderSampleInterlock :VkBool32;
@@ -10978,7 +11420,8 @@ type VkPhysicalDeviceFragmentShaderInterlockFeaturesEXT = record
 const VK_EXT_ycbcr_image_arrays = 1;
 const VK_EXT_YCBCR_IMAGE_ARRAYS_SPEC_VERSION = 1;
 const VK_EXT_YCBCR_IMAGE_ARRAYS_EXTENSION_NAME = 'VK_EXT_ycbcr_image_arrays';
-type VkPhysicalDeviceYcbcrImageArraysFeaturesEXT = record
+type P_VkPhysicalDeviceYcbcrImageArraysFeaturesEXT = ^VkPhysicalDeviceYcbcrImageArraysFeaturesEXT;
+     VkPhysicalDeviceYcbcrImageArraysFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        ycbcrImageArrays :VkBool32;
@@ -10990,7 +11433,8 @@ const VK_EXT_headless_surface = 1;
 const VK_EXT_HEADLESS_SURFACE_SPEC_VERSION = 1;
 const VK_EXT_HEADLESS_SURFACE_EXTENSION_NAME = 'VK_EXT_headless_surface';
 type VkHeadlessSurfaceCreateFlagsEXT = VkFlags;
-type VkHeadlessSurfaceCreateInfoEXT = record
+type P_VkHeadlessSurfaceCreateInfoEXT = ^VkHeadlessSurfaceCreateInfoEXT;
+     VkHeadlessSurfaceCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkHeadlessSurfaceCreateFlagsEXT;
@@ -11018,7 +11462,8 @@ type VkLineRasterizationModeEXT = (
        VK_LINE_RASTERIZATION_MODE_RECTANGULAR_SMOOTH_EXT = 3,
        VK_LINE_RASTERIZATION_MODE_MAX_ENUM_EXT = $7FFFFFFF
      );
-type VkPhysicalDeviceLineRasterizationFeaturesEXT = record
+type P_VkPhysicalDeviceLineRasterizationFeaturesEXT = ^VkPhysicalDeviceLineRasterizationFeaturesEXT;
+     VkPhysicalDeviceLineRasterizationFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        rectangularLines :VkBool32;
@@ -11029,13 +11474,15 @@ type VkPhysicalDeviceLineRasterizationFeaturesEXT = record
        stippledSmoothLines :VkBool32;
      end;
 
-type VkPhysicalDeviceLineRasterizationPropertiesEXT = record
+type P_VkPhysicalDeviceLineRasterizationPropertiesEXT = ^VkPhysicalDeviceLineRasterizationPropertiesEXT;
+     VkPhysicalDeviceLineRasterizationPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        lineSubPixelPrecisionBits :T_uint32_t;
      end;
 
-type VkPipelineRasterizationLineStateCreateInfoEXT = record
+type P_VkPipelineRasterizationLineStateCreateInfoEXT = ^VkPipelineRasterizationLineStateCreateInfoEXT;
+     VkPipelineRasterizationLineStateCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        lineRasterizationMode :VkLineRasterizationModeEXT;
@@ -11057,7 +11504,8 @@ procedure vkCmdSetLineStippleEXT(
 const VK_EXT_shader_atomic_float = 1;
 const VK_EXT_SHADER_ATOMIC_FLOAT_SPEC_VERSION = 1;
 const VK_EXT_SHADER_ATOMIC_FLOAT_EXTENSION_NAME = 'VK_EXT_shader_atomic_float';
-type VkPhysicalDeviceShaderAtomicFloatFeaturesEXT = record
+type P_VkPhysicalDeviceShaderAtomicFloatFeaturesEXT = ^VkPhysicalDeviceShaderAtomicFloatFeaturesEXT;
+     VkPhysicalDeviceShaderAtomicFloatFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        shaderBufferFloat32Atomics :VkBool32;
@@ -11095,7 +11543,8 @@ procedure vkResetQueryPoolEXT(
 const VK_EXT_index_type_uint8 = 1;
 const VK_EXT_INDEX_TYPE_UINT8_SPEC_VERSION = 1;
 const VK_EXT_INDEX_TYPE_UINT8_EXTENSION_NAME = 'VK_EXT_index_type_uint8';
-type VkPhysicalDeviceIndexTypeUint8FeaturesEXT = record
+type P_VkPhysicalDeviceIndexTypeUint8FeaturesEXT = ^VkPhysicalDeviceIndexTypeUint8FeaturesEXT;
+     VkPhysicalDeviceIndexTypeUint8FeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        indexTypeUint8 :VkBool32;
@@ -11106,7 +11555,8 @@ type VkPhysicalDeviceIndexTypeUint8FeaturesEXT = record
 const VK_EXT_extended_dynamic_state = 1;
 const VK_EXT_EXTENDED_DYNAMIC_STATE_SPEC_VERSION = 1;
 const VK_EXT_EXTENDED_DYNAMIC_STATE_EXTENSION_NAME = 'VK_EXT_extended_dynamic_state';
-type VkPhysicalDeviceExtendedDynamicStateFeaturesEXT = record
+type P_VkPhysicalDeviceExtendedDynamicStateFeaturesEXT = ^VkPhysicalDeviceExtendedDynamicStateFeaturesEXT;
+     VkPhysicalDeviceExtendedDynamicStateFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        extendedDynamicState :VkBool32;
@@ -11190,7 +11640,8 @@ procedure vkCmdSetStencilOpEXT(
 const VK_EXT_shader_demote_to_helper_invocation = 1;
 const VK_EXT_SHADER_DEMOTE_TO_HELPER_INVOCATION_SPEC_VERSION = 1;
 const VK_EXT_SHADER_DEMOTE_TO_HELPER_INVOCATION_EXTENSION_NAME = 'VK_EXT_shader_demote_to_helper_invocation';
-type VkPhysicalDeviceShaderDemoteToHelperInvocationFeaturesEXT = record
+type P_VkPhysicalDeviceShaderDemoteToHelperInvocationFeaturesEXT = ^VkPhysicalDeviceShaderDemoteToHelperInvocationFeaturesEXT;
+     VkPhysicalDeviceShaderDemoteToHelperInvocationFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        shaderDemoteToHelperInvocation :VkBool32;
@@ -11228,7 +11679,8 @@ type VkIndirectCommandsLayoutUsageFlagBitsNV = (
        VK_INDIRECT_COMMANDS_LAYOUT_USAGE_FLAG_BITS_MAX_ENUM_NV = $7FFFFFFF
      );
 type VkIndirectCommandsLayoutUsageFlagsNV = VkFlags;
-type VkPhysicalDeviceDeviceGeneratedCommandsPropertiesNV = record
+type P_VkPhysicalDeviceDeviceGeneratedCommandsPropertiesNV = ^VkPhysicalDeviceDeviceGeneratedCommandsPropertiesNV;
+     VkPhysicalDeviceDeviceGeneratedCommandsPropertiesNV = record
        sType :VkStructureType;
        pNext :P_void;
        maxGraphicsShaderGroupCount :T_uint32_t;
@@ -11242,13 +11694,15 @@ type VkPhysicalDeviceDeviceGeneratedCommandsPropertiesNV = record
        minIndirectCommandsBufferOffsetAlignment :T_uint32_t;
      end;
 
-type VkPhysicalDeviceDeviceGeneratedCommandsFeaturesNV = record
+type P_VkPhysicalDeviceDeviceGeneratedCommandsFeaturesNV = ^VkPhysicalDeviceDeviceGeneratedCommandsFeaturesNV;
+     VkPhysicalDeviceDeviceGeneratedCommandsFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        deviceGeneratedCommands :VkBool32;
      end;
 
-type VkGraphicsShaderGroupCreateInfoNV = record
+type P_VkGraphicsShaderGroupCreateInfoNV = ^VkGraphicsShaderGroupCreateInfoNV;
+     VkGraphicsShaderGroupCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        stageCount :T_uint32_t;
@@ -11257,7 +11711,8 @@ type VkGraphicsShaderGroupCreateInfoNV = record
        pTessellationState :P_VkPipelineTessellationStateCreateInfo;
      end;
 
-type VkGraphicsPipelineShaderGroupsCreateInfoNV = record
+type P_VkGraphicsPipelineShaderGroupsCreateInfoNV = ^VkGraphicsPipelineShaderGroupsCreateInfoNV;
+     VkGraphicsPipelineShaderGroupsCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        groupCount :T_uint32_t;
@@ -11266,32 +11721,38 @@ type VkGraphicsPipelineShaderGroupsCreateInfoNV = record
        pPipelines :P_VkPipeline;
      end;
 
-type VkBindShaderGroupIndirectCommandNV = record
+type P_VkBindShaderGroupIndirectCommandNV = ^VkBindShaderGroupIndirectCommandNV;
+     VkBindShaderGroupIndirectCommandNV = record
        groupIndex :T_uint32_t;
      end;
 
-type VkBindIndexBufferIndirectCommandNV = record
+type P_VkBindIndexBufferIndirectCommandNV = ^VkBindIndexBufferIndirectCommandNV;
+     VkBindIndexBufferIndirectCommandNV = record
        bufferAddress :VkDeviceAddress;
        size :T_uint32_t;
        indexType :VkIndexType;
      end;
 
-type VkBindVertexBufferIndirectCommandNV = record
+type P_VkBindVertexBufferIndirectCommandNV = ^VkBindVertexBufferIndirectCommandNV;
+     VkBindVertexBufferIndirectCommandNV = record
        bufferAddress :VkDeviceAddress;
        size :T_uint32_t;
        stride :T_uint32_t;
      end;
 
-type VkSetStateFlagsIndirectCommandNV = record
+type P_VkSetStateFlagsIndirectCommandNV = ^VkSetStateFlagsIndirectCommandNV;
+     VkSetStateFlagsIndirectCommandNV = record
        data :T_uint32_t;
      end;
 
-type VkIndirectCommandsStreamNV = record
+type P_VkIndirectCommandsStreamNV = ^VkIndirectCommandsStreamNV;
+     VkIndirectCommandsStreamNV = record
        buffer :VkBuffer;
        offset :VkDeviceSize;
      end;
 
-type VkIndirectCommandsLayoutTokenNV = record
+type P_VkIndirectCommandsLayoutTokenNV = ^VkIndirectCommandsLayoutTokenNV;
+     VkIndirectCommandsLayoutTokenNV = record
        sType :VkStructureType;
        pNext :P_void;
        tokenType :VkIndirectCommandsTokenTypeNV;
@@ -11309,7 +11770,8 @@ type VkIndirectCommandsLayoutTokenNV = record
        pIndexTypeValues :P_uint32_t;
      end;
 
-type VkIndirectCommandsLayoutCreateInfoNV = record
+type P_VkIndirectCommandsLayoutCreateInfoNV = ^VkIndirectCommandsLayoutCreateInfoNV;
+     VkIndirectCommandsLayoutCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkIndirectCommandsLayoutUsageFlagsNV;
@@ -11320,7 +11782,8 @@ type VkIndirectCommandsLayoutCreateInfoNV = record
        pStreamStrides :P_uint32_t;
      end;
 
-type VkGeneratedCommandsInfoNV = record
+type P_VkGeneratedCommandsInfoNV = ^VkGeneratedCommandsInfoNV;
+     VkGeneratedCommandsInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        pipelineBindPoint :VkPipelineBindPoint;
@@ -11338,7 +11801,8 @@ type VkGeneratedCommandsInfoNV = record
        sequencesIndexOffset :VkDeviceSize;
      end;
 
-type VkGeneratedCommandsMemoryRequirementsInfoNV = record
+type P_VkGeneratedCommandsMemoryRequirementsInfoNV = ^VkGeneratedCommandsMemoryRequirementsInfoNV;
+     VkGeneratedCommandsMemoryRequirementsInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        pipelineBindPoint :VkPipelineBindPoint;
@@ -11391,13 +11855,15 @@ procedure vkDestroyIndirectCommandsLayoutNV(
 const VK_EXT_texel_buffer_alignment = 1;
 const VK_EXT_TEXEL_BUFFER_ALIGNMENT_SPEC_VERSION = 1;
 const VK_EXT_TEXEL_BUFFER_ALIGNMENT_EXTENSION_NAME = 'VK_EXT_texel_buffer_alignment';
-type VkPhysicalDeviceTexelBufferAlignmentFeaturesEXT = record
+type P_VkPhysicalDeviceTexelBufferAlignmentFeaturesEXT = ^VkPhysicalDeviceTexelBufferAlignmentFeaturesEXT;
+     VkPhysicalDeviceTexelBufferAlignmentFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        texelBufferAlignment :VkBool32;
      end;
 
-type VkPhysicalDeviceTexelBufferAlignmentPropertiesEXT = record
+type P_VkPhysicalDeviceTexelBufferAlignmentPropertiesEXT = ^VkPhysicalDeviceTexelBufferAlignmentPropertiesEXT;
+     VkPhysicalDeviceTexelBufferAlignmentPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        storageTexelBufferOffsetAlignmentBytes :VkDeviceSize;
@@ -11411,13 +11877,15 @@ type VkPhysicalDeviceTexelBufferAlignmentPropertiesEXT = record
 const VK_QCOM_render_pass_transform = 1;
 const VK_QCOM_RENDER_PASS_TRANSFORM_SPEC_VERSION = 1;
 const VK_QCOM_RENDER_PASS_TRANSFORM_EXTENSION_NAME = 'VK_QCOM_render_pass_transform';
-type VkRenderPassTransformBeginInfoQCOM = record
+type P_VkRenderPassTransformBeginInfoQCOM = ^VkRenderPassTransformBeginInfoQCOM;
+     VkRenderPassTransformBeginInfoQCOM = record
        sType :VkStructureType;
        pNext :P_void;
        transform :VkSurfaceTransformFlagBitsKHR;
      end;
 
-type VkCommandBufferInheritanceRenderPassTransformInfoQCOM = record
+type P_VkCommandBufferInheritanceRenderPassTransformInfoQCOM = ^VkCommandBufferInheritanceRenderPassTransformInfoQCOM;
+     VkCommandBufferInheritanceRenderPassTransformInfoQCOM = record
        sType :VkStructureType;
        pNext :P_void;
        transform :VkSurfaceTransformFlagBitsKHR;
@@ -11439,13 +11907,15 @@ type VkDeviceMemoryReportEventTypeEXT = (
        VK_DEVICE_MEMORY_REPORT_EVENT_TYPE_MAX_ENUM_EXT = $7FFFFFFF
      );
 type VkDeviceMemoryReportFlagsEXT = VkFlags;
-type VkPhysicalDeviceDeviceMemoryReportFeaturesEXT = record
+type P_VkPhysicalDeviceDeviceMemoryReportFeaturesEXT = ^VkPhysicalDeviceDeviceMemoryReportFeaturesEXT;
+     VkPhysicalDeviceDeviceMemoryReportFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        deviceMemoryReport :VkBool32;
      end;
 
-type VkDeviceMemoryReportCallbackDataEXT = record
+type P_VkDeviceMemoryReportCallbackDataEXT = ^VkDeviceMemoryReportCallbackDataEXT;
+     VkDeviceMemoryReportCallbackDataEXT = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDeviceMemoryReportFlagsEXT;
@@ -11461,7 +11931,8 @@ type PFN_vkDeviceMemoryReportCallbackEXT = procedure(
     pCallbackData_:P_VkDeviceMemoryReportCallbackDataEXT;
     pUserData_:P_void );
 
-type VkDeviceDeviceMemoryReportCreateInfoEXT = record
+type P_VkDeviceDeviceMemoryReportCreateInfoEXT = ^VkDeviceDeviceMemoryReportCreateInfoEXT;
+     VkDeviceDeviceMemoryReportCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDeviceMemoryReportFlagsEXT;
@@ -11474,7 +11945,8 @@ type VkDeviceDeviceMemoryReportCreateInfoEXT = record
 const VK_EXT_robustness2 = 1;
 const VK_EXT_ROBUSTNESS_2_SPEC_VERSION  = 1;
 const VK_EXT_ROBUSTNESS_2_EXTENSION_NAME = 'VK_EXT_robustness2';
-type VkPhysicalDeviceRobustness2FeaturesEXT = record
+type P_VkPhysicalDeviceRobustness2FeaturesEXT = ^VkPhysicalDeviceRobustness2FeaturesEXT;
+     VkPhysicalDeviceRobustness2FeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        robustBufferAccess2 :VkBool32;
@@ -11482,7 +11954,8 @@ type VkPhysicalDeviceRobustness2FeaturesEXT = record
        nullDescriptor :VkBool32;
      end;
 
-type VkPhysicalDeviceRobustness2PropertiesEXT = record
+type P_VkPhysicalDeviceRobustness2PropertiesEXT = ^VkPhysicalDeviceRobustness2PropertiesEXT;
+     VkPhysicalDeviceRobustness2PropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        robustStorageBufferAccessSizeAlignment :VkDeviceSize;
@@ -11494,20 +11967,23 @@ type VkPhysicalDeviceRobustness2PropertiesEXT = record
 const VK_EXT_custom_border_color = 1;
 const VK_EXT_CUSTOM_BORDER_COLOR_SPEC_VERSION = 12;
 const VK_EXT_CUSTOM_BORDER_COLOR_EXTENSION_NAME = 'VK_EXT_custom_border_color';
-type VkSamplerCustomBorderColorCreateInfoEXT = record
+type P_VkSamplerCustomBorderColorCreateInfoEXT = ^VkSamplerCustomBorderColorCreateInfoEXT;
+     VkSamplerCustomBorderColorCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        customBorderColor :VkClearColorValue;
        format :VkFormat;
      end;
 
-type VkPhysicalDeviceCustomBorderColorPropertiesEXT = record
+type P_VkPhysicalDeviceCustomBorderColorPropertiesEXT = ^VkPhysicalDeviceCustomBorderColorPropertiesEXT;
+     VkPhysicalDeviceCustomBorderColorPropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        maxCustomBorderColorSamplers :T_uint32_t;
      end;
 
-type VkPhysicalDeviceCustomBorderColorFeaturesEXT = record
+type P_VkPhysicalDeviceCustomBorderColorFeaturesEXT = ^VkPhysicalDeviceCustomBorderColorFeaturesEXT;
+     VkPhysicalDeviceCustomBorderColorFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        customBorderColors :VkBool32;
@@ -11530,19 +12006,22 @@ type VkPrivateDataSlotCreateFlagBitsEXT = (
        VK_PRIVATE_DATA_SLOT_CREATE_FLAG_BITS_MAX_ENUM_EXT = $7FFFFFFF
      );
 type VkPrivateDataSlotCreateFlagsEXT = VkFlags;
-type VkPhysicalDevicePrivateDataFeaturesEXT = record
+type P_VkPhysicalDevicePrivateDataFeaturesEXT = ^VkPhysicalDevicePrivateDataFeaturesEXT;
+     VkPhysicalDevicePrivateDataFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        privateData :VkBool32;
      end;
 
-type VkDevicePrivateDataCreateInfoEXT = record
+type P_VkDevicePrivateDataCreateInfoEXT = ^VkDevicePrivateDataCreateInfoEXT;
+     VkDevicePrivateDataCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        privateDataSlotRequestCount :T_uint32_t;
      end;
 
-type VkPrivateDataSlotCreateInfoEXT = record
+type P_VkPrivateDataSlotCreateInfoEXT = ^VkPrivateDataSlotCreateInfoEXT;
+     VkPrivateDataSlotCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPrivateDataSlotCreateFlagsEXT;
@@ -11584,7 +12063,8 @@ procedure vkGetPrivateDataEXT(
 const VK_EXT_pipeline_creation_cache_control = 1;
 const VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_SPEC_VERSION = 3;
 const VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME = 'VK_EXT_pipeline_creation_cache_control';
-type VkPhysicalDevicePipelineCreationCacheControlFeaturesEXT = record
+type P_VkPhysicalDevicePipelineCreationCacheControlFeaturesEXT = ^VkPhysicalDevicePipelineCreationCacheControlFeaturesEXT;
+     VkPhysicalDevicePipelineCreationCacheControlFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        pipelineCreationCacheControl :VkBool32;
@@ -11603,13 +12083,15 @@ type VkDeviceDiagnosticsConfigFlagBitsNV = (
        VK_DEVICE_DIAGNOSTICS_CONFIG_FLAG_BITS_MAX_ENUM_NV = $7FFFFFFF
      );
 type VkDeviceDiagnosticsConfigFlagsNV = VkFlags;
-type VkPhysicalDeviceDiagnosticsConfigFeaturesNV = record
+type P_VkPhysicalDeviceDiagnosticsConfigFeaturesNV = ^VkPhysicalDeviceDiagnosticsConfigFeaturesNV;
+     VkPhysicalDeviceDiagnosticsConfigFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        diagnosticsConfig :VkBool32;
      end;
 
-type VkDeviceDiagnosticsConfigCreateInfoNV = record
+type P_VkDeviceDiagnosticsConfigCreateInfoNV = ^VkDeviceDiagnosticsConfigCreateInfoNV;
+     VkDeviceDiagnosticsConfigCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDeviceDiagnosticsConfigFlagsNV;
@@ -11647,7 +12129,8 @@ type VkFragmentShadingRateNV = (
        VK_FRAGMENT_SHADING_RATE_NO_INVOCATIONS_NV = 15,
        VK_FRAGMENT_SHADING_RATE_MAX_ENUM_NV = $7FFFFFFF
      );
-type VkPhysicalDeviceFragmentShadingRateEnumsFeaturesNV = record
+type P_VkPhysicalDeviceFragmentShadingRateEnumsFeaturesNV = ^VkPhysicalDeviceFragmentShadingRateEnumsFeaturesNV;
+     VkPhysicalDeviceFragmentShadingRateEnumsFeaturesNV = record
        sType :VkStructureType;
        pNext :P_void;
        fragmentShadingRateEnums :VkBool32;
@@ -11655,13 +12138,15 @@ type VkPhysicalDeviceFragmentShadingRateEnumsFeaturesNV = record
        noInvocationFragmentShadingRates :VkBool32;
      end;
 
-type VkPhysicalDeviceFragmentShadingRateEnumsPropertiesNV = record
+type P_VkPhysicalDeviceFragmentShadingRateEnumsPropertiesNV = ^VkPhysicalDeviceFragmentShadingRateEnumsPropertiesNV;
+     VkPhysicalDeviceFragmentShadingRateEnumsPropertiesNV = record
        sType :VkStructureType;
        pNext :P_void;
        maxFragmentShadingRateInvocationCount :VkSampleCountFlagBits;
      end;
 
-type VkPipelineFragmentShadingRateEnumStateCreateInfoNV = record
+type P_VkPipelineFragmentShadingRateEnumStateCreateInfoNV = ^VkPipelineFragmentShadingRateEnumStateCreateInfoNV;
+     VkPipelineFragmentShadingRateEnumStateCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
        shadingRateType :VkFragmentShadingRateTypeNV;
@@ -11682,13 +12167,15 @@ procedure vkCmdSetFragmentShadingRateEnumNV(
 const VK_EXT_fragment_density_map2 = 1;
 const VK_EXT_FRAGMENT_DENSITY_MAP_2_SPEC_VERSION = 1;
 const VK_EXT_FRAGMENT_DENSITY_MAP_2_EXTENSION_NAME = 'VK_EXT_fragment_density_map2';
-type VkPhysicalDeviceFragmentDensityMap2FeaturesEXT = record
+type P_VkPhysicalDeviceFragmentDensityMap2FeaturesEXT = ^VkPhysicalDeviceFragmentDensityMap2FeaturesEXT;
+     VkPhysicalDeviceFragmentDensityMap2FeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        fragmentDensityMapDeferred :VkBool32;
      end;
 
-type VkPhysicalDeviceFragmentDensityMap2PropertiesEXT = record
+type P_VkPhysicalDeviceFragmentDensityMap2PropertiesEXT = ^VkPhysicalDeviceFragmentDensityMap2PropertiesEXT;
+     VkPhysicalDeviceFragmentDensityMap2PropertiesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        subsampledLoads :VkBool32;
@@ -11702,7 +12189,8 @@ type VkPhysicalDeviceFragmentDensityMap2PropertiesEXT = record
 const VK_QCOM_rotated_copy_commands = 1;
 const VK_QCOM_ROTATED_COPY_COMMANDS_SPEC_VERSION = 0;
 const VK_QCOM_ROTATED_COPY_COMMANDS_EXTENSION_NAME = 'VK_QCOM_rotated_copy_commands';
-type VkCopyCommandTransformInfoQCOM = record
+type P_VkCopyCommandTransformInfoQCOM = ^VkCopyCommandTransformInfoQCOM;
+     VkCopyCommandTransformInfoQCOM = record
        sType :VkStructureType;
        pNext :P_void;
        transform :VkSurfaceTransformFlagBitsKHR;
@@ -11713,7 +12201,8 @@ type VkCopyCommandTransformInfoQCOM = record
 const VK_EXT_image_robustness = 1;
 const VK_EXT_IMAGE_ROBUSTNESS_SPEC_VERSION = 1;
 const VK_EXT_IMAGE_ROBUSTNESS_EXTENSION_NAME = 'VK_EXT_image_robustness';
-type VkPhysicalDeviceImageRobustnessFeaturesEXT = record
+type P_VkPhysicalDeviceImageRobustnessFeaturesEXT = ^VkPhysicalDeviceImageRobustnessFeaturesEXT;
+     VkPhysicalDeviceImageRobustnessFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        robustImageAccess :VkBool32;
@@ -11724,7 +12213,8 @@ type VkPhysicalDeviceImageRobustnessFeaturesEXT = record
 const VK_EXT_4444_formats = 1;
 const VK_EXT_4444_FORMATS_SPEC_VERSION  = 1;
 const VK_EXT_4444_FORMATS_EXTENSION_NAME = 'VK_EXT_4444_formats';
-type VkPhysicalDevice4444FormatsFeaturesEXT = record
+type P_VkPhysicalDevice4444FormatsFeaturesEXT = ^VkPhysicalDevice4444FormatsFeaturesEXT;
+     VkPhysicalDevice4444FormatsFeaturesEXT = record
        sType :VkStructureType;
        pNext :P_void;
        formatA4R4G4B4 :VkBool32;
@@ -11754,18 +12244,21 @@ function vkGetWinrtDisplayNV(
 const VK_VALVE_mutable_descriptor_type = 1;
 const VK_VALVE_MUTABLE_DESCRIPTOR_TYPE_SPEC_VERSION = 1;
 const VK_VALVE_MUTABLE_DESCRIPTOR_TYPE_EXTENSION_NAME = 'VK_VALVE_mutable_descriptor_type';
-type VkPhysicalDeviceMutableDescriptorTypeFeaturesVALVE = record
+type P_VkPhysicalDeviceMutableDescriptorTypeFeaturesVALVE = ^VkPhysicalDeviceMutableDescriptorTypeFeaturesVALVE;
+     VkPhysicalDeviceMutableDescriptorTypeFeaturesVALVE = record
        sType :VkStructureType;
        pNext :P_void;
        mutableDescriptorType :VkBool32;
      end;
 
-type VkMutableDescriptorTypeListVALVE = record
+type P_VkMutableDescriptorTypeListVALVE = ^VkMutableDescriptorTypeListVALVE;
+     VkMutableDescriptorTypeListVALVE = record
        descriptorTypeCount :T_uint32_t;
        pDescriptorTypes :P_VkDescriptorType;
      end;
 
-type VkMutableDescriptorTypeCreateInfoVALVE = record
+type P_VkMutableDescriptorTypeCreateInfoVALVE = ^VkMutableDescriptorTypeCreateInfoVALVE;
+     VkMutableDescriptorTypeCreateInfoVALVE = record
        sType :VkStructureType;
        pNext :P_void;
        mutableDescriptorTypeListCount :T_uint32_t;
@@ -11803,26 +12296,30 @@ type VkAccelerationStructureCreateFlagBitsKHR = (
        VK_ACCELERATION_STRUCTURE_CREATE_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
      );
 type VkAccelerationStructureCreateFlagsKHR = VkFlags;
-type VkDeviceOrHostAddressKHR = record
+type P_VkDeviceOrHostAddressKHR = ^VkDeviceOrHostAddressKHR;
+     VkDeviceOrHostAddressKHR = record
      case Byte of
        0:( deviceAddress :VkDeviceAddress );
        1:( hostAddress   :P_void          );
      end;
 
-type VkDeviceOrHostAddressConstKHR = record
+type P_VkDeviceOrHostAddressConstKHR = ^VkDeviceOrHostAddressConstKHR;
+     VkDeviceOrHostAddressConstKHR = record
      case Byte of
        0:( deviceAddress :VkDeviceAddress );
        1:( hostAddress   :P_void          );
      end;
 
-type VkAccelerationStructureBuildRangeInfoKHR = record
+type P_VkAccelerationStructureBuildRangeInfoKHR = ^VkAccelerationStructureBuildRangeInfoKHR;
+     VkAccelerationStructureBuildRangeInfoKHR = record
        primitiveCount :T_uint32_t;
        primitiveOffset :T_uint32_t;
        firstVertex :T_uint32_t;
        transformOffset :T_uint32_t;
      end;
 
-type VkAccelerationStructureGeometryTrianglesDataKHR = record
+type P_VkAccelerationStructureGeometryTrianglesDataKHR = ^VkAccelerationStructureGeometryTrianglesDataKHR;
+     VkAccelerationStructureGeometryTrianglesDataKHR = record
        sType :VkStructureType;
        pNext :P_void;
        vertexFormat :VkFormat;
@@ -11834,28 +12331,32 @@ type VkAccelerationStructureGeometryTrianglesDataKHR = record
        transformData :VkDeviceOrHostAddressConstKHR;
      end;
 
-type VkAccelerationStructureGeometryAabbsDataKHR = record
+type P_VkAccelerationStructureGeometryAabbsDataKHR = ^VkAccelerationStructureGeometryAabbsDataKHR;
+     VkAccelerationStructureGeometryAabbsDataKHR = record
        sType :VkStructureType;
        pNext :P_void;
        data :VkDeviceOrHostAddressConstKHR;
        stride :VkDeviceSize;
      end;
 
-type VkAccelerationStructureGeometryInstancesDataKHR = record
+type P_VkAccelerationStructureGeometryInstancesDataKHR = ^VkAccelerationStructureGeometryInstancesDataKHR;
+     VkAccelerationStructureGeometryInstancesDataKHR = record
        sType :VkStructureType;
        pNext :P_void;
        arrayOfPointers :VkBool32;
        data :VkDeviceOrHostAddressConstKHR;
      end;
 
-type VkAccelerationStructureGeometryDataKHR = record
+type P_VkAccelerationStructureGeometryDataKHR = ^VkAccelerationStructureGeometryDataKHR;
+     VkAccelerationStructureGeometryDataKHR = record
      case Byte of
        0:( triangles :VkAccelerationStructureGeometryTrianglesDataKHR );
        1:( aabbs     :VkAccelerationStructureGeometryAabbsDataKHR     );
        2:( instances :VkAccelerationStructureGeometryInstancesDataKHR );
      end;
 
-type VkAccelerationStructureGeometryKHR = record
+type P_VkAccelerationStructureGeometryKHR = ^VkAccelerationStructureGeometryKHR;
+     VkAccelerationStructureGeometryKHR = record
        sType :VkStructureType;
        pNext :P_void;
        geometryType :VkGeometryTypeKHR;
@@ -11863,7 +12364,8 @@ type VkAccelerationStructureGeometryKHR = record
        flags :VkGeometryFlagsKHR;
      end;
 
-type VkAccelerationStructureBuildGeometryInfoKHR = record
+type P_VkAccelerationStructureBuildGeometryInfoKHR = ^VkAccelerationStructureBuildGeometryInfoKHR;
+     VkAccelerationStructureBuildGeometryInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        type :VkAccelerationStructureTypeKHR;
@@ -11877,7 +12379,8 @@ type VkAccelerationStructureBuildGeometryInfoKHR = record
        scratchData :VkDeviceOrHostAddressKHR;
      end;
 
-type VkAccelerationStructureCreateInfoKHR = record
+type P_VkAccelerationStructureCreateInfoKHR = ^VkAccelerationStructureCreateInfoKHR;
+     VkAccelerationStructureCreateInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        createFlags :VkAccelerationStructureCreateFlagsKHR;
@@ -11888,14 +12391,16 @@ type VkAccelerationStructureCreateInfoKHR = record
        deviceAddress :VkDeviceAddress;
      end;
 
-type VkWriteDescriptorSetAccelerationStructureKHR = record
+type P_VkWriteDescriptorSetAccelerationStructureKHR = ^VkWriteDescriptorSetAccelerationStructureKHR;
+     VkWriteDescriptorSetAccelerationStructureKHR = record
        sType :VkStructureType;
        pNext :P_void;
        accelerationStructureCount :T_uint32_t;
        pAccelerationStructures :P_VkAccelerationStructureKHR;
      end;
 
-type VkPhysicalDeviceAccelerationStructureFeaturesKHR = record
+type P_VkPhysicalDeviceAccelerationStructureFeaturesKHR = ^VkPhysicalDeviceAccelerationStructureFeaturesKHR;
+     VkPhysicalDeviceAccelerationStructureFeaturesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        accelerationStructure :VkBool32;
@@ -11905,7 +12410,8 @@ type VkPhysicalDeviceAccelerationStructureFeaturesKHR = record
        descriptorBindingAccelerationStructureUpdateAfterBind :VkBool32;
      end;
 
-type VkPhysicalDeviceAccelerationStructurePropertiesKHR = record
+type P_VkPhysicalDeviceAccelerationStructurePropertiesKHR = ^VkPhysicalDeviceAccelerationStructurePropertiesKHR;
+     VkPhysicalDeviceAccelerationStructurePropertiesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        maxGeometryCount :T_uint64_t;
@@ -11918,19 +12424,22 @@ type VkPhysicalDeviceAccelerationStructurePropertiesKHR = record
        minAccelerationStructureScratchOffsetAlignment :T_uint32_t;
      end;
 
-type VkAccelerationStructureDeviceAddressInfoKHR = record
+type P_VkAccelerationStructureDeviceAddressInfoKHR = ^VkAccelerationStructureDeviceAddressInfoKHR;
+     VkAccelerationStructureDeviceAddressInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        accelerationStructure :VkAccelerationStructureKHR;
      end;
 
-type VkAccelerationStructureVersionInfoKHR = record
+type P_VkAccelerationStructureVersionInfoKHR = ^VkAccelerationStructureVersionInfoKHR;
+     VkAccelerationStructureVersionInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        pVersionData :P_uint8_t;
      end;
 
-type VkCopyAccelerationStructureToMemoryInfoKHR = record
+type P_VkCopyAccelerationStructureToMemoryInfoKHR = ^VkCopyAccelerationStructureToMemoryInfoKHR;
+     VkCopyAccelerationStructureToMemoryInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        src :VkAccelerationStructureKHR;
@@ -11938,7 +12447,8 @@ type VkCopyAccelerationStructureToMemoryInfoKHR = record
        mode :VkCopyAccelerationStructureModeKHR;
      end;
 
-type VkCopyMemoryToAccelerationStructureInfoKHR = record
+type P_VkCopyMemoryToAccelerationStructureInfoKHR = ^VkCopyMemoryToAccelerationStructureInfoKHR;
+     VkCopyMemoryToAccelerationStructureInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        src :VkDeviceOrHostAddressConstKHR;
@@ -11946,7 +12456,8 @@ type VkCopyMemoryToAccelerationStructureInfoKHR = record
        mode :VkCopyAccelerationStructureModeKHR;
      end;
 
-type VkCopyAccelerationStructureInfoKHR = record
+type P_VkCopyAccelerationStructureInfoKHR = ^VkCopyAccelerationStructureInfoKHR;
+     VkCopyAccelerationStructureInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        src :VkAccelerationStructureKHR;
@@ -11954,7 +12465,8 @@ type VkCopyAccelerationStructureInfoKHR = record
        mode :VkCopyAccelerationStructureModeKHR;
      end;
 
-type VkAccelerationStructureBuildSizesInfoKHR = record
+type P_VkAccelerationStructureBuildSizesInfoKHR = ^VkAccelerationStructureBuildSizesInfoKHR;
+     VkAccelerationStructureBuildSizesInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        accelerationStructureSize :VkDeviceSize;
@@ -12085,7 +12597,8 @@ type VkShaderGroupShaderKHR = (
        VK_SHADER_GROUP_SHADER_INTERSECTION_KHR = 3,
        VK_SHADER_GROUP_SHADER_MAX_ENUM_KHR = $7FFFFFFF
      );
-type VkRayTracingShaderGroupCreateInfoKHR = record
+type P_VkRayTracingShaderGroupCreateInfoKHR = ^VkRayTracingShaderGroupCreateInfoKHR;
+     VkRayTracingShaderGroupCreateInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        type :VkRayTracingShaderGroupTypeKHR;
@@ -12096,14 +12609,16 @@ type VkRayTracingShaderGroupCreateInfoKHR = record
        pShaderGroupCaptureReplayHandle :P_void;
      end;
 
-type VkRayTracingPipelineInterfaceCreateInfoKHR = record
+type P_VkRayTracingPipelineInterfaceCreateInfoKHR = ^VkRayTracingPipelineInterfaceCreateInfoKHR;
+     VkRayTracingPipelineInterfaceCreateInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        maxPipelineRayPayloadSize :T_uint32_t;
        maxPipelineRayHitAttributeSize :T_uint32_t;
      end;
 
-type VkRayTracingPipelineCreateInfoKHR = record
+type P_VkRayTracingPipelineCreateInfoKHR = ^VkRayTracingPipelineCreateInfoKHR;
+     VkRayTracingPipelineCreateInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineCreateFlags;
@@ -12120,7 +12635,8 @@ type VkRayTracingPipelineCreateInfoKHR = record
        basePipelineIndex :T_int32_t;
      end;
 
-type VkPhysicalDeviceRayTracingPipelineFeaturesKHR = record
+type P_VkPhysicalDeviceRayTracingPipelineFeaturesKHR = ^VkPhysicalDeviceRayTracingPipelineFeaturesKHR;
+     VkPhysicalDeviceRayTracingPipelineFeaturesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        rayTracingPipeline :VkBool32;
@@ -12130,7 +12646,8 @@ type VkPhysicalDeviceRayTracingPipelineFeaturesKHR = record
        rayTraversalPrimitiveCulling :VkBool32;
      end;
 
-type VkPhysicalDeviceRayTracingPipelinePropertiesKHR = record
+type P_VkPhysicalDeviceRayTracingPipelinePropertiesKHR = ^VkPhysicalDeviceRayTracingPipelinePropertiesKHR;
+     VkPhysicalDeviceRayTracingPipelinePropertiesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        shaderGroupHandleSize :T_uint32_t;
@@ -12143,13 +12660,15 @@ type VkPhysicalDeviceRayTracingPipelinePropertiesKHR = record
        maxRayHitAttributeSize :T_uint32_t;
      end;
 
-type VkStridedDeviceAddressRegionKHR = record
+type P_VkStridedDeviceAddressRegionKHR = ^VkStridedDeviceAddressRegionKHR;
+     VkStridedDeviceAddressRegionKHR = record
        deviceAddress :VkDeviceAddress;
        stride :VkDeviceSize;
        size :VkDeviceSize;
      end;
 
-type VkTraceRaysIndirectCommandKHR = record
+type P_VkTraceRaysIndirectCommandKHR = ^VkTraceRaysIndirectCommandKHR;
+     VkTraceRaysIndirectCommandKHR = record
        width :T_uint32_t;
        height :T_uint32_t;
        depth :T_uint32_t;
@@ -12213,7 +12732,8 @@ procedure vkCmdSetRayTracingPipelineStackSizeKHR(
 const VK_KHR_ray_query = 1;
 const VK_KHR_RAY_QUERY_SPEC_VERSION     = 1;
 const VK_KHR_RAY_QUERY_EXTENSION_NAME = 'VK_KHR_ray_query';
-type VkPhysicalDeviceRayQueryFeaturesKHR = record
+type P_VkPhysicalDeviceRayQueryFeaturesKHR = ^VkPhysicalDeviceRayQueryFeaturesKHR;
+     VkPhysicalDeviceRayQueryFeaturesKHR = record
        sType :VkStructureType;
        pNext :P_void;
        rayQuery :VkBool32;
