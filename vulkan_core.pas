@@ -2047,12 +2047,14 @@ type VkRect2D = record
        extent :VkExtent2D;
      end;
 
-type VkBaseInStructure = record
+type P_VkBaseInStructure = ^VkBaseInStructure;
+     VkBaseInStructure = record
        sType :VkStructureType;
        pNext :P_VkBaseInStructure;
      end;
 
-type VkBaseOutStructure = record
+type P_VkBaseOutStructure = ^VkBaseOutStructure;
+     VkBaseOutStructure = record
        sType :VkStructureType;
        pNext :P_VkBaseOutStructure;
      end;
@@ -2120,8 +2122,8 @@ type VkMemoryBarrier = record
 
 type PFN_vkAllocationFunction = function(
     pUserData_:P_void;
-    size_:size_t;
-    alignment_:size_t;
+    size_:T_size_t;
+    alignment_:T_size_t;
     allocationScope_:VkSystemAllocationScope ) :P_void;
 
 type PFN_vkFreeFunction = procedure(
@@ -2130,21 +2132,21 @@ type PFN_vkFreeFunction = procedure(
 
 type PFN_vkInternalAllocationNotification = procedure(
     pUserData_:P_void;
-    size_:size_t;
+    size_:T_size_t;
     allocationType_:VkInternalAllocationType;
     allocationScope_:VkSystemAllocationScope );
 
 type PFN_vkInternalFreeNotification = procedure(
     pUserData_:P_void;
-    size_:size_t;
+    size_:T_size_t;
     allocationType_:VkInternalAllocationType;
     allocationScope_:VkSystemAllocationScope );
 
 type PFN_vkReallocationFunction = function(
     pUserData_:P_void;
     pOriginal_:P_void;
-    size_:size_t;
-    alignment_:size_t;
+    size_:T_size_t;
+    alignment_:T_size_t;
     allocationScope_:VkSystemAllocationScope ) :P_void;
 
 type PFN_vkVoidFunction = procedure;
@@ -2157,7 +2159,8 @@ type VkAllocationCallbacks = record
        pfnInternalFree :PFN_vkInternalFreeNotification;
      end;
 
-type VkApplicationInfo = record
+type P_VkApplicationInfo = ^VkApplicationInfo;
+     VkApplicationInfo = record
        sType :VkStructureType;
        pNext :P_void;
        pApplicationName :P_char;
@@ -2327,7 +2330,7 @@ type VkPhysicalDeviceLimits = record
        maxViewportDimensions :array [ 0..2-1 ] of T_uint32_t;
        viewportBoundsRange :array [ 0..2-1 ] of float;
        viewportSubPixelBits :T_uint32_t;
-       minMemoryMapAlignment :size_t;
+       minMemoryMapAlignment :T_size_t;
        minTexelBufferOffsetAlignment :VkDeviceSize;
        minUniformBufferOffsetAlignment :VkDeviceSize;
        minStorageBufferOffsetAlignment :VkDeviceSize;
@@ -2636,7 +2639,7 @@ type VkShaderModuleCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkShaderModuleCreateFlags;
-       codeSize :size_t;
+       codeSize :T_size_t;
        pCode :P_uint32_t;
      end;
 
@@ -2644,20 +2647,20 @@ type VkPipelineCacheCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineCacheCreateFlags;
-       initialDataSize :size_t;
+       initialDataSize :T_size_t;
        pInitialData :P_void;
      end;
 
 type VkSpecializationMapEntry = record
        constantID :T_uint32_t;
        offset :T_uint32_t;
-       size :size_t;
+       size :T_size_t;
      end;
 
 type VkSpecializationInfo = record
        mapEntryCount :T_uint32_t;
        pMapEntries :P_VkSpecializationMapEntry;
-       dataSize :size_t;
+       dataSize :T_size_t;
        pData :P_void;
      end;
 
@@ -3186,7 +3189,7 @@ type PFN_vkSetEvent = function( device_:VkDevice; event_:VkEvent ) :VkResult;
 type PFN_vkResetEvent = function( device_:VkDevice; event_:VkEvent ) :VkResult;
 type PFN_vkCreateQueryPool = function( device_:VkDevice; const pCreateInfo_:P_VkQueryPoolCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pQueryPool_:P_VkQueryPool ) :VkResult;
 type PFN_vkDestroyQueryPool = procedure( device_:VkDevice; queryPool_:VkQueryPool; const pAllocator_:P_VkAllocationCallbacks );
-type PFN_vkGetQueryPoolResults = function( device_:VkDevice; queryPool_:VkQueryPool; firstQuery_:T_uint32_t; queryCount_:T_uint32_t; dataSize_:size_t; pData_:P_void; stride_:VkDeviceSize; flags_:VkQueryResultFlags ) :VkResult;
+type PFN_vkGetQueryPoolResults = function( device_:VkDevice; queryPool_:VkQueryPool; firstQuery_:T_uint32_t; queryCount_:T_uint32_t; dataSize_:T_size_t; pData_:P_void; stride_:VkDeviceSize; flags_:VkQueryResultFlags ) :VkResult;
 type PFN_vkCreateBuffer = function( device_:VkDevice; const pCreateInfo_:P_VkBufferCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pBuffer_:P_VkBuffer ) :VkResult;
 type PFN_vkDestroyBuffer = procedure( device_:VkDevice; buffer_:VkBuffer; const pAllocator_:P_VkAllocationCallbacks );
 type PFN_vkCreateBufferView = function( device_:VkDevice; const pCreateInfo_:P_VkBufferViewCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pView_:P_VkBufferView ) :VkResult;
@@ -3536,7 +3539,7 @@ function vkGetQueryPoolResults(
     queryPool_:VkQueryPool;
     firstQuery_:T_uint32_t;
     queryCount_:T_uint32_t;
-    dataSize_:size_t;
+    dataSize_:T_size_t;
     pData_:P_void;
     stride_:VkDeviceSize;
     flags_:VkQueryResultFlags ) :VkResult; stdcall; external DLLNAME;
@@ -4622,8 +4625,8 @@ type VkDescriptorUpdateTemplateEntry = record
        dstArrayElement :T_uint32_t;
        descriptorCount :T_uint32_t;
        descriptorType :VkDescriptorType;
-       offset :size_t;
-       stride :size_t;
+       offset :T_size_t;
+       stride :T_size_t;
      end;
 
 type VkDescriptorUpdateTemplateCreateInfo = record
@@ -7494,7 +7497,7 @@ type VkPipelineExecutableInternalRepresentationKHR = record
        name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
        description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of char;
        isText :VkBool32;
-       dataSize :size_t;
+       dataSize :T_size_t;
        pData :P_void;
      end;
 
@@ -8019,7 +8022,7 @@ type PFN_vkDebugReportCallbackEXT = function(
     flags_:VkDebugReportFlagsEXT;
     objectType_:VkDebugReportObjectTypeEXT;
     object_:uint64_t;
-    location_:size_t;
+    location_:T_size_t;
     messageCode_:T_int32_t;
     pLayerPrefix_:P_char;
     pMessage_:P_char;
@@ -8035,7 +8038,7 @@ type VkDebugReportCallbackCreateInfoEXT = record
 
 type PFN_vkCreateDebugReportCallbackEXT = function( instance_:VkInstance; const pCreateInfo_:P_VkDebugReportCallbackCreateInfoEXT; const pAllocator_:P_VkAllocationCallbacks; pCallback_:P_VkDebugReportCallbackEXT ) :VkResult;
 type PFN_vkDestroyDebugReportCallbackEXT = procedure( instance_:VkInstance; callback_:VkDebugReportCallbackEXT; const pAllocator_:P_VkAllocationCallbacks );
-type PFN_vkDebugReportMessageEXT = procedure( instance_:VkInstance; flags_:VkDebugReportFlagsEXT; objectType_:VkDebugReportObjectTypeEXT; object_:uint64_t; location_:size_t; messageCode_:T_int32_t; const pLayerPrefix_:P_char; const pMessage_:P_char );
+type PFN_vkDebugReportMessageEXT = procedure( instance_:VkInstance; flags_:VkDebugReportFlagsEXT; objectType_:VkDebugReportObjectTypeEXT; object_:uint64_t; location_:T_size_t; messageCode_:T_int32_t; const pLayerPrefix_:P_char; const pMessage_:P_char );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkCreateDebugReportCallbackEXT(
@@ -8054,7 +8057,7 @@ procedure vkDebugReportMessageEXT(
     flags_:VkDebugReportFlagsEXT;
     objectType_:VkDebugReportObjectTypeEXT;
     object_:uint64_t;
-    location_:size_t;
+    location_:T_size_t;
     messageCode_:T_int32_t;
     pLayerPrefix_:P_char;
     pMessage_:P_char ); stdcall; external DLLNAME;
@@ -8120,7 +8123,7 @@ type VkDebugMarkerObjectTagInfoEXT = record
        objectType :VkDebugReportObjectTypeEXT;
        object :uint64_t;
        tagName :uint64_t;
-       tagSize :size_t;
+       tagSize :T_size_t;
        pTag :P_void;
      end;
 
@@ -8375,8 +8378,8 @@ type VkShaderResourceUsageAMD = record
        numUsedVgprs :T_uint32_t;
        numUsedSgprs :T_uint32_t;
        ldsSizePerLocalWorkGroup :T_uint32_t;
-       ldsUsageSizeInBytes :size_t;
-       scratchMemUsageInBytes :size_t;
+       ldsUsageSizeInBytes :T_size_t;
+       scratchMemUsageInBytes :T_size_t;
      end;
 
 type VkShaderStatisticsInfoAMD = record
@@ -9048,7 +9051,7 @@ type VkDebugUtilsObjectTagInfoEXT = record
        objectType :VkObjectType;
        objectHandle :uint64_t;
        tagName :uint64_t;
-       tagSize :size_t;
+       tagSize :T_size_t;
        pTag :P_void;
      end;
 
@@ -9427,7 +9430,7 @@ type VkValidationCacheCreateInfoEXT = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkValidationCacheCreateFlagsEXT;
-       initialDataSize :size_t;
+       initialDataSize :T_size_t;
        pInitialData :P_void;
      end;
 
@@ -9852,9 +9855,9 @@ type PFN_vkCmdBuildAccelerationStructureNV = procedure( commandBuffer_:VkCommand
 type PFN_vkCmdCopyAccelerationStructureNV = procedure( commandBuffer_:VkCommandBuffer; dst_:VkAccelerationStructureNV; src_:VkAccelerationStructureNV; mode_:VkCopyAccelerationStructureModeKHR );
 type PFN_vkCmdTraceRaysNV = procedure( commandBuffer_:VkCommandBuffer; raygenShaderBindingTableBuffer_:VkBuffer; raygenShaderBindingOffset_:VkDeviceSize; missShaderBindingTableBuffer_:VkBuffer; missShaderBindingOffset_:VkDeviceSize; missShaderBindingStride_:VkDeviceSize; hitShaderBindingTableBuffer_:VkBuffer; hitShaderBindingOffset_:VkDeviceSize; hitShaderBindingStride_:VkDeviceSize; callableShaderBindingTableBuffer_:VkBuffer; callableShaderBindingOffset_:VkDeviceSize; callableShaderBindingStride_:VkDeviceSize; width_:T_uint32_t; height_:T_uint32_t; depth_:T_uint32_t );
 type PFN_vkCreateRayTracingPipelinesNV = function( device_:VkDevice; pipelineCache_:VkPipelineCache; createInfoCount_:T_uint32_t; const pCreateInfos_:P_VkRayTracingPipelineCreateInfoNV; const pAllocator_:P_VkAllocationCallbacks; pPipelines_:P_VkPipeline ) :VkResult;
-type PFN_vkGetRayTracingShaderGroupHandlesKHR = function( device_:VkDevice; pipeline_:VkPipeline; firstGroup_:T_uint32_t; groupCount_:T_uint32_t; dataSize_:size_t; pData_:P_void ) :VkResult;
-type PFN_vkGetRayTracingShaderGroupHandlesNV = function( device_:VkDevice; pipeline_:VkPipeline; firstGroup_:T_uint32_t; groupCount_:T_uint32_t; dataSize_:size_t; pData_:P_void ) :VkResult;
-type PFN_vkGetAccelerationStructureHandleNV = function( device_:VkDevice; accelerationStructure_:VkAccelerationStructureNV; dataSize_:size_t; pData_:P_void ) :VkResult;
+type PFN_vkGetRayTracingShaderGroupHandlesKHR = function( device_:VkDevice; pipeline_:VkPipeline; firstGroup_:T_uint32_t; groupCount_:T_uint32_t; dataSize_:T_size_t; pData_:P_void ) :VkResult;
+type PFN_vkGetRayTracingShaderGroupHandlesNV = function( device_:VkDevice; pipeline_:VkPipeline; firstGroup_:T_uint32_t; groupCount_:T_uint32_t; dataSize_:T_size_t; pData_:P_void ) :VkResult;
+type PFN_vkGetAccelerationStructureHandleNV = function( device_:VkDevice; accelerationStructure_:VkAccelerationStructureNV; dataSize_:T_size_t; pData_:P_void ) :VkResult;
 type PFN_vkCmdWriteAccelerationStructuresPropertiesNV = procedure( commandBuffer_:VkCommandBuffer; accelerationStructureCount_:T_uint32_t; const pAccelerationStructures_:P_VkAccelerationStructureNV; queryType_:VkQueryType; queryPool_:VkQueryPool; firstQuery_:T_uint32_t );
 type PFN_vkCompileDeferredNV = function( device_:VkDevice; pipeline_:VkPipeline; shader_:T_uint32_t ) :VkResult;
 
@@ -9927,7 +9930,7 @@ function vkGetRayTracingShaderGroupHandlesKHR(
     pipeline_:VkPipeline;
     firstGroup_:T_uint32_t;
     groupCount_:T_uint32_t;
-    dataSize_:size_t;
+    dataSize_:T_size_t;
     pData_:P_void ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetRayTracingShaderGroupHandlesNV(
@@ -9935,13 +9938,13 @@ function vkGetRayTracingShaderGroupHandlesNV(
     pipeline_:VkPipeline;
     firstGroup_:T_uint32_t;
     groupCount_:T_uint32_t;
-    dataSize_:size_t;
+    dataSize_:T_size_t;
     pData_:P_void ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetAccelerationStructureHandleNV(
     device_:VkDevice;
     accelerationStructure_:VkAccelerationStructureNV;
-    dataSize_:size_t;
+    dataSize_:T_size_t;
     pData_:P_void ) :VkResult; stdcall; external DLLNAME;
 
 procedure vkCmdWriteAccelerationStructuresPropertiesNV(
@@ -11931,7 +11934,7 @@ type PFN_vkBuildAccelerationStructuresKHR = function( device_:VkDevice; deferred
 type PFN_vkCopyAccelerationStructureKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; const pInfo_:P_VkCopyAccelerationStructureInfoKHR ) :VkResult;
 type PFN_vkCopyAccelerationStructureToMemoryKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; const pInfo_:P_VkCopyAccelerationStructureToMemoryInfoKHR ) :VkResult;
 type PFN_vkCopyMemoryToAccelerationStructureKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; const pInfo_:P_VkCopyMemoryToAccelerationStructureInfoKHR ) :VkResult;
-type PFN_vkWriteAccelerationStructuresPropertiesKHR = function( device_:VkDevice; accelerationStructureCount_:T_uint32_t; const pAccelerationStructures_:P_VkAccelerationStructureKHR; queryType_:VkQueryType; dataSize_:size_t; pData_:P_void; stride_:size_t ) :VkResult;
+type PFN_vkWriteAccelerationStructuresPropertiesKHR = function( device_:VkDevice; accelerationStructureCount_:T_uint32_t; const pAccelerationStructures_:P_VkAccelerationStructureKHR; queryType_:VkQueryType; dataSize_:T_size_t; pData_:P_void; stride_:T_size_t ) :VkResult;
 type PFN_vkCmdCopyAccelerationStructureKHR = procedure( commandBuffer_:VkCommandBuffer; const pInfo_:P_VkCopyAccelerationStructureInfoKHR );
 type PFN_vkCmdCopyAccelerationStructureToMemoryKHR = procedure( commandBuffer_:VkCommandBuffer; const pInfo_:P_VkCopyAccelerationStructureToMemoryInfoKHR );
 type PFN_vkCmdCopyMemoryToAccelerationStructureKHR = procedure( commandBuffer_:VkCommandBuffer; const pInfo_:P_VkCopyMemoryToAccelerationStructureInfoKHR );
@@ -11993,9 +11996,9 @@ function vkWriteAccelerationStructuresPropertiesKHR(
     accelerationStructureCount_:T_uint32_t;
     pAccelerationStructures_:P_VkAccelerationStructureKHR;
     queryType_:VkQueryType;
-    dataSize_:size_t;
+    dataSize_:T_size_t;
     pData_:P_void;
-    stride_:size_t ) :VkResult; stdcall; external DLLNAME;
+    stride_:T_size_t ) :VkResult; stdcall; external DLLNAME;
 
 procedure vkCmdCopyAccelerationStructureKHR(
     commandBuffer_:VkCommandBuffer;
@@ -12118,7 +12121,7 @@ type VkTraceRaysIndirectCommandKHR = record
 
 type PFN_vkCmdTraceRaysKHR = procedure( commandBuffer_:VkCommandBuffer; const pRaygenShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; const pMissShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; const pHitShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; const pCallableShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; width_:T_uint32_t; height_:T_uint32_t; depth_:T_uint32_t );
 type PFN_vkCreateRayTracingPipelinesKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; pipelineCache_:VkPipelineCache; createInfoCount_:T_uint32_t; const pCreateInfos_:P_VkRayTracingPipelineCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pPipelines_:P_VkPipeline ) :VkResult;
-type PFN_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR = function( device_:VkDevice; pipeline_:VkPipeline; firstGroup_:T_uint32_t; groupCount_:T_uint32_t; dataSize_:size_t; pData_:P_void ) :VkResult;
+type PFN_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR = function( device_:VkDevice; pipeline_:VkPipeline; firstGroup_:T_uint32_t; groupCount_:T_uint32_t; dataSize_:T_size_t; pData_:P_void ) :VkResult;
 type PFN_vkCmdTraceRaysIndirectKHR = procedure( commandBuffer_:VkCommandBuffer; const pRaygenShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; const pMissShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; const pHitShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; const pCallableShaderBindingTable_:P_VkStridedDeviceAddressRegionKHR; indirectDeviceAddress_:VkDeviceAddress );
 type PFN_vkGetRayTracingShaderGroupStackSizeKHR = function( device_:VkDevice; pipeline_:VkPipeline; group_:T_uint32_t; groupShader_:VkShaderGroupShaderKHR ) :VkDeviceSize;
 type PFN_vkCmdSetRayTracingPipelineStackSizeKHR = procedure( commandBuffer_:VkCommandBuffer; pipelineStackSize_:T_uint32_t );
@@ -12148,7 +12151,7 @@ function vkGetRayTracingCaptureReplayShaderGroupHandlesKHR(
     pipeline_:VkPipeline;
     firstGroup_:T_uint32_t;
     groupCount_:T_uint32_t;
-    dataSize_:size_t;
+    dataSize_:T_size_t;
     pData_:P_void ) :VkResult; stdcall; external DLLNAME;
 
 procedure vkCmdTraceRaysIndirectKHR(
