@@ -3078,21 +3078,23 @@ type VkBufferImageCopy = record
        imageExtent :VkExtent3D;
      end;
 
-typedef union VkClearColorValue {
-       float32 :array [ 0..4-1 ] of float;
-       int32 :array [ 0..4-1 ] of int32_t;
-       uint32 :array [ 0..4-1 ] of uint32_t;
-} VkClearColorValue;
+type VkClearColorValue = record
+     case Byte of
+       0:( float32 :array [ 0..4-1 ] of float    );
+       1:( int32   :array [ 0..4-1 ] of int32_t  );
+       2:( uint32  :array [ 0..4-1 ] of uint32_t );
+     end;
 
 type VkClearDepthStencilValue = record
        depth :float;
        stencil :uint32_t;
      end;
 
-typedef union VkClearValue {
-       color :VkClearColorValue;
-       depthStencil :VkClearDepthStencilValue;
-} VkClearValue;
+type VkClearValue = record
+     case Byte of
+       0:( color        :VkClearColorValue        );
+       1:( depthStencil :VkClearDepthStencilValue );
+     end;
 
 type VkClearAttachment = record
        aspectMask :VkImageAspectFlags;
@@ -6773,14 +6775,15 @@ type VkQueryPoolPerformanceCreateInfoKHR = record
        pCounterIndices :P_uint32_t;
      end;
 
-typedef union VkPerformanceCounterResultKHR {
-       int32 :int32_t;
-       int64 :int64_t;
-       uint32 :uint32_t;
-       uint64 :uint64_t;
-       float32 :float;
-       float64 :double;
-} VkPerformanceCounterResultKHR;
+type VkPerformanceCounterResultKHR = record
+     case Byte of
+       0:( int32   :int32_t  );
+       1:( int64   :int64_t  );
+       2:( uint32  :uint32_t );
+       3:( uint64  :uint64_t );
+       4:( float32 :float    );
+       5:( float64 :double   );
+     end;
 
 type VkAcquireProfilingLockInfoKHR = record
        sType :VkStructureType;
@@ -7472,12 +7475,13 @@ type VkPipelineExecutableInfoKHR = record
        executableIndex :uint32_t;
      end;
 
-typedef union VkPipelineExecutableStatisticValueKHR {
-       b32 :VkBool32;
-       i64 :int64_t;
-       u64 :uint64_t;
-       f64 :double;
-} VkPipelineExecutableStatisticValueKHR;
+type VkPipelineExecutableStatisticValueKHR = record
+     case Byte of
+       0:( b32 :VkBool32 );
+       1:( i64 :int64_t  );
+       2:( u64 :uint64_t );
+       3:( f64 :double   );
+     end;
 
 type VkPipelineExecutableStatisticKHR = record
        sType :VkStructureType;
@@ -10419,13 +10423,14 @@ type VkPerformanceValueTypeINTEL = (
        VK_PERFORMANCE_VALUE_TYPE_STRING_INTEL = 4,
        VK_PERFORMANCE_VALUE_TYPE_MAX_ENUM_INTEL = 0x7FFFFFFF
      );
-typedef union VkPerformanceValueDataINTEL {
-       value32 :uint32_t;
-       value64 :uint64_t;
-       valueFloat :float;
-       valueBool :VkBool32;
-       valueString :P_char;
-} VkPerformanceValueDataINTEL;
+type VkPerformanceValueDataINTEL = record
+     case Byte of
+       0:( value32     :uint32_t );
+       1:( value64     :uint64_t );
+       2:( valueFloat  :float    );
+       3:( valueBool   :VkBool32 );
+       4:( valueString :P_char   );
+     end;
 
 type VkPerformanceValueINTEL = record
        type :VkPerformanceValueTypeINTEL;
@@ -11763,15 +11768,17 @@ type VkAccelerationStructureCreateFlagBitsKHR = (
        VK_ACCELERATION_STRUCTURE_CREATE_FLAG_BITS_MAX_ENUM_KHR = 0x7FFFFFFF
      );
 type VkAccelerationStructureCreateFlagsKHR = VkFlags;
-typedef union VkDeviceOrHostAddressKHR {
-       deviceAddress :VkDeviceAddress;
-       hostAddress :P_void;
-} VkDeviceOrHostAddressKHR;
+type VkDeviceOrHostAddressKHR = record
+     case Byte of
+       0:( deviceAddress :VkDeviceAddress );
+       1:( hostAddress   :P_void          );
+     end;
 
-typedef union VkDeviceOrHostAddressConstKHR {
-       deviceAddress :VkDeviceAddress;
-       hostAddress :P_void;
-} VkDeviceOrHostAddressConstKHR;
+type VkDeviceOrHostAddressConstKHR = record
+     case Byte of
+       0:( deviceAddress :VkDeviceAddress );
+       1:( hostAddress   :P_void          );
+     end;
 
 type VkAccelerationStructureBuildRangeInfoKHR = record
        primitiveCount :uint32_t;
@@ -11806,11 +11813,12 @@ type VkAccelerationStructureGeometryInstancesDataKHR = record
        data :VkDeviceOrHostAddressConstKHR;
      end;
 
-typedef union VkAccelerationStructureGeometryDataKHR {
-       triangles :VkAccelerationStructureGeometryTrianglesDataKHR;
-       aabbs :VkAccelerationStructureGeometryAabbsDataKHR;
-       instances :VkAccelerationStructureGeometryInstancesDataKHR;
-} VkAccelerationStructureGeometryDataKHR;
+type VkAccelerationStructureGeometryDataKHR = record
+     case Byte of
+       0:( triangles :VkAccelerationStructureGeometryTrianglesDataKHR );
+       1:( aabbs     :VkAccelerationStructureGeometryAabbsDataKHR     );
+       2:( instances :VkAccelerationStructureGeometryInstancesDataKHR );
+     end;
 
 type VkAccelerationStructureGeometryKHR = record
        sType :VkStructureType;
