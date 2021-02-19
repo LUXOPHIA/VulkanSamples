@@ -50,36 +50,36 @@ function VK_VERSION_PATCH( const version_:T_uint32_t ) :T_uint32_t; inline;
 
 const VK_NULL_HANDLE = 0;
 
-type VkBool32              = T_uint32_t;
-type VkDeviceAddress       = T_uint64_t;
-type VkDeviceSize          = T_uint64_t;
-type VkFlags               = T_uint32_t;
-type VkSampleMask          = T_uint32_t;
-type VkBuffer              = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkImage               = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkInstance            = VK_DEFINE_HANDLE;
-type VkPhysicalDevice      = VK_DEFINE_HANDLE;
-type VkDevice              = VK_DEFINE_HANDLE;
-type VkQueue               = VK_DEFINE_HANDLE;
-type VkSemaphore           = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkCommandBuffer       = VK_DEFINE_HANDLE;
-type VkFence               = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkDeviceMemory        = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkEvent               = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkQueryPool           = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkBufferView          = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkImageView           = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkShaderModule        = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkPipelineCache       = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkPipelineLayout      = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkPipeline            = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkRenderPass          = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkDescriptorSetLayout = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkSampler             = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkDescriptorSet       = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkDescriptorPool      = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkFramebuffer         = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-type VkCommandPool         = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type VkBool32              = T_uint32_t;                         P_VkBool32              = ^VkBool32;
+type VkDeviceAddress       = T_uint64_t;                         P_VkDeviceAddress       = ^VkDeviceAddress;
+type VkDeviceSize          = T_uint64_t;                         P_VkDeviceSize          = ^VkDeviceSize;
+type VkFlags               = T_uint32_t;                         P_VkFlags               = ^VkFlags;
+type VkSampleMask          = T_uint32_t;                         P_VkSampleMask          = ^VkSampleMask;
+type VkBuffer              = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkBuffer              = ^VkBuffer;
+type VkImage               = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkImage               = ^VkImage;
+type VkInstance            = VK_DEFINE_HANDLE;                   P_VkInstance            = ^VkInstance;
+type VkPhysicalDevice      = VK_DEFINE_HANDLE;                   P_VkPhysicalDevice      = ^VkPhysicalDevice;
+type VkDevice              = VK_DEFINE_HANDLE;                   P_VkDevice              = ^VkDevice;
+type VkQueue               = VK_DEFINE_HANDLE;                   P_VkQueue               = ^VkQueue;
+type VkSemaphore           = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkSemaphore           = ^VkSemaphore;
+type VkCommandBuffer       = VK_DEFINE_HANDLE;                   P_VkCommandBuffer       = ^VkCommandBuffer;
+type VkFence               = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkFence               = ^VkFence;
+type VkDeviceMemory        = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkDeviceMemory        = ^VkDeviceMemory;
+type VkEvent               = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkEvent               = ^VkEvent;
+type VkQueryPool           = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkQueryPool           = ^VkQueryPool;
+type VkBufferView          = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkBufferView          = ^VkBufferView;
+type VkImageView           = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkImageView           = ^VkImageView;
+type VkShaderModule        = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkShaderModule        = ^VkShaderModule;
+type VkPipelineCache       = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkPipelineCache       = ^VkPipelineCache;
+type VkPipelineLayout      = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkPipelineLayout      = ^VkPipelineLayout;
+type VkPipeline            = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkPipeline            = ^VkPipeline;
+type VkRenderPass          = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkRenderPass          = ^VkRenderPass;
+type VkDescriptorSetLayout = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkDescriptorSetLayout = ^VkDescriptorSetLayout;
+type VkSampler             = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkSampler             = ^VkSampler;
+type VkDescriptorSet       = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkDescriptorSet       = ^VkDescriptorSet;
+type VkDescriptorPool      = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkDescriptorPool      = ^VkDescriptorPool;
+type VkFramebuffer         = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkFramebuffer         = ^VkFramebuffer;
+type VkCommandPool         = VK_DEFINE_NON_DISPATCHABLE_HANDLE;  P_VkCommandPool         = ^VkCommandPool;
 const VK_ATTACHMENT_UNUSED              = UInt32( $FFFFFFFF ); {(~0U)}
 const VK_FALSE                          = 0;
 const VK_LOD_CLAMP_NONE                 = T_float( 1000.0 );
@@ -1290,7 +1290,8 @@ type VkCompareOp = (
        VK_COMPARE_OP_MAX_ENUM = $7FFFFFFF
      );
 
-type VkDynamicState = (
+type P_VkDynamicState = ^VkDynamicState;
+     VkDynamicState = (
        VK_DYNAMIC_STATE_VIEWPORT = 0,
        VK_DYNAMIC_STATE_SCISSOR = 1,
        VK_DYNAMIC_STATE_LINE_WIDTH = 2,
@@ -1714,7 +1715,7 @@ type VkPipelineStageFlagBits = (
        VK_PIPELINE_STAGE_FRAGMENT_SHADING_RATE_ATTACHMENT_BIT_KHR = VK_PIPELINE_STAGE_SHADING_RATE_IMAGE_BIT_NV,
        VK_PIPELINE_STAGE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
-type VkPipelineStageFlags = VkFlags;
+type VkPipelineStageFlags = VkFlags;  P_VkPipelineStageFlags = ^VkPipelineStageFlags;
 type VkMemoryMapFlags = VkFlags;
 
 type VkSparseMemoryBindFlagBits = (
@@ -2042,7 +2043,8 @@ type VkOffset3D = record
        z :T_int32_t;
      end;
 
-type VkRect2D = record
+type P_VkRect2D = ^VkRect2D;
+     VkRect2D = record
        offset :VkOffset2D;
        extent :VkExtent2D;
      end;
@@ -2205,7 +2207,8 @@ type VkMemoryType = record
        heapIndex :T_uint32_t;
      end;
 
-type VkPhysicalDeviceFeatures = record
+type P_VkPhysicalDeviceFeatures = ^VkPhysicalDeviceFeatures;
+     VkPhysicalDeviceFeatures = record
        robustBufferAccess :VkBool32;
        fullDrawIndexUint32 :VkBool32;
        imageCubeArray :VkBool32;
@@ -2406,7 +2409,8 @@ type VkQueueFamilyProperties = record
        minImageTransferGranularity :VkExtent3D;
      end;
 
-type VkDeviceQueueCreateInfo = record
+type P_VkDeviceQueueCreateInfo = ^VkDeviceQueueCreateInfo;
+     VkDeviceQueueCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDeviceQueueCreateFlags;
@@ -2473,7 +2477,8 @@ type VkMemoryRequirements = record
        memoryTypeBits :T_uint32_t;
      end;
 
-type VkSparseMemoryBind = record
+type P_VkSparseMemoryBind = ^VkSparseMemoryBind;
+     VkSparseMemoryBind = record
        resourceOffset :VkDeviceSize;
        size :VkDeviceSize;
        memory :VkDeviceMemory;
@@ -2481,13 +2486,15 @@ type VkSparseMemoryBind = record
        flags :VkSparseMemoryBindFlags;
      end;
 
-type VkSparseBufferMemoryBindInfo = record
+type P_VkSparseBufferMemoryBindInfo = ^VkSparseBufferMemoryBindInfo;
+     VkSparseBufferMemoryBindInfo = record
        buffer :VkBuffer;
        bindCount :T_uint32_t;
        pBinds :P_VkSparseMemoryBind;
      end;
 
-type VkSparseImageOpaqueMemoryBindInfo = record
+type P_VkSparseImageOpaqueMemoryBindInfo = ^VkSparseImageOpaqueMemoryBindInfo;
+     VkSparseImageOpaqueMemoryBindInfo = record
        image :VkImage;
        bindCount :T_uint32_t;
        pBinds :P_VkSparseMemoryBind;
@@ -2499,7 +2506,8 @@ type VkImageSubresource = record
        arrayLayer :T_uint32_t;
      end;
 
-type VkSparseImageMemoryBind = record
+type P_VkSparseImageMemoryBind = ^VkSparseImageMemoryBind;
+     VkSparseImageMemoryBind = record
        subresource :VkImageSubresource;
        offset :VkOffset3D;
        extent :VkExtent3D;
@@ -2508,7 +2516,8 @@ type VkSparseImageMemoryBind = record
        flags :VkSparseMemoryBindFlags;
      end;
 
-type VkSparseImageMemoryBindInfo = record
+type P_VkSparseImageMemoryBindInfo = ^VkSparseImageMemoryBindInfo;
+     VkSparseImageMemoryBindInfo = record
        image :VkImage;
        bindCount :T_uint32_t;
        pBinds :P_VkSparseImageMemoryBind;
@@ -2651,20 +2660,23 @@ type VkPipelineCacheCreateInfo = record
        pInitialData :P_void;
      end;
 
-type VkSpecializationMapEntry = record
+type P_VkSpecializationMapEntry = ^VkSpecializationMapEntry;
+     VkSpecializationMapEntry = record
        constantID :T_uint32_t;
        offset :T_uint32_t;
        size :T_size_t;
      end;
 
-type VkSpecializationInfo = record
+type P_VkSpecializationInfo = ^VkSpecializationInfo;
+     VkSpecializationInfo = record
        mapEntryCount :T_uint32_t;
        pMapEntries :P_VkSpecializationMapEntry;
        dataSize :T_size_t;
        pData :P_void;
      end;
 
-type VkPipelineShaderStageCreateInfo = record
+type P_VkPipelineShaderStageCreateInfo = ^VkPipelineShaderStageCreateInfo;
+     VkPipelineShaderStageCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineShaderStageCreateFlags;
@@ -2684,20 +2696,23 @@ type VkComputePipelineCreateInfo = record
        basePipelineIndex :T_int32_t;
      end;
 
-type VkVertexInputBindingDescription = record
+type P_VkVertexInputBindingDescription = ^VkVertexInputBindingDescription;
+     VkVertexInputBindingDescription = record
        binding :T_uint32_t;
        stride :T_uint32_t;
        inputRate :VkVertexInputRate;
      end;
 
-type VkVertexInputAttributeDescription = record
+type P_VkVertexInputAttributeDescription = ^VkVertexInputAttributeDescription;
+     VkVertexInputAttributeDescription = record
        location :T_uint32_t;
        binding :T_uint32_t;
        format :VkFormat;
        offset :T_uint32_t;
      end;
 
-type VkPipelineVertexInputStateCreateInfo = record
+type P_VkPipelineVertexInputStateCreateInfo = ^VkPipelineVertexInputStateCreateInfo;
+     VkPipelineVertexInputStateCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineVertexInputStateCreateFlags;
@@ -2707,7 +2722,8 @@ type VkPipelineVertexInputStateCreateInfo = record
        pVertexAttributeDescriptions :P_VkVertexInputAttributeDescription;
      end;
 
-type VkPipelineInputAssemblyStateCreateInfo = record
+type P_VkPipelineInputAssemblyStateCreateInfo = ^VkPipelineInputAssemblyStateCreateInfo;
+     VkPipelineInputAssemblyStateCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineInputAssemblyStateCreateFlags;
@@ -2715,14 +2731,16 @@ type VkPipelineInputAssemblyStateCreateInfo = record
        primitiveRestartEnable :VkBool32;
      end;
 
-type VkPipelineTessellationStateCreateInfo = record
+type P_VkPipelineTessellationStateCreateInfo = ^VkPipelineTessellationStateCreateInfo;
+     VkPipelineTessellationStateCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineTessellationStateCreateFlags;
        patchControlPoints :T_uint32_t;
      end;
 
-type VkViewport = record
+type P_VkViewport = ^VkViewport;
+     VkViewport = record
        x :T_float;
        y :T_float;
        width :T_float;
@@ -2731,7 +2749,8 @@ type VkViewport = record
        maxDepth :T_float;
      end;
 
-type VkPipelineViewportStateCreateInfo = record
+type P_VkPipelineViewportStateCreateInfo = ^VkPipelineViewportStateCreateInfo;
+     VkPipelineViewportStateCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineViewportStateCreateFlags;
@@ -2741,7 +2760,8 @@ type VkPipelineViewportStateCreateInfo = record
        pScissors :P_VkRect2D;
      end;
 
-type VkPipelineRasterizationStateCreateInfo = record
+type P_VkPipelineRasterizationStateCreateInfo = ^VkPipelineRasterizationStateCreateInfo;
+     VkPipelineRasterizationStateCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineRasterizationStateCreateFlags;
@@ -2757,7 +2777,8 @@ type VkPipelineRasterizationStateCreateInfo = record
        lineWidth :T_float;
      end;
 
-type VkPipelineMultisampleStateCreateInfo = record
+type P_VkPipelineMultisampleStateCreateInfo = ^VkPipelineMultisampleStateCreateInfo;
+     VkPipelineMultisampleStateCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineMultisampleStateCreateFlags;
@@ -2779,7 +2800,8 @@ type VkStencilOpState = record
        reference :T_uint32_t;
      end;
 
-type VkPipelineDepthStencilStateCreateInfo = record
+type P_VkPipelineDepthStencilStateCreateInfo = ^VkPipelineDepthStencilStateCreateInfo;
+     VkPipelineDepthStencilStateCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineDepthStencilStateCreateFlags;
@@ -2794,7 +2816,8 @@ type VkPipelineDepthStencilStateCreateInfo = record
        maxDepthBounds :T_float;
      end;
 
-type VkPipelineColorBlendAttachmentState = record
+type P_VkPipelineColorBlendAttachmentState = ^VkPipelineColorBlendAttachmentState;
+     VkPipelineColorBlendAttachmentState = record
        blendEnable :VkBool32;
        srcColorBlendFactor :VkBlendFactor;
        dstColorBlendFactor :VkBlendFactor;
@@ -2805,7 +2828,8 @@ type VkPipelineColorBlendAttachmentState = record
        colorWriteMask :VkColorComponentFlags;
      end;
 
-type VkPipelineColorBlendStateCreateInfo = record
+type P_VkPipelineColorBlendStateCreateInfo = ^VkPipelineColorBlendStateCreateInfo;
+     VkPipelineColorBlendStateCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineColorBlendStateCreateFlags;
@@ -2816,7 +2840,8 @@ type VkPipelineColorBlendStateCreateInfo = record
        blendConstants :array [ 0..4-1 ] of T_float;
      end;
 
-type VkPipelineDynamicStateCreateInfo = record
+type P_VkPipelineDynamicStateCreateInfo = ^VkPipelineDynamicStateCreateInfo;
+     VkPipelineDynamicStateCreateInfo = record
        sType :VkStructureType;
        pNext :P_void;
        flags :VkPipelineDynamicStateCreateFlags;
@@ -2846,7 +2871,8 @@ type VkGraphicsPipelineCreateInfo = record
        basePipelineIndex :T_int32_t;
      end;
 
-type VkPushConstantRange = record
+type P_VkPushConstantRange = ^VkPushConstantRange;
+     VkPushConstantRange = record
        stageFlags :VkShaderStageFlags;
        offset :T_uint32_t;
        size :T_uint32_t;
@@ -2895,20 +2921,23 @@ type VkCopyDescriptorSet = record
        descriptorCount :T_uint32_t;
      end;
 
-type VkDescriptorBufferInfo = record
+type P_VkDescriptorBufferInfo = ^VkDescriptorBufferInfo;
+     VkDescriptorBufferInfo = record
        buffer :VkBuffer;
        offset :VkDeviceSize;
        range :VkDeviceSize;
      end;
 
-type VkDescriptorImageInfo = record
+type P_VkDescriptorImageInfo = ^VkDescriptorImageInfo;
+     VkDescriptorImageInfo = record
        sampler :VkSampler;
        imageView :VkImageView;
        imageLayout :VkImageLayout;
      end;
 
-type VkDescriptorPoolSize = record
-       type :VkDescriptorType;
+type P_VkDescriptorPoolSize = ^VkDescriptorPoolSize;
+     VkDescriptorPoolSize = record
+       type_ :VkDescriptorType;
        descriptorCount :T_uint32_t;
      end;
 
@@ -2929,7 +2958,8 @@ type VkDescriptorSetAllocateInfo = record
        pSetLayouts :P_VkDescriptorSetLayout;
      end;
 
-type VkDescriptorSetLayoutBinding = record
+type P_VkDescriptorSetLayoutBinding = ^VkDescriptorSetLayoutBinding;
+     VkDescriptorSetLayoutBinding = record
        binding :T_uint32_t;
        descriptorType :VkDescriptorType;
        descriptorCount :T_uint32_t;
@@ -2958,7 +2988,8 @@ type VkWriteDescriptorSet = record
        pTexelBufferView :P_VkBufferView;
      end;
 
-type VkAttachmentDescription = record
+type P_VkAttachmentDescription = ^VkAttachmentDescription;
+     VkAttachmentDescription = record
        flags :VkAttachmentDescriptionFlags;
        format :VkFormat;
        samples :VkSampleCountFlagBits;
@@ -2970,7 +3001,8 @@ type VkAttachmentDescription = record
        finalLayout :VkImageLayout;
      end;
 
-type VkAttachmentReference = record
+type P_VkAttachmentReference = ^VkAttachmentReference;
+     VkAttachmentReference = record
        attachment :T_uint32_t;
        layout :VkImageLayout;
      end;
@@ -2987,7 +3019,8 @@ type VkFramebufferCreateInfo = record
        layers :T_uint32_t;
      end;
 
-type VkSubpassDescription = record
+type P_VkSubpassDescription = ^VkSubpassDescription;
+     VkSubpassDescription = record
        flags :VkSubpassDescriptionFlags;
        pipelineBindPoint :VkPipelineBindPoint;
        inputAttachmentCount :T_uint32_t;
@@ -3000,7 +3033,8 @@ type VkSubpassDescription = record
        pPreserveAttachments :P_uint32_t;
      end;
 
-type VkSubpassDependency = record
+type P_VkSubpassDependency = ^VkSubpassDependency;
+     VkSubpassDependency = record
        srcSubpass :T_uint32_t;
        dstSubpass :T_uint32_t;
        srcStageMask :VkPipelineStageFlags;
@@ -3037,7 +3071,8 @@ type VkCommandBufferAllocateInfo = record
        commandBufferCount :T_uint32_t;
      end;
 
-type VkCommandBufferInheritanceInfo = record
+type P_VkCommandBufferInheritanceInfo = ^VkCommandBufferInheritanceInfo;
+     VkCommandBufferInheritanceInfo = record
        sType :VkStructureType;
        pNext :P_void;
        renderPass :VkRenderPass;
@@ -3089,7 +3124,8 @@ type VkClearDepthStencilValue = record
        stencil :T_uint32_t;
      end;
 
-type VkClearValue = record
+type P_VkClearValue = ^VkClearValue;
+     VkClearValue = record
      case Byte of
        0:( color        :VkClearColorValue        );
        1:( depthStencil :VkClearDepthStencilValue );
