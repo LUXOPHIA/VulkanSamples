@@ -15,6 +15,8 @@ interface //####################################################################
 
 uses LUX.Code.C;
 
+const DLLNAME = 'vulkan-1.dll';
+
 const VK_VERSION_1_0 = 1;
 ////#include "vk_platform.h"
 
@@ -3345,7 +3347,8 @@ type PFN_vkCmdSetViewport = procedure( commandBuffer_:VkCommandBuffer; firstView
 type PFN_vkCmdSetScissor = procedure( commandBuffer_:VkCommandBuffer; firstScissor_:T_uint32_t; scissorCount_:T_uint32_t; const pScissors_:P_VkRect2D );
 type PFN_vkCmdSetLineWidth = procedure( commandBuffer_:VkCommandBuffer; lineWidth_:T_float );
 type PFN_vkCmdSetDepthBias = procedure( commandBuffer_:VkCommandBuffer; depthBiasConstantFactor_:T_float; depthBiasClamp_:T_float; depthBiasSlopeFactor_:T_float );
-type PFN_vkCmdSetBlendConstants = procedure( commandBuffer_:VkCommandBuffer; const blendConstants_:array [ 0..4-1 ] of T_float );
+type T_blendConstants = array [ 0..4-1 ] of T_float;
+     PFN_vkCmdSetBlendConstants = procedure( commandBuffer_:VkCommandBuffer; const blendConstants_:T_blendConstants );
 type PFN_vkCmdSetDepthBounds = procedure( commandBuffer_:VkCommandBuffer; minDepthBounds_:T_float; maxDepthBounds_:T_float );
 type PFN_vkCmdSetStencilCompareMask = procedure( commandBuffer_:VkCommandBuffer; faceMask_:VkStencilFaceFlags; compareMask_:T_uint32_t );
 type PFN_vkCmdSetStencilWriteMask = procedure( commandBuffer_:VkCommandBuffer; faceMask_:VkStencilFaceFlags; writeMask_:T_uint32_t );
@@ -3917,7 +3920,7 @@ procedure vkCmdSetDepthBias(
 
 procedure vkCmdSetBlendConstants(
     commandBuffer_:VkCommandBuffer;
-    const blendConstants_:array [ 0..4-1 ] of T_float ); stdcall; external DLLNAME;
+    const blendConstants_:T_blendConstants ); stdcall; external DLLNAME;
 
 procedure vkCmdSetDepthBounds(
     commandBuffer_:VkCommandBuffer;
@@ -4187,13 +4190,13 @@ procedure vkCmdExecuteCommands(
 
 const VK_VERSION_1_1 = 1;
 // Vulkan 1.1 version number
-#define VK_API_VERSION_1_1 VK_MAKE_VERSION(1, 1, 0)// Patch version should always be set to 0
+const VK_API_VERSION_1_1 = {VK_MAKE_VERSION( 1, 1, 0 )} ( 1 shl 22 ) or ( 1 shl 12 ) or 0; // Patch version should always be set to 0
 
 type VkSamplerYcbcrConversion = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 type VkDescriptorUpdateTemplate = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_MAX_DEVICE_GROUP_SIZE          = 32;
 const VK_LUID_SIZE                      = 8;
-const VK_QUEUE_FAMILY_EXTERNAL          = (~0U-1);
+const VK_QUEUE_FAMILY_EXTERNAL          = UInt32( $FFFFFFFF )-1; {(~0U-1)}
 
 type VkPointClippingBehavior = (
        VK_POINT_CLIPPING_BEHAVIOR_ALL_CLIP_PLANES = 0,
@@ -4583,7 +4586,7 @@ type P_VkPhysicalDeviceImageFormatInfo2 = ^VkPhysicalDeviceImageFormatInfo2;
        sType :VkStructureType;
        pNext :P_void;
        format :VkFormat;
-       type :VkImageType;
+       type_ :VkImageType;
        tiling :VkImageTiling;
        usage :VkImageUsageFlags;
        flags :VkImageCreateFlags;
@@ -4615,7 +4618,7 @@ type P_VkPhysicalDeviceSparseImageFormatInfo2 = ^VkPhysicalDeviceSparseImageForm
        sType :VkStructureType;
        pNext :P_void;
        format :VkFormat;
-       type :VkImageType;
+       type_ :VkImageType;
        samples :VkSampleCountFlagBits;
        usage :VkImageUsageFlags;
        tiling :VkImageTiling;
@@ -4796,7 +4799,7 @@ type P_VkDescriptorUpdateTemplateCreateInfo = ^VkDescriptorUpdateTemplateCreateI
        descriptorSetLayout :VkDescriptorSetLayout;
        pipelineBindPoint :VkPipelineBindPoint;
        pipelineLayout :VkPipelineLayout;
-       set :T_uint32_t;
+       set_ :T_uint32_t;
      end;
 
 type P_VkExternalMemoryProperties = ^VkExternalMemoryProperties;
@@ -10106,7 +10109,7 @@ type P_VkRayTracingShaderGroupCreateInfoNV = ^VkRayTracingShaderGroupCreateInfoN
      VkRayTracingShaderGroupCreateInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
-       type :VkRayTracingShaderGroupTypeKHR;
+       type_ :VkRayTracingShaderGroupTypeKHR;
        generalShader :T_uint32_t;
        closestHitShader :T_uint32_t;
        anyHitShader :T_uint32_t;
@@ -10174,7 +10177,7 @@ type P_VkAccelerationStructureInfoNV = ^VkAccelerationStructureInfoNV;
      VkAccelerationStructureInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
-       type :VkAccelerationStructureTypeNV;
+       type_ :VkAccelerationStructureTypeNV;
        flags :VkBuildAccelerationStructureFlagsNV;
        instanceCount :T_uint32_t;
        geometryCount :T_uint32_t;
@@ -10212,7 +10215,7 @@ type P_VkAccelerationStructureMemoryRequirementsInfoNV = ^VkAccelerationStructur
      VkAccelerationStructureMemoryRequirementsInfoNV = record
        sType :VkStructureType;
        pNext :P_void;
-       type :VkAccelerationStructureMemoryRequirementsTypeNV;
+       type_ :VkAccelerationStructureMemoryRequirementsTypeNV;
        accelerationStructure :VkAccelerationStructureNV;
      end;
 
@@ -10877,7 +10880,7 @@ type P_VkPerformanceValueDataINTEL = ^VkPerformanceValueDataINTEL;
 
 type P_VkPerformanceValueINTEL = ^VkPerformanceValueINTEL;
      VkPerformanceValueINTEL = record
-       type :VkPerformanceValueTypeINTEL;
+       type_ :VkPerformanceValueTypeINTEL;
        data :VkPerformanceValueDataINTEL;
      end;
 
@@ -10915,7 +10918,7 @@ type P_VkPerformanceOverrideInfoINTEL = ^VkPerformanceOverrideInfoINTEL;
      VkPerformanceOverrideInfoINTEL = record
        sType :VkStructureType;
        pNext :P_void;
-       type :VkPerformanceOverrideTypeINTEL;
+       type_ :VkPerformanceOverrideTypeINTEL;
        enable :VkBool32;
        parameter :T_uint64_t;
      end;
@@ -10924,7 +10927,7 @@ type P_VkPerformanceConfigurationAcquireInfoINTEL = ^VkPerformanceConfigurationA
      VkPerformanceConfigurationAcquireInfoINTEL = record
        sType :VkStructureType;
        pNext :P_void;
-       type :VkPerformanceConfigurationTypeINTEL;
+       type_ :VkPerformanceConfigurationTypeINTEL;
      end;
 
 type PFN_vkInitializePerformanceApiINTEL = function( device_:VkDevice; const pInitializeInfo_:P_VkInitializePerformanceApiInfoINTEL ) :VkResult;
@@ -11919,7 +11922,7 @@ type P_VkDeviceMemoryReportCallbackDataEXT = ^VkDeviceMemoryReportCallbackDataEX
        sType :VkStructureType;
        pNext :P_void;
        flags :VkDeviceMemoryReportFlagsEXT;
-       type :VkDeviceMemoryReportEventTypeEXT;
+       type_ :VkDeviceMemoryReportEventTypeEXT;
        memoryObjectId :T_uint64_t;
        size :VkDeviceSize;
        objectType :VkObjectType;
@@ -12368,7 +12371,7 @@ type P_VkAccelerationStructureBuildGeometryInfoKHR = ^VkAccelerationStructureBui
      VkAccelerationStructureBuildGeometryInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
-       type :VkAccelerationStructureTypeKHR;
+       type_ :VkAccelerationStructureTypeKHR;
        flags :VkBuildAccelerationStructureFlagsKHR;
        mode :VkBuildAccelerationStructureModeKHR;
        srcAccelerationStructure :VkAccelerationStructureKHR;
@@ -12387,7 +12390,7 @@ type P_VkAccelerationStructureCreateInfoKHR = ^VkAccelerationStructureCreateInfo
        buffer :VkBuffer;
        offset :VkDeviceSize;
        size :VkDeviceSize;
-       type :VkAccelerationStructureTypeKHR;
+       type_ :VkAccelerationStructureTypeKHR;
        deviceAddress :VkDeviceAddress;
      end;
 
@@ -12601,7 +12604,7 @@ type P_VkRayTracingShaderGroupCreateInfoKHR = ^VkRayTracingShaderGroupCreateInfo
      VkRayTracingShaderGroupCreateInfoKHR = record
        sType :VkStructureType;
        pNext :P_void;
-       type :VkRayTracingShaderGroupTypeKHR;
+       type_ :VkRayTracingShaderGroupTypeKHR;
        generalShader :T_uint32_t;
        closestHitShader :T_uint32_t;
        anyHitShader :T_uint32_t;
