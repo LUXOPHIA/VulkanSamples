@@ -25,8 +25,8 @@ extern "C" {
 #define VK_DEFINE_HANDLE(object) typedef struct object##_T* object;
 
 
-{$IF not defined(VK_DEFINE_NON_DISPATCHABLE_HANDLE) }
-{$IF defined(__LP64__) or defined(_WIN64) or (defined(__x86_64__) and not defined(__ILP32__) ) or defined(_M_X64) or defined(__ia64) or defined (_M_IA64) or defined(__aarch64__) or defined(__powerpc64__) }
+{$IF not Defined( VK_DEFINE_NON_DISPATCHABLE_HANDLE ) }
+{$IF Defined( __LP64__ ) or Defined( _WIN64 ) or (Defined( __x86_64__ ) and not Defined( __ILP32__ ) ) or Defined( _M_X64 ) or Defined( __ia64 ) or defined (_M_IA64) or Defined( __aarch64__ ) or Defined( __powerpc64__ ) }
         #define VK_DEFINE_NON_DISPATCHABLE_HANDLE(object) typedef struct object##_T *object;
 {$ELSE}
         #define VK_DEFINE_NON_DISPATCHABLE_HANDLE(object) typedef uint64_t object;
