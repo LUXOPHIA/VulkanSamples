@@ -1,5 +1,4 @@
-{$IFNDEF VULKAN_CORE_H_ }
-const VULKAN_CORE_H_ = 1;
+unit vulkan_core;
 
 (*
 ** Copyright 2015-2021 The Khronos Group Inc.
@@ -12,53 +11,49 @@ const VULKAN_CORE_H_ = 1;
 **
 *)
 
+interface //####################################################################
 
-{$IFDEF __cplusplus }
-extern "C" {
-{$ENDIF}
-
-
+uses LUX.Code.C;
 
 const VK_VERSION_1_0 = 1;
-#include "vk_platform.h"
+////#include "vk_platform.h"
 
-#define VK_DEFINE_HANDLE(object) typedef struct object##_T* object;
+type VK_DEFINE_HANDLE_T = record end; VK_DEFINE_HANDLE = ^VK_DEFINE_HANDLE_T;
 
 
 {$IF not Defined( VK_DEFINE_NON_DISPATCHABLE_HANDLE ) }
-{$IF Defined( __LP64__ ) or Defined( _WIN64 ) or (Defined( __x86_64__ ) and not Defined( __ILP32__ ) ) or Defined( _M_X64 ) or Defined( __ia64 ) or defined (_M_IA64) or Defined( __aarch64__ ) or Defined( __powerpc64__ ) }
-        #define VK_DEFINE_NON_DISPATCHABLE_HANDLE(object) typedef struct object##_T *object;
+{$IF Defined( __LP64__ ) or Defined( _WIN64 ) or ( Defined( __x86_64__ ) and not Defined( __ILP32__ ) ) or Defined( _M_X64 ) or Defined( __ia64 ) or Defined( _M_IA64 ) or Defined( __aarch64__ ) or Defined( __powerpc64__ ) }
+        type VK_DEFINE_NON_DISPATCHABLE_HANDLE_T = record end; VK_DEFINE_NON_DISPATCHABLE_HANDLE = ^VK_DEFINE_NON_DISPATCHABLE_HANDLE_T;
 {$ELSE}
-        #define VK_DEFINE_NON_DISPATCHABLE_HANDLE(object) typedef uint64_t object;
+        type VK_DEFINE_NON_DISPATCHABLE_HANDLE = T_uint64_t;
 {$ENDIF}
 {$ENDIF}
 
-#define VK_MAKE_VERSION(major, minor, patch) \
-    ((((uint32_t)(major)) << 22) | (((uint32_t)(minor)) << 12) | ((uint32_t)(patch)))
+function VK_MAKE_VERSION( const major_,minor_,patch_:T_uint32_t ) :T_uint32_t; inline;
 
 // DEPRECATED: This define has been removed. Specific version defines (e.g. VK_API_VERSION_1_0), or the VK_MAKE_VERSION macro, should be used instead.
 //#define VK_API_VERSION VK_MAKE_VERSION(1, 0, 0) // Patch version should always be set to 0
 
 // Vulkan 1.0 version number
-#define VK_API_VERSION_1_0 VK_MAKE_VERSION(1, 0, 0)// Patch version should always be set to 0
+const VK_API_VERSION_1_0 :T_uint32_t = {VK_MAKE_VERSION( 1, 0, 0 )} ( 1 shl 22 ) or ( 2 shl 12 ) or 0; // Patch version should always be set to 0
 
 // Version of this file
 const VK_HEADER_VERSION = 170;
 
 // Complete version of this file
-#define VK_HEADER_VERSION_COMPLETE VK_MAKE_VERSION(1, 2, VK_HEADER_VERSION)
+const VK_HEADER_VERSION_COMPLETE :T_uint32_t = {VK_MAKE_VERSION( 1, 2, VK_HEADER_VERSION )} ( 1 shl 22 ) or ( 2 shl 12 ) or VK_HEADER_VERSION;
 
-#define VK_VERSION_MAJOR(version) ((uint32_t)(version) >> 22)
-#define VK_VERSION_MINOR(version) (((uint32_t)(version) >> 12) & 0x3ff)
-#define VK_VERSION_PATCH(version) ((uint32_t)(version) & 0xfff)
+function VK_VERSION_MAJOR( const version_:T_uint32_t ) :T_uint32_t; inline;
+function VK_VERSION_MINOR( const version_:T_uint32_t ) :T_uint32_t; inline;
+function VK_VERSION_PATCH( const version_:T_uint32_t ) :T_uint32_t; inline;
 
 const VK_NULL_HANDLE = 0;
 
-type VkBool32 = uint32_t;
-type VkDeviceAddress = uint64_t;
-type VkDeviceSize = uint64_t;
-type VkFlags = uint32_t;
-type VkSampleMask = uint32_t;
+type VkBool32        = T_uint32_t;
+type VkDeviceAddress = T_uint64_t;
+type VkDeviceSize    = T_uint64_t;
+type VkFlags         = T_uint32_t;
+type VkSampleMask    = T_uint32_t;
 VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkBuffer)
 VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkImage)
 VK_DEFINE_HANDLE(VkInstance)
@@ -12185,8 +12180,28 @@ type VkPhysicalDeviceRayQueryFeaturesKHR = record
      end;
 
 
-{$IFDEF __cplusplus }
-}
-{$ENDIF}
+implementation //###############################################################
 
-{$ENDIF}
+function VK_MAKE_VERSION( const major_,minor_,patch_:T_uint32_t ) :T_uint32_t;
+begin
+     Result := ( major_ shl 22 ) or ( minor_ shl 12 ) or patch_;
+end;
+
+//------------------------------------------------------------------------------
+
+function VK_VERSION_MAJOR( const version_:T_uint32_t ) :T_uint32_t;
+begin
+     Result := version_ shr 22;
+end;
+
+function VK_VERSION_MINOR( const version_:T_uint32_t ) :T_uint32_t;
+begin
+     Result := ( version_ shr 12 ) and $3ff;
+end;
+
+function VK_VERSION_PATCH( const version_:T_uint32_t ) :T_uint32_t;
+begin
+     Result := version_ and $fff;
+end;
+
+end. //#########################################################################
