@@ -15,7 +15,7 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+{$ENDIF}
 
 
 
@@ -30,8 +30,8 @@ extern "C" {
         #define VK_DEFINE_NON_DISPATCHABLE_HANDLE(object) typedef struct object##_T *object;
 #else
         #define VK_DEFINE_NON_DISPATCHABLE_HANDLE(object) typedef uint64_t object;
-#endif
-#endif
+{$ENDIF}
+{$ENDIF}
 
 #define VK_MAKE_VERSION(major, minor, patch) \
     ((((uint32_t)(major)) << 22) | (((uint32_t)(minor)) << 12) | ((uint32_t)(patch)))
@@ -4074,7 +4074,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdExecuteCommands(
     VkCommandBuffer                             commandBuffer,
     uint32_t                                    commandBufferCount,
     const VkCommandBuffer*                      pCommandBuffers);
-#endif
+{$ENDIF}
 
 
 #define VK_VERSION_1_1 1
@@ -4936,7 +4936,7 @@ VKAPI_ATTR void VKAPI_CALL vkGetDescriptorSetLayoutSupport(
     VkDevice                                    device,
     const VkDescriptorSetLayoutCreateInfo*      pCreateInfo,
     VkDescriptorSetLayoutSupport*               pSupport);
-#endif
+{$ENDIF}
 
 
 #define VK_VERSION_1_2 1
@@ -5679,7 +5679,7 @@ VKAPI_ATTR uint64_t VKAPI_CALL vkGetBufferOpaqueCaptureAddress(
 VKAPI_ATTR uint64_t VKAPI_CALL vkGetDeviceMemoryOpaqueCaptureAddress(
     VkDevice                                    device,
     const VkDeviceMemoryOpaqueCaptureAddressInfo* pInfo);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_surface 1
@@ -5793,7 +5793,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfacePresentModesKHR(
     VkSurfaceKHR                                surface,
     uint32_t*                                   pPresentModeCount,
     VkPresentModeKHR*                           pPresentModes);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_swapchain 1
@@ -5952,7 +5952,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkAcquireNextImage2KHR(
     VkDevice                                    device,
     const VkAcquireNextImageInfoKHR*            pAcquireInfo,
     uint32_t*                                   pImageIndex);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_display 1
@@ -6077,7 +6077,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkCreateDisplayPlaneSurfaceKHR(
     const VkDisplaySurfaceCreateInfoKHR*        pCreateInfo,
     const VkAllocationCallbacks*                pAllocator,
     VkSurfaceKHR*                               pSurface);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_display_swapchain 1
@@ -6100,7 +6100,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkCreateSharedSwapchainsKHR(
     const VkSwapchainCreateInfoKHR*             pCreateInfos,
     const VkAllocationCallbacks*                pAllocator,
     VkSwapchainKHR*                             pSwapchains);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_sampler_mirror_clamp_to_edge 1
@@ -6181,7 +6181,7 @@ VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceSparseImageFormatProperties2KHR(
     const VkPhysicalDeviceSparseImageFormatInfo2* pFormatInfo,
     uint32_t*                                   pPropertyCount,
     VkSparseImageFormatProperties2*             pProperties);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_device_group 1
@@ -6233,7 +6233,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdDispatchBaseKHR(
     uint32_t                                    groupCountX,
     uint32_t                                    groupCountY,
     uint32_t                                    groupCountZ);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_shader_draw_parameters 1
@@ -6253,7 +6253,7 @@ VKAPI_ATTR void VKAPI_CALL vkTrimCommandPoolKHR(
     VkDevice                                    device,
     VkCommandPool                               commandPool,
     VkCommandPoolTrimFlags                      flags);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_device_group_creation 1
@@ -6271,7 +6271,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkEnumeratePhysicalDeviceGroupsKHR(
     VkInstance                                  instance,
     uint32_t*                                   pPhysicalDeviceGroupCount,
     VkPhysicalDeviceGroupProperties*            pPhysicalDeviceGroupProperties);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_external_memory_capabilities 1
@@ -6305,7 +6305,7 @@ VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceExternalBufferPropertiesKHR(
     VkPhysicalDevice                            physicalDevice,
     const VkPhysicalDeviceExternalBufferInfo*   pExternalBufferInfo,
     VkExternalBufferProperties*                 pExternalBufferProperties);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_external_memory 1
@@ -6357,7 +6357,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetMemoryFdPropertiesKHR(
     VkExternalMemoryHandleTypeFlagBits          handleType,
     int                                         fd,
     VkMemoryFdPropertiesKHR*                    pMemoryFdProperties);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_external_semaphore_capabilities 1
@@ -6382,7 +6382,7 @@ VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceExternalSemaphorePropertiesKHR(
     VkPhysicalDevice                            physicalDevice,
     const VkPhysicalDeviceExternalSemaphoreInfo* pExternalSemaphoreInfo,
     VkExternalSemaphoreProperties*              pExternalSemaphoreProperties);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_external_semaphore 1
@@ -6427,7 +6427,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetSemaphoreFdKHR(
     VkDevice                                    device,
     const VkSemaphoreGetFdInfoKHR*              pGetFdInfo,
     int*                                        pFd);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_push_descriptor 1
@@ -6457,7 +6457,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdPushDescriptorSetWithTemplateKHR(
     VkPipelineLayout                            layout,
     uint32_t                                    set,
     const void*                                 pData);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_shader_float16_int8 1
@@ -6533,7 +6533,7 @@ VKAPI_ATTR void VKAPI_CALL vkUpdateDescriptorSetWithTemplateKHR(
     VkDescriptorSet                             descriptorSet,
     VkDescriptorUpdateTemplate                  descriptorUpdateTemplate,
     const void*                                 pData);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_imageless_framebuffer 1
@@ -6591,7 +6591,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdNextSubpass2KHR(
 VKAPI_ATTR void VKAPI_CALL vkCmdEndRenderPass2KHR(
     VkCommandBuffer                             commandBuffer,
     const VkSubpassEndInfo*                     pSubpassEndInfo);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_shared_presentable_image 1
@@ -6609,7 +6609,7 @@ typedef VkResult (VKAPI_PTR *PFN_vkGetSwapchainStatusKHR)(VkDevice device, VkSwa
 VKAPI_ATTR VkResult VKAPI_CALL vkGetSwapchainStatusKHR(
     VkDevice                                    device,
     VkSwapchainKHR                              swapchain);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_external_fence_capabilities 1
@@ -6634,7 +6634,7 @@ VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceExternalFencePropertiesKHR(
     VkPhysicalDevice                            physicalDevice,
     const VkPhysicalDeviceExternalFenceInfo*    pExternalFenceInfo,
     VkExternalFenceProperties*                  pExternalFenceProperties);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_external_fence 1
@@ -6679,7 +6679,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetFenceFdKHR(
     VkDevice                                    device,
     const VkFenceGetFdInfoKHR*                  pGetFdInfo,
     int*                                        pFd);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_performance_query 1
@@ -6819,7 +6819,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkAcquireProfilingLockKHR(
 
 VKAPI_ATTR void VKAPI_CALL vkReleaseProfilingLockKHR(
     VkDevice                                    device);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_maintenance2 1
@@ -6876,7 +6876,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfaceFormats2KHR(
     const VkPhysicalDeviceSurfaceInfo2KHR*      pSurfaceInfo,
     uint32_t*                                   pSurfaceFormatCount,
     VkSurfaceFormat2KHR*                        pSurfaceFormats);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_variable_pointers 1
@@ -6948,7 +6948,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetDisplayPlaneCapabilities2KHR(
     VkPhysicalDevice                            physicalDevice,
     const VkDisplayPlaneInfo2KHR*               pDisplayPlaneInfo,
     VkDisplayPlaneCapabilities2KHR*             pCapabilities);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_dedicated_allocation 1
@@ -7003,7 +7003,7 @@ VKAPI_ATTR void VKAPI_CALL vkGetImageSparseMemoryRequirements2KHR(
     const VkImageSparseMemoryRequirementsInfo2* pInfo,
     uint32_t*                                   pSparseMemoryRequirementCount,
     VkSparseImageMemoryRequirements2*           pSparseMemoryRequirements);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_image_format_list 1
@@ -7050,7 +7050,7 @@ VKAPI_ATTR void VKAPI_CALL vkDestroySamplerYcbcrConversionKHR(
     VkDevice                                    device,
     VkSamplerYcbcrConversion                    ycbcrConversion,
     const VkAllocationCallbacks*                pAllocator);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_bind_memory2 1
@@ -7073,7 +7073,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkBindImageMemory2KHR(
     VkDevice                                    device,
     uint32_t                                    bindInfoCount,
     const VkBindImageMemoryInfo*                pBindInfos);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_maintenance3 1
@@ -7090,7 +7090,7 @@ VKAPI_ATTR void VKAPI_CALL vkGetDescriptorSetLayoutSupportKHR(
     VkDevice                                    device,
     const VkDescriptorSetLayoutCreateInfo*      pCreateInfo,
     VkDescriptorSetLayoutSupport*               pSupport);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_draw_indirect_count 1
@@ -7117,7 +7117,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdDrawIndexedIndirectCountKHR(
     VkDeviceSize                                countBufferOffset,
     uint32_t                                    maxDrawCount,
     uint32_t                                    stride);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_shader_subgroup_extended_types 1
@@ -7232,7 +7232,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkWaitSemaphoresKHR(
 VKAPI_ATTR VkResult VKAPI_CALL vkSignalSemaphoreKHR(
     VkDevice                                    device,
     const VkSemaphoreSignalInfo*                pSignalInfo);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_vulkan_memory_model 1
@@ -7329,7 +7329,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdSetFragmentShadingRateKHR(
     VkCommandBuffer                             commandBuffer,
     const VkExtent2D*                           pFragmentSize,
     const VkFragmentShadingRateCombinerOpKHR    combinerOps[2]);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_spirv_1_4 1
@@ -7395,7 +7395,7 @@ VKAPI_ATTR uint64_t VKAPI_CALL vkGetBufferOpaqueCaptureAddressKHR(
 VKAPI_ATTR uint64_t VKAPI_CALL vkGetDeviceMemoryOpaqueCaptureAddressKHR(
     VkDevice                                    device,
     const VkDeviceMemoryOpaqueCaptureAddressInfo* pInfo);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_deferred_host_operations 1
@@ -7430,7 +7430,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetDeferredOperationResultKHR(
 VKAPI_ATTR VkResult VKAPI_CALL vkDeferredOperationJoinKHR(
     VkDevice                                    device,
     VkDeferredOperationKHR                      operation);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_pipeline_executable_properties 1
@@ -7520,7 +7520,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetPipelineExecutableInternalRepresentationsKHR
     const VkPipelineExecutableInfoKHR*          pExecutableInfo,
     uint32_t*                                   pInternalRepresentationCount,
     VkPipelineExecutableInternalRepresentationKHR* pInternalRepresentations);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_pipeline_library 1
@@ -7781,7 +7781,7 @@ VKAPI_ATTR void VKAPI_CALL vkGetQueueCheckpointData2NV(
     VkQueue                                     queue,
     uint32_t*                                   pCheckpointDataCount,
     VkCheckpointData2NV*                        pCheckpointData);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_zero_initialize_workgroup_memory 1
@@ -7954,7 +7954,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdBlitImage2KHR(
 VKAPI_ATTR void VKAPI_CALL vkCmdResolveImage2KHR(
     VkCommandBuffer                             commandBuffer,
     const VkResolveImageInfo2KHR*               pResolveImageInfo);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_debug_report 1
@@ -8058,7 +8058,7 @@ VKAPI_ATTR void VKAPI_CALL vkDebugReportMessageEXT(
     int32_t                                     messageCode,
     const char*                                 pLayerPrefix,
     const char*                                 pMessage);
-#endif
+{$ENDIF}
 
 
 #define VK_NV_glsl_shader 1
@@ -8156,7 +8156,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdDebugMarkerEndEXT(
 VKAPI_ATTR void VKAPI_CALL vkCmdDebugMarkerInsertEXT(
     VkCommandBuffer                             commandBuffer,
     const VkDebugMarkerMarkerInfoEXT*           pMarkerInfo);
-#endif
+{$ENDIF}
 
 
 #define VK_AMD_gcn_shader 1
@@ -8272,7 +8272,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdDrawIndirectByteCountEXT(
     VkDeviceSize                                counterBufferOffset,
     uint32_t                                    counterOffset,
     uint32_t                                    vertexStride);
-#endif
+{$ENDIF}
 
 
 #define VK_NVX_image_view_handle 1
@@ -8305,7 +8305,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetImageViewAddressNVX(
     VkDevice                                    device,
     VkImageView                                 imageView,
     VkImageViewAddressPropertiesNVX*            pProperties);
-#endif
+{$ENDIF}
 
 
 #define VK_AMD_draw_indirect_count 1
@@ -8332,7 +8332,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdDrawIndexedIndirectCountAMD(
     VkDeviceSize                                countBufferOffset,
     uint32_t                                    maxDrawCount,
     uint32_t                                    stride);
-#endif
+{$ENDIF}
 
 
 #define VK_AMD_negative_viewport_height 1
@@ -8399,7 +8399,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetShaderInfoAMD(
     VkShaderInfoTypeAMD                         infoType,
     size_t*                                     pInfoSize,
     void*                                       pInfo);
-#endif
+{$ENDIF}
 
 
 #define VK_AMD_shader_image_load_store_lod 1
@@ -8462,7 +8462,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceExternalImageFormatPropertiesN
     VkImageCreateFlags                          flags,
     VkExternalMemoryHandleTypeFlagsNV           externalHandleType,
     VkExternalImageFormatPropertiesNV*          pExternalImageFormatProperties);
-#endif
+{$ENDIF}
 
 
 #define VK_NV_external_memory 1
@@ -8578,7 +8578,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdBeginConditionalRenderingEXT(
 
 VKAPI_ATTR void VKAPI_CALL vkCmdEndConditionalRenderingEXT(
     VkCommandBuffer                             commandBuffer);
-#endif
+{$ENDIF}
 
 
 #define VK_NV_clip_space_w_scaling 1
@@ -8605,7 +8605,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdSetViewportWScalingNV(
     uint32_t                                    firstViewport,
     uint32_t                                    viewportCount,
     const VkViewportWScalingNV*                 pViewportWScalings);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_direct_mode_display 1
@@ -8617,7 +8617,7 @@ typedef VkResult (VKAPI_PTR *PFN_vkReleaseDisplayEXT)(VkPhysicalDevice physicalD
 VKAPI_ATTR VkResult VKAPI_CALL vkReleaseDisplayEXT(
     VkPhysicalDevice                            physicalDevice,
     VkDisplayKHR                                display);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_display_surface_counter 1
@@ -8653,7 +8653,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfaceCapabilities2EXT(
     VkPhysicalDevice                            physicalDevice,
     VkSurfaceKHR                                surface,
     VkSurfaceCapabilities2EXT*                  pSurfaceCapabilities);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_display_control 1
@@ -8729,7 +8729,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetSwapchainCounterEXT(
     VkSwapchainKHR                              swapchain,
     VkSurfaceCounterFlagBitsEXT                 counter,
     uint64_t*                                   pCounterValue);
-#endif
+{$ENDIF}
 
 
 #define VK_GOOGLE_display_timing 1
@@ -8773,7 +8773,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetPastPresentationTimingGOOGLE(
     VkSwapchainKHR                              swapchain,
     uint32_t*                                   pPresentationTimingCount,
     VkPastPresentationTimingGOOGLE*             pPresentationTimings);
-#endif
+{$ENDIF}
 
 
 #define VK_NV_sample_mask_override_coverage 1
@@ -8868,7 +8868,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdSetDiscardRectangleEXT(
     uint32_t                                    firstDiscardRectangle,
     uint32_t                                    discardRectangleCount,
     const VkRect2D*                             pDiscardRectangles);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_conservative_rasterization 1
@@ -8959,7 +8959,7 @@ VKAPI_ATTR void VKAPI_CALL vkSetHdrMetadataEXT(
     uint32_t                                    swapchainCount,
     const VkSwapchainKHR*                       pSwapchains,
     const VkHdrMetadataEXT*                     pMetadata);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_external_memory_dma_buf 1
@@ -9111,7 +9111,7 @@ VKAPI_ATTR void VKAPI_CALL vkSubmitDebugUtilsMessageEXT(
     VkDebugUtilsMessageSeverityFlagBitsEXT      messageSeverity,
     VkDebugUtilsMessageTypeFlagsEXT             messageTypes,
     const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_sampler_filter_minmax 1
@@ -9251,7 +9251,7 @@ VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceMultisamplePropertiesEXT(
     VkPhysicalDevice                            physicalDevice,
     VkSampleCountFlagBits                       samples,
     VkMultisamplePropertiesEXT*                 pMultisampleProperties);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_blend_operation_advanced 1
@@ -9410,7 +9410,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetImageDrmFormatModifierPropertiesEXT(
     VkDevice                                    device,
     VkImage                                     image,
     VkImageDrmFormatModifierPropertiesEXT*      pProperties);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_validation_cache 1
@@ -9465,7 +9465,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetValidationCacheDataEXT(
     VkValidationCacheEXT                        validationCache,
     size_t*                                     pDataSize,
     void*                                       pData);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_descriptor_indexing 1
@@ -9589,7 +9589,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdSetCoarseSampleOrderNV(
     VkCoarseSampleOrderTypeNV                   sampleOrderType,
     uint32_t                                    customSampleOrderCount,
     const VkCoarseSampleOrderCustomNV*          pCustomSampleOrders);
-#endif
+{$ENDIF}
 
 
 #define VK_NV_ray_tracing 1
@@ -9956,7 +9956,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkCompileDeferredNV(
     VkDevice                                    device,
     VkPipeline                                  pipeline,
     uint32_t                                    shader);
-#endif
+{$ENDIF}
 
 
 #define VK_NV_representative_fragment_test 1
@@ -10048,7 +10048,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetMemoryHostPointerPropertiesEXT(
     VkExternalMemoryHandleTypeFlagBits          handleType,
     const void*                                 pHostPointer,
     VkMemoryHostPointerPropertiesEXT*           pMemoryHostPointerProperties);
-#endif
+{$ENDIF}
 
 
 #define VK_AMD_buffer_marker 1
@@ -10063,7 +10063,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdWriteBufferMarkerAMD(
     VkBuffer                                    dstBuffer,
     VkDeviceSize                                dstOffset,
     uint32_t                                    marker);
-#endif
+{$ENDIF}
 
 
 #define VK_AMD_pipeline_compiler_control 1
@@ -10114,7 +10114,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetCalibratedTimestampsEXT(
     const VkCalibratedTimestampInfoEXT*         pTimestampInfos,
     uint64_t*                                   pTimestamps,
     uint64_t*                                   pMaxDeviation);
-#endif
+{$ENDIF}
 
 
 #define VK_AMD_shader_core_properties 1
@@ -10290,7 +10290,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdDrawMeshTasksIndirectCountNV(
     VkDeviceSize                                countBufferOffset,
     uint32_t                                    maxDrawCount,
     uint32_t                                    stride);
-#endif
+{$ENDIF}
 
 
 #define VK_NV_fragment_shader_barycentric 1
@@ -10339,7 +10339,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdSetExclusiveScissorNV(
     uint32_t                                    firstExclusiveScissor,
     uint32_t                                    exclusiveScissorCount,
     const VkRect2D*                             pExclusiveScissors);
-#endif
+{$ENDIF}
 
 
 #define VK_NV_device_diagnostic_checkpoints 1
@@ -10370,7 +10370,7 @@ VKAPI_ATTR void VKAPI_CALL vkGetQueueCheckpointDataNV(
     VkQueue                                     queue,
     uint32_t*                                   pCheckpointDataCount,
     VkCheckpointDataNV*                         pCheckpointData);
-#endif
+{$ENDIF}
 
 
 #define VK_INTEL_shader_integer_functions2 1
@@ -10519,7 +10519,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetPerformanceParameterINTEL(
     VkDevice                                    device,
     VkPerformanceParameterTypeINTEL             parameter,
     VkPerformanceValueINTEL*                    pValue);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_pci_bus_info 1
@@ -10558,7 +10558,7 @@ VKAPI_ATTR void VKAPI_CALL vkSetLocalDimmingAMD(
     VkDevice                                    device,
     VkSwapchainKHR                              swapChain,
     VkBool32                                    localDimmingEnable);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_fragment_density_map 1
@@ -10739,7 +10739,7 @@ typedef VkDeviceAddress (VKAPI_PTR *PFN_vkGetBufferDeviceAddressEXT)(VkDevice de
 VKAPI_ATTR VkDeviceAddress VKAPI_CALL vkGetBufferDeviceAddressEXT(
     VkDevice                                    device,
     const VkBufferDeviceAddressInfo*            pInfo);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_tooling_info 1
@@ -10774,7 +10774,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceToolPropertiesEXT(
     VkPhysicalDevice                            physicalDevice,
     uint32_t*                                   pToolCount,
     VkPhysicalDeviceToolPropertiesEXT*          pToolProperties);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_separate_stencil_usage 1
@@ -10877,7 +10877,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceCooperativeMatrixPropertiesNV(
     VkPhysicalDevice                            physicalDevice,
     uint32_t*                                   pPropertyCount,
     VkCooperativeMatrixPropertiesNV*            pProperties);
-#endif
+{$ENDIF}
 
 
 #define VK_NV_coverage_reduction_mode 1
@@ -10919,7 +10919,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSupportedFramebufferMixedSampl
     VkPhysicalDevice                            physicalDevice,
     uint32_t*                                   pCombinationCount,
     VkFramebufferMixedSamplesCombinationNV*     pCombinations);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_fragment_shader_interlock 1
@@ -10964,7 +10964,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkCreateHeadlessSurfaceEXT(
     const VkHeadlessSurfaceCreateInfoEXT*       pCreateInfo,
     const VkAllocationCallbacks*                pAllocator,
     VkSurfaceKHR*                               pSurface);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_line_rasterization 1
@@ -11011,7 +11011,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdSetLineStippleEXT(
     VkCommandBuffer                             commandBuffer,
     uint32_t                                    lineStippleFactor,
     uint16_t                                    lineStipplePattern);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_shader_atomic_float 1
@@ -11049,7 +11049,7 @@ VKAPI_ATTR void VKAPI_CALL vkResetQueryPoolEXT(
     VkQueryPool                                 queryPool,
     uint32_t                                    firstQuery,
     uint32_t                                    queryCount);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_index_type_uint8 1
@@ -11144,7 +11144,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdSetStencilOpEXT(
     VkStencilOp                                 passOp,
     VkStencilOp                                 depthFailOp,
     VkCompareOp                                 compareOp);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_shader_demote_to_helper_invocation 1
@@ -11345,7 +11345,7 @@ VKAPI_ATTR void VKAPI_CALL vkDestroyIndirectCommandsLayoutNV(
     VkDevice                                    device,
     VkIndirectCommandsLayoutNV                  indirectCommandsLayout,
     const VkAllocationCallbacks*                pAllocator);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_texel_buffer_alignment 1
@@ -11538,7 +11538,7 @@ VKAPI_ATTR void VKAPI_CALL vkGetPrivateDataEXT(
     uint64_t                                    objectHandle,
     VkPrivateDataSlotEXT                        privateDataSlot,
     uint64_t*                                   pData);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_pipeline_creation_cache_control 1
@@ -11636,7 +11636,7 @@ VKAPI_ATTR void VKAPI_CALL vkCmdSetFragmentShadingRateEnumNV(
     VkCommandBuffer                             commandBuffer,
     VkFragmentShadingRateNV                     shadingRate,
     const VkFragmentShadingRateCombinerOpKHR    combinerOps[2]);
-#endif
+{$ENDIF}
 
 
 #define VK_EXT_fragment_density_map2 1
@@ -11708,7 +11708,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetWinrtDisplayNV(
     VkPhysicalDevice                            physicalDevice,
     uint32_t                                    deviceRelativeId,
     VkDisplayKHR*                               pDisplay);
-#endif
+{$ENDIF}
 
 
 #define VK_VALVE_mutable_descriptor_type 1
@@ -12028,7 +12028,7 @@ VKAPI_ATTR void VKAPI_CALL vkGetAccelerationStructureBuildSizesKHR(
     const VkAccelerationStructureBuildGeometryInfoKHR* pBuildInfo,
     const uint32_t*                             pMaxPrimitiveCounts,
     VkAccelerationStructureBuildSizesInfoKHR*   pSizeInfo);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_ray_tracing_pipeline 1
@@ -12164,7 +12164,7 @@ VKAPI_ATTR VkDeviceSize VKAPI_CALL vkGetRayTracingShaderGroupStackSizeKHR(
 VKAPI_ATTR void VKAPI_CALL vkCmdSetRayTracingPipelineStackSizeKHR(
     VkCommandBuffer                             commandBuffer,
     uint32_t                                    pipelineStackSize);
-#endif
+{$ENDIF}
 
 
 #define VK_KHR_ray_query 1
@@ -12179,6 +12179,6 @@ typedef struct VkPhysicalDeviceRayQueryFeaturesKHR {
 
 #ifdef __cplusplus
 }
-#endif
+{$ENDIF}
 
-#endif
+{$ENDIF}
