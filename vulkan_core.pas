@@ -6259,7 +6259,7 @@ VKAPI_ATTR void VKAPI_CALL vkTrimCommandPoolKHR(
 const VK_KHR_device_group_creation = 1;
 const VK_KHR_DEVICE_GROUP_CREATION_SPEC_VERSION = 1;
 const VK_KHR_DEVICE_GROUP_CREATION_EXTENSION_NAME = 'VK_KHR_device_group_creation';
-#define VK_MAX_DEVICE_GROUP_SIZE_KHR      VK_MAX_DEVICE_GROUP_SIZE
+const VK_MAX_DEVICE_GROUP_SIZE_KHR      = VK_MAX_DEVICE_GROUP_SIZE;
 typedef VkPhysicalDeviceGroupProperties VkPhysicalDeviceGroupPropertiesKHR;
 
 typedef VkDeviceGroupDeviceCreateInfo VkDeviceGroupDeviceCreateInfoKHR;
@@ -6277,7 +6277,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkEnumeratePhysicalDeviceGroupsKHR(
 const VK_KHR_external_memory_capabilities = 1;
 const VK_KHR_EXTERNAL_MEMORY_CAPABILITIES_SPEC_VERSION = 1;
 const VK_KHR_EXTERNAL_MEMORY_CAPABILITIES_EXTENSION_NAME = 'VK_KHR_external_memory_capabilities';
-#define VK_LUID_SIZE_KHR                  VK_LUID_SIZE
+const VK_LUID_SIZE_KHR                  = VK_LUID_SIZE;
 typedef VkExternalMemoryHandleTypeFlags VkExternalMemoryHandleTypeFlagsKHR;
 
 typedef VkExternalMemoryHandleTypeFlagBits VkExternalMemoryHandleTypeFlagBitsKHR;
@@ -6311,7 +6311,7 @@ VKAPI_ATTR void VKAPI_CALL vkGetPhysicalDeviceExternalBufferPropertiesKHR(
 const VK_KHR_external_memory = 1;
 const VK_KHR_EXTERNAL_MEMORY_SPEC_VERSION = 1;
 const VK_KHR_EXTERNAL_MEMORY_EXTENSION_NAME = 'VK_KHR_external_memory';
-#define VK_QUEUE_FAMILY_EXTERNAL_KHR      VK_QUEUE_FAMILY_EXTERNAL
+const VK_QUEUE_FAMILY_EXTERNAL_KHR      = VK_QUEUE_FAMILY_EXTERNAL;
 typedef VkExternalMemoryImageCreateInfo VkExternalMemoryImageCreateInfoKHR;
 
 typedef VkExternalMemoryBufferCreateInfo VkExternalMemoryBufferCreateInfoKHR;
@@ -7156,8 +7156,8 @@ typedef struct VkPhysicalDeviceShaderClockFeaturesKHR {
 const VK_KHR_driver_properties = 1;
 const VK_KHR_DRIVER_PROPERTIES_SPEC_VERSION = 1;
 const VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME = 'VK_KHR_driver_properties';
-#define VK_MAX_DRIVER_NAME_SIZE_KHR       VK_MAX_DRIVER_NAME_SIZE
-#define VK_MAX_DRIVER_INFO_SIZE_KHR       VK_MAX_DRIVER_INFO_SIZE
+const VK_MAX_DRIVER_NAME_SIZE_KHR       = VK_MAX_DRIVER_NAME_SIZE;
+const VK_MAX_DRIVER_INFO_SIZE_KHR       = VK_MAX_DRIVER_INFO_SIZE;
 typedef VkDriverId VkDriverIdKHR;
 
 typedef VkConformanceVersion VkConformanceVersionKHR;
@@ -9597,7 +9597,7 @@ VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkAccelerationStructureNV)
 const VK_NV_RAY_TRACING_SPEC_VERSION    = 3;
 const VK_NV_RAY_TRACING_EXTENSION_NAME = 'VK_NV_ray_tracing';
 const VK_SHADER_UNUSED_KHR              = (~0U);
-#define VK_SHADER_UNUSED_NV               VK_SHADER_UNUSED_KHR
+const VK_SHADER_UNUSED_NV               = VK_SHADER_UNUSED_KHR;
 
 type VkRayTracingShaderGroupTypeKHR = (
        VK_RAY_TRACING_SHADER_GROUP_TYPE_GENERAL_KHR = 0,
