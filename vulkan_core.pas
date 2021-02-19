@@ -5289,7 +5289,7 @@ procedure vkGetDescriptorSetLayoutSupport(
 
 const VK_VERSION_1_2 = 1;
 // Vulkan 1.2 version number
-#define VK_API_VERSION_1_2 VK_MAKE_VERSION(1, 2, 0)// Patch version should always be set to 0
+const VK_API_VERSION_1_2 = {VK_MAKE_VERSION( 1, 2, 0 )} ( 1 shl 22 ) or ( 2 shl 12 ) or 0; // Patch version should always be set to 0
 
 const VK_MAX_DRIVER_NAME_SIZE           = 256;
 const VK_MAX_DRIVER_INFO_SIZE           = 256;
@@ -6812,7 +6812,7 @@ type P_VkImportMemoryFdInfoKHR = ^VkImportMemoryFdInfoKHR;
        sType :VkStructureType;
        pNext :P_void;
        handleType :VkExternalMemoryHandleTypeFlagBits;
-       fd :int;
+       fd :T_int;
      end;
 
 type P_VkMemoryFdPropertiesKHR = ^VkMemoryFdPropertiesKHR;
@@ -6831,7 +6831,7 @@ type P_VkMemoryGetFdInfoKHR = ^VkMemoryGetFdInfoKHR;
      end;
 
 type PFN_vkGetMemoryFdKHR = function( device_:VkDevice; const pGetFdInfo_:P_VkMemoryGetFdInfoKHR; pFd_:P_int ) :VkResult;
-type PFN_vkGetMemoryFdPropertiesKHR = function( device_:VkDevice; handleType_:VkExternalMemoryHandleTypeFlagBits; fd_:int; pMemoryFdProperties_:P_VkMemoryFdPropertiesKHR ) :VkResult;
+type PFN_vkGetMemoryFdPropertiesKHR = function( device_:VkDevice; handleType_:VkExternalMemoryHandleTypeFlagBits; fd_:T_int; pMemoryFdProperties_:P_VkMemoryFdPropertiesKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkGetMemoryFdKHR(
@@ -6842,7 +6842,7 @@ function vkGetMemoryFdKHR(
 function vkGetMemoryFdPropertiesKHR(
     device_:VkDevice;
     handleType_:VkExternalMemoryHandleTypeFlagBits;
-    fd_:int;
+    fd_:T_int;
     pMemoryFdProperties_:P_VkMemoryFdPropertiesKHR ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
@@ -6902,7 +6902,7 @@ type P_VkImportSemaphoreFdInfoKHR = ^VkImportSemaphoreFdInfoKHR;
        semaphore :VkSemaphore;
        flags :VkSemaphoreImportFlags;
        handleType :VkExternalSemaphoreHandleTypeFlagBits;
-       fd :int;
+       fd :T_int;
      end;
 
 type P_VkSemaphoreGetFdInfoKHR = ^VkSemaphoreGetFdInfoKHR;
@@ -7189,7 +7189,7 @@ type P_VkImportFenceFdInfoKHR = ^VkImportFenceFdInfoKHR;
        fence :VkFence;
        flags :VkFenceImportFlags;
        handleType :VkExternalFenceHandleTypeFlagBits;
-       fd :int;
+       fd :T_int;
      end;
 
 type P_VkFenceGetFdInfoKHR = ^VkFenceGetFdInfoKHR;
@@ -7293,7 +7293,7 @@ type P_VkPerformanceCounterKHR = ^VkPerformanceCounterKHR;
      VkPerformanceCounterKHR = record
        sType :VkStructureType;
        pNext :P_void;
-       unit :VkPerformanceCounterUnitKHR;
+       unit_ :VkPerformanceCounterUnitKHR;
        scope :VkPerformanceCounterScopeKHR;
        storage :VkPerformanceCounterStorageKHR;
        uuid :array [ 0..VK_UUID_SIZE-1 ] of T_uint8_t;
@@ -7935,7 +7935,8 @@ type P_VkPhysicalDeviceFragmentShadingRateKHR = ^VkPhysicalDeviceFragmentShading
      end;
 
 type PFN_vkGetPhysicalDeviceFragmentShadingRatesKHR = function( physicalDevice_:VkPhysicalDevice; pFragmentShadingRateCount_:P_uint32_t; pFragmentShadingRates_:P_VkPhysicalDeviceFragmentShadingRateKHR ) :VkResult;
-type PFN_vkCmdSetFragmentShadingRateKHR = procedure( commandBuffer_:VkCommandBuffer; const pFragmentSize_:P_VkExtent2D; const combinerOps_:array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR );
+type T_combinerOps = array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR;
+     PFN_vkCmdSetFragmentShadingRateKHR = procedure( commandBuffer_:VkCommandBuffer; const pFragmentSize_:P_VkExtent2D; const combinerOps_:T_combinerOps );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkGetPhysicalDeviceFragmentShadingRatesKHR(
@@ -7946,7 +7947,7 @@ function vkGetPhysicalDeviceFragmentShadingRatesKHR(
 procedure vkCmdSetFragmentShadingRateKHR(
     commandBuffer_:VkCommandBuffer;
     pFragmentSize_:P_VkExtent2D;
-    const combinerOps_:array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR ); stdcall; external DLLNAME;
+    const combinerOps_:T_combinerOps ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
@@ -8157,7 +8158,7 @@ function vkGetPipelineExecutableInternalRepresentationsKHR(
     device_:VkDevice;
     pExecutableInfo_:P_VkPipelineExecutableInfoKHR;
     pInternalRepresentationCount_:P_uint32_t;
-    P_VkPipelineExecutableInternalRepresentationKHRpInternalRepresentations) :VkResult; stdcall; external DLLNAME;
+    pInternalRepresentations_:P_VkPipelineExecutableInternalRepresentationKHR ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
