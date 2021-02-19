@@ -8189,84 +8189,84 @@ type P_VkPipelineStageFlags2KHR = ^VkPipelineStageFlags2KHR;
      VkPipelineStageFlags2KHR = VkFlags64;
 
 // Flag bits for VkPipelineStageFlags2KHR
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_NONE_KHR = 0;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_TOP_OF_PIPE_BIT_KHR = $00000001;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_DRAW_INDIRECT_BIT_KHR = $00000002;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_VERTEX_INPUT_BIT_KHR = $00000004;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT_KHR = $00000008;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_TESSELLATION_CONTROL_SHADER_BIT_KHR = $00000010;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_TESSELLATION_EVALUATION_SHADER_BIT_KHR = $00000020;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_GEOMETRY_SHADER_BIT_KHR = $00000040;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT_KHR = $00000080;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT_KHR = $00000100;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_LATE_FRAGMENT_TESTS_BIT_KHR = $00000200;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT_KHR = $00000400;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT_KHR = $00000800;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_ALL_TRANSFER_BIT_KHR = $00001000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_TRANSFER_BIT_KHR = $00001000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_BOTTOM_OF_PIPE_BIT_KHR = $00002000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_HOST_BIT_KHR = $00004000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_ALL_GRAPHICS_BIT_KHR = $00008000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT_KHR = $00010000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_COPY_BIT_KHR = $100000000ULL;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_RESOLVE_BIT_KHR = $200000000ULL;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_BLIT_BIT_KHR = $400000000ULL;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_CLEAR_BIT_KHR = $800000000ULL;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_INDEX_INPUT_BIT_KHR = $1000000000ULL;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_VERTEX_ATTRIBUTE_INPUT_BIT_KHR = $2000000000ULL;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_PRE_RASTERIZATION_SHADERS_BIT_KHR = $4000000000ULL;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_TRANSFORM_FEEDBACK_BIT_EXT = $01000000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_CONDITIONAL_RENDERING_BIT_EXT = $00040000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_COMMAND_PREPROCESS_BIT_NV = $00020000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_FRAGMENT_SHADING_RATE_ATTACHMENT_BIT_KHR = $00400000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_SHADING_RATE_IMAGE_BIT_NV = $00400000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_ACCELERATION_STRUCTURE_BUILD_BIT_KHR = $02000000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_RAY_TRACING_SHADER_BIT_KHR = $00200000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_RAY_TRACING_SHADER_BIT_NV = $00200000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_ACCELERATION_STRUCTURE_BUILD_BIT_NV = $02000000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_FRAGMENT_DENSITY_PROCESS_BIT_EXT = $00800000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_TASK_SHADER_BIT_NV = $00080000;
-static const VkPipelineStageFlags2KHR VK_PIPELINE_STAGE_2_MESH_SHADER_BIT_NV = $00100000;
+const VK_PIPELINE_STAGE_2_NONE_KHR                                 :VkPipelineStageFlags2KHR = 0;
+const VK_PIPELINE_STAGE_2_TOP_OF_PIPE_BIT_KHR                      :VkPipelineStageFlags2KHR = $00000001;
+const VK_PIPELINE_STAGE_2_DRAW_INDIRECT_BIT_KHR                    :VkPipelineStageFlags2KHR = $00000002;
+const VK_PIPELINE_STAGE_2_VERTEX_INPUT_BIT_KHR                     :VkPipelineStageFlags2KHR = $00000004;
+const VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT_KHR                    :VkPipelineStageFlags2KHR = $00000008;
+const VK_PIPELINE_STAGE_2_TESSELLATION_CONTROL_SHADER_BIT_KHR      :VkPipelineStageFlags2KHR = $00000010;
+const VK_PIPELINE_STAGE_2_TESSELLATION_EVALUATION_SHADER_BIT_KHR   :VkPipelineStageFlags2KHR = $00000020;
+const VK_PIPELINE_STAGE_2_GEOMETRY_SHADER_BIT_KHR                  :VkPipelineStageFlags2KHR = $00000040;
+const VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT_KHR                  :VkPipelineStageFlags2KHR = $00000080;
+const VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT_KHR             :VkPipelineStageFlags2KHR = $00000100;
+const VK_PIPELINE_STAGE_2_LATE_FRAGMENT_TESTS_BIT_KHR              :VkPipelineStageFlags2KHR = $00000200;
+const VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT_KHR          :VkPipelineStageFlags2KHR = $00000400;
+const VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT_KHR                   :VkPipelineStageFlags2KHR = $00000800;
+const VK_PIPELINE_STAGE_2_ALL_TRANSFER_BIT_KHR                     :VkPipelineStageFlags2KHR = $00001000;
+const VK_PIPELINE_STAGE_2_TRANSFER_BIT_KHR                         :VkPipelineStageFlags2KHR = $00001000;
+const VK_PIPELINE_STAGE_2_BOTTOM_OF_PIPE_BIT_KHR                   :VkPipelineStageFlags2KHR = $00002000;
+const VK_PIPELINE_STAGE_2_HOST_BIT_KHR                             :VkPipelineStageFlags2KHR = $00004000;
+const VK_PIPELINE_STAGE_2_ALL_GRAPHICS_BIT_KHR                     :VkPipelineStageFlags2KHR = $00008000;
+const VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT_KHR                     :VkPipelineStageFlags2KHR = $00010000;
+const VK_PIPELINE_STAGE_2_COPY_BIT_KHR                             :VkPipelineStageFlags2KHR = UInt64( $100000000 ); {ULL}
+const VK_PIPELINE_STAGE_2_RESOLVE_BIT_KHR                          :VkPipelineStageFlags2KHR = UInt64( $200000000 ); {ULL}
+const VK_PIPELINE_STAGE_2_BLIT_BIT_KHR                             :VkPipelineStageFlags2KHR = UInt64( $400000000 ); {ULL}
+const VK_PIPELINE_STAGE_2_CLEAR_BIT_KHR                            :VkPipelineStageFlags2KHR = UInt64( $800000000 ); {ULL}
+const VK_PIPELINE_STAGE_2_INDEX_INPUT_BIT_KHR                      :VkPipelineStageFlags2KHR = UInt64( $1000000000 ); {ULL}
+const VK_PIPELINE_STAGE_2_VERTEX_ATTRIBUTE_INPUT_BIT_KHR           :VkPipelineStageFlags2KHR = UInt64( $2000000000 ); {ULL}
+const VK_PIPELINE_STAGE_2_PRE_RASTERIZATION_SHADERS_BIT_KHR        :VkPipelineStageFlags2KHR = UInt64( $4000000000 ); {ULL}
+const VK_PIPELINE_STAGE_2_TRANSFORM_FEEDBACK_BIT_EXT               :VkPipelineStageFlags2KHR = $01000000;
+const VK_PIPELINE_STAGE_2_CONDITIONAL_RENDERING_BIT_EXT            :VkPipelineStageFlags2KHR = $00040000;
+const VK_PIPELINE_STAGE_2_COMMAND_PREPROCESS_BIT_NV                :VkPipelineStageFlags2KHR = $00020000;
+const VK_PIPELINE_STAGE_2_FRAGMENT_SHADING_RATE_ATTACHMENT_BIT_KHR :VkPipelineStageFlags2KHR = $00400000;
+const VK_PIPELINE_STAGE_2_SHADING_RATE_IMAGE_BIT_NV                :VkPipelineStageFlags2KHR = $00400000;
+const VK_PIPELINE_STAGE_2_ACCELERATION_STRUCTURE_BUILD_BIT_KHR     :VkPipelineStageFlags2KHR = $02000000;
+const VK_PIPELINE_STAGE_2_RAY_TRACING_SHADER_BIT_KHR               :VkPipelineStageFlags2KHR = $00200000;
+const VK_PIPELINE_STAGE_2_RAY_TRACING_SHADER_BIT_NV                :VkPipelineStageFlags2KHR = $00200000;
+const VK_PIPELINE_STAGE_2_ACCELERATION_STRUCTURE_BUILD_BIT_NV      :VkPipelineStageFlags2KHR = $02000000;
+const VK_PIPELINE_STAGE_2_FRAGMENT_DENSITY_PROCESS_BIT_EXT         :VkPipelineStageFlags2KHR = $00800000;
+const VK_PIPELINE_STAGE_2_TASK_SHADER_BIT_NV                       :VkPipelineStageFlags2KHR = $00080000;
+const VK_PIPELINE_STAGE_2_MESH_SHADER_BIT_NV                       :VkPipelineStageFlags2KHR = $00100000;
 
 type P_VkAccessFlags2KHR = ^VkAccessFlags2KHR;
      VkAccessFlags2KHR = VkFlags64;
 
 // Flag bits for VkAccessFlags2KHR
-static const VkAccessFlags2KHR VK_ACCESS_2_NONE_KHR = 0;
-static const VkAccessFlags2KHR VK_ACCESS_2_INDIRECT_COMMAND_READ_BIT_KHR = $00000001;
-static const VkAccessFlags2KHR VK_ACCESS_2_INDEX_READ_BIT_KHR = $00000002;
-static const VkAccessFlags2KHR VK_ACCESS_2_VERTEX_ATTRIBUTE_READ_BIT_KHR = $00000004;
-static const VkAccessFlags2KHR VK_ACCESS_2_UNIFORM_READ_BIT_KHR = $00000008;
-static const VkAccessFlags2KHR VK_ACCESS_2_INPUT_ATTACHMENT_READ_BIT_KHR = $00000010;
-static const VkAccessFlags2KHR VK_ACCESS_2_SHADER_READ_BIT_KHR = $00000020;
-static const VkAccessFlags2KHR VK_ACCESS_2_SHADER_WRITE_BIT_KHR = $00000040;
-static const VkAccessFlags2KHR VK_ACCESS_2_COLOR_ATTACHMENT_READ_BIT_KHR = $00000080;
-static const VkAccessFlags2KHR VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT_KHR = $00000100;
-static const VkAccessFlags2KHR VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_READ_BIT_KHR = $00000200;
-static const VkAccessFlags2KHR VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT_KHR = $00000400;
-static const VkAccessFlags2KHR VK_ACCESS_2_TRANSFER_READ_BIT_KHR = $00000800;
-static const VkAccessFlags2KHR VK_ACCESS_2_TRANSFER_WRITE_BIT_KHR = $00001000;
-static const VkAccessFlags2KHR VK_ACCESS_2_HOST_READ_BIT_KHR = $00002000;
-static const VkAccessFlags2KHR VK_ACCESS_2_HOST_WRITE_BIT_KHR = $00004000;
-static const VkAccessFlags2KHR VK_ACCESS_2_MEMORY_READ_BIT_KHR = $00008000;
-static const VkAccessFlags2KHR VK_ACCESS_2_MEMORY_WRITE_BIT_KHR = $00010000;
-static const VkAccessFlags2KHR VK_ACCESS_2_SHADER_SAMPLED_READ_BIT_KHR = $100000000ULL;
-static const VkAccessFlags2KHR VK_ACCESS_2_SHADER_STORAGE_READ_BIT_KHR = $200000000ULL;
-static const VkAccessFlags2KHR VK_ACCESS_2_SHADER_STORAGE_WRITE_BIT_KHR = $400000000ULL;
-static const VkAccessFlags2KHR VK_ACCESS_2_TRANSFORM_FEEDBACK_WRITE_BIT_EXT = $02000000;
-static const VkAccessFlags2KHR VK_ACCESS_2_TRANSFORM_FEEDBACK_COUNTER_READ_BIT_EXT = $04000000;
-static const VkAccessFlags2KHR VK_ACCESS_2_TRANSFORM_FEEDBACK_COUNTER_WRITE_BIT_EXT = $08000000;
-static const VkAccessFlags2KHR VK_ACCESS_2_CONDITIONAL_RENDERING_READ_BIT_EXT = $00100000;
-static const VkAccessFlags2KHR VK_ACCESS_2_COMMAND_PREPROCESS_READ_BIT_NV = $00020000;
-static const VkAccessFlags2KHR VK_ACCESS_2_COMMAND_PREPROCESS_WRITE_BIT_NV = $00040000;
-static const VkAccessFlags2KHR VK_ACCESS_2_FRAGMENT_SHADING_RATE_ATTACHMENT_READ_BIT_KHR = $00800000;
-static const VkAccessFlags2KHR VK_ACCESS_2_SHADING_RATE_IMAGE_READ_BIT_NV = $00800000;
-static const VkAccessFlags2KHR VK_ACCESS_2_ACCELERATION_STRUCTURE_READ_BIT_KHR = $00200000;
-static const VkAccessFlags2KHR VK_ACCESS_2_ACCELERATION_STRUCTURE_WRITE_BIT_KHR = $00400000;
-static const VkAccessFlags2KHR VK_ACCESS_2_ACCELERATION_STRUCTURE_READ_BIT_NV = $00200000;
-static const VkAccessFlags2KHR VK_ACCESS_2_ACCELERATION_STRUCTURE_WRITE_BIT_NV = $00400000;
-static const VkAccessFlags2KHR VK_ACCESS_2_FRAGMENT_DENSITY_MAP_READ_BIT_EXT = $01000000;
-static const VkAccessFlags2KHR VK_ACCESS_2_COLOR_ATTACHMENT_READ_NONCOHERENT_BIT_EXT = $00080000;
+const VK_ACCESS_2_NONE_KHR                                      :VkAccessFlags2KHR = 0;
+const VK_ACCESS_2_INDIRECT_COMMAND_READ_BIT_KHR                 :VkAccessFlags2KHR = $00000001;
+const VK_ACCESS_2_INDEX_READ_BIT_KHR                            :VkAccessFlags2KHR = $00000002;
+const VK_ACCESS_2_VERTEX_ATTRIBUTE_READ_BIT_KHR                 :VkAccessFlags2KHR = $00000004;
+const VK_ACCESS_2_UNIFORM_READ_BIT_KHR                          :VkAccessFlags2KHR = $00000008;
+const VK_ACCESS_2_INPUT_ATTACHMENT_READ_BIT_KHR                 :VkAccessFlags2KHR = $00000010;
+const VK_ACCESS_2_SHADER_READ_BIT_KHR                           :VkAccessFlags2KHR = $00000020;
+const VK_ACCESS_2_SHADER_WRITE_BIT_KHR                          :VkAccessFlags2KHR = $00000040;
+const VK_ACCESS_2_COLOR_ATTACHMENT_READ_BIT_KHR                 :VkAccessFlags2KHR = $00000080;
+const VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT_KHR                :VkAccessFlags2KHR = $00000100;
+const VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_READ_BIT_KHR         :VkAccessFlags2KHR = $00000200;
+const VK_ACCESS_2_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT_KHR        :VkAccessFlags2KHR = $00000400;
+const VK_ACCESS_2_TRANSFER_READ_BIT_KHR                         :VkAccessFlags2KHR = $00000800;
+const VK_ACCESS_2_TRANSFER_WRITE_BIT_KHR                        :VkAccessFlags2KHR = $00001000;
+const VK_ACCESS_2_HOST_READ_BIT_KHR                             :VkAccessFlags2KHR = $00002000;
+const VK_ACCESS_2_HOST_WRITE_BIT_KHR                            :VkAccessFlags2KHR = $00004000;
+const VK_ACCESS_2_MEMORY_READ_BIT_KHR                           :VkAccessFlags2KHR = $00008000;
+const VK_ACCESS_2_MEMORY_WRITE_BIT_KHR                          :VkAccessFlags2KHR = $00010000;
+const VK_ACCESS_2_SHADER_SAMPLED_READ_BIT_KHR                   :VkAccessFlags2KHR = UInt64( $100000000 ); {ULL}
+const VK_ACCESS_2_SHADER_STORAGE_READ_BIT_KHR                   :VkAccessFlags2KHR = UInt64( $200000000 ); {ULL}
+const VK_ACCESS_2_SHADER_STORAGE_WRITE_BIT_KHR                  :VkAccessFlags2KHR = UInt64( $400000000 ); {ULL}
+const VK_ACCESS_2_TRANSFORM_FEEDBACK_WRITE_BIT_EXT              :VkAccessFlags2KHR = $02000000;
+const VK_ACCESS_2_TRANSFORM_FEEDBACK_COUNTER_READ_BIT_EXT       :VkAccessFlags2KHR = $04000000;
+const VK_ACCESS_2_TRANSFORM_FEEDBACK_COUNTER_WRITE_BIT_EXT      :VkAccessFlags2KHR = $08000000;
+const VK_ACCESS_2_CONDITIONAL_RENDERING_READ_BIT_EXT            :VkAccessFlags2KHR = $00100000;
+const VK_ACCESS_2_COMMAND_PREPROCESS_READ_BIT_NV                :VkAccessFlags2KHR = $00020000;
+const VK_ACCESS_2_COMMAND_PREPROCESS_WRITE_BIT_NV               :VkAccessFlags2KHR = $00040000;
+const VK_ACCESS_2_FRAGMENT_SHADING_RATE_ATTACHMENT_READ_BIT_KHR :VkAccessFlags2KHR = $00800000;
+const VK_ACCESS_2_SHADING_RATE_IMAGE_READ_BIT_NV                :VkAccessFlags2KHR = $00800000;
+const VK_ACCESS_2_ACCELERATION_STRUCTURE_READ_BIT_KHR           :VkAccessFlags2KHR = $00200000;
+const VK_ACCESS_2_ACCELERATION_STRUCTURE_WRITE_BIT_KHR          :VkAccessFlags2KHR = $00400000;
+const VK_ACCESS_2_ACCELERATION_STRUCTURE_READ_BIT_NV            :VkAccessFlags2KHR = $00200000;
+const VK_ACCESS_2_ACCELERATION_STRUCTURE_WRITE_BIT_NV           :VkAccessFlags2KHR = $00400000;
+const VK_ACCESS_2_FRAGMENT_DENSITY_MAP_READ_BIT_EXT             :VkAccessFlags2KHR = $01000000;
+const VK_ACCESS_2_COLOR_ATTACHMENT_READ_NONCOHERENT_BIT_EXT     :VkAccessFlags2KHR = $00080000;
 
 
 type P_VkSubmitFlagBitsKHR = ^VkSubmitFlagBitsKHR;
@@ -8786,7 +8786,7 @@ type P_VkDebugMarkerObjectNameInfoEXT = ^VkDebugMarkerObjectNameInfoEXT;
        sType :VkStructureType;
        pNext :P_void;
        objectType :VkDebugReportObjectTypeEXT;
-       object :T_uint64_t;
+       object_ :T_uint64_t;
        pObjectName :P_char;
      end;
 
@@ -8795,7 +8795,7 @@ type P_VkDebugMarkerObjectTagInfoEXT = ^VkDebugMarkerObjectTagInfoEXT;
        sType :VkStructureType;
        pNext :P_void;
        objectType :VkDebugReportObjectTypeEXT;
-       object :T_uint64_t;
+       object_ :T_uint64_t;
        tagName :T_uint64_t;
        tagSize :T_size_t;
        pTag :P_void;
@@ -9713,7 +9713,7 @@ const VK_EXT_EXTERNAL_MEMORY_DMA_BUF_EXTENSION_NAME = 'VK_EXT_external_memory_dm
 const VK_EXT_queue_family_foreign = 1;
 const VK_EXT_QUEUE_FAMILY_FOREIGN_SPEC_VERSION = 1;
 const VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME = 'VK_EXT_queue_family_foreign';
-const VK_QUEUE_FAMILY_FOREIGN_EXT       = (~0U-2);
+const VK_QUEUE_FAMILY_FOREIGN_EXT       = UInt32( $FFFFFFFF )-2; {(~0U-2)}
 
 
 const VK_EXT_debug_utils = 1;
@@ -10405,7 +10405,7 @@ type P_VkAccelerationStructureNV = ^VkAccelerationStructureNV;
      VkAccelerationStructureNV = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 const VK_NV_RAY_TRACING_SPEC_VERSION    = 3;
 const VK_NV_RAY_TRACING_EXTENSION_NAME = 'VK_NV_ray_tracing';
-const VK_SHADER_UNUSED_KHR              = (~0U);
+const VK_SHADER_UNUSED_KHR              = UInt32( $FFFFFFFF ); {(~0U)}
 const VK_SHADER_UNUSED_NV               = VK_SHADER_UNUSED_KHR;
 
 type P_VkRayTracingShaderGroupTypeKHR = ^VkRayTracingShaderGroupTypeKHR;
@@ -10682,10 +10682,10 @@ type P_VkAabbPositionsNV = ^VkAabbPositionsNV;
 type P_VkAccelerationStructureInstanceKHR = ^VkAccelerationStructureInstanceKHR;
      VkAccelerationStructureInstanceKHR = record
        transform :VkTransformMatrixKHR;
-    T_uint32_t                      instanceCustomIndex:24;
-    T_uint32_t                      mask:8;
-    T_uint32_t                      instanceShaderBindingTableRecordOffset:24;
-    VkGeometryInstanceFlagsKHR    flags:8;
+       instanceCustomIndex :T_uint32_t; {:24}
+       mask :T_uint32_t; {:8}
+       instanceShaderBindingTableRecordOffset: T_uint32_t; {:24}
+       flags :VkGeometryInstanceFlagsKHR; {:8}
        accelerationStructureReference :T_uint64_t;
      end;
 
@@ -12631,13 +12631,13 @@ type P_VkPipelineFragmentShadingRateEnumStateCreateInfoNV = ^VkPipelineFragmentS
        combinerOps :array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR;
      end;
 
-type PFN_vkCmdSetFragmentShadingRateEnumNV = procedure( commandBuffer_:VkCommandBuffer; shadingRate_:VkFragmentShadingRateNV; const combinerOps_:array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR );
+type PFN_vkCmdSetFragmentShadingRateEnumNV = procedure( commandBuffer_:VkCommandBuffer; shadingRate_:VkFragmentShadingRateNV; const combinerOps_:T_combinerOps );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 procedure vkCmdSetFragmentShadingRateEnumNV(
     commandBuffer_:VkCommandBuffer;
     shadingRate_:VkFragmentShadingRateNV;
-    const combinerOps_:array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR ); stdcall; external DLLNAME;
+    const combinerOps_:T_combinerOps ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
@@ -12793,7 +12793,8 @@ type P_VkDeviceOrHostAddressConstKHR = ^VkDeviceOrHostAddressConstKHR;
        1:( hostAddress   :P_void          );
      end;
 
-type P_VkAccelerationStructureBuildRangeInfoKHR = ^VkAccelerationStructureBuildRangeInfoKHR;
+type PP_VkAccelerationStructureBuildRangeInfoKHR = ^P_VkAccelerationStructureBuildRangeInfoKHR;
+     P_VkAccelerationStructureBuildRangeInfoKHR = ^VkAccelerationStructureBuildRangeInfoKHR;
      VkAccelerationStructureBuildRangeInfoKHR = record
        primitiveCount :T_uint32_t;
        primitiveOffset :T_uint32_t;
@@ -12838,7 +12839,8 @@ type P_VkAccelerationStructureGeometryDataKHR = ^VkAccelerationStructureGeometry
        2:( instances :VkAccelerationStructureGeometryInstancesDataKHR );
      end;
 
-type P_VkAccelerationStructureGeometryKHR = ^VkAccelerationStructureGeometryKHR;
+type PP_VkAccelerationStructureGeometryKHR = ^P_VkAccelerationStructureGeometryKHR;
+     P_VkAccelerationStructureGeometryKHR = ^VkAccelerationStructureGeometryKHR;
      VkAccelerationStructureGeometryKHR = record
        sType :VkStructureType;
        pNext :P_void;
@@ -12959,9 +12961,9 @@ type P_VkAccelerationStructureBuildSizesInfoKHR = ^VkAccelerationStructureBuildS
 
 type PFN_vkCreateAccelerationStructureKHR = function( device_:VkDevice; const pCreateInfo_:P_VkAccelerationStructureCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pAccelerationStructure_:P_VkAccelerationStructureKHR ) :VkResult;
 type PFN_vkDestroyAccelerationStructureKHR = procedure( device_:VkDevice; accelerationStructure_:VkAccelerationStructureKHR; const pAllocator_:P_VkAllocationCallbacks );
-type PFN_vkCmdBuildAccelerationStructuresKHR = procedure( commandBuffer_:VkCommandBuffer; infoCount_:T_uint32_t; const pInfos_:P_VkAccelerationStructureBuildGeometryInfoKHR; const P_VkAccelerationStructureBuildRangeInfoKHR ppBuildRangeInfos_:P_const );
-type PFN_vkCmdBuildAccelerationStructuresIndirectKHR = procedure( commandBuffer_:VkCommandBuffer; infoCount_:T_uint32_t; const pInfos_:P_VkAccelerationStructureBuildGeometryInfoKHR; const pIndirectDeviceAddresses_:P_VkDeviceAddress; const pIndirectStrides_:P_uint32_t; const P_uint32_t ppMaxPrimitiveCounts_:P_const );
-type PFN_vkBuildAccelerationStructuresKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; infoCount_:T_uint32_t; const pInfos_:P_VkAccelerationStructureBuildGeometryInfoKHR; const P_VkAccelerationStructureBuildRangeInfoKHR ppBuildRangeInfos_:P_const ) :VkResult;
+type PFN_vkCmdBuildAccelerationStructuresKHR = procedure( commandBuffer_:VkCommandBuffer; infoCount_:T_uint32_t; const pInfos_:P_VkAccelerationStructureBuildGeometryInfoKHR; const ppBuildRangeInfos_:PP_VkAccelerationStructureBuildRangeInfoKHR );
+type PFN_vkCmdBuildAccelerationStructuresIndirectKHR = procedure( commandBuffer_:VkCommandBuffer; infoCount_:T_uint32_t; const pInfos_:P_VkAccelerationStructureBuildGeometryInfoKHR; const pIndirectDeviceAddresses_:P_VkDeviceAddress; const pIndirectStrides_:P_uint32_t; const ppMaxPrimitiveCounts_:PP_uint32_t );
+type PFN_vkBuildAccelerationStructuresKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; infoCount_:T_uint32_t; const pInfos_:P_VkAccelerationStructureBuildGeometryInfoKHR; const ppBuildRangeInfos_:PP_VkAccelerationStructureBuildRangeInfoKHR ) :VkResult;
 type PFN_vkCopyAccelerationStructureKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; const pInfo_:P_VkCopyAccelerationStructureInfoKHR ) :VkResult;
 type PFN_vkCopyAccelerationStructureToMemoryKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; const pInfo_:P_VkCopyAccelerationStructureToMemoryInfoKHR ) :VkResult;
 type PFN_vkCopyMemoryToAccelerationStructureKHR = function( device_:VkDevice; deferredOperation_:VkDeferredOperationKHR; const pInfo_:P_VkCopyMemoryToAccelerationStructureInfoKHR ) :VkResult;
