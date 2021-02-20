@@ -1,4 +1,4 @@
-unit vulkan_core;
+﻿unit vulkan_core;
 
 (*
 ** Copyright 2015-2021 The Khronos Group Inc.
@@ -11,7 +11,7 @@ unit vulkan_core;
 **
 *)
 
-interface //####################################################################
+interface //#################################################################### ■
 
 uses LUX.Code.C;
 
@@ -13226,7 +13226,7 @@ type P_VkPhysicalDeviceRayQueryFeaturesKHR = ^VkPhysicalDeviceRayQueryFeaturesKH
      end;
 
 
-implementation //###############################################################
+implementation //############################################################### ■
 
 function VK_MAKE_VERSION( const major_,minor_,patch_:T_uint32_t ) :T_uint32_t;
 begin
@@ -13250,4 +13250,4 @@ begin
      Result := version_ and $fff;
 end;
 
-end. //#########################################################################
+end. //######################################################################### ■
