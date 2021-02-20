@@ -1,15 +1,38 @@
 ﻿unit Main;
 
+{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/02-enumerate_devices }
+
+(*
+ * Vulkan Samples
+ *
+ * Copyright (C) 2015-2016 Valve Corporation
+ * Copyright (C) 2015-2016 LunarG, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *)
+
 interface //####################################################################
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   vulkan_core,
-  vulkan.util, vulkan.util_init;
+  vulkan.util, vulkan.util_init,
+  LUX.Code.C, FMX.Memo.Types, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo;
 
 type
   TForm1 = class(TForm)
+    Memo1: TMemo;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
@@ -25,51 +48,38 @@ implementation //###############################################################
 
 {$R *.fmx}
 
-// https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/01-init_instance
+(*
+VULKAN_SAMPLE_SHORT_DESCRIPTION
+enumerate physical devices
+*)
 
-const APP_SHORT_NAME = 'vulkansamples_instance';
+const APP_SHORT_NAME = 'vulkansamples_enumerate';
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
    info      :T_sample_info;
-   app_info  :VkApplicationInfo;
-   inst_info :VkInstanceCreateInfo;
-   inst      :VkInstance;
+   gpu_count :T_uint32_t;
    res       :VkResult;
 begin
      Caption := APP_SHORT_NAME;
 
      init_global_layer_properties( info );
+     init_instance( info, APP_SHORT_NAME );
 
      (* VULKAN_KEY_START *)
 
-     // initialize the VkApplicationInfo structure
-     app_info.sType              := VK_STRUCTURE_TYPE_APPLICATION_INFO;
-     app_info.pNext              := nil;
-     app_info.pApplicationName   := APP_SHORT_NAME;
-     app_info.applicationVersion := 1;
-     app_info.pEngineName        := APP_SHORT_NAME;
-     app_info.engineVersion      := 1;
-     app_info.apiVersion         := VK_API_VERSION_1_0;
+     gpu_count := 1;
+     res := vkEnumeratePhysicalDevices( info.inst, @gpu_count, nil );
+     Assert( gpu_count > 0 );
+     SetLength( info.gpus, gpu_count );
+     res := vkEnumeratePhysicalDevices( info.inst, @gpu_count, @info.gpus[ 0 ] );
+     Assert( ( res = VK_SUCCESS ) and ( gpu_count >= 1 ) );
 
-     // initialize the VkInstanceCreateInfo structure
-     inst_info.sType                   := VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-     inst_info.pNext                   := nil;
-     inst_info.flags                   := 0;
-     inst_info.pApplicationInfo        := @app_info;
-     inst_info.enabledExtensionCount   := 0;
-     inst_info.ppEnabledExtensionNames := nil;
-     inst_info.enabledLayerCount       := 0;
-     inst_info.ppEnabledLayerNames     := nil;
-
-     res := vkCreateInstance( @inst_info, nil, @inst );
-
-     Assert( res <> VK_ERROR_INCOMPATIBLE_DRIVER, 'cannot find a compatible Vulkan ICD' );
-     Assert( res = VK_SUCCESS, 'unknown error' );
-
-     vkDestroyInstance( inst, nil );
+     Memo1.Lines.Add( 'gpu_count = ' + gpu_count.ToString );
 
      (* VULKAN_KEY_END *)
+
+     vkDestroyInstance( info.inst, nil );
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
