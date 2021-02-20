@@ -47,6 +47,10 @@ function init_device_extension_properties( var info_:T_sample_info; var layer_pr
 function init_enumerate_device( var info_:T_sample_info; gpu_count_:T_uint32_t = 1 ) :VkResult;
 procedure destroy_instance( var info_:T_sample_info );
 
+procedure init_queue_family_index( var info_:T_sample_info );
+function init_device( var info_:T_sample_info ) :VkResult;
+procedure destroy_device( var info_:T_sample_info );
+
 implementation //############################################################### ■
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
@@ -217,6 +221,74 @@ end;
 procedure destroy_instance( var info_:T_sample_info );
 begin
      vkDestroyInstance( info_.inst, nil );
+end;
+
+//------------------------------------------------------------------------------
+
+procedure init_queue_family_index( var info_:T_sample_info );
+var
+   found :T_bool;
+   i     :T_unsigned_int;
+begin
+     (* This routine simply finds a graphics queue for a later vkCreateDevice,
+      * without consideration for which queue family can present an image.
+      * Do not use this if your intent is to present later in your sample,
+      * instead use the init_connection, init_window, init_swapchain_extension,
+      * init_device call sequence to get a graphics and present compatible queue
+      * family
+      *)
+
+     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[ 0 ], @info_.queue_family_count, nil );
+     Assert( info_.queue_family_count >= 1 );
+
+     SetLength( info_.queue_props, info_.queue_family_count );
+     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[ 0 ], @info_.queue_family_count, @info_.queue_props[ 0 ] );
+     Assert( info_.queue_family_count >= 1 );
+
+     found := False;
+     for i := 0 to info_.queue_family_count-1 do
+     begin
+          if ( info_.queue_props[ i ].queueFlags and VkQueueFlags( VK_QUEUE_GRAPHICS_BIT ) ) > 0 then
+          begin
+               info_.graphics_queue_family_index := i;
+               found := True;
+               Break;
+          end;
+     end;
+     Assert( found );
+end;
+
+function init_device( var info_:T_sample_info ) :VkResult;
+var
+   queue_info       :VkDeviceQueueCreateInfo;
+   queue_priorities :array [ 0..0 ] of T_float;
+   device_info      :VkDeviceCreateInfo;
+begin
+     queue_priorities[ 0 ] := 0;
+     queue_info.sType            := VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+     queue_info.pNext            := nil;
+     queue_info.queueCount       := 1;
+     queue_info.pQueuePriorities := @queue_priorities[ 0 ];
+     queue_info.queueFamilyIndex := info_.graphics_queue_family_index;
+
+     device_info.sType                        := VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+     device_info.pNext                        := nil;
+     device_info.queueCreateInfoCount         := 1;
+     device_info.pQueueCreateInfos            := @queue_info;
+     device_info.enabledExtensionCount        := Length( info_.device_extension_names );
+     if device_info.enabledExtensionCount > 0
+     then device_info.ppEnabledExtensionNames := @info_.device_extension_names[ 0 ]
+     else device_info.ppEnabledExtensionNames := nil;
+     device_info.pEnabledFeatures             := nil;
+
+     Result := vkCreateDevice( info_.gpus[ 0 ], @device_info, nil, @info_.device );
+     Assert( Result = VK_SUCCESS );
+end;
+
+procedure destroy_device( var info_:T_sample_info );
+begin
+     vkDeviceWaitIdle( info_.device );
+     vkDestroyDevice( info_.device, nil );
 end;
 
 end. //######################################################################### ■
