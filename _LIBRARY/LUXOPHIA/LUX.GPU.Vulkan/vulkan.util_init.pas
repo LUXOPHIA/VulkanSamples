@@ -42,6 +42,8 @@ function init_global_extension_properties( var layer_props_:T_layer_properties )
 
 function init_global_layer_properties( var info_:T_sample_info ) :VkResult;
 
+function init_instance( var info:T_sample_info; const app_short_name:P_char ) :VkResult;
+
 implementation //############################################################### ■
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
@@ -126,6 +128,34 @@ begin
           info_.instance_layer_properties := info_.instance_layer_properties + [ layer_props ];
      end;
      vk_props := nil;
+end;
+
+function init_instance( var info:T_sample_info; const app_short_name:P_char ) :VkResult;
+var
+   app_info  :VkApplicationInfo;
+   inst_info :VkInstanceCreateInfo;
+begin
+    app_info.sType              := VK_STRUCTURE_TYPE_APPLICATION_INFO;
+    app_info.pNext              := nil;
+    app_info.pApplicationName   := app_short_name;
+    app_info.applicationVersion := 1;
+    app_info.pEngineName        := app_short_name;
+    app_info.engineVersion      := 1;
+    app_info.apiVersion         := VK_API_VERSION_1_0;
+
+    inst_info.sType                    := VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    inst_info.pNext                    := nil;
+    inst_info.flags                    := 0;
+    inst_info.pApplicationInfo         := @app_info;
+    inst_info.enabledLayerCount        := Length( info.instance_layer_names );
+    if Length( info.instance_layer_names ) > 0
+    then inst_info.ppEnabledLayerNames := @info.instance_layer_names[0]
+    else inst_info.ppEnabledLayerNames := nil;
+    inst_info.enabledExtensionCount    := Length( info.instance_extension_names );
+    inst_info.ppEnabledExtensionNames  := @info.instance_extension_names[ 0 ];
+
+    Result := vkCreateInstance( @inst_info, nil, @info.inst );
+    Assert( Result = VK_SUCCESS );
 end;
 
 end. //######################################################################### ■
