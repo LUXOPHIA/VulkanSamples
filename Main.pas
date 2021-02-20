@@ -1,6 +1,6 @@
 ﻿unit Main;
 
-{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/03-init_device }
+{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/04-init_command_buffer }
 
 (*
  * Vulkan Samples
@@ -50,86 +50,60 @@ implementation //###############################################################
 
 (*
 VULKAN_SAMPLE_SHORT_DESCRIPTION
-create and destroy a Vulkan physical device
+Create Vulkan command buffer
 *)
 
 (* This is part of the draw cube progression *)
 
-const APP_SHORT_NAME = 'vulkansamples_device';
+const sample_title = 'Command Buffer Sample';
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-   info             :T_sample_info;
-   queue_info       :VkDeviceQueueCreateInfo;
-   found            :T_bool;
-   i                :T_unsigned_int;
-   queue_priorities :array [ 0..0 ] of T_float;
-   device_info      :VkDeviceCreateInfo;
-   device           :VkDevice;
-   res              :VkResult;
+   res           :VkResult;
+   info          :T_sample_info;
+   cmd_pool_info :VkCommandPoolCreateInfo;
+   cmd           :VkCommandBufferAllocateInfo;
+   cmd_bufs      :array [ 0..0 ] of VkCommandBuffer;
 begin
-     Caption := APP_SHORT_NAME;
+     Caption := sample_title;
 
      init_global_layer_properties( info );
-     init_instance( info, APP_SHORT_NAME );
-
+     init_instance( info, sample_title );
      init_enumerate_device( info );
+     init_queue_family_index( info );
+     init_device( info );
 
      (* VULKAN_KEY_START *)
 
-     vkGetPhysicalDeviceQueueFamilyProperties( info.gpus[ 0 ], @info.queue_family_count, nil );
-     Assert( info.queue_family_count >= 1 );
+     (* Create a command pool to allocate our command buffer from *)
+     cmd_pool_info.sType            := VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+     cmd_pool_info.pNext            := nil;
+     cmd_pool_info.queueFamilyIndex := info.graphics_queue_family_index;
+     cmd_pool_info.flags            := 0;
 
-     SetLength( info.queue_props, info.queue_family_count );
-     vkGetPhysicalDeviceQueueFamilyProperties( info.gpus[ 0 ], @info.queue_family_count, @info.queue_props[ 0 ] );
-     Assert( info.queue_family_count >= 1 );
+     res := vkCreateCommandPool( info.device, @cmd_pool_info, nil, @info.cmd_pool );
+     Assert( res = VK_SUCCESS );
 
-     Memo1.Lines.Add( 'info.queue_family_count = ' + info.queue_family_count.ToString );
-     for i := 0 to info.queue_family_count-1 do
-     begin
-          Memo1.Lines.Add( 'info.queue_props[ ' + i.ToString + ' ]' );
-          Memo1.Lines.Add( '    .queueFlags = ' + info.queue_props[ i ].queueFlags.ToHexString );
-          Memo1.Lines.Add( '    .queueCount = ' + info.queue_props[ i ].queueCount.ToString );
-     end;
+     Memo1.Lines.Add( 'info.cmd_pool = ' + UInt64( info.cmd_pool ).ToHexString );
 
-     found := false;
-     for i := 0 to info.queue_family_count-1 do
-     begin
-          if ( info.queue_props[ i ].queueFlags and VkQueueFlags( VK_QUEUE_GRAPHICS_BIT ) ) > 0 then
-          begin
-               queue_info.queueFamilyIndex := i;
-               found := true;
-               Break;
-          end;
-     end;
-     Assert( found );
+     (* Create the command buffer from the command pool *)
+     cmd.sType              := VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+     cmd.pNext              := nil;
+     cmd.commandPool        := info.cmd_pool;
+     cmd.level              := VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+     cmd.commandBufferCount := 1;
 
-     if found then Memo1.Lines.Add( 'found = True'  )
-              else Memo1.Lines.Add( 'found = False' );
+     res := vkAllocateCommandBuffers( info.device, @cmd, @info.cmd );
+     Assert( res = VK_SUCCESS );
 
-     queue_priorities[ 0 ] := 0;
-     queue_info.sType            := VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-     queue_info.pNext            := nil;
-     queue_info.queueCount       := 1;
-     queue_info.pQueuePriorities := @queue_priorities[ 0 ];
-
-     device_info.sType                   := VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-     device_info.pNext                   := nil;
-     device_info.queueCreateInfoCount    := 1;
-     device_info.pQueueCreateInfos       := @queue_info;
-     device_info.enabledExtensionCount   := 0;
-     device_info.ppEnabledExtensionNames := nil;
-     device_info.enabledLayerCount       := 0;
-     device_info.ppEnabledLayerNames     := nil;
-     device_info.pEnabledFeatures        := nil;
-
-     res := vkCreateDevice( info.gpus[ 0 ], @device_info, nil, @device );
-     assert( res = VK_SUCCESS );
-
-     vkDestroyDevice( device, nil );
+     Memo1.Lines.Add( 'info.cmd = ' + UInt64( info.cmd ).ToHexString );
 
      (* VULKAN_KEY_END *)
 
+     cmd_bufs[ 0 ] := info.cmd;
+     vkFreeCommandBuffers( info.device, info.cmd_pool, 1, @cmd_bufs[ 0 ] );
+     vkDestroyCommandPool( info.device, info.cmd_pool, nil );
+     destroy_device( info );
      destroy_instance( info );
 end;
 
