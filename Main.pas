@@ -21,6 +21,13 @@
  * limitations under the License.
  *)
 
+(*
+VULKAN_SAMPLE_SHORT_DESCRIPTION
+create and destroy Vulkan instance
+*)
+
+(* This is part of the draw cube progression *)
+
 interface //####################################################################
 
 uses
@@ -35,6 +42,7 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     { private 宣言 }
+    const APP_SHORT_NAME = 'vulkansamples_instance';
   public
     { public 宣言 }
   end;
@@ -45,15 +53,6 @@ var
 implementation //###############################################################
 
 {$R *.fmx}
-
-(*
-VULKAN_SAMPLE_SHORT_DESCRIPTION
-create and destroy Vulkan instance
-*)
-
-(* This is part of the draw cube progression *)
-
-const APP_SHORT_NAME = 'vulkansamples_instance';
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
@@ -89,9 +88,17 @@ begin
      inst_info.ppEnabledLayerNames     := nil;
 
      res := vkCreateInstance( @inst_info, nil, @inst );
-
-     Assert( res <> VK_ERROR_INCOMPATIBLE_DRIVER, 'cannot find a compatible Vulkan ICD' );
-     Assert( res = VK_SUCCESS, 'unknown error' );
+     if res = VK_ERROR_INCOMPATIBLE_DRIVER then
+     begin
+          Log.d( 'cannot find a compatible Vulkan ICD' );
+          RunError( 256-1 );
+     end
+     else
+     if res <> VK_SUCCESS then
+     begin
+          Log.d( 'unknown error' );
+          RunError( 256-1 );
+     end;
 
      vkDestroyInstance( inst, nil );
 
