@@ -21,6 +21,13 @@
  * limitations under the License.
  *)
 
+(*
+VULKAN_SAMPLE_SHORT_DESCRIPTION
+Create Vulkan command buffer
+*)
+
+(* This is part of the draw cube progression *)
+
 interface //####################################################################
 
 uses
@@ -37,8 +44,10 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     { private 宣言 }
+    const sample_title = 'Command Buffer Sample';
   public
     { public 宣言 }
+    info :T_sample_info;
   end;
 
 var
@@ -48,22 +57,11 @@ implementation //###############################################################
 
 {$R *.fmx}
 
-(*
-VULKAN_SAMPLE_SHORT_DESCRIPTION
-Create Vulkan command buffer
-*)
-
-(* This is part of the draw cube progression *)
-
-const sample_title = 'Command Buffer Sample';
-
 procedure TForm1.FormCreate(Sender: TObject);
 var
    res           :VkResult;
-   info          :T_sample_info;
    cmd_pool_info :VkCommandPoolCreateInfo;
    cmd           :VkCommandBufferAllocateInfo;
-   cmd_bufs      :array [ 0..0 ] of VkCommandBuffer;
 begin
      Caption := sample_title;
 
@@ -99,17 +97,17 @@ begin
      Memo1.Lines.Add( 'info.cmd = ' + UInt64( info.cmd ).ToHexString );
 
      (* VULKAN_KEY_END *)
+end;
 
+procedure TForm1.FormDestroy(Sender: TObject);
+var
+   cmd_bufs :array [ 0..0 ] of VkCommandBuffer;
+begin
      cmd_bufs[ 0 ] := info.cmd;
      vkFreeCommandBuffers( info.device, info.cmd_pool, 1, @cmd_bufs[ 0 ] );
      vkDestroyCommandPool( info.device, info.cmd_pool, nil );
      destroy_device( info );
      destroy_instance( info );
-end;
-
-procedure TForm1.FormDestroy(Sender: TObject);
-begin
-     /////
 end;
 
 end. //#########################################################################
