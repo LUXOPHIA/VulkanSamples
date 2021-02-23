@@ -97,7 +97,7 @@ begin
            if instance_extension_count = 0 then Exit( VK_SUCCESS );
 
            SetLength( layer_props_.instance_extensions, instance_extension_count );
-           instance_extensions := @layer_props_.instance_extensions[ 0 ];
+           instance_extensions := @layer_props_.instance_extensions[0];
            Result := vkEnumerateInstanceExtensionProperties( layer_name, @instance_extension_count, instance_extensions );
 
      until Result <> VK_INCOMPLETE;
@@ -143,7 +143,7 @@ begin
 
            SetLength( vk_props, instance_layer_count );
 
-           Result := vkEnumerateInstanceLayerProperties( @instance_layer_count, @vk_props[ 0 ] );
+           Result := vkEnumerateInstanceLayerProperties( @instance_layer_count, @vk_props[0] );
 
         until Result <> VK_INCOMPLETE;
 
@@ -152,7 +152,7 @@ begin
       *)
      for i := 0 to instance_layer_count-1 do
      begin
-          layer_props.properties := vk_props[ i ];
+          layer_props.properties := vk_props[i];
           Result := init_global_extension_properties( layer_props );
           if Result <> VK_SUCCESS then Exit;
           info_.instance_layer_properties := info_.instance_layer_properties + [ layer_props ];
@@ -184,7 +184,7 @@ begin
     then inst_info.ppEnabledLayerNames := @info_.instance_layer_names[0]
     else inst_info.ppEnabledLayerNames := nil;
     inst_info.enabledExtensionCount    := Length( info_.instance_extension_names );
-    inst_info.ppEnabledExtensionNames  := @info_.instance_extension_names[ 0 ];
+    inst_info.ppEnabledExtensionNames  := @info_.instance_extension_names[0];
 
     Result := vkCreateInstance( @inst_info, nil, @info_.inst );
     Assert( Result = VK_SUCCESS );
@@ -201,14 +201,14 @@ begin
      layer_name := layer_props_.properties.layerName;
 
      repeat
-           Result := vkEnumerateDeviceExtensionProperties( info_.gpus[ 0 ], layer_name, @device_extension_count, nil );
+           Result := vkEnumerateDeviceExtensionProperties( info_.gpus[0], layer_name, @device_extension_count, nil );
            if Result <> VK_SUCCESS then Exit;
 
            if device_extension_count = 0 then Exit( VK_SUCCESS );
 
            SetLength( layer_props_.device_extensions, device_extension_count );
-           device_extensions := @layer_props_.device_extensions[ 0 ];
-           Result := vkEnumerateDeviceExtensionProperties( info_.gpus[ 0 ], layer_name, @device_extension_count, device_extensions );
+           device_extensions := @layer_props_.device_extensions[0];
+           Result := vkEnumerateDeviceExtensionProperties( info_.gpus[0], layer_name, @device_extension_count, device_extensions );
 
      until Result <> VK_INCOMPLETE;
 end;
@@ -223,22 +223,22 @@ begin
      Assert( gpu_count_ > 0 );
      SetLength( info_.gpus, gpu_count_ );
 
-     Result := vkEnumeratePhysicalDevices( info_.inst, @gpu_count_, @info_.gpus[ 0 ] );
+     Result := vkEnumeratePhysicalDevices( info_.inst, @gpu_count_, @info_.gpus[0] );
      Assert( ( Result = VK_SUCCESS ) and ( gpu_count_ >= req_count ) );
 
-     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[ 0 ], @info_.queue_family_count, nil );
+     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[0], @info_.queue_family_count, nil );
      Assert( info_.queue_family_count >= 1 );
 
      SetLength( info_.queue_props, info_.queue_family_count );
-     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[ 0 ], @info_.queue_family_count, @info_.queue_props[ 0 ] );
+     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[0], @info_.queue_family_count, @info_.queue_props[0] );
      Assert( info_.queue_family_count >= 1 );
 
      (* This is as good a place as any to do this *)
-     vkGetPhysicalDeviceMemoryProperties( info_.gpus[ 0 ], @info_.memory_properties );
-     vkGetPhysicalDeviceProperties( info_.gpus[ 0 ], @info_.gpu_props );
+     vkGetPhysicalDeviceMemoryProperties( info_.gpus[0], @info_.memory_properties );
+     vkGetPhysicalDeviceProperties( info_.gpus[0], @info_.gpu_props );
      (* query device extensions for enabled layers *)
      for I := 0 to Length( info_.instance_layer_properties )-1
-     do init_device_extension_properties( info_, info_.instance_layer_properties[ I ] );
+     do init_device_extension_properties( info_, info_.instance_layer_properties[I] );
 end;
 
 procedure destroy_instance( var info_:T_sample_info );
@@ -261,17 +261,17 @@ begin
       * family
       *)
 
-     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[ 0 ], @info_.queue_family_count, nil );
+     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[0], @info_.queue_family_count, nil );
      Assert( info_.queue_family_count >= 1 );
 
      SetLength( info_.queue_props, info_.queue_family_count );
-     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[ 0 ], @info_.queue_family_count, @info_.queue_props[ 0 ] );
+     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[0], @info_.queue_family_count, @info_.queue_props[0] );
      Assert( info_.queue_family_count >= 1 );
 
      found := False;
      for i := 0 to info_.queue_family_count-1 do
      begin
-          if ( info_.queue_props[ i ].queueFlags and VkQueueFlags( VK_QUEUE_GRAPHICS_BIT ) ) > 0 then
+          if ( info_.queue_props[i].queueFlags and VkQueueFlags( VK_QUEUE_GRAPHICS_BIT ) ) > 0 then
           begin
                info_.graphics_queue_family_index := i;
                found := True;
@@ -287,11 +287,11 @@ var
    queue_priorities :array [ 0..0 ] of T_float;
    device_info      :VkDeviceCreateInfo;
 begin
-     queue_priorities[ 0 ] := 0;
+     queue_priorities[0]         := 0;
      queue_info.sType            := VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
      queue_info.pNext            := nil;
      queue_info.queueCount       := 1;
-     queue_info.pQueuePriorities := @queue_priorities[ 0 ];
+     queue_info.pQueuePriorities := @queue_priorities[0];
      queue_info.queueFamilyIndex := info_.graphics_queue_family_index;
 
      device_info.sType                        := VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
@@ -300,11 +300,11 @@ begin
      device_info.pQueueCreateInfos            := @queue_info;
      device_info.enabledExtensionCount        := Length( info_.device_extension_names );
      if device_info.enabledExtensionCount > 0
-     then device_info.ppEnabledExtensionNames := @info_.device_extension_names[ 0 ]
+     then device_info.ppEnabledExtensionNames := @info_.device_extension_names[0]
      else device_info.ppEnabledExtensionNames := nil;
      device_info.pEnabledFeatures             := nil;
 
-     Result := vkCreateDevice( info_.gpus[ 0 ], @device_info, nil, @info_.device );
+     Result := vkCreateDevice( info_.gpus[0], @device_info, nil, @info_.device );
      Assert( Result = VK_SUCCESS );
 end;
 
@@ -547,15 +547,17 @@ begin
      value_list[0] := info.screen.black_pixel;
      value_list[1] := XCB_EVENT_MASK_KEY_RELEASE or XCB_EVENT_MASK_EXPOSURE;
 
-     xcb_create_window( info.connection, XCB_COPY_FROM_PARENT,
-                        info.window, info.screen->root,
-                        0,
-                        0,
+     xcb_create_window( info.connection,
+                        XCB_COPY_FROM_PARENT,
+                        info.window,
+                        info.screen->root,
+                        0, 0,
                         info.width, info.height,
                         0,
                         XCB_WINDOW_CLASS_INPUT_OUTPUT,
                         info.screen.root_visual,
-                        value_mask, value_list );
+                        value_mask,
+                        value_list );
 
      (* Magic code that will send notification when window is destroyed *)
      cookie := xcb_intern_atom( info.connection, 1, 12, 'WM_PROTOCOLS' );
