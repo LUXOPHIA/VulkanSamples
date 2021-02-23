@@ -33,9 +33,10 @@ interface //####################################################################
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  FMX.Memo.Types, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
   vulkan_core,
   vulkan.util, vulkan.util_init,
-  LUX.Code.C, FMX.Memo.Types, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo;
+  LUX.Code.C;
 
 type
   TForm1 = class(TForm)
