@@ -77,6 +77,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       * Structure for tracking information used / created / modified
       * by utility functions.
       *)
+     P_sample_info = ^T_sample_info;
      T_sample_info = record
      private
        const APP_NAME_STR_LEN = 80;
