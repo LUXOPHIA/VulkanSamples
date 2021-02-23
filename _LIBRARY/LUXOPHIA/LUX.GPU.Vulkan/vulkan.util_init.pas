@@ -110,19 +110,6 @@ var
    i                    :T_uint32_t;
    layer_props          :T_layer_properties;
 begin
-     {$IFDEF Android }
-     // This place is the first place for samples to use Vulkan APIs.
-     // Here, we are going to open Vulkan.so on the device and retrieve function pointers using
-     // vulkan_wrapper helper.
-     if not InitVulkan then
-     begin
-          LOGE(' Failied initializing Vulkan APIs!' );
-
-          Exit( VK_ERROR_INITIALIZATION_FAILED );
-     end;
-     LOGI( 'Loaded Vulkan APIs.' );
-     {$ENDIF}
-
      (*
       * It's possible, though very rare, that the number of
       * instance layers could change. For example, installing something
@@ -319,17 +306,7 @@ end;
 procedure init_instance_extension_names( var info:T_sample_info );
 begin
      info.instance_extension_names := info.instance_extension_names + [ VK_KHR_SURFACE_EXTENSION_NAME         ];
-     {$IFDEF Android }
-     info.instance_extension_names := info.instance_extension_names + [ VK_KHR_ANDROID_SURFACE_EXTENSION_NAME ];
-     {$ELSEIF Defined( MSWINDOWS ) }
      info.instance_extension_names := info.instance_extension_names + [ VK_KHR_WIN32_SURFACE_EXTENSION_NAME   ];
-     {$ELSEIF Defined( VK_USE_PLATFORM_METAL_EXT ) }
-     info.instance_extension_names := info.instance_extension_names + [ VK_EXT_METAL_SURFACE_EXTENSION_NAME   ];
-     {$ELSEIF Defined( VK_USE_PLATFORM_WAYLAND_KHR ) }
-     info.instance_extension_names := info.instance_extension_names + [ VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME ];
-     {$ELSE}
-     info.instance_extension_names := info.instance_extension_names + [ VK_KHR_XCB_SURFACE_EXTENSION_NAME     ];
-     {$ENDIF}
 end;
 
 procedure init_device_extension_names( var info:T_sample_info );
@@ -339,52 +316,14 @@ end;
 
 procedure init_window_size( var info:T_sample_info; default_width,default_height:UInt32 );
 begin
-     {$IFDEF Android }
-     AndroidGetWindowSize( @info.width, @info.height );
-     {$ELSE}
      info.width  := default_width;
      info.height := default_height;
-     {$ENDIF}
 end;
 
 procedure init_connection( var info:T_sample_info );
 begin
-     {$IF Defined( VK_USE_PLATFORM_XCB_KHR ) }
-     var setup :P_xcb_setup_t;
-     var iter  :T_xcb_screen_iterator_t;
-     var scr   :T_int;
 
-     info.connection := xcb_connect( nil, @scr );
-     if ( info.connection = nil ) or xcb_connection_has_error( info.connection ) then
-     begin
-          Log.d( 'Unable to make an XCB connection');
-          RunError( 256-1 );
-     end;
-
-     setup := xcb_get_setup( info.connection );
-     iter  := xcb_setup_roots_iterator( setup );
-     while scr > 0 do
-     begin
-          xcb_screen_next( @iter );  Dec( scr );
-     end;
-
-     info.screen := iter.data;
-     {$ELSEIF Defined( VK_USE_PLATFORM_WAYLAND_KHR ) }
-     info.display := wl_display_connect( nil );
-
-     if info.display = nil then
-     begin
-          Log.d( 'Cannot find a compatible Vulkan installable client driver ''(ICD).\nExiting ...' );
-          RunError( 1 );
-     end;
-
-     info.registry := wl_display_get_registry( info.display );
-     wl_registry_add_listener( info.registry, @registry_listener, @info );
-     wl_display_dispatch( info.display );
-     {$ENDIF}
 end;
-
-{$IFDEF MSWINDOWS }
 
 procedure run( var info:T_sample_info );
 begin
@@ -467,128 +406,5 @@ begin
      vkDestroySurfaceKHR(info.inst, info.surface, nil);
      DestroyWindow(info.window);
 end;
-
-{$ELSEIF Defined( VK_USE_PLATFORM_METAL_EXT ) }
-
-// iOS & macOS: init_window() implemented externally to allow access to Objective-C components
-
-procedure destroy_window( var info:T_sample_info );
-begin
-     info.caMetalLayer := nil;
-end;
-
-{$ELSEIF Defined( Android ) }
-
-// Android implementation.
-procedure init_window( var info:T_sample_info );
-begin
-
-end;
-
-procedure destroy_window( var info:T_sample_info );
-begin
-
-end;
-
-{$ELSEIF Defined( VK_USE_PLATFORM_WAYLAND_KHR ) }
-
-procedure init_window( var info:T_sample_info );
-begin
-     Assert( info.width  > 0 );
-     Assert( info.height > 0 );
-
-     info.window := wl_compositor_create_surface( info.compositor );
-     if info.window = 0 then
-     begin
-          Log.d( 'Can not create wayland_surface from compositor!' );
-          RunError( 1 );
-     end;
-
-     info.shell_surface := wl_shell_get_shell_surface( info.shell, info.window );
-     if info.shell_surface = 0 then
-     begin
-          Log.d( 'Can not get shell_surface from wayland_surface!' );
-          RunError( 1 );
-     end;
-
-     wl_shell_surface_add_listener( info.shell_surface, @shell_surface_listener, @info );
-     wl_shell_surface_set_toplevel( info.shell_surface );
-end;
-
-procedure destroy_window( var info:T_sample_info );
-begin
-     wl_shell_surface_destroy( info.shell_surface );
-     wl_surface_destroy( info.window );
-     wl_shell_destroy( info.shell );
-     wl_compositor_destroy( info.compositor );
-     wl_registry_destroy( info.registry );
-     wl_display_disconnect( info.display );
-end;
-
-{$ELSE}
-
-procedure init_window( var info:T_sample_info );
-var
-   value_mask :T_uint32_t;
-   value_list :array [ 0..32-1 ] of T_uint32_t;
-   cookie     :T_xcb_intern_atom_cookie_t;
-   reply      :P_xcb_intern_atom_reply_t;
-   cookie2    :T_xcb_intern_atom_cookie_t;
-   e          :P_xcb_generic_event_t;
-const
-     coords   :array [ 0..2-1 ] of T_uint32_t = ( 100, 100 );
-begin
-     Assert( info.width  > 0 );
-     Assert( info.height > 0 );
-
-     info.window := xcb_generate_id(info.connection);
-
-     value_mask    := XCB_CW_BACK_PIXEL or XCB_CW_EVENT_MASK;
-     value_list[0] := info.screen.black_pixel;
-     value_list[1] := XCB_EVENT_MASK_KEY_RELEASE or XCB_EVENT_MASK_EXPOSURE;
-
-     xcb_create_window( info.connection,
-                        XCB_COPY_FROM_PARENT,
-                        info.window,
-                        info.screen->root,
-                        0, 0,
-                        info.width, info.height,
-                        0,
-                        XCB_WINDOW_CLASS_INPUT_OUTPUT,
-                        info.screen.root_visual,
-                        value_mask,
-                        value_list );
-
-     (* Magic code that will send notification when window is destroyed *)
-     cookie := xcb_intern_atom( info.connection, 1, 12, 'WM_PROTOCOLS' );
-     reply := xcb_intern_atom_reply( info.connection, cookie, 0 );
-
-     cookie2 := xcb_intern_atom( info.connection, 0, 16, 'WM_DELETE_WINDOW' );
-     info.atom_wm_delete_window := xcb_intern_atom_reply( info.connection, cookie2, 0 );
-
-     xcb_change_property( info.connection, XCB_PROP_MODE_REPLACE, info.window, reply^.atom, 4, 32, 1, @info.atom_wm_delete_window^.atom );
-     free( reply );
-
-     xcb_map_window( info.connection, info.window );
-
-     // Force the x/y coordinates to 100,100 results are identical in consecutive
-     // runs
-     xcb_configure_window( info.connection, info.window, XCB_CONFIG_WINDOW_X or XCB_CONFIG_WINDOW_Y, coords );
-     xcb_flush( info.connection );
-
-     while e = xcb_wait_for_event( info.connection ) do
-     begin
-          if ( e->response_type and not $80 ) = XCB_EXPOSE then Break;
-     end;
-end;
-
-procedure destroy_window( var info:T_sample_info );
-begin
-     vkDestroySurfaceKHR( info.inst, info.surface, nil );
-     xcb_destroy_window( info.connection, info.window );
-     xcb_disconnect( info.connection );
-end;
-
-{$ENDIF}
 
 end. //######################################################################### ■
