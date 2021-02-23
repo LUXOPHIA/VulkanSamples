@@ -336,7 +336,7 @@ var
 begin
      info := P_sample_info( GetWindowLongPtr( hWnd, GWLP_USERDATA ) );
 
-     case (uMsg) of
+     case uMsg of
      WM_CLOSE: PostQuitMessage( 0 );
      WM_PAINT: begin
                     run( info^ );
@@ -395,16 +395,16 @@ begin
      if info.window = 0 then
      begin
           // It didn't work, so try to give a useful error:
-          Log.d( 'Cannot create a window in which to draw!');
+          Log.d( 'Cannot create a window in which to draw!' );
           RunError( 1 );
      end;
-     SetWindowLongPtr( info.window, GWLP_USERDATA, LONG_PTR(@info) );
+     SetWindowLongPtr( info.window, GWLP_USERDATA, LONG_PTR( @info ) );
 end;
 
 procedure destroy_window( var info:T_sample_info );
 begin
-     vkDestroySurfaceKHR(info.inst, info.surface, nil);
-     DestroyWindow(info.window);
+     vkDestroySurfaceKHR( info.inst, info.surface, nil );
+     DestroyWindow( info.window );
 end;
 
 end. //######################################################################### ■
