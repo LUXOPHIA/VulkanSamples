@@ -45,6 +45,7 @@ type
     const APP_SHORT_NAME = 'vulkansamples_instance';
   public
     { public 宣言 }
+    info :T_sample_info;
   end;
 
 var
@@ -56,7 +57,6 @@ implementation //###############################################################
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-   info      :T_sample_info;
    app_info  :VkApplicationInfo;
    inst_info :VkInstanceCreateInfo;
    inst      :VkInstance;
