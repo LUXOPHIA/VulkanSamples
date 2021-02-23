@@ -21,6 +21,13 @@
  * limitations under the License.
  *)
 
+(*
+VULKAN_SAMPLE_SHORT_DESCRIPTION
+create and destroy a Vulkan physical device
+*)
+
+(* This is part of the draw cube progression *)
+
 interface //####################################################################
 
 uses
@@ -37,8 +44,10 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     { private 宣言 }
+    const APP_SHORT_NAME = 'vulkansamples_device';
   public
     { public 宣言 }
+    info :T_sample_info;
   end;
 
 var
@@ -48,18 +57,8 @@ implementation //###############################################################
 
 {$R *.fmx}
 
-(*
-VULKAN_SAMPLE_SHORT_DESCRIPTION
-create and destroy a Vulkan physical device
-*)
-
-(* This is part of the draw cube progression *)
-
-const APP_SHORT_NAME = 'vulkansamples_device';
-
 procedure TForm1.FormCreate(Sender: TObject);
 var
-   info             :T_sample_info;
    queue_info       :VkDeviceQueueCreateInfo;
    found            :T_bool;
    i                :T_unsigned_int;
@@ -77,25 +76,25 @@ begin
 
      (* VULKAN_KEY_START *)
 
-     vkGetPhysicalDeviceQueueFamilyProperties( info.gpus[ 0 ], @info.queue_family_count, nil );
+     vkGetPhysicalDeviceQueueFamilyProperties( info.gpus[0], @info.queue_family_count, nil );
      Assert( info.queue_family_count >= 1 );
 
      SetLength( info.queue_props, info.queue_family_count );
-     vkGetPhysicalDeviceQueueFamilyProperties( info.gpus[ 0 ], @info.queue_family_count, @info.queue_props[ 0 ] );
+     vkGetPhysicalDeviceQueueFamilyProperties( info.gpus[0], @info.queue_family_count, @info.queue_props[0] );
      Assert( info.queue_family_count >= 1 );
 
      Memo1.Lines.Add( 'info.queue_family_count = ' + info.queue_family_count.ToString );
      for i := 0 to info.queue_family_count-1 do
      begin
           Memo1.Lines.Add( 'info.queue_props[ ' + i.ToString + ' ]' );
-          Memo1.Lines.Add( '    .queueFlags = ' + info.queue_props[ i ].queueFlags.ToHexString );
-          Memo1.Lines.Add( '    .queueCount = ' + info.queue_props[ i ].queueCount.ToString );
+          Memo1.Lines.Add( '    .queueFlags = ' + info.queue_props[i].queueFlags.ToHexString );
+          Memo1.Lines.Add( '    .queueCount = ' + info.queue_props[i].queueCount.ToString );
      end;
 
      found := false;
      for i := 0 to info.queue_family_count-1 do
      begin
-          if ( info.queue_props[ i ].queueFlags and VkQueueFlags( VK_QUEUE_GRAPHICS_BIT ) ) > 0 then
+          if ( info.queue_props[i].queueFlags and VkQueueFlags( VK_QUEUE_GRAPHICS_BIT ) ) > 0 then
           begin
                queue_info.queueFamilyIndex := i;
                found := true;
@@ -107,11 +106,11 @@ begin
      if found then Memo1.Lines.Add( 'found = True'  )
               else Memo1.Lines.Add( 'found = False' );
 
-     queue_priorities[ 0 ] := 0;
+     queue_priorities[0] := 0;
      queue_info.sType            := VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
      queue_info.pNext            := nil;
      queue_info.queueCount       := 1;
-     queue_info.pQueuePriorities := @queue_priorities[ 0 ];
+     queue_info.pQueuePriorities := @queue_priorities[0];
 
      device_info.sType                   := VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
      device_info.pNext                   := nil;
@@ -123,19 +122,17 @@ begin
      device_info.ppEnabledLayerNames     := nil;
      device_info.pEnabledFeatures        := nil;
 
-     res := vkCreateDevice( info.gpus[ 0 ], @device_info, nil, @device );
+     res := vkCreateDevice( info.gpus[0], @device_info, nil, @device );
      assert( res = VK_SUCCESS );
 
      vkDestroyDevice( device, nil );
 
      (* VULKAN_KEY_END *)
-
-     destroy_instance( info );
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     /////
+     destroy_instance( info );
 end;
 
 end. //#########################################################################
