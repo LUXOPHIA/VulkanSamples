@@ -45,6 +45,7 @@ type
     const APP_SHORT_NAME = 'vulkansamples_enumerate';
   public
     { public 宣言 }
+    info :T_sample_info;
   end;
 
 var
@@ -56,7 +57,6 @@ implementation //###############################################################
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-   info      :T_sample_info;
    gpu_count :T_uint32_t;
    res       :VkResult;
 begin
@@ -77,13 +77,11 @@ begin
      Memo1.Lines.Add( 'gpu_count = ' + gpu_count.ToString );
 
      (* VULKAN_KEY_END *)
-
-     vkDestroyInstance( info.inst, nil );
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     /////
+     vkDestroyInstance( info.inst, nil );
 end;
 
 end. //#########################################################################
