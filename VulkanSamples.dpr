@@ -20,7 +20,8 @@ uses
   LUX.Code.C in '_LIBRARY\LUXOPHIA\LUX\Code\LUX.Code.C.pas',
   vulkan_core in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan_core.pas',
   vulkan.util in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan.util.pas',
-  vulkan.util_init in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan.util_init.pas';
+  vulkan.util_init in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan.util_init.pas',
+  vulkan_win32 in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan_win32.pas';
 
 {$R *.res}
 

@@ -21,6 +21,11 @@
  * limitations under the License.
  *)
 
+(*
+VULKAN_SAMPLE_SHORT_DESCRIPTION
+enumerate physical devices
+*)
+
 interface //####################################################################
 
 uses
@@ -37,6 +42,7 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     { private 宣言 }
+    const APP_SHORT_NAME = 'vulkansamples_enumerate';
   public
     { public 宣言 }
   end;
@@ -47,13 +53,6 @@ var
 implementation //###############################################################
 
 {$R *.fmx}
-
-(*
-VULKAN_SAMPLE_SHORT_DESCRIPTION
-enumerate physical devices
-*)
-
-const APP_SHORT_NAME = 'vulkansamples_enumerate';
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
