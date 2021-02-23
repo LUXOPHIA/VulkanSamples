@@ -1,6 +1,6 @@
 ﻿unit Main;
 
-{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/05-init_swapchain }
+{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/06-init_depth_buffer }
 
 (*
  * Vulkan Samples
@@ -23,7 +23,7 @@
 
 (*
 VULKAN_SAMPLE_SHORT_DESCRIPTION
-Inititalize Swapchain
+create Vulkan depth buffer
 *)
 
 (* This is part of the draw cube progression *)
@@ -45,7 +45,7 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     { private 宣言 }
-    const sample_title = 'Swapchain Initialization Sample';
+    const sample_title = 'Depth Buffer Sample';
   public
     { public 宣言 }
     info :T_sample_info;
@@ -60,40 +60,24 @@ implementation //###############################################################
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-   res                            :VkResult;
-   createInfo                     :VkWin32SurfaceCreateInfoKHR;
-   pSupportsPresent               :TArray<VkBool32>;
-   i                              :T_uint32_t;
-   formatCount                    :T_uint32_t;
-   surfFormats                    :TArray<VkSurfaceFormatKHR>;
-   surfCapabilities               :VkSurfaceCapabilitiesKHR;
-   presentModeCount               :T_uint32_t;
-   presentModes                   :TArray<VkPresentModeKHR>;
-   swapchainExtent                :VkExtent2D;
-   swapchainPresentMode           :VkPresentModeKHR;
-   desiredNumberOfSwapChainImages :T_uint32_t;
-   preTransform                   :VkSurfaceTransformFlagBitsKHR;
-   compositeAlpha                 :VkCompositeAlphaFlagBitsKHR;
-   compositeAlphaFlags            :array [ 0..4-1 ] of VkCompositeAlphaFlagBitsKHR;
-   swapchain_ci                   :VkSwapchainCreateInfoKHR;
-   queueFamilyIndices             :array [ 0..2-1 ] of T_uint32_t;
-   swapchainImages                :TArray<VkImage>;
-   color_image_view               :VkImageViewCreateInfo;
+   res          :VkResult;
+   pass         :T_bool;
+   image_info   :VkImageCreateInfo;
+   depth_format :VkFormat;
+   props        :VkFormatProperties;
+   mem_alloc    :VkMemoryAllocateInfo;
+   view_info    :VkImageViewCreateInfo;
+   mem_reqs     :VkMemoryRequirements;
 begin
      Caption := sample_title;
 
      (*
-      * Set up swapchain:
-      * - Get supported uses for all queues
-      * - Try to find a queue that supports both graphics and present
-      * - If no queue supports both, find a present queue and make sure we have a
-      *   graphics queue
-      * - Get a list of supported formats and use the first one
-      * - Get surface properties and present modes and use them to create a swap
-      *   chain
-      * - Create swap chain buffers
-      * - For each buffer, create a color attachment view and set its layout to
-      *   color attachment
+      * Make a depth buffer:
+      * - Create an Image to be the depth buffer
+      * - Find memory requirements
+      * - Allocate and bind memory
+      * - Set the image layout
+      * - Create an attachment view
       *)
 
      init_global_layer_properties( info );
@@ -101,222 +85,100 @@ begin
      init_device_extension_names( info );
      init_instance( info, sample_title );
      init_enumerate_device( info );
-     init_window_size( info, 400, 300 );
+     init_window_size( info, 500, 500 );
      init_connection( info );
      init_window( info );
+     init_swapchain_extension( info );
+     init_device( info );
 
      (* VULKAN_KEY_START *)
-
-     // Construct the surface description:
-     createInfo.sType      := VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-     createInfo.pNext      := nil;
-     createInfo.hinstance  := info.connection;
-     createInfo.hwnd       := info.window;
-     res := vkCreateWin32SurfaceKHR( info.inst, @createInfo, nil, @info.surface );
-     Assert( res = VK_SUCCESS );
-
-     // Iterate over each queue to learn whether it supports presenting:
-     SetLength( pSupportsPresent, info.queue_family_count );
-     for i := 0 to info.queue_family_count-1 do vkGetPhysicalDeviceSurfaceSupportKHR( info.gpus[0], i, info.surface, @pSupportsPresent[i] );
-
-     // Search for a graphics and a present queue in the array of queue
-     // families, try to find one that supports both
-     info.graphics_queue_family_index := UINT32_MAX;
-     info.present_queue_family_index  := UINT32_MAX;
-     for i := 0 to info.queue_family_count-1 do
+     depth_format := VK_FORMAT_D16_UNORM;
+     vkGetPhysicalDeviceFormatProperties( info.gpus[0], depth_format, @props );
+     if ( props.linearTilingFeatures and VkFormatFeatureFlags( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
+     then image_info.tiling := VK_IMAGE_TILING_LINEAR
+     else
+     if ( props.optimalTilingFeatures and VkFormatFeatureFlags( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
+     then image_info.tiling := VK_IMAGE_TILING_OPTIMAL
+     else
      begin
-          if ( info.queue_props[i].queueFlags and VkQueueFlags( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
-          begin
-               if info.graphics_queue_family_index = UINT32_MAX then info.graphics_queue_family_index := i;
-
-               if pSupportsPresent[i] = VK_TRUE then
-               begin
-                    info.graphics_queue_family_index := i;
-                    info.present_queue_family_index  := i;
-                    Break;
-               end;
-          end;
-     end;
-
-     if info.present_queue_family_index = UINT32_MAX then
-     begin
-          // If didn't find a queue that supports both graphics and present, then
-          // find a separate present queue.
-          for i := 0 to info.queue_family_count-1 do
-          begin
-               if pSupportsPresent[i] = VK_TRUE then
-               begin
-                    info.present_queue_family_index := i;
-                    Break;
-               end;
-          end;
-     end;
-     pSupportsPresent := nil;
-
-     // Generate error if could not find queues that support graphics
-     // and present
-     if ( info.graphics_queue_family_index = UINT32_MAX ) or ( info.present_queue_family_index = UINT32_MAX ) then
-     begin
-          Log.d( 'Could not find a queues for graphics and present' );
+          (* Try other depth formats? *)
+          Log.d( 'VK_FORMAT_D16_UNORM Unsupported.' );
           RunError( 256-1 );
      end;
 
-     init_device( info );
+    image_info.sType                 := VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+    image_info.pNext                 := nil;
+    image_info.imageType             := VK_IMAGE_TYPE_2D;
+    image_info.format                := depth_format;
+    image_info.extent.width          := info.width;
+    image_info.extent.height         := info.height;
+    image_info.extent.depth          := 1;
+    image_info.mipLevels             := 1;
+    image_info.arrayLayers           := 1;
+    image_info.samples               := NUM_SAMPLES;
+    image_info.initialLayout         := VK_IMAGE_LAYOUT_UNDEFINED;
+    image_info.usage                 := VkImageUsageFlags( VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT );
+    image_info.queueFamilyIndexCount := 0;
+    image_info.pQueueFamilyIndices   := nil;
+    image_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
+    image_info.flags                 := 0;
 
-     // Get the list of VkFormats that are supported:
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( info.gpus[0], info.surface, @formatCount, nil );
-     Assert( res = VK_SUCCESS );
-     SetLength( surfFormats, formatCount );
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( info.gpus[0], info.surface, @formatCount, @surfFormats[0] );
-     Assert( res = VK_SUCCESS );
-     // If the format list includes just one entry of VK_FORMAT_UNDEFINED,
-     // the surface has no preferred format.  Otherwise, at least one
-     // supported format will be returned.
-     if ( formatCount = 1 ) and ( surfFormats[0].format = VK_FORMAT_UNDEFINED ) then info.format := VK_FORMAT_B8G8R8A8_UNORM
-     else
-     begin
-          Assert( formatCount >= 1 );
-          info.format := surfFormats[0].format;
-     end;
-     surfFormats := nil;
+    mem_alloc.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    mem_alloc.pNext           := nil;
+    mem_alloc.allocationSize  := 0;
+    mem_alloc.memoryTypeIndex := 0;
 
-     res := vkGetPhysicalDeviceSurfaceCapabilitiesKHR( info.gpus[0], info.surface, @surfCapabilities );
-     Assert( res = VK_SUCCESS );
+    view_info.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+    view_info.pNext                           := nil;
+    view_info.image                           := VK_NULL_HANDLE;
+    view_info.format                          := depth_format;
+    view_info.components.r                    := VK_COMPONENT_SWIZZLE_R;
+    view_info.components.g                    := VK_COMPONENT_SWIZZLE_G;
+    view_info.components.b                    := VK_COMPONENT_SWIZZLE_B;
+    view_info.components.a                    := VK_COMPONENT_SWIZZLE_A;
+    view_info.subresourceRange.aspectMask     := VkImageAspectFlags( VK_IMAGE_ASPECT_DEPTH_BIT );
+    view_info.subresourceRange.baseMipLevel   := 0;
+    view_info.subresourceRange.levelCount     := 1;
+    view_info.subresourceRange.baseArrayLayer := 0;
+    view_info.subresourceRange.layerCount     := 1;
+    view_info.viewType                        := VK_IMAGE_VIEW_TYPE_2D;
+    view_info.flags                           := 0;
 
-     res := vkGetPhysicalDeviceSurfacePresentModesKHR( info.gpus[0], info.surface, @presentModeCount, nil );
-     Assert( res = VK_SUCCESS );
-     SetLength( presentModes, presentModeCount );
+    info.depth.format := depth_format;
 
-     res := vkGetPhysicalDeviceSurfacePresentModesKHR( info.gpus[0], info.surface, @presentModeCount, @presentModes[0] );
-     Assert( res = VK_SUCCESS );
+    (* Create image *)
+    res := vkCreateImage( info.device, @image_info, nil, @info.depth.image );
+    Assert( res = VK_SUCCESS );
 
-     // width and height are either both 0xFFFFFFFF, or both not 0xFFFFFFFF.
-     if surfCapabilities.currentExtent.width = $FFFFFFFF then
-     begin
-          // If the surface size is undefined, the size is set to
-          // the size of the images requested.
-          swapchainExtent.width  := info.width;
-          swapchainExtent.height := info.height;
+    vkGetImageMemoryRequirements( info.device, info.depth.image, @mem_reqs );
 
-          if swapchainExtent.width  < surfCapabilities.minImageExtent.width  then swapchainExtent.width  := surfCapabilities.minImageExtent.width
-                                                                             else
-          if swapchainExtent.width  > surfCapabilities.maxImageExtent.width  then swapchainExtent.width  := surfCapabilities.maxImageExtent.width ;
+    mem_alloc.allocationSize := mem_reqs.size;
+    (* Use the memory properties to determine the type of memory required *)
+    pass := memory_type_from_properties( info, mem_reqs.memoryTypeBits, VkFlags( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex );
+    Assert( pass );
 
-          if swapchainExtent.height < surfCapabilities.minImageExtent.height then swapchainExtent.height := surfCapabilities.minImageExtent.height
-                                                                             else
-          if swapchainExtent.height > surfCapabilities.maxImageExtent.height then swapchainExtent.height := surfCapabilities.maxImageExtent.height;
-     end
-     else
-     begin
-          // If the surface size is defined, the swap chain size must match
-          swapchainExtent := surfCapabilities.currentExtent;
-     end;
+    (* Allocate memory *)
+    res := vkAllocateMemory( info.device, @mem_alloc, nil, @info.depth.mem );
+    assert( res = VK_SUCCESS );
 
-     // The FIFO present mode is guaranteed by the spec to be supported
-     swapchainPresentMode := VK_PRESENT_MODE_FIFO_KHR;
+    (* Bind memory *)
+    res := vkBindImageMemory( info.device, info.depth.image, info.depth.mem, 0 );
+    assert( res = VK_SUCCESS );
 
-     // Determine the number of VkImage's to use in the swap chain.
-     // We need to acquire only 1 presentable image at at time.
-     // Asking for minImageCount images ensures that we can acquire
-     // 1 presentable image as long as we present it before attempting
-     // to acquire another.
-     desiredNumberOfSwapChainImages := surfCapabilities.minImageCount;
+    (* Create image view *)
+    view_info.image := info.depth.image;
+    res := vkCreateImageView( info.device, @view_info, nil, @info.depth.view );
+    assert( res = VK_SUCCESS );
 
-     if ( surfCapabilities.supportedTransforms and VkSurfaceTransformFlagsKHR( VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR ) ) <> 0 then preTransform := VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR
-                                                                                                                             else preTransform := surfCapabilities.currentTransform;
-
-     // Find a supported composite alpha mode - one of these is guaranteed to be set
-     compositeAlpha := VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-     compositeAlphaFlags[0] := VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-     compositeAlphaFlags[1] := VK_COMPOSITE_ALPHA_PRE_MULTIPLIED_BIT_KHR;
-     compositeAlphaFlags[2] := VK_COMPOSITE_ALPHA_POST_MULTIPLIED_BIT_KHR;
-     compositeAlphaFlags[3] := VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR;
-     for i := 0 to Length( compositeAlphaFlags )-1 do
-     begin
-          if ( surfCapabilities.supportedCompositeAlpha and VkCompositeAlphaFlagsKHR( compositeAlphaFlags[i] ) ) <> 0 then
-          begin
-               compositeAlpha := compositeAlphaFlags[i];
-               Break;
-          end;
-     end;
-
-     swapchain_ci.sType                 := VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-     swapchain_ci.pNext                 := nil;
-     swapchain_ci.surface               := info.surface;
-     swapchain_ci.minImageCount         := desiredNumberOfSwapChainImages;
-     swapchain_ci.imageFormat           := info.format;
-     swapchain_ci.imageExtent.width     := swapchainExtent.width;
-     swapchain_ci.imageExtent.height    := swapchainExtent.height;
-     swapchain_ci.preTransform          := preTransform;
-     swapchain_ci.compositeAlpha        := compositeAlpha;
-     swapchain_ci.imageArrayLayers      := 1;
-     swapchain_ci.presentMode           := swapchainPresentMode;
-     swapchain_ci.oldSwapchain          := VK_NULL_HANDLE;
-     swapchain_ci.clipped               := 1{true};
-     swapchain_ci.imageColorSpace       := VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-     swapchain_ci.imageUsage            := VkImageUsageFlags( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT );
-     swapchain_ci.imageSharingMode      := VK_SHARING_MODE_EXCLUSIVE;
-     swapchain_ci.queueFamilyIndexCount := 0;
-     swapchain_ci.pQueueFamilyIndices   := nil;
-     queueFamilyIndices[0]              := T_uint32_t( info.graphics_queue_family_index );
-     queueFamilyIndices[0]              := T_uint32_t( info.present_queue_family_index );
-     if info.graphics_queue_family_index <> info.present_queue_family_index then
-     begin
-          // If the graphics and present queues are from different queue families,
-          // we either have to explicitly transfer ownership of images between
-          // the queues, or we have to create the swapchain with imageSharingMode
-          // as VK_SHARING_MODE_CONCURRENT
-          swapchain_ci.imageSharingMode      := VK_SHARING_MODE_CONCURRENT;
-          swapchain_ci.queueFamilyIndexCount := 2;
-          swapchain_ci.pQueueFamilyIndices   := @queueFamilyIndices[0];
-     end;
-
-     res := vkCreateSwapchainKHR( info.device, @swapchain_ci, nil, @info.swap_chain );
-     Assert( res = VK_SUCCESS );
-
-     res := vkGetSwapchainImagesKHR( info.device, info.swap_chain, @info.swapchainImageCount, nil );
-     Assert( res = VK_SUCCESS );
-
-     SetLength( swapchainImages, info.swapchainImageCount );
-     Assert( Length( swapchainImages ) > 0 );
-     res := vkGetSwapchainImagesKHR( info.device, info.swap_chain, @info.swapchainImageCount, @swapchainImages[0] );
-     Assert( res = VK_SUCCESS );
-
-     SetLength( info.buffers, info.swapchainImageCount );
-     for i := 0 to info.swapchainImageCount-1 do info.buffers[i].image := swapchainImages[i];
-     swapchainImages := nil;
-
-     for i := 0 to info.swapchainImageCount-1 do
-     begin
-          color_image_view.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-          color_image_view.pNext                           := nil;
-          color_image_view.flags                           := 0;
-          color_image_view.image                           := info.buffers[i].image;
-          color_image_view.viewType                        := VK_IMAGE_VIEW_TYPE_2D;
-          color_image_view.format                          := info.format;
-          color_image_view.components.r                    := VK_COMPONENT_SWIZZLE_R;
-          color_image_view.components.g                    := VK_COMPONENT_SWIZZLE_G;
-          color_image_view.components.b                    := VK_COMPONENT_SWIZZLE_B;
-          color_image_view.components.a                    := VK_COMPONENT_SWIZZLE_A;
-          color_image_view.subresourceRange.aspectMask     := VkImageAspectFlags( VK_IMAGE_ASPECT_COLOR_BIT );
-          color_image_view.subresourceRange.baseMipLevel   := 0;
-          color_image_view.subresourceRange.levelCount     := 1;
-          color_image_view.subresourceRange.baseArrayLayer := 0;
-          color_image_view.subresourceRange.layerCount     := 1;
-
-          res := vkCreateImageView( info.device, @color_image_view, nil, @info.buffers[i].view );
-          Assert( res = VK_SUCCESS );
-     end;
-
-     (* VULKAN_KEY_END *)
+    (* VULKAN_KEY_END *)
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
-var
-   i :T_uint32_t;
 begin
-     for i := 0 to info.swapchainImageCount-1 do vkDestroyImageView( info.device, info.buffers[i].view, nil );
-     vkDestroySwapchainKHR( info.device, info.swap_chain, nil );
+     (* Clean Up *)
+     vkDestroyImageView( info.device, info.depth.view, nil );
+     vkDestroyImage( info.device, info.depth.image, nil );
+     vkFreeMemory( info.device, info.depth.mem, nil );
      destroy_device( info );
      destroy_window( info );
      destroy_instance( info );
