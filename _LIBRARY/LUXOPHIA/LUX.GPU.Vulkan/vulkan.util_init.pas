@@ -68,6 +68,10 @@ procedure init_connection( var info:T_sample_info );
 procedure init_window( var info:T_sample_info );
 procedure destroy_window( var info:T_sample_info );
 
+//////////////////////////////////////////////////////////////////////////////// 06-init_depth_buffer
+
+procedure init_swapchain_extension( var info:T_sample_info );
+
 implementation //############################################################### ■
 
 uses System.Types,
@@ -405,6 +409,103 @@ procedure destroy_window( var info:T_sample_info );
 begin
      vkDestroySurfaceKHR( info.inst, info.surface, nil );
      DestroyWindow( info.window );
+end;
+
+//////////////////////////////////////////////////////////////////////////////// 06-init_depth_buffer
+
+(* Use this surface format if it's available.  This ensures that generated
+* images are similar on different devices and with different drivers.
+*)
+const PREFERRED_SURFACE_FORMAT = VK_FORMAT_B8G8R8A8_UNORM;
+
+procedure init_swapchain_extension( var info:T_sample_info );
+var
+   res              :VkResult;
+   createInfo       :VkWin32SurfaceCreateInfoKHR;
+   pSupportsPresent :TArray<VkBool32>;
+   i                :T_uint32_t;
+   formatCount      :T_uint32_t;
+   surfFormats      :TArray<VkSurfaceFormatKHR>;
+begin
+     (* DEPENDS on init_connection() and init_window() *)
+
+     // Construct the surface description:
+     createInfo.sType     := VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+     createInfo.pNext     := nil;
+     createInfo.hinstance := info.connection;
+     createInfo.hwnd      := info.window;
+     res := vkCreateWin32SurfaceKHR( info.inst, @createInfo, nil, @info.surface );
+     Assert( res = VK_SUCCESS );
+
+     // Iterate over each queue to learn whether it supports presenting:
+     SetLength( pSupportsPresent, info.queue_family_count );
+     for i := 0 to info.queue_family_count-1
+     do vkGetPhysicalDeviceSurfaceSupportKHR( info.gpus[0], i, info.surface, @pSupportsPresent[i] );
+
+     // Search for a graphics and a present queue in the array of queue
+     // families, try to find one that supports both
+     info.graphics_queue_family_index := UINT32_MAX;
+     info.present_queue_family_index  := UINT32_MAX;
+     for i := 0 to info.queue_family_count-1 do
+     begin
+          if ( info.queue_props[i].queueFlags and VkQueueFlags( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
+          begin
+               if info.graphics_queue_family_index = UINT32_MAX then info.graphics_queue_family_index := i;
+
+               if pSupportsPresent[i] = VK_TRUE then
+               begin
+                    info.graphics_queue_family_index := i;
+                    info.present_queue_family_index  := i;
+                    Break;
+               end;
+          end;
+     end;
+
+     if info.present_queue_family_index = UINT32_MAX then
+     begin
+          // If didn't find a queue that supports both graphics and present, then
+          // find a separate present queue.
+          for i := 0 to info.queue_family_count-1 do
+          begin
+               if pSupportsPresent[i] = VK_TRUE then
+               begin
+                    info.present_queue_family_index := i;
+                    Break;
+               end;
+          end;
+     end;
+     pSupportsPresent := nil;
+
+     // Generate error if could not find queues that support graphics
+     // and present
+     if ( info.graphics_queue_family_index = UINT32_MAX ) or ( info.present_queue_family_index = UINT32_MAX ) then
+     begin
+          Log.d( 'Could not find a queues for both graphics and present' );
+          RunError( 256-1 );
+     end;
+
+     // Get the list of VkFormats that are supported:
+     res := vkGetPhysicalDeviceSurfaceFormatsKHR( info.gpus[0], info.surface, @formatCount, nil );
+     Assert( res = VK_SUCCESS );
+     SetLength( surfFormats, formatCount );
+     res := vkGetPhysicalDeviceSurfaceFormatsKHR( info.gpus[0], info.surface, @formatCount, @surfFormats[0] );
+     Assert( res = VK_SUCCESS );
+
+     // If the device supports our preferred surface format, use it.
+     // Otherwise, use whatever the device's first reported surface
+     // format is.
+     Assert( formatCount >= 1 );
+     info.format := surfFormats[0].format;
+     for i := 0 to formatCount-1 do
+     begin
+          if surfFormats[i].format = PREFERRED_SURFACE_FORMAT then
+          begin
+               info.format := PREFERRED_SURFACE_FORMAT;
+               break;
+          end;
+     end;
+
+     surfFormats := nil;
 end;
 
 end. //######################################################################### ■
