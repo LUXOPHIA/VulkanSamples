@@ -61,15 +61,7 @@ implementation //###############################################################
 procedure TForm1.FormCreate(Sender: TObject);
 var
    res                            :VkResult;
-   {$IFDEF MSWINDOWS }
    createInfo                     :VkWin32SurfaceCreateInfoKHR;
-   {$ELSEIF Defined( Android ) }
-   createInfo                     :VkAndroidSurfaceCreateInfoKHR;
-   {$ELSEIF Defined( VK_USE_PLATFORM_WAYLAND_KHR ) }
-   createInfo                     :VkWaylandSurfaceCreateInfoKHR;
-   {$ELSE}
-   createInfo                     :VkXcbSurfaceCreateInfoKHR;
-   {$ENDIF}
    pSupportsPresent               :TArray<VkBool32>;
    i                              :T_uint32_t;
    formatCount                    :T_uint32_t;
@@ -116,33 +108,11 @@ begin
      (* VULKAN_KEY_START *)
 
      // Construct the surface description:
-     {$IFDEF MSWINDOWS }
      createInfo.sType      := VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
      createInfo.pNext      := nil;
      createInfo.hinstance  := info.connection;
      createInfo.hwnd       := info.window;
      res := vkCreateWin32SurfaceKHR( info.inst, @createInfo, nil, @info.surface );
-     {$ELSEIF Defined( Android ) }
-     GET_INSTANCE_PROC_ADDR( info.inst, CreateAndroidSurfaceKHR );
-
-     createInfo.sType      := VK_STRUCTURE_TYPE_ANDROID_SURFACE_CREATE_INFO_KHR;
-     createInfo.pNext      := nil;
-     createInfo.flags      := 0;
-     createInfo.window     := AndroidGetApplicationWindow;
-     res := info.fpCreateAndroidSurfaceKHR( info.inst, &createInfo, nil, @info.surface );
-     {$ELSEIF Defined( VK_USE_PLATFORM_WAYLAND_KHR ) }
-     createInfo.sType      := VK_STRUCTURE_TYPE_WAYLAND_SURFACE_CREATE_INFO_KHR;
-     createInfo.pNext      := nil;
-     createInfo.display    := info.display;
-     createInfo.surface    := info.window;
-     res := vkCreateWaylandSurfaceKHR( info.inst, @createInfo, nil, @info.surface );
-     {$ELSE}
-     createInfo.sType      := VK_STRUCTURE_TYPE_XCB_SURFACE_CREATE_INFO_KHR;
-     createInfo.pNext      := nil;
-     createInfo.connection := info.connection;
-     createInfo.window     := info.window;
-     res := vkCreateXcbSurfaceKHR( info.inst, @createInfo, nil, @info.surface );
-     {$ENDIF}  // MSWINDOWS
      Assert( res = VK_SUCCESS );
 
      // Iterate over each queue to learn whether it supports presenting:
