@@ -284,6 +284,7 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan_core.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan.util.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan.util_init.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan_win32.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -323,12 +324,6 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Win64\Debug\VulkanSamples.exe" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win64">
-                        <RemoteName>VulkanSamples.exe</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\iossimulator\libcgunwind.1.0.dylib" Class="DependencyModule">
                     <Platform Name="iOSSimulator">
                         <Overwrite>true</Overwrite>
@@ -336,12 +331,6 @@
                 </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\iossimulator\libpcre.dylib" Class="DependencyModule">
                     <Platform Name="iOSSimulator">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="Win32\Debug\VulkanSamples.exe" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>VulkanSamples.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
