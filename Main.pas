@@ -80,8 +80,6 @@ var
    swapchainImages                :TArray<VkImage>;
    color_image_view               :VkImageViewCreateInfo;
 begin
-     Caption := sample_title;
-
      (*
       * Set up swapchain:
       * - Get supported uses for all queues
