@@ -109,6 +109,11 @@ procedure destroy_renderpass( var info_:T_sample_info );
 procedure destroy_command_buffer( var info_:T_sample_info );
 procedure destroy_command_pool( var info_:T_sample_info );
 
+//////////////////////////////////////////////////////////////////////////////// 13-init_vertex_buffer
+
+procedure init_framebuffers( var info_:T_sample_info; include_depth:T_bool );
+procedure destroy_framebuffers( var info_:T_sample_info );
+
 implementation //############################################################### ■
 
 uses System.Types, System.Math, System.SysUtils,
@@ -611,7 +616,7 @@ begin
      res := vkMapMemory( info_.device, info_.uniform_data.mem, 0, mem_reqs.size, 0, @pData );
      Assert( res = VK_SUCCESS );
 
-     Move( pData^, info_.MVP, SizeOf( info_.MVP ) );
+     Move( info_.MVP, pData^, SizeOf( info_.MVP ) );
 
      vkUnmapMemory( info_.device, info_.uniform_data.mem );
 
@@ -1172,6 +1177,49 @@ end;
 procedure destroy_command_pool( var info_:T_sample_info );
 begin
      vkDestroyCommandPool( info_.device, info_.cmd_pool, nil );
+end;
+
+//////////////////////////////////////////////////////////////////////////////// 13-init_vertex_buffer
+
+procedure init_framebuffers( var info_:T_sample_info; include_depth:T_bool );
+var
+   res         :VkResult;
+   attachments :array [ 0..2-1 ] of VkImageView;
+   fb_info     :VkFramebufferCreateInfo;
+   i           :T_uint32_t;
+begin
+     (* DEPENDS on init_depth_buffer(), init_renderpass() and
+      * init_swapchain_extension() *)
+
+     attachments[1] := info_.depth.view;
+
+     fb_info.sType                := VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+     fb_info.pNext                := nil;
+     fb_info.renderPass           := info_.render_pass;
+     if include_depth
+     then fb_info.attachmentCount := 2
+     else fb_info.attachmentCount := 1;
+     fb_info.pAttachments         := @attachments[0];
+     fb_info.width                := info_.width;
+     fb_info.height               := info_.height;
+     fb_info.layers               := 1;
+
+     SetLength( info_.framebuffers, info_.swapchainImageCount );
+
+     for i := 0 to info_.swapchainImageCount-1 do
+     begin
+          attachments[0] := info_.buffers[i].view;
+          res := vkCreateFramebuffer( info_.device, @fb_info, nil, @info_.framebuffers[i] );
+          Assert( res = VK_SUCCESS );
+     end;
+end;
+
+procedure destroy_framebuffers( var info_:T_sample_info );
+var
+   i :T_uint32_t;
+begin
+     for i := 0 to info_.swapchainImageCount-1 do vkDestroyFramebuffer( info_.device, info_.framebuffers[i], nil );
+     info_.framebuffers := nil;
 end;
 
 end. //######################################################################### ■
