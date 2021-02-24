@@ -1,12 +1,12 @@
 ﻿unit Main;
 
-{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/11-init_shaders }
+{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/12-init_frame_buffers }
 
 (*
  * Vulkan Samples
  *
- * Copyright (C) 2015-2020 Valve Corporation
- * Copyright (C) 2015-2020 LunarG, Inc.
+ * Copyright (C) 2015-2016 Valve Corporation
+ * Copyright (C) 2015-2016 LunarG, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
 
 (*
 VULKAN_SAMPLE_SHORT_DESCRIPTION
-Initialize Vertex and Fragment Shaders
+Initialize Framebuffer
 *)
 
 (* This is part of the draw cube progression *)
@@ -45,7 +45,7 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     { private 宣言 }
-    const sample_title = 'Initialize Shaders Sample';
+    const sample_title = 'Init Framebuffer Sample';
   public
     { public 宣言 }
     info :T_sample_info;
@@ -59,76 +59,72 @@ implementation //###############################################################
 {$R *.fmx}
 
 procedure TForm1.FormCreate(Sender: TObject);
+const
+     depthPresent :T_bool = True;
 var
-   res                 :VkResult;
-   vtx_spv             :TArray<T_unsigned_int>;
-   moduleCreateInfo    :VkShaderModuleCreateInfo;
-   frag_spv            :TArray<T_unsigned_int>;
-   __init_shaders_vert :TMemoryStream;
-   __init_shaders_frag :TMemoryStream;
+   res         :VkResult;
+   attachments :array [ 0..2-1 ] of VkImageView;
+   fb_info     :VkFramebufferCreateInfo;
+   i           :T_uint32_t;
 begin
-     __init_shaders_vert := TMemoryStream.Create;
-     __init_shaders_frag := TMemoryStream.Create;
-
      init_global_layer_properties( info );
+     init_instance_extension_names( info );
+     init_device_extension_names( info );
      init_instance( info, sample_title );
      init_enumerate_device( info );
-     init_queue_family_index( info );
+     init_connection( info );
+     init_window_size( info, 64, 64 );
+     init_window( info );
+     init_swapchain_extension( info );
      init_device( info );
-
-     (* We've setup cmake to process 11-init_shaders.vert and 11-init_shaders.frag             *)
-     (* files containing the glsl shader code for this sample.  The generate-spirv script uses *)
-     (* glslangValidator to compile the glsl into spir-v and places the spir-v into a struct   *)
-     (* into a generated header file                                                           *)
+     init_command_pool( info );
+     init_command_buffer( info );
+     execute_begin_command_buffer( info );
+     init_device_queue( info );
+     init_swap_chain( info );
+     init_depth_buffer( info );
+     init_renderpass( info, depthPresent );
 
      (* VULKAN_KEY_START *)
+     attachments[1] := info.depth.view;
 
-     info.shaderStages[0].sType               := VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-     info.shaderStages[0].pNext               := nil;
-     info.shaderStages[0].pSpecializationInfo := nil;
-     info.shaderStages[0].flags               := 0;
-     info.shaderStages[0].stage               := VK_SHADER_STAGE_VERTEX_BIT;
-     info.shaderStages[0].pName               := 'main';
-     {#include ""}
+     fb_info.sType           := VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+     fb_info.pNext           := nil;
+     fb_info.renderPass      := info.render_pass;
+     fb_info.attachmentCount := 2;
+     fb_info.pAttachments    := @attachments[0];
+     fb_info.width           := info.width;
+     fb_info.height          := info.height;
+     fb_info.layers          := 1;
 
-     __init_shaders_vert.LoadFromFile( '../../_DATA/11-init_shaders.vert' );
+     SetLength( info.framebuffers, info.swapchainImageCount );
+     Assert( Length( info.framebuffers ) > 0 );
 
-     moduleCreateInfo.sType    := VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-     moduleCreateInfo.pNext    := nil;
-     moduleCreateInfo.flags    := 0;
-     moduleCreateInfo.codeSize := __init_shaders_vert.Size;
-     moduleCreateInfo.pCode    := __init_shaders_vert.Memory;
-     res := vkCreateShaderModule( info.device, @moduleCreateInfo, nil, @info.shaderStages[0].module );
-     assert( res = VK_SUCCESS );
-
-     info.shaderStages[1].sType := VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-     info.shaderStages[1].pNext := nil;
-     info.shaderStages[1].pSpecializationInfo := nil;
-     info.shaderStages[1].flags := 0;
-     info.shaderStages[1].stage := VK_SHADER_STAGE_FRAGMENT_BIT;
-     info.shaderStages[1].pName := 'main';
-
-     __init_shaders_frag.LoadFromFile( '../../_DATA/11-init_shaders.frag' );
-
-     moduleCreateInfo.sType    := VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-     moduleCreateInfo.pNext    := nil;
-     moduleCreateInfo.flags    := 0;
-     moduleCreateInfo.codeSize := __init_shaders_frag.Size;
-     moduleCreateInfo.pCode    := __init_shaders_frag.Memory;
-     res := vkCreateShaderModule( info.device, @moduleCreateInfo, nil, @info.shaderStages[1].module );
-     assert( res = VK_SUCCESS );
-
+     for i := 0 to info.swapchainImageCount-1 do
+     begin
+          attachments[0] := info.buffers[i].view;
+          res := vkCreateFramebuffer( info.device, @fb_info, nil, @info.framebuffers[i] );
+          Assert( res = VK_SUCCESS );
+     end;
+     execute_end_command_buffer( info );
+     execute_queue_command_buffer( info );
      (* VULKAN_KEY_END *)
-
-     __init_shaders_vert.Free;
-     __init_shaders_frag.Free;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
+var
+   i :T_uint32_t;
 begin
-     vkDestroyShaderModule( info.device, info.shaderStages[0].module, nil );
-     vkDestroyShaderModule( info.device, info.shaderStages[1].module, nil );
+     for i := 0 to info.swapchainImageCount-1 do vkDestroyFramebuffer( info.device, info.framebuffers[i], nil );
+     info.framebuffers := nil;
+
+     destroy_renderpass( info );
+     destroy_depth_buffer( info );
+     destroy_swap_chain( info );
+     destroy_command_buffer( info );
+     destroy_command_pool( info );
      destroy_device( info );
+     destroy_window( info );
      destroy_instance( info );
 end;
 
