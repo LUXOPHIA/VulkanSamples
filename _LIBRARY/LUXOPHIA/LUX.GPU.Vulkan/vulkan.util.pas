@@ -126,7 +126,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        queue_props                 :TArray<VkQueueFamilyProperties>;
        memory_properties           :VkPhysicalDeviceMemoryProperties;
 
-       framebuffers  :P_VkFramebuffer;
+       framebuffers  :TArray<VkFramebuffer>;
        width         :T_int;
        height        :T_int;
        format        :VkFormat;
@@ -207,6 +207,9 @@ const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      (* Number of descriptor sets needs to be the same at alloc,       *)
      (* pipeline layout creation, and descriptor set layout creation   *)
      NUM_DESCRIPTOR_SETS = 1;
+
+     (* Amount of time, in nanoseconds, to wait for a command buffer to complete *)
+     FENCE_TIMEOUT = 100000000;
 
 //var //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【変数】
 
