@@ -61,8 +61,6 @@ var
    gpu_count :T_uint32_t;
    res       :VkResult;
 begin
-     Caption := APP_SHORT_NAME;
-
      init_global_layer_properties( info );
      init_instance( info, APP_SHORT_NAME );
 
