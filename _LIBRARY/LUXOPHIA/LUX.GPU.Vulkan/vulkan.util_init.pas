@@ -86,7 +86,7 @@ procedure destroy_descriptor_and_pipeline_layouts( var info_:T_sample_info );
 //////////////////////////////////////////////////////////////////////////////// 10-init_render_pass
 
 procedure init_device_queue( var info_:T_sample_info );
-procedure init_swap_chain( var info_:T_sample_info; usageFlags_:VkImageUsageFlags = VkImageUsageFlags( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or VkImageUsageFlags( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
+procedure init_swap_chain( var info_:T_sample_info; usageFlags_:VkImageUsageFlags = Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
 procedure init_depth_buffer( var info_:T_sample_info );
 procedure destroy_depth_buffer( var info_:T_sample_info );
 procedure destroy_swap_chain( var info_:T_sample_info );
@@ -253,8 +253,8 @@ var
    I         :Integer;
 begin
      req_count := gpu_count_;
-     {Result := }vkEnumeratePhysicalDevices( info_.inst, @gpu_count_, nil );
-     Assert( gpu_count_ > 0 );
+     Result := vkEnumeratePhysicalDevices( info_.inst, @gpu_count_, nil );
+     Assert( ( Result = VK_SUCCESS ) and ( gpu_count_ > 0 ) );
      SetLength( info_.gpus, gpu_count_ );
 
      Result := vkEnumeratePhysicalDevices( info_.inst, @gpu_count_, @info_.gpus[0] );
@@ -305,7 +305,7 @@ begin
      found := False;
      for i := 0 to info_.queue_family_count-1 do
      begin
-          if ( info_.queue_props[i].queueFlags and VkQueueFlags( VK_QUEUE_GRAPHICS_BIT ) ) > 0 then
+          if ( info_.queue_props[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) > 0 then
           begin
                info_.graphics_queue_family_index := i;
                found := True;
@@ -491,7 +491,7 @@ begin
      info_.present_queue_family_index  := UINT32_MAX;
      for i := 0 to info_.queue_family_count-1 do
      begin
-          if ( info_.queue_props[i].queueFlags and VkQueueFlags( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
+          if ( info_.queue_props[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
           begin
                if info_.graphics_queue_family_index = UINT32_MAX then info_.graphics_queue_family_index := i;
 
@@ -589,7 +589,7 @@ begin
      (* VULKAN_KEY_START *)
      buf_info.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
      buf_info.pNext                 := nil;
-     buf_info.usage                 := VkBufferUsageFlags( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
+     buf_info.usage                 := Ord( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
      buf_info.size                  := sizeof(info_.MVP);
      buf_info.queueFamilyIndexCount := 0;
      buf_info.pQueueFamilyIndices   := nil;
@@ -606,7 +606,7 @@ begin
 
      alloc_info.allocationSize := mem_reqs.size;
      pass := memory_type_from_properties( info_, mem_reqs.memoryTypeBits,
-                                          VkFlags( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or VkFlags( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
+                                          Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
                                           alloc_info.memoryTypeIndex );
      Assert( pass, 'No mappable, coherent memory' );
 
@@ -638,7 +638,7 @@ begin
      layout_bindings[0].binding            := 0;
      layout_bindings[0].descriptorType     := VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
      layout_bindings[0].descriptorCount    := 1;
-     layout_bindings[0].stageFlags         := VkShaderStageFlags( VK_SHADER_STAGE_VERTEX_BIT );
+     layout_bindings[0].stageFlags         := Ord( VK_SHADER_STAGE_VERTEX_BIT );
      layout_bindings[0].pImmutableSamplers := nil;
 
      if use_texture_ then
@@ -646,7 +646,7 @@ begin
           layout_bindings[1].binding            := 1;
           layout_bindings[1].descriptorType     := VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
           layout_bindings[1].descriptorCount    := 1;
-          layout_bindings[1].stageFlags         := VkShaderStageFlags( VK_SHADER_STAGE_FRAGMENT_BIT );
+          layout_bindings[1].stageFlags         := Ord( VK_SHADER_STAGE_FRAGMENT_BIT );
           layout_bindings[1].pImmutableSamplers := nil;
      end;
 
@@ -702,7 +702,7 @@ begin
      else vkGetDeviceQueue( info_.device, info_.present_queue_family_index, 0, @info_.present_queue );
 end;
 
-procedure init_swap_chain( var info_:T_sample_info; usageFlags_:VkImageUsageFlags = VkImageUsageFlags( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or VkImageUsageFlags( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
+procedure init_swap_chain( var info_:T_sample_info; usageFlags_:VkImageUsageFlags = Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
 var
    res                            :VkResult;
    surfCapabilities               :VkSurfaceCapabilitiesKHR;
@@ -769,7 +769,7 @@ begin
      // to acquire another.
      desiredNumberOfSwapChainImages := surfCapabilities.minImageCount;
 
-     if ( surfCapabilities.supportedTransforms and VkSurfaceTransformFlagsKHR( VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR ) ) <> 0
+     if ( surfCapabilities.supportedTransforms and Ord( VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR ) ) <> 0
      then preTransform := VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR
      else preTransform := surfCapabilities.currentTransform;
 
@@ -782,7 +782,7 @@ begin
 
      for i := 0 to Length( compositeAlphaFlags )-1 do
      begin
-          if ( surfCapabilities.supportedCompositeAlpha and VkCompositeAlphaFlagsKHR( compositeAlphaFlags[i] ) ) <> 0 then
+          if ( surfCapabilities.supportedCompositeAlpha and Ord( compositeAlphaFlags[i] ) ) <> 0 then
           begin
                compositeAlpha := compositeAlphaFlags[i];
                Break;
@@ -840,7 +840,7 @@ begin
           color_image_view.components.g                    := VK_COMPONENT_SWIZZLE_G;
           color_image_view.components.b                    := VK_COMPONENT_SWIZZLE_B;
           color_image_view.components.a                    := VK_COMPONENT_SWIZZLE_A;
-          color_image_view.subresourceRange.aspectMask     := VkImageAspectFlags( VK_IMAGE_ASPECT_COLOR_BIT );
+          color_image_view.subresourceRange.aspectMask     := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
           color_image_view.subresourceRange.baseMipLevel   := 0;
           color_image_view.subresourceRange.levelCount     := 1;
           color_image_view.subresourceRange.baseArrayLayer := 0;
@@ -878,15 +878,15 @@ begin
 
      depth_format := info_.depth.format;
      vkGetPhysicalDeviceFormatProperties( info_.gpus[0], depth_format, @props );
-     if ( props.linearTilingFeatures and VkFormatFeatureFlags( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
+     if ( props.linearTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
      then image_info.tiling := VK_IMAGE_TILING_LINEAR
      else
-     if ( props.optimalTilingFeatures and VkFormatFeatureFlags( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
+     if ( props.optimalTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
      then image_info.tiling := VK_IMAGE_TILING_OPTIMAL
      else
      begin
           (* Try other depth formats? *)
-          Log.d( 'depth_format ' + Uint32( depth_format ).ToString + ' Unsupported.' );
+          Log.d( 'depth_format ' + Ord( depth_format ).ToString + ' Unsupported.' );
           RunError( 256-1 );
      end;
 
@@ -904,7 +904,7 @@ begin
      image_info.queueFamilyIndexCount := 0;
      image_info.pQueueFamilyIndices   := nil;
      image_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
-     image_info.usage                 := VkImageUsageFlags( VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT );
+     image_info.usage                 := Ord( VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT );
      image_info.flags                 := 0;
 
      mem_alloc.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
@@ -920,7 +920,7 @@ begin
      view_info.components.g                    := VK_COMPONENT_SWIZZLE_G;
      view_info.components.b                    := VK_COMPONENT_SWIZZLE_B;
      view_info.components.a                    := VK_COMPONENT_SWIZZLE_A;
-     view_info.subresourceRange.aspectMask     := VkImageAspectFlags( VK_IMAGE_ASPECT_DEPTH_BIT );
+     view_info.subresourceRange.aspectMask     := Ord( VK_IMAGE_ASPECT_DEPTH_BIT );
      view_info.subresourceRange.baseMipLevel   := 0;
      view_info.subresourceRange.levelCount     := 1;
      view_info.subresourceRange.baseArrayLayer := 0;
@@ -930,7 +930,7 @@ begin
 
      if ( depth_format = VK_FORMAT_D16_UNORM_S8_UINT ) or ( depth_format = VK_FORMAT_D24_UNORM_S8_UINT ) or
         ( depth_format = VK_FORMAT_D32_SFLOAT_S8_UINT )
-     then view_info.subresourceRange.aspectMask := view_info.subresourceRange.aspectMask or VkImageAspectFlags( VK_IMAGE_ASPECT_STENCIL_BIT );
+     then view_info.subresourceRange.aspectMask := view_info.subresourceRange.aspectMask or Ord( VK_IMAGE_ASPECT_STENCIL_BIT );
 
      (* Create image *)
      res := vkCreateImage( info_.device, @image_info, nil, @info_.depth.image );
@@ -940,7 +940,7 @@ begin
 
      mem_alloc.allocationSize := mem_reqs.size;
      (* Use the memory properties to determine the type of memory required *)
-     pass := memory_type_from_properties( info_, mem_reqs.memoryTypeBits, VkFlags( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex );
+     pass := memory_type_from_properties( info_, mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex );
      Assert( pass );
 
      (* Allocate memory *)
@@ -986,10 +986,10 @@ begin
      cmd_pool_info.sType            := VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
      cmd_pool_info.pNext            := nil;
      cmd_pool_info.queueFamilyIndex := info_.graphics_queue_family_index;
-     cmd_pool_info.flags            := VkCommandPoolCreateFlags( VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
+     cmd_pool_info.flags            := Ord( VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
 
      res := vkCreateCommandPool( info_.device, @cmd_pool_info, nil, @info_.cmd_pool );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 end;
 
 procedure init_command_buffer( var info_:T_sample_info );
@@ -1006,7 +1006,7 @@ begin
      cmd.commandBufferCount := 1;
 
      res := vkAllocateCommandBuffers( info_.device, @cmd, @info_.cmd );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 end;
 
 procedure execute_begin_command_buffer( var info_:T_sample_info );
@@ -1022,7 +1022,7 @@ begin
      cmd_buf_info.pInheritanceInfo := nil;
 
      res := vkBeginCommandBuffer( info_.cmd, @cmd_buf_info );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 end;
 
 procedure init_renderpass( var info_:T_sample_info;
@@ -1041,7 +1041,7 @@ var
 begin
      (* DEPENDS on init_swap_chain() and init_depth_buffer() *)
 
-     assert( clear_ or ( initialLayout_ <> VK_IMAGE_LAYOUT_UNDEFINED ) );
+     Assert( clear_ or ( initialLayout_ <> VK_IMAGE_LAYOUT_UNDEFINED ) );
 
      (* Need attachments for render target and depth buffer *)
      attachments[0].format         := info_.format;
@@ -1093,10 +1093,10 @@ begin
      // Subpass dependency to wait for wsi image acquired semaphore before starting layout transition
      subpass_dependency.srcSubpass      := VK_SUBPASS_EXTERNAL;
      subpass_dependency.dstSubpass      := 0;
-     subpass_dependency.srcStageMask    := VkPipelineStageFlags( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
-     subpass_dependency.dstStageMask    := VkPipelineStageFlags( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
+     subpass_dependency.srcStageMask    := Ord( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
+     subpass_dependency.dstStageMask    := Ord( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
      subpass_dependency.srcAccessMask   := 0;
-     subpass_dependency.dstAccessMask   := VkAccessFlags( VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT );
+     subpass_dependency.dstAccessMask   := Ord( VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT );
      subpass_dependency.dependencyFlags := 0;
 
      rp_info.sType                := VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
@@ -1111,7 +1111,7 @@ begin
      rp_info.pDependencies        := @subpass_dependency;
 
      res := vkCreateRenderPass( info_.device, @rp_info, nil, @info_.render_pass );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 end;
 
 procedure execute_end_command_buffer( var info_:T_sample_info );
@@ -1119,7 +1119,7 @@ var
    res :VkResult;
 begin
      res := vkEndCommandBuffer( info_.cmd );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 end;
 
 procedure execute_queue_command_buffer( var info_:T_sample_info );
@@ -1138,7 +1138,7 @@ begin
      fenceInfo.flags := 0;
      vkCreateFence( info_.device, @fenceInfo, nil, @drawFence );
 
-     pipe_stage_flags := VkPipelineStageFlags( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
+     pipe_stage_flags := Ord( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
      submit_info[0].pNext                := nil;
      submit_info[0].sType                := VK_STRUCTURE_TYPE_SUBMIT_INFO;
      submit_info[0].waitSemaphoreCount   := 0;
@@ -1150,13 +1150,13 @@ begin
      submit_info[0].pSignalSemaphores    := nil;
 
      res := vkQueueSubmit( info_.graphics_queue, 1, @submit_info[0], drawFence );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 
      repeat
            res := vkWaitForFences( info_.device, 1, @drawFence, VK_TRUE, FENCE_TIMEOUT );
 
      until res <> VK_TIMEOUT;
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 
      vkDestroyFence( info_.device, drawFence, nil );
 end;
