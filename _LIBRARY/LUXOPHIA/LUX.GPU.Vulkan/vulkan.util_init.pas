@@ -318,7 +318,7 @@ end;
 function init_device( var info_:T_sample_info ) :VkResult;
 var
    queue_info       :VkDeviceQueueCreateInfo;
-   queue_priorities :array [ 0..0 ] of T_float;
+   queue_priorities :array [ 0..1-1 ] of T_float;
    device_info      :VkDeviceCreateInfo;
 begin
      queue_priorities[0]         := 0;
