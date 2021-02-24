@@ -21,7 +21,8 @@ uses
   vulkan_core in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan_core.pas',
   vulkan.util in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan.util.pas',
   vulkan.util_init in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan.util_init.pas',
-  vulkan_win32 in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan_win32.pas';
+  vulkan_win32 in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan_win32.pas',
+  cube_data in '_DATA\cube_data.pas';
 
 {$R *.res}
 
