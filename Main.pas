@@ -69,8 +69,6 @@ var
    view_info    :VkImageViewCreateInfo;
    mem_reqs     :VkMemoryRequirements;
 begin
-     Caption := sample_title;
-
      (*
       * Make a depth buffer:
       * - Create an Image to be the depth buffer
