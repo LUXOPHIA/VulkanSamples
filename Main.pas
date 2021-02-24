@@ -34,10 +34,9 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Memo.Types, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
-  vulkan_core, vulkan_win32,
+  vulkan_core,
   vulkan.util, vulkan.util_init,
-  LUX, LUX.Code.C,
-  LUX.D1, LUX.D2, LUX.D3, LUX.D4, LUX.D4x4;
+  LUX, LUX.Code.C;
 
 type
   TForm1 = class(TForm)
@@ -49,8 +48,7 @@ type
     const sample_title = 'Initialize Shaders Sample';
   public
     { public 宣言 }
-    info                   :T_sample_info;
-    imageAcquiredSemaphore :VkSemaphore;
+    info :T_sample_info;
   end;
 
 var
