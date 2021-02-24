@@ -1,6 +1,6 @@
 ﻿unit Main;
 
-{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/06-init_depth_buffer }
+{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/07-init_uniform_buffer }
 
 (*
  * Vulkan Samples
@@ -23,7 +23,7 @@
 
 (*
 VULKAN_SAMPLE_SHORT_DESCRIPTION
-create Vulkan depth buffer
+Create Uniform Buffer
 *)
 
 (* This is part of the draw cube progression *)
@@ -36,7 +36,8 @@ uses
   FMX.Memo.Types, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
   vulkan_core, vulkan_win32,
   vulkan.util, vulkan.util_init,
-  LUX.Code.C;
+  LUX, LUX.Code.C,
+  LUX.D1, LUX.D2, LUX.D3, LUX.D4, LUX.D4x4;
 
 type
   TForm1 = class(TForm)
@@ -45,7 +46,7 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     { private 宣言 }
-    const sample_title = 'Depth Buffer Sample';
+    const sample_title = 'Uniform Buffer Sample';
   public
     { public 宣言 }
     info :T_sample_info;
@@ -58,129 +59,89 @@ implementation //###############################################################
 
 {$R *.fmx}
 
+uses System.Math;
+
 procedure TForm1.FormCreate(Sender: TObject);
 var
-   res          :VkResult;
-   pass         :T_bool;
-   image_info   :VkImageCreateInfo;
-   depth_format :VkFormat;
-   props        :VkFormatProperties;
-   mem_alloc    :VkMemoryAllocateInfo;
-   view_info    :VkImageViewCreateInfo;
-   mem_reqs     :VkMemoryRequirements;
+   res        :VkResult;
+   pass       :T_bool;
+   buf_info   :VkBufferCreateInfo;
+   mem_reqs   :VkMemoryRequirements;
+   alloc_info :VkMemoryAllocateInfo;
+   pData      :P_uint8_t;
 begin
-     Caption := sample_title;
-
-     (*
-      * Make a depth buffer:
-      * - Create an Image to be the depth buffer
-      * - Find memory requirements
-      * - Allocate and bind memory
-      * - Set the image layout
-      * - Create an attachment view
-      *)
-
      init_global_layer_properties( info );
-     init_instance_extension_names( info );
-     init_device_extension_names( info );
      init_instance( info, sample_title );
      init_enumerate_device( info );
-     init_window_size( info, 500, 500 );
-     init_connection( info );
-     init_window( info );
-     init_swapchain_extension( info );
+     init_queue_family_index( info );
      init_device( info );
+     init_window_size( info, 500, 500 );
+
+     info.Projection := TSingleM4.ProjPersH( DegToRad( 45 ), 1, 0.1, 100 );
+
+     info.View := TSingleM4.LookAt( TSingle3D.Create( -5, +3, -10 ),    // Camera is at (-5,3,-10), in World Space
+                                    TSingle3D.Create(  0,  0,   0 ),    // and looks at the origin
+                                    TSingle3D.Create(  0, -1,   0 ) );  // Head is up (set to 0,-1,0 to look upside-down)
+
+     info.Model := TSingleM4.Identity;
+
+     // Vulkan clip space has inverted Y and half Z.
+     // clang-format off
+     info.Clip := TSingleM4.Create( +1.0,  0.0,  0.0,  0.0,
+                                     0.0, -1.0,  0.0,  0.0,
+                                     0.0,  0.0, +0.5,  0.0,
+                                     0.0,  0.0, +0.5, +1.0 );
+     // clang-format on
+     info.MVP := info.Clip * info.Projection * info.View * info.Model;
 
      (* VULKAN_KEY_START *)
-     depth_format := VK_FORMAT_D16_UNORM;
-     vkGetPhysicalDeviceFormatProperties( info.gpus[0], depth_format, @props );
-     if ( props.linearTilingFeatures and VkFormatFeatureFlags( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
-     then image_info.tiling := VK_IMAGE_TILING_LINEAR
-     else
-     if ( props.optimalTilingFeatures and VkFormatFeatureFlags( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
-     then image_info.tiling := VK_IMAGE_TILING_OPTIMAL
-     else
-     begin
-          (* Try other depth formats? *)
-          Log.d( 'VK_FORMAT_D16_UNORM Unsupported.' );
-          RunError( 256-1 );
-     end;
+     buf_info.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+     buf_info.pNext                 := nil;
+     buf_info.usage                 := VkBufferUsageFlags( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
+     buf_info.size                  := SizeOf( info.MVP );
+     buf_info.queueFamilyIndexCount := 0;
+     buf_info.pQueueFamilyIndices   := nil;
+     buf_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
+     buf_info.flags                 := 0;
+     res := vkCreateBuffer( info.device, @buf_info, nil, @info.uniform_data.buf );
+     Assert( res = VK_SUCCESS );
 
-    image_info.sType                 := VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-    image_info.pNext                 := nil;
-    image_info.imageType             := VK_IMAGE_TYPE_2D;
-    image_info.format                := depth_format;
-    image_info.extent.width          := info.width;
-    image_info.extent.height         := info.height;
-    image_info.extent.depth          := 1;
-    image_info.mipLevels             := 1;
-    image_info.arrayLayers           := 1;
-    image_info.samples               := NUM_SAMPLES;
-    image_info.initialLayout         := VK_IMAGE_LAYOUT_UNDEFINED;
-    image_info.usage                 := VkImageUsageFlags( VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT );
-    image_info.queueFamilyIndexCount := 0;
-    image_info.pQueueFamilyIndices   := nil;
-    image_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
-    image_info.flags                 := 0;
+     vkGetBufferMemoryRequirements( info.device, info.uniform_data.buf, @mem_reqs );
 
-    mem_alloc.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-    mem_alloc.pNext           := nil;
-    mem_alloc.allocationSize  := 0;
-    mem_alloc.memoryTypeIndex := 0;
+     alloc_info.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+     alloc_info.pNext           := nil;
+     alloc_info.memoryTypeIndex := 0;
 
-    view_info.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-    view_info.pNext                           := nil;
-    view_info.image                           := VK_NULL_HANDLE;
-    view_info.format                          := depth_format;
-    view_info.components.r                    := VK_COMPONENT_SWIZZLE_R;
-    view_info.components.g                    := VK_COMPONENT_SWIZZLE_G;
-    view_info.components.b                    := VK_COMPONENT_SWIZZLE_B;
-    view_info.components.a                    := VK_COMPONENT_SWIZZLE_A;
-    view_info.subresourceRange.aspectMask     := VkImageAspectFlags( VK_IMAGE_ASPECT_DEPTH_BIT );
-    view_info.subresourceRange.baseMipLevel   := 0;
-    view_info.subresourceRange.levelCount     := 1;
-    view_info.subresourceRange.baseArrayLayer := 0;
-    view_info.subresourceRange.layerCount     := 1;
-    view_info.viewType                        := VK_IMAGE_VIEW_TYPE_2D;
-    view_info.flags                           := 0;
+     alloc_info.allocationSize := mem_reqs.size;
+     pass := memory_type_from_properties( info, mem_reqs.memoryTypeBits,
+                                          VkFlags( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or VkFlags( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
+                                          alloc_info.memoryTypeIndex );
+     Assert( pass, 'No mappable, coherent memory' );
 
-    info.depth.format := depth_format;
+     res := vkAllocateMemory( info.device, @alloc_info, nil, @info.uniform_data.mem );
+     Assert( res = VK_SUCCESS );
 
-    (* Create image *)
-    res := vkCreateImage( info.device, @image_info, nil, @info.depth.image );
-    Assert( res = VK_SUCCESS );
+     res := vkMapMemory( info.device, info.uniform_data.mem, 0, mem_reqs.size, 0, @pData );
+     Assert( res = VK_SUCCESS );
 
-    vkGetImageMemoryRequirements( info.device, info.depth.image, @mem_reqs );
+     Move( pData^, info.MVP, SizeOf( info.MVP ) );
 
-    mem_alloc.allocationSize := mem_reqs.size;
-    (* Use the memory properties to determine the type of memory required *)
-    pass := memory_type_from_properties( info, mem_reqs.memoryTypeBits, VkFlags( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex );
-    Assert( pass );
+     vkUnmapMemory( info.device, info.uniform_data.mem );
 
-    (* Allocate memory *)
-    res := vkAllocateMemory( info.device, @mem_alloc, nil, @info.depth.mem );
-    assert( res = VK_SUCCESS );
+     res := vkBindBufferMemory( info.device, info.uniform_data.buf, info.uniform_data.mem, 0 );
+     Assert( res = VK_SUCCESS );
 
-    (* Bind memory *)
-    res := vkBindImageMemory( info.device, info.depth.image, info.depth.mem, 0 );
-    assert( res = VK_SUCCESS );
-
-    (* Create image view *)
-    view_info.image := info.depth.image;
-    res := vkCreateImageView( info.device, @view_info, nil, @info.depth.view );
-    assert( res = VK_SUCCESS );
-
-    (* VULKAN_KEY_END *)
+     info.uniform_data.buffer_info.buffer := info.uniform_data.buf;
+     info.uniform_data.buffer_info.offset := 0;
+     info.uniform_data.buffer_info.range  := SizeOf( info.MVP );
+     (* VULKAN_KEY_END *)
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     (* Clean Up *)
-     vkDestroyImageView( info.device, info.depth.view, nil );
-     vkDestroyImage( info.device, info.depth.image, nil );
-     vkFreeMemory( info.device, info.depth.mem, nil );
+     vkDestroyBuffer( info.device, info.uniform_data.buf, nil );
+     vkFreeMemory( info.device, info.uniform_data.mem, nil );
      destroy_device( info );
-     destroy_window( info );
      destroy_instance( info );
 end;
 
