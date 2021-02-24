@@ -204,6 +204,10 @@ const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      (* renderpass creation and pipeline creation.                     *)
      NUM_SAMPLES = VK_SAMPLE_COUNT_1_BIT;
 
+     (* Number of descriptor sets needs to be the same at alloc,       *)
+     (* pipeline layout creation, and descriptor set layout creation   *)
+     NUM_DESCRIPTOR_SETS = 1;
+
 //var //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【変数】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
