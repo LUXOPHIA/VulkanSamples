@@ -77,6 +77,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       * Structure for tracking information used / created / modified
       * by utility functions.
       *)
+     P_sample_info = ^T_sample_info;
      T_sample_info = record
      private
        const APP_NAME_STR_LEN = 80;
@@ -197,11 +198,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
+const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
+
+     (* Number of samples needs to be the same at image creation,      *)
+     (* renderpass creation and pipeline creation.                     *)
+     NUM_SAMPLES = VK_SAMPLE_COUNT_1_BIT;
 
 //var //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【変数】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
+
+function memory_type_from_properties( var info:T_sample_info; typeBits:T_uint32_t; requirements_mask:VkFlags; var typeIndex:T_uint32_t ) :T_bool;
 
 implementation //############################################################### ■
 
@@ -210,5 +217,27 @@ implementation //###############################################################
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
+
+function memory_type_from_properties( var info:T_sample_info; typeBits:T_uint32_t; requirements_mask:VkFlags; var typeIndex:T_uint32_t ) :T_bool;
+var
+   i :T_uint32_t;
+begin
+     // Search memtypes to find first index with those properties
+     for i := 0 to info.memory_properties.memoryTypeCount-1 do
+     begin
+          if ( typeBits and 1 ) = 1 then
+          begin
+               // Type is available, does it match user properties?
+               if info.memory_properties.memoryTypes[i].propertyFlags and requirements_mask = requirements_mask then
+               begin
+                    typeIndex := i;
+                    Exit( True );
+               end;
+          end;
+          typeBits := typeBits shr 1;
+     end;
+     // No memory types matched, return failure
+     Result := False;
+end;
 
 end. //######################################################################### ■
