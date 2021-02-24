@@ -72,11 +72,23 @@ procedure destroy_window( var info_:T_sample_info );
 
 procedure init_swapchain_extension( var info_:T_sample_info );
 
+//////////////////////////////////////////////////////////////////////////////// 07-init_uniform_buffer
+
+//////////////////////////////////////////////////////////////////////////////// 08-init_pipeline_layout
+
+//////////////////////////////////////////////////////////////////////////////// 09-init_descriptor_set
+
+procedure init_uniform_buffer( var info:T_sample_info );
+procedure init_descriptor_and_pipeline_layouts( var info:T_sample_info; use_texture:T_bool; descSetLayoutCreateFlags:VkDescriptorSetLayoutCreateFlags = 0 );
+procedure destroy_uniform_buffer( var info:T_sample_info );
+procedure destroy_descriptor_and_pipeline_layouts( var info:T_sample_info );
+
 implementation //############################################################### ■
 
-uses System.Types,
+uses System.Types, System.Math,
      FMX.Types,
-     Winapi.Windows, Winapi.Messages;
+     Winapi.Windows, Winapi.Messages,
+     LUX, LUX.D1, LUX.D2, LUX.D3, LUX.D4, LUX.D4x4;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -506,6 +518,145 @@ begin
      end;
 
      surfFormats := nil;
+end;
+
+//////////////////////////////////////////////////////////////////////////////// 07-init_uniform_buffer
+
+//////////////////////////////////////////////////////////////////////////////// 08-init_pipeline_layout
+
+//////////////////////////////////////////////////////////////////////////////// 09-init_descriptor_set
+
+procedure init_uniform_buffer( var info:T_sample_info );
+var
+   res        :VkResult;
+   pass       :T_bool;
+   fov        :T_float;
+   buf_info   :VkBufferCreateInfo;
+   mem_reqs   :VkMemoryRequirements;
+   alloc_info :VkMemoryAllocateInfo;
+   pData      :P_uint8_t;
+begin
+     fov := DegToRad( 45 );
+     if info.width > info.height then
+     begin
+          fov := fov * info.height / info.width;
+     end;
+     info.Projection := TSingleM4.ProjPersH( fov, info.width / info.height, 0.1, 100 );
+     info.View := TSingleM4.LookAt( TSingle3D.Create( -5, -3, -10 ),    // Camera is at (-5,3,-10), in World Space
+                                    TSingle3D.Create(  0,  0,   0 ),    // and looks at the origin
+                                    TSingle3D.Create(  0, -1,   0 ) );  // Head is up (set to 0,-1,0 to look upside-down)
+
+     info.Model := TSingleM4.Identity;
+     // Vulkan clip space has inverted Y and half Z.
+     info.Clip := TSingleM4.Create( +1.0,  0.0,  0.0,  0.0,
+                                     0.0, -1.0,  0.0,  0.0,
+                                     0.0,  0.0, +0.5,  0.0,
+                                     0.0,  0.0, +0.5, +1.0 );
+
+     info.MVP := info.Clip * info.Projection * info.View * info.Model;
+
+     (* VULKAN_KEY_START *)
+     buf_info.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+     buf_info.pNext                 := nil;
+     buf_info.usage                 := VkBufferUsageFlags( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
+     buf_info.size                  := sizeof(info.MVP);
+     buf_info.queueFamilyIndexCount := 0;
+     buf_info.pQueueFamilyIndices   := nil;
+     buf_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
+     buf_info.flags                 := 0;
+     res := vkCreateBuffer( info.device, @buf_info, nil, @info.uniform_data.buf );
+     Assert( res = VK_SUCCESS );
+
+     vkGetBufferMemoryRequirements( info.device, info.uniform_data.buf, @mem_reqs );
+
+     alloc_info.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+     alloc_info.pNext           := nil;
+     alloc_info.memoryTypeIndex := 0;
+
+     alloc_info.allocationSize := mem_reqs.size;
+     pass := memory_type_from_properties( info, mem_reqs.memoryTypeBits,
+                                          VkFlags( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or VkFlags( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
+                                          alloc_info.memoryTypeIndex );
+     Assert( pass, 'No mappable, coherent memory' );
+
+     res := vkAllocateMemory( info.device, @alloc_info, nil, @info.uniform_data.mem );
+     Assert( res = VK_SUCCESS );
+
+     res := vkMapMemory( info.device, info.uniform_data.mem, 0, mem_reqs.size, 0, @pData );
+     Assert( res = VK_SUCCESS );
+
+     Move( pData^, info.MVP, SizeOf( info.MVP ) );
+
+     vkUnmapMemory( info.device, info.uniform_data.mem );
+
+     res := vkBindBufferMemory( info.device, info.uniform_data.buf, info.uniform_data.mem, 0 );
+     Assert( res = VK_SUCCESS );
+
+     info.uniform_data.buffer_info.buffer := info.uniform_data.buf;
+     info.uniform_data.buffer_info.offset := 0;
+     info.uniform_data.buffer_info.range  := SizeOf( info.MVP );
+end;
+
+procedure init_descriptor_and_pipeline_layouts( var info:T_sample_info; use_texture:T_bool; descSetLayoutCreateFlags:VkDescriptorSetLayoutCreateFlags = 0 );
+var
+   layout_bindings           :array [ 0..2-1 ] of VkDescriptorSetLayoutBinding;
+   descriptor_layout         :VkDescriptorSetLayoutCreateInfo;
+   res                       :VkResult;
+   pPipelineLayoutCreateInfo :VkPipelineLayoutCreateInfo;
+begin
+     layout_bindings[0].binding            := 0;
+     layout_bindings[0].descriptorType     := VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+     layout_bindings[0].descriptorCount    := 1;
+     layout_bindings[0].stageFlags         := VkShaderStageFlags( VK_SHADER_STAGE_VERTEX_BIT );
+     layout_bindings[0].pImmutableSamplers := nil;
+
+     if use_texture then
+     begin
+          layout_bindings[1].binding            := 1;
+          layout_bindings[1].descriptorType     := VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+          layout_bindings[1].descriptorCount    := 1;
+          layout_bindings[1].stageFlags         := VkShaderStageFlags( VK_SHADER_STAGE_FRAGMENT_BIT );
+          layout_bindings[1].pImmutableSamplers := nil;
+     end;
+
+     (* Next take layout bindings and use them to create a descriptor set layout
+     *)
+     descriptor_layout.sType             := VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+     descriptor_layout.pNext             := nil;
+     descriptor_layout.flags             := descSetLayoutCreateFlags;
+     if use_texture
+     then descriptor_layout.bindingCount := 2
+     else descriptor_layout.bindingCount := 1;
+     descriptor_layout.pBindings         := @layout_bindings[0];
+
+     SetLength( info.desc_layout, NUM_DESCRIPTOR_SETS );
+     res := vkCreateDescriptorSetLayout( info.device, @descriptor_layout, nil, @info.desc_layout[0] );
+     Assert( res = VK_SUCCESS );
+
+     (* Now use the descriptor layout to create a pipeline layout *)
+     pPipelineLayoutCreateInfo.sType                  := VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+     pPipelineLayoutCreateInfo.pNext                  := nil;
+     pPipelineLayoutCreateInfo.pushConstantRangeCount := 0;
+     pPipelineLayoutCreateInfo.pPushConstantRanges    := nil;
+     pPipelineLayoutCreateInfo.setLayoutCount         := NUM_DESCRIPTOR_SETS;
+     pPipelineLayoutCreateInfo.pSetLayouts            := @info.desc_layout[0];
+
+     res := vkCreatePipelineLayout( info.device, @pPipelineLayoutCreateInfo, nil, @info.pipeline_layout );
+     Assert( res = VK_SUCCESS );
+end;
+
+procedure destroy_uniform_buffer( var info:T_sample_info );
+begin
+     vkDestroyBuffer( info.device, info.uniform_data.buf, nil );
+     vkFreeMemory( info.device, info.uniform_data.mem, nil );
+end;
+
+procedure destroy_descriptor_and_pipeline_layouts( var info:T_sample_info );
+var
+   i :T_int;
+begin
+     for i := 0 to NUM_DESCRIPTOR_SETS-1 do vkDestroyDescriptorSetLayout( info.device, info.desc_layout[i], nil );
+     vkDestroyPipelineLayout( info.device, info.pipeline_layout, nil );
 end;
 
 end. //######################################################################### ■
