@@ -99,7 +99,7 @@ begin
      moduleCreateInfo.codeSize := __init_shaders_vert.Size;
      moduleCreateInfo.pCode    := __init_shaders_vert.Memory;
      res := vkCreateShaderModule( info.device, @moduleCreateInfo, nil, @info.shaderStages[0].module );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 
      info.shaderStages[1].sType := VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
      info.shaderStages[1].pNext := nil;
@@ -116,7 +116,7 @@ begin
      moduleCreateInfo.codeSize := __init_shaders_frag.Size;
      moduleCreateInfo.pCode    := __init_shaders_frag.Memory;
      res := vkCreateShaderModule( info.device, @moduleCreateInfo, nil, @info.shaderStages[1].module );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 
      (* VULKAN_KEY_END *)
 
