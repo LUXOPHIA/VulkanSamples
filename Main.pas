@@ -1,12 +1,12 @@
 ﻿unit Main;
 
-{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/10-init_render_pass }
+{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/11-init_shaders }
 
 (*
  * Vulkan Samples
  *
- * Copyright (C) 2015-2016 Valve Corporation
- * Copyright (C) 2015-2016 LunarG, Inc.
+ * Copyright (C) 2015-2020 Valve Corporation
+ * Copyright (C) 2015-2020 LunarG, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
 
 (*
 VULKAN_SAMPLE_SHORT_DESCRIPTION
-Initialize Render Pass
+Initialize Vertex and Fragment Shaders
 *)
 
 (* This is part of the draw cube progression *)
@@ -46,7 +46,7 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     { private 宣言 }
-    const sample_title = 'Renderpass Sample';
+    const sample_title = 'Initialize Shaders Sample';
   public
     { public 宣言 }
     info                   :T_sample_info;
@@ -60,130 +60,77 @@ implementation //###############################################################
 
 {$R *.fmx}
 
-uses System.Math;
-
 procedure TForm1.FormCreate(Sender: TObject);
 var
-   res                              :VkResult;
-   imageAcquiredSemaphoreCreateInfo :VkSemaphoreCreateInfo;
-   attachments                      :array [ 0..2-1 ] of VkAttachmentDescription;
-   color_reference                  :VkAttachmentReference;
-   depth_reference                  :VkAttachmentReference;
-   subpass                          :VkSubpassDescription;
-   subpass_dependency               :VkSubpassDependency;
-   rp_info                          :VkRenderPassCreateInfo;
+   res                 :VkResult;
+   vtx_spv             :TArray<T_unsigned_int>;
+   moduleCreateInfo    :VkShaderModuleCreateInfo;
+   frag_spv            :TArray<T_unsigned_int>;
+   __init_shaders_vert :TMemoryStream;
+   __init_shaders_frag :TMemoryStream;
 begin
-    init_global_layer_properties( info );
-    init_instance_extension_names( info );
-    init_device_extension_names( info );
-    init_instance( info, sample_title );
-    init_enumerate_device( info );
-    init_connection( info );
-    init_window_size( info, 500, 500 );
-    init_window( info );
-    init_swapchain_extension( info );
-    init_device(info);
-    init_device_queue( info );
-    init_swap_chain( info );
-    init_depth_buffer( info );
+     __init_shaders_vert := TMemoryStream.Create;
+     __init_shaders_frag := TMemoryStream.Create;
 
-    (* VULKAN_KEY_START *)
+     init_global_layer_properties( info );
+     init_instance( info, sample_title );
+     init_enumerate_device( info );
+     init_queue_family_index( info );
+     init_device( info );
 
-    // A semaphore (or fence) is required in order to acquire a
-    // swapchain image to prepare it for use in a render pass.
-    // The semaphore is normally used to hold back the rendering
-    // operation until the image is actually available.
-    // But since this sample does not render, the semaphore
-    // ends up being unused.
+     (* We've setup cmake to process 11-init_shaders.vert and 11-init_shaders.frag             *)
+     (* files containing the glsl shader code for this sample.  The generate-spirv script uses *)
+     (* glslangValidator to compile the glsl into spir-v and places the spir-v into a struct   *)
+     (* into a generated header file                                                           *)
 
-    imageAcquiredSemaphoreCreateInfo.sType := VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-    imageAcquiredSemaphoreCreateInfo.pNext := nil;
-    imageAcquiredSemaphoreCreateInfo.flags := 0;
+     (* VULKAN_KEY_START *)
 
-    res := vkCreateSemaphore( info.device, @imageAcquiredSemaphoreCreateInfo, nil, @imageAcquiredSemaphore );
-    assert( res = VK_SUCCESS );
+     info.shaderStages[0].sType               := VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+     info.shaderStages[0].pNext               := nil;
+     info.shaderStages[0].pSpecializationInfo := nil;
+     info.shaderStages[0].flags               := 0;
+     info.shaderStages[0].stage               := VK_SHADER_STAGE_VERTEX_BIT;
+     info.shaderStages[0].pName               := 'main';
+     {#include ""}
 
-    // Acquire the swapchain image in order to set its layout
-    res := vkAcquireNextImageKHR( info.device, info.swap_chain, UINT64_MAX, imageAcquiredSemaphore, VK_NULL_HANDLE, @info.current_buffer );
-    Assert( res >= VK_SUCCESS );
+     __init_shaders_vert.LoadFromFile( '../../_DATA/11-init_shaders.vert' );
 
-    // The initial layout for the color and depth attachments will be
-    // LAYOUT_UNDEFINED because at the start of the renderpass, we don't
-    // care about their contents. At the start of the subpass, the color
-    // attachment's layout will be transitioned to LAYOUT_COLOR_ATTACHMENT_OPTIMAL
-    // and the depth stencil attachment's layout will be transitioned to
-    // LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL.  At the end of the renderpass,
-    // the color attachment's layout will be transitioned to
-    // LAYOUT_PRESENT_SRC_KHR to be ready to present.  This is all done as part
-    // of the renderpass, no barriers are necessary.
-    attachments[0].format         := info.format;
-    attachments[0].samples        := NUM_SAMPLES;
-    attachments[0].loadOp         := VK_ATTACHMENT_LOAD_OP_CLEAR;
-    attachments[0].storeOp        := VK_ATTACHMENT_STORE_OP_STORE;
-    attachments[0].stencilLoadOp  := VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    attachments[0].stencilStoreOp := VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    attachments[0].initialLayout  := VK_IMAGE_LAYOUT_UNDEFINED;
-    attachments[0].finalLayout    := VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-    attachments[0].flags          := 0;
+     moduleCreateInfo.sType    := VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+     moduleCreateInfo.pNext    := nil;
+     moduleCreateInfo.flags    := 0;
+     moduleCreateInfo.codeSize := __init_shaders_vert.Size;
+     moduleCreateInfo.pCode    := __init_shaders_vert.Memory;
+     res := vkCreateShaderModule( info.device, @moduleCreateInfo, nil, @info.shaderStages[0].module );
+     assert( res = VK_SUCCESS );
 
-    attachments[1].format         := info.depth.format;
-    attachments[1].samples        := NUM_SAMPLES;
-    attachments[1].loadOp         := VK_ATTACHMENT_LOAD_OP_CLEAR;
-    attachments[1].storeOp        := VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    attachments[1].stencilLoadOp  := VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    attachments[1].stencilStoreOp := VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    attachments[1].initialLayout  := VK_IMAGE_LAYOUT_UNDEFINED;
-    attachments[1].finalLayout    := VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-    attachments[1].flags          := 0;
+     info.shaderStages[1].sType := VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+     info.shaderStages[1].pNext := nil;
+     info.shaderStages[1].pSpecializationInfo := nil;
+     info.shaderStages[1].flags := 0;
+     info.shaderStages[1].stage := VK_SHADER_STAGE_FRAGMENT_BIT;
+     info.shaderStages[1].pName := 'main';
 
-    color_reference.attachment := 0;
-    color_reference.layout     := VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+     __init_shaders_frag.LoadFromFile( '../../_DATA/11-init_shaders.frag' );
 
-    depth_reference.attachment := 1;
-    depth_reference.layout     := VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+     moduleCreateInfo.sType    := VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+     moduleCreateInfo.pNext    := nil;
+     moduleCreateInfo.flags    := 0;
+     moduleCreateInfo.codeSize := __init_shaders_frag.Size;
+     moduleCreateInfo.pCode    := __init_shaders_frag.Memory;
+     res := vkCreateShaderModule( info.device, @moduleCreateInfo, nil, @info.shaderStages[1].module );
+     assert( res = VK_SUCCESS );
 
-    subpass.pipelineBindPoint       := VK_PIPELINE_BIND_POINT_GRAPHICS;
-    subpass.flags                   := 0;
-    subpass.inputAttachmentCount    := 0;
-    subpass.pInputAttachments       := nil;
-    subpass.colorAttachmentCount    := 1;
-    subpass.pColorAttachments       := @color_reference;
-    subpass.pResolveAttachments     := nil;
-    subpass.pDepthStencilAttachment := @depth_reference;
-    subpass.preserveAttachmentCount := 0;
-    subpass.pPreserveAttachments    := nil;
+     (* VULKAN_KEY_END *)
 
-    // Subpass dependency to wait for wsi image acquired semaphore before starting layout transition
-    subpass_dependency.srcSubpass      := VK_SUBPASS_EXTERNAL;
-    subpass_dependency.dstSubpass      := 0;
-    subpass_dependency.srcStageMask    := VkPipelineStageFlags( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
-    subpass_dependency.dstStageMask    := VkPipelineStageFlags( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
-    subpass_dependency.srcAccessMask   := 0;
-    subpass_dependency.dstAccessMask   := VkAccessFlags( VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT );
-    subpass_dependency.dependencyFlags := 0;
-
-    rp_info.sType           := VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-    rp_info.pNext           := nil;
-    rp_info.attachmentCount := 2;
-    rp_info.pAttachments    := @attachments[0];
-    rp_info.subpassCount    := 1;
-    rp_info.pSubpasses      := @subpass;
-    rp_info.dependencyCount := 1;
-    rp_info.pDependencies   := @subpass_dependency;
-
-    res := vkCreateRenderPass( info.device, @rp_info, nil, @info.render_pass );
-    Assert( res = VK_SUCCESS );
-    (* VULKAN_KEY_END *)
+     __init_shaders_vert.Free;
+     __init_shaders_frag.Free;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     vkDestroyRenderPass( info.device, info.render_pass, nil );
-     vkDestroySemaphore( info.device, imageAcquiredSemaphore, nil );
-     destroy_depth_buffer( info );
-     destroy_swap_chain( info );
+     vkDestroyShaderModule( info.device, info.shaderStages[0].module, nil );
+     vkDestroyShaderModule( info.device, info.shaderStages[1].module, nil );
      destroy_device( info );
-     destroy_window( info );
      destroy_instance( info );
 end;
 
