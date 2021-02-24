@@ -62,8 +62,6 @@ var
    inst      :VkInstance;
    res       :VkResult;
 begin
-     Caption := APP_SHORT_NAME;
-
      init_global_layer_properties( info );
 
      (* VULKAN_KEY_START *)

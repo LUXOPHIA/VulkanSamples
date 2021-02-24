@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 0
   Top = 0
-  Caption = 'Vulkanium'
+  Caption = 'Vulkan Samples'
   ClientHeight = 480
   ClientWidth = 640
   Position = ScreenCenter
