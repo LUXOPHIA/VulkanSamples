@@ -124,7 +124,7 @@ begin
      res := vkMapMemory( info.device, info.uniform_data.mem, 0, mem_reqs.size, 0, @pData );
      Assert( res = VK_SUCCESS );
 
-     Move( pData^, info.MVP, SizeOf( info.MVP ) );
+     Move( info.MVP, pData^, SizeOf( info.MVP ) );
 
      vkUnmapMemory( info.device, info.uniform_data.mem );
 
