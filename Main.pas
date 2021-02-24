@@ -64,8 +64,6 @@ var
    cmd_pool_info :VkCommandPoolCreateInfo;
    cmd           :VkCommandBufferAllocateInfo;
 begin
-     Caption := sample_title;
-
      init_global_layer_properties( info );
      init_instance( info, sample_title );
      init_enumerate_device( info );
