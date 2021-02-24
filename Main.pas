@@ -73,7 +73,7 @@ begin
      init_instance( info, sample_title );
      init_enumerate_device( info );
      init_connection( info );
-     init_window_size( info, 64, 64 );
+     init_window_size( info, 500, 500 );
      init_window( info );
      init_swapchain_extension( info );
      init_device( info );
