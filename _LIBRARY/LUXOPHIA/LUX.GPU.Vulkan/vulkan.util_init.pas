@@ -91,6 +91,24 @@ procedure init_depth_buffer( var info_:T_sample_info );
 procedure destroy_depth_buffer( var info_:T_sample_info );
 procedure destroy_swap_chain( var info_:T_sample_info );
 
+//////////////////////////////////////////////////////////////////////////////// 11-init_shaders
+
+//////////////////////////////////////////////////////////////////////////////// 12-init_frame_buffers
+
+procedure init_command_pool( var info_:T_sample_info );
+procedure init_command_buffer( var info_:T_sample_info );
+procedure execute_begin_command_buffer( var info_:T_sample_info );
+procedure init_renderpass( var info_:T_sample_info;
+                           include_depth_:T_bool;
+                           clear_:T_bool = True;
+                           finalLayout_:VkImageLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+                           initialLayout_:VkImageLayout = VK_IMAGE_LAYOUT_UNDEFINED );
+procedure execute_end_command_buffer( var info_:T_sample_info );
+procedure execute_queue_command_buffer( var info_:T_sample_info );
+procedure destroy_renderpass( var info_:T_sample_info );
+procedure destroy_command_buffer( var info_:T_sample_info );
+procedure destroy_command_pool( var info_:T_sample_info );
+
 implementation //############################################################### ■
 
 uses System.Types, System.Math, System.SysUtils,
@@ -947,6 +965,213 @@ var
 begin
      for i := 0 to info_.swapchainImageCount-1 do vkDestroyImageView( info_.device, info_.buffers[i].view, nil );
      vkDestroySwapchainKHR( info_.device, info_.swap_chain, nil );
+end;
+
+//////////////////////////////////////////////////////////////////////////////// 11-init_shaders
+
+//////////////////////////////////////////////////////////////////////////////// 12-init_frame_buffers
+
+procedure init_command_pool( var info_:T_sample_info );
+var
+   res           :VkResult;
+   cmd_pool_info :VkCommandPoolCreateInfo;
+begin
+     (* DEPENDS on init_swapchain_extension() *)
+
+     cmd_pool_info.sType            := VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+     cmd_pool_info.pNext            := nil;
+     cmd_pool_info.queueFamilyIndex := info_.graphics_queue_family_index;
+     cmd_pool_info.flags            := VkCommandPoolCreateFlags( VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
+
+     res := vkCreateCommandPool( info_.device, @cmd_pool_info, nil, @info_.cmd_pool );
+     assert( res = VK_SUCCESS );
+end;
+
+procedure init_command_buffer( var info_:T_sample_info );
+var
+   res :VkResult;
+   cmd :VkCommandBufferAllocateInfo;
+begin
+     (* DEPENDS on init_swapchain_extension() and init_command_pool() *)
+
+     cmd.sType              := VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+     cmd.pNext              := nil;
+     cmd.commandPool        := info_.cmd_pool;
+     cmd.level              := VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+     cmd.commandBufferCount := 1;
+
+     res := vkAllocateCommandBuffers( info_.device, @cmd, @info_.cmd );
+     assert( res = VK_SUCCESS );
+end;
+
+procedure execute_begin_command_buffer( var info_:T_sample_info );
+var
+   res          :VkResult;
+   cmd_buf_info :VkCommandBufferBeginInfo;
+begin
+     (* DEPENDS on init_command_buffer() *)
+
+     cmd_buf_info.sType            := VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+     cmd_buf_info.pNext            := nil;
+     cmd_buf_info.flags            := 0;
+     cmd_buf_info.pInheritanceInfo := nil;
+
+     res := vkBeginCommandBuffer( info_.cmd, @cmd_buf_info );
+     assert( res = VK_SUCCESS );
+end;
+
+procedure init_renderpass( var info_:T_sample_info;
+                           include_depth_:T_bool;
+                           clear_:T_bool = True;
+                           finalLayout_:VkImageLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+                           initialLayout_:VkImageLayout = VK_IMAGE_LAYOUT_UNDEFINED );
+var
+   res                :VkResult;
+   attachments        :array [ 0..2-1 ] of VkAttachmentDescription;
+   color_reference    :VkAttachmentReference;
+   depth_reference    :VkAttachmentReference;
+   subpass            :VkSubpassDescription;
+   subpass_dependency :VkSubpassDependency;
+   rp_info            :VkRenderPassCreateInfo;
+begin
+     (* DEPENDS on init_swap_chain() and init_depth_buffer() *)
+
+     assert( clear_ or ( initialLayout_ <> VK_IMAGE_LAYOUT_UNDEFINED ) );
+
+     (* Need attachments for render target and depth buffer *)
+     attachments[0].format         := info_.format;
+     attachments[0].samples        := NUM_SAMPLES;
+     if clear_
+     then attachments[0].loadOp    := VK_ATTACHMENT_LOAD_OP_CLEAR
+     else attachments[0].loadOp    := VK_ATTACHMENT_LOAD_OP_LOAD;
+     attachments[0].storeOp        := VK_ATTACHMENT_STORE_OP_STORE;
+     attachments[0].stencilLoadOp  := VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+     attachments[0].stencilStoreOp := VK_ATTACHMENT_STORE_OP_DONT_CARE;
+     attachments[0].initialLayout  := initialLayout_;
+     attachments[0].finalLayout    := finalLayout_;
+     attachments[0].flags          := 0;
+
+     if include_depth_ then
+     begin
+          attachments[1].format         := info_.depth.format;
+          attachments[1].samples        := NUM_SAMPLES;
+          if clear_
+          then attachments[1].loadOp    := VK_ATTACHMENT_LOAD_OP_CLEAR
+          else attachments[1].loadOp    := VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+          attachments[1].storeOp        := VK_ATTACHMENT_STORE_OP_STORE;
+          attachments[1].stencilLoadOp  := VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+          attachments[1].stencilStoreOp := VK_ATTACHMENT_STORE_OP_STORE;
+          attachments[1].initialLayout  := VK_IMAGE_LAYOUT_UNDEFINED;
+          attachments[1].finalLayout    := VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+          attachments[1].flags          := 0;
+     end;
+
+     color_reference.attachment := 0;
+     color_reference.layout     := VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+     depth_reference.attachment := 1;
+     depth_reference.layout := VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+
+     subpass.pipelineBindPoint            := VK_PIPELINE_BIND_POINT_GRAPHICS;
+     subpass.flags                        := 0;
+     subpass.inputAttachmentCount         := 0;
+     subpass.pInputAttachments            := nil;
+     subpass.colorAttachmentCount         := 1;
+     subpass.pColorAttachments            := @color_reference;
+     subpass.pResolveAttachments          := nil;
+     if include_depth_
+     then subpass.pDepthStencilAttachment := @depth_reference
+     else subpass.pDepthStencilAttachment := nil;
+     subpass.preserveAttachmentCount      := 0;
+     subpass.pPreserveAttachments         := nil;
+
+     // Subpass dependency to wait for wsi image acquired semaphore before starting layout transition
+     subpass_dependency.srcSubpass      := VK_SUBPASS_EXTERNAL;
+     subpass_dependency.dstSubpass      := 0;
+     subpass_dependency.srcStageMask    := VkPipelineStageFlags( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
+     subpass_dependency.dstStageMask    := VkPipelineStageFlags( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
+     subpass_dependency.srcAccessMask   := 0;
+     subpass_dependency.dstAccessMask   := VkAccessFlags( VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT );
+     subpass_dependency.dependencyFlags := 0;
+
+     rp_info.sType                := VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+     rp_info.pNext                := nil;
+     if include_depth_
+     then rp_info.attachmentCount := 2
+     else rp_info.attachmentCount := 1;
+     rp_info.pAttachments         := @attachments[0];
+     rp_info.subpassCount         := 1;
+     rp_info.pSubpasses           := @subpass;
+     rp_info.dependencyCount      := 1;
+     rp_info.pDependencies        := @subpass_dependency;
+
+     res := vkCreateRenderPass( info_.device, @rp_info, nil, @info_.render_pass );
+     assert( res = VK_SUCCESS );
+end;
+
+procedure execute_end_command_buffer( var info_:T_sample_info );
+var
+   res :VkResult;
+begin
+     res := vkEndCommandBuffer( info_.cmd );
+     assert( res = VK_SUCCESS );
+end;
+
+procedure execute_queue_command_buffer( var info_:T_sample_info );
+var
+   res              :VkResult;
+   cmd_bufs         :array [ 0..1-1 ] of VkCommandBuffer;
+   fenceInfo        :VkFenceCreateInfo;
+   drawFence        :VkFence;
+   pipe_stage_flags :VkPipelineStageFlags;
+   submit_info      :array [ 0..1-1 ] of VkSubmitInfo;
+begin
+     (* Queue the command buffer for execution *)
+     cmd_bufs[0] := info_.cmd;
+     fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+     fenceInfo.pNext := nil;
+     fenceInfo.flags := 0;
+     vkCreateFence( info_.device, @fenceInfo, nil, @drawFence );
+
+     pipe_stage_flags := VkPipelineStageFlags( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
+     submit_info[0].pNext                := nil;
+     submit_info[0].sType                := VK_STRUCTURE_TYPE_SUBMIT_INFO;
+     submit_info[0].waitSemaphoreCount   := 0;
+     submit_info[0].pWaitSemaphores      := nil;
+     submit_info[0].pWaitDstStageMask    := @pipe_stage_flags;
+     submit_info[0].commandBufferCount   := 1;
+     submit_info[0].pCommandBuffers      := @cmd_bufs[0];
+     submit_info[0].signalSemaphoreCount := 0;
+     submit_info[0].pSignalSemaphores    := nil;
+
+     res := vkQueueSubmit( info_.graphics_queue, 1, @submit_info[0], drawFence );
+     assert( res = VK_SUCCESS );
+
+     repeat
+           res := vkWaitForFences( info_.device, 1, @drawFence, VK_TRUE, FENCE_TIMEOUT );
+
+     until res <> VK_TIMEOUT;
+     assert( res = VK_SUCCESS );
+
+     vkDestroyFence( info_.device, drawFence, nil );
+end;
+
+procedure destroy_renderpass( var info_:T_sample_info );
+begin
+     vkDestroyRenderPass( info_.device, info_.render_pass, nil );
+end;
+
+procedure destroy_command_buffer( var info_:T_sample_info );
+var
+   cmd_bufs :array [ 0..1-1 ] of VkCommandBuffer;
+begin
+     cmd_bufs[0] := info_.cmd;
+     vkFreeCommandBuffers( info_.device, info_.cmd_pool, 1, @cmd_bufs[0] );
+end;
+
+procedure destroy_command_pool( var info_:T_sample_info );
+begin
+     vkDestroyCommandPool( info_.device, info_.cmd_pool, nil );
 end;
 
 end. //######################################################################### ■
