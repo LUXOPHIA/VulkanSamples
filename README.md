@@ -10,3 +10,4 @@
 * [05-init_swapchain](https://github.com/LUXOPHIA/VulkanSamples/tree/05-init_swapchain)
 * [06-init_depth_buffer](https://github.com/LUXOPHIA/VulkanSamples/tree/06-init_depth_buffer)
 * [07-init_uniform_buffer](https://github.com/LUXOPHIA/VulkanSamples/tree/07-init_uniform_buffer)
+* [08-init_pipeline_layout](https://github.com/LUXOPHIA/VulkanSamples/tree/08-init_pipeline_layout)
