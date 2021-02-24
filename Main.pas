@@ -1,6 +1,6 @@
 ﻿unit Main;
 
-{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/08-init_pipeline_layout }
+{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/09-init_descriptor_set }
 
 (*
  * Vulkan Samples
@@ -23,7 +23,7 @@
 
 (*
 VULKAN_SAMPLE_SHORT_DESCRIPTION
-Create Descriptor Layout and Pipeline Layout
+Allocate Descriptor Set
 *)
 
 (* This is part of the draw cube progression *)
@@ -46,7 +46,7 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     { private 宣言 }
-    const sample_title = 'Descriptor / Pipeline Layout Sample';
+    const sample_title = 'Allocate Descriptor Set Sample';
   public
     { public 宣言 }
     info :T_sample_info;
@@ -63,62 +63,61 @@ uses System.Math;
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-   res                      :VkResult;
-   layout_binding           :VkDescriptorSetLayoutBinding;
-   descriptor_layout        :VkDescriptorSetLayoutCreateInfo;
-   pipelineLayoutCreateInfo :VkPipelineLayoutCreateInfo;
+   res             :VkResult;
+   type_count      :array [ 0..1-1 ] of VkDescriptorPoolSize;
+   descriptor_pool :VkDescriptorPoolCreateInfo;
+   alloc_info      :array [ 0..1-1 ] of VkDescriptorSetAllocateInfo;
+   writes          :array [ 0..1-1 ] of VkWriteDescriptorSet;
 begin
      init_global_layer_properties( info );
      init_instance( info, sample_title );
      init_enumerate_device( info );
      init_queue_family_index( info );
      init_device( info );
+     init_uniform_buffer( info );
+     init_descriptor_and_pipeline_layouts( info, false );
 
      (* VULKAN_KEY_START *)
-     (* Start with just our uniform buffer that has our transformation matrices
-      * (for the vertex shader). The fragment shader we intend to use needs no
-      * external resources, so nothing else is necessary
-      *)
+     type_count[0].type_           := VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+     type_count[0].descriptorCount := 1;
 
-     (* Note that when we start using textures, this is where our sampler will
-      * need to be specified
-      *)
-     layout_binding.binding            := 0;
-     layout_binding.descriptorType     := VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-     layout_binding.descriptorCount    := 1;
-     layout_binding.stageFlags         := VkShaderStageFlags( VK_SHADER_STAGE_VERTEX_BIT );
-     layout_binding.pImmutableSamplers := nil;
+     descriptor_pool.sType         := VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+     descriptor_pool.pNext         := nil;
+     descriptor_pool.maxSets       := 1;
+     descriptor_pool.poolSizeCount := 1;
+     descriptor_pool.pPoolSizes    := @type_count[0];
 
-      (* Next take layout bindings and use them to create a descriptor set layout
-      *)
-     descriptor_layout.sType        := VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-     descriptor_layout.pNext        := nil;
-     descriptor_layout.bindingCount := 1;
-     descriptor_layout.pBindings    := @layout_binding;
-
-     SetLength( info.desc_layout, NUM_DESCRIPTOR_SETS );
-     res := vkCreateDescriptorSetLayout( info.device, @descriptor_layout, nil, @info.desc_layout[0] );
+     res := vkCreateDescriptorPool(info.device, @descriptor_pool, nil, @info.desc_pool );
      Assert( res = VK_SUCCESS );
 
-     (* Now use the descriptor layout to create a pipeline layout *)
-     pipelineLayoutCreateInfo.sType                  := VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-     pipelineLayoutCreateInfo.pNext                  := nil;
-     pipelineLayoutCreateInfo.pushConstantRangeCount := 0;
-     pipelineLayoutCreateInfo.pPushConstantRanges    := nil;
-     pipelineLayoutCreateInfo.setLayoutCount         := NUM_DESCRIPTOR_SETS;
-     pipelineLayoutCreateInfo.pSetLayouts            := @info.desc_layout[0];
+     alloc_info[0].sType              := VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+     alloc_info[0].pNext              := nil;
+     alloc_info[0].descriptorPool     := info.desc_pool;
+     alloc_info[0].descriptorSetCount := NUM_DESCRIPTOR_SETS;
+     alloc_info[0].pSetLayouts        := @info.desc_layout[0];
 
-     res := vkCreatePipelineLayout( info.device, @pipelineLayoutCreateInfo, nil, @info.pipeline_layout );
+     SetLength( info.desc_set, NUM_DESCRIPTOR_SETS );
+     res := vkAllocateDescriptorSets( info.device, @alloc_info[0], @info.desc_set[0] );
      Assert( res = VK_SUCCESS );
+
+     writes[0].sType           := VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+     writes[0].pNext           := nil;
+     writes[0].dstSet          := info.desc_set[0];
+     writes[0].descriptorCount := 1;
+     writes[0].descriptorType  := VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+     writes[0].pBufferInfo     := @info.uniform_data.buffer_info;
+     writes[0].dstArrayElement := 0;
+     writes[0].dstBinding      := 0;
+
+     vkUpdateDescriptorSets( info.device, 1, @writes[0], 0, nil );
      (* VULKAN_KEY_END *)
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
-var
-   i :T_int;
 begin
-     for i := 0 to NUM_DESCRIPTOR_SETS-1 do vkDestroyDescriptorSetLayout( info.device, info.desc_layout[i], nil );
-     vkDestroyPipelineLayout( info.device, info.pipeline_layout, nil );
+     vkDestroyDescriptorPool( info.device, info.desc_pool, nil );
+     destroy_uniform_buffer( info );
+     destroy_descriptor_and_pipeline_layouts( info );
      destroy_device( info );
      destroy_instance( info );
 end;
