@@ -1,6 +1,6 @@
 ﻿unit Main;
 
-{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/07-init_uniform_buffer }
+{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/08-init_pipeline_layout }
 
 (*
  * Vulkan Samples
