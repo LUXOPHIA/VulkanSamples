@@ -236,7 +236,7 @@ begin
      pipeline.renderPass          := info.render_pass;
      pipeline.subpass             := 0;
 
-     res := vkCreateGraphicsPipelines( info.device, VK_NULL_HANDLE, 1, @pipeline, nil, @info.pipeline );
+     res := vkCreateGraphicsPipelines( info.device, VK_NULL_HANDLE, 1, @pipeline, nil, @info.pipeline );  { TODO : res <> VK_SUCCESS }
      Assert( res = VK_SUCCESS, 'vkCreateGraphicsPipelines' );
      execute_end_command_buffer( info );
      execute_queue_command_buffer( info );
