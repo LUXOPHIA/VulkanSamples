@@ -176,6 +176,7 @@ begin
      vkCmdDraw( info.cmd, 12 * 3, 1, 0, 0 );
      vkCmdEndRenderPass( info.cmd );
      res := vkEndCommandBuffer( info.cmd );
+     Assert( res = VK_SUCCESS );
      cmd_bufs[0] := info.cmd;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
