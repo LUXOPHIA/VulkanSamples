@@ -68,13 +68,15 @@ uses cube_data;
 procedure TForm1.FormCreate(Sender: TObject);
 const
      depthPresent :T_bool = True;
+type
+    T_dynamicStateEnables = array [ 0..2-1 ] of VkDynamicState;
 var
    res                  :VkResult;
    __init_pipeline_vert :TMemoryStream;
    __init_pipeline_frag :TMemoryStream;
    vert_info            :VkShaderModuleCreateInfo;
    frag_info            :VkShaderModuleCreateInfo;
-   dynamicStateEnables  :array [ 0..2-1 ] of VkDynamicState;  // Viewport + Scissor
+   dynamicStateEnables  :T_dynamicStateEnables;  // Viewport + Scissor
    dynamicState         :VkPipelineDynamicStateCreateInfo;
    vi                   :VkPipelineVertexInputStateCreateInfo;
    ia                   :VkPipelineInputAssemblyStateCreateInfo;
@@ -108,13 +110,15 @@ begin
      init_uniform_buffer( info );
      init_renderpass( info, depthPresent );
      init_framebuffers( info, depthPresent );
-     init_vertex_buffer( info, @g_vb_solid_face_colors_Data[0], sizeof(g_vb_solid_face_colors_Data ),
-                         SizeOf( T_Vertex ) * Length( g_vb_solid_face_colors_Data ), False );
+     init_vertex_buffer( info, @g_vb_solid_face_colors_Data[0], SizeOf( T_Vertex ) * Length( g_vb_solid_face_colors_Data ),
+                         SizeOf( g_vb_solid_face_colors_Data[0] ), False );
      init_descriptor_and_pipeline_layouts( info, false );
      init_descriptor_pool( info, false );
      init_descriptor_set( info, false );
      __init_pipeline_vert.LoadFromFile( '../../_DATA/14-init_pipeline.vert' );
      __init_pipeline_frag.LoadFromFile( '../../_DATA/14-init_pipeline.frag' );
+     vert_info          := Default( VkShaderModuleCreateInfo );
+     frag_info          := Default( VkShaderModuleCreateInfo );
      vert_info.sType    := VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
      frag_info.sType    := VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
      vert_info.codeSize := __init_pipeline_vert.Size;
@@ -124,6 +128,8 @@ begin
      init_shaders( info, @vert_info, @frag_info );
 
      (* VULKAN_KEY_START *)
+     dynamicStateEnables            := Default( T_dynamicStateEnables );
+     dynamicState                   := Default( VkPipelineDynamicStateCreateInfo );
      dynamicState.sType             := VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
      dynamicState.pNext             := nil;
      dynamicState.pDynamicStates    := @dynamicStateEnables[0];
@@ -177,6 +183,7 @@ begin
      cb.blendConstants[2] := 1.0;
      cb.blendConstants[3] := 1.0;
 
+     vp               := Default( VkPipelineViewportStateCreateInfo );
      vp.sType         := VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
      vp.pNext         := nil;
      vp.flags         := 0;
