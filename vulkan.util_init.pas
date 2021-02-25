@@ -86,7 +86,7 @@ procedure destroy_descriptor_and_pipeline_layouts( var info_:T_sample_info );
 //////////////////////////////////////////////////////////////////////////////// 10-init_render_pass
 
 procedure init_device_queue( var info_:T_sample_info );
-procedure init_swap_chain( var info_:T_sample_info; usageFlags_:VkImageUsageFlags = VkImageUsageFlags( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or VkImageUsageFlags( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
+procedure init_swap_chain( var info_:T_sample_info; usageFlags_:VkImageUsageFlags = Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
 procedure init_depth_buffer( var info_:T_sample_info );
 procedure destroy_depth_buffer( var info_:T_sample_info );
 procedure destroy_swap_chain( var info_:T_sample_info );
@@ -113,6 +113,25 @@ procedure destroy_command_pool( var info_:T_sample_info );
 
 procedure init_framebuffers( var info_:T_sample_info; include_depth:T_bool );
 procedure destroy_framebuffers( var info_:T_sample_info );
+
+//////////////////////////////////////////////////////////////////////////////// 14-init_pipeline
+
+procedure init_vertex_buffer( var info_:T_sample_info; const vertexData_:P_void; dataSize_:T_uint32_t; dataStride_:T_uint32_t; use_texture_:T_bool );
+procedure init_descriptor_pool( var info_:T_sample_info; use_texture_:T_bool );
+procedure init_descriptor_set( var info_:T_sample_info; use_texture_:T_bool );
+procedure init_shaders( var info_:T_sample_info; const vertShaderCI_:P_VkShaderModuleCreateInfo; const fragShaderCI_:P_VkShaderModuleCreateInfo );
+procedure destroy_descriptor_pool( var info_:T_sample_info );
+procedure destroy_vertex_buffer( var info_:T_sample_info );
+procedure destroy_shaders( var info_:T_sample_info );
+
+//////////////////////////////////////////////////////////////////////////////// 15-draw_cube
+
+procedure init_viewports( var info_:T_sample_info );
+procedure init_scissors( var info_:T_sample_info );
+procedure init_pipeline_cache( var info:T_sample_info );
+procedure init_pipeline( var info:T_sample_info; include_depth:VkBool32; include_vi:VkBool32 = 1 );
+procedure destroy_pipeline( var info_:T_sample_info );
+procedure destroy_pipeline_cache( var info_:T_sample_info );
 
 implementation //############################################################### ■
 
@@ -253,8 +272,8 @@ var
    I         :Integer;
 begin
      req_count := gpu_count_;
-     {Result := }vkEnumeratePhysicalDevices( info_.inst, @gpu_count_, nil );
-     Assert( gpu_count_ > 0 );
+     Result := vkEnumeratePhysicalDevices( info_.inst, @gpu_count_, nil );
+     Assert( ( Result = VK_SUCCESS ) and ( gpu_count_ > 0 ) );
      SetLength( info_.gpus, gpu_count_ );
 
      Result := vkEnumeratePhysicalDevices( info_.inst, @gpu_count_, @info_.gpus[0] );
@@ -305,7 +324,7 @@ begin
      found := False;
      for i := 0 to info_.queue_family_count-1 do
      begin
-          if ( info_.queue_props[i].queueFlags and VkQueueFlags( VK_QUEUE_GRAPHICS_BIT ) ) > 0 then
+          if ( info_.queue_props[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) > 0 then
           begin
                info_.graphics_queue_family_index := i;
                found := True;
@@ -318,7 +337,7 @@ end;
 function init_device( var info_:T_sample_info ) :VkResult;
 var
    queue_info       :VkDeviceQueueCreateInfo;
-   queue_priorities :array [ 0..0 ] of T_float;
+   queue_priorities :array [ 0..1-1 ] of T_float;
    device_info      :VkDeviceCreateInfo;
 begin
      queue_priorities[0]         := 0;
@@ -491,7 +510,7 @@ begin
      info_.present_queue_family_index  := UINT32_MAX;
      for i := 0 to info_.queue_family_count-1 do
      begin
-          if ( info_.queue_props[i].queueFlags and VkQueueFlags( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
+          if ( info_.queue_props[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
           begin
                if info_.graphics_queue_family_index = UINT32_MAX then info_.graphics_queue_family_index := i;
 
@@ -589,7 +608,7 @@ begin
      (* VULKAN_KEY_START *)
      buf_info.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
      buf_info.pNext                 := nil;
-     buf_info.usage                 := VkBufferUsageFlags( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
+     buf_info.usage                 := Ord( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
      buf_info.size                  := sizeof(info_.MVP);
      buf_info.queueFamilyIndexCount := 0;
      buf_info.pQueueFamilyIndices   := nil;
@@ -606,7 +625,7 @@ begin
 
      alloc_info.allocationSize := mem_reqs.size;
      pass := memory_type_from_properties( info_, mem_reqs.memoryTypeBits,
-                                          VkFlags( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or VkFlags( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
+                                          Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
                                           alloc_info.memoryTypeIndex );
      Assert( pass, 'No mappable, coherent memory' );
 
@@ -638,7 +657,7 @@ begin
      layout_bindings[0].binding            := 0;
      layout_bindings[0].descriptorType     := VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
      layout_bindings[0].descriptorCount    := 1;
-     layout_bindings[0].stageFlags         := VkShaderStageFlags( VK_SHADER_STAGE_VERTEX_BIT );
+     layout_bindings[0].stageFlags         := Ord( VK_SHADER_STAGE_VERTEX_BIT );
      layout_bindings[0].pImmutableSamplers := nil;
 
      if use_texture_ then
@@ -646,7 +665,7 @@ begin
           layout_bindings[1].binding            := 1;
           layout_bindings[1].descriptorType     := VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
           layout_bindings[1].descriptorCount    := 1;
-          layout_bindings[1].stageFlags         := VkShaderStageFlags( VK_SHADER_STAGE_FRAGMENT_BIT );
+          layout_bindings[1].stageFlags         := Ord( VK_SHADER_STAGE_FRAGMENT_BIT );
           layout_bindings[1].pImmutableSamplers := nil;
      end;
 
@@ -702,7 +721,7 @@ begin
      else vkGetDeviceQueue( info_.device, info_.present_queue_family_index, 0, @info_.present_queue );
 end;
 
-procedure init_swap_chain( var info_:T_sample_info; usageFlags_:VkImageUsageFlags = VkImageUsageFlags( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or VkImageUsageFlags( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
+procedure init_swap_chain( var info_:T_sample_info; usageFlags_:VkImageUsageFlags = Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
 var
    res                            :VkResult;
    surfCapabilities               :VkSurfaceCapabilitiesKHR;
@@ -769,7 +788,7 @@ begin
      // to acquire another.
      desiredNumberOfSwapChainImages := surfCapabilities.minImageCount;
 
-     if ( surfCapabilities.supportedTransforms and VkSurfaceTransformFlagsKHR( VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR ) ) <> 0
+     if ( surfCapabilities.supportedTransforms and Ord( VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR ) ) <> 0
      then preTransform := VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR
      else preTransform := surfCapabilities.currentTransform;
 
@@ -782,7 +801,7 @@ begin
 
      for i := 0 to Length( compositeAlphaFlags )-1 do
      begin
-          if ( surfCapabilities.supportedCompositeAlpha and VkCompositeAlphaFlagsKHR( compositeAlphaFlags[i] ) ) <> 0 then
+          if ( surfCapabilities.supportedCompositeAlpha and Ord( compositeAlphaFlags[i] ) ) <> 0 then
           begin
                compositeAlpha := compositeAlphaFlags[i];
                Break;
@@ -840,7 +859,7 @@ begin
           color_image_view.components.g                    := VK_COMPONENT_SWIZZLE_G;
           color_image_view.components.b                    := VK_COMPONENT_SWIZZLE_B;
           color_image_view.components.a                    := VK_COMPONENT_SWIZZLE_A;
-          color_image_view.subresourceRange.aspectMask     := VkImageAspectFlags( VK_IMAGE_ASPECT_COLOR_BIT );
+          color_image_view.subresourceRange.aspectMask     := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
           color_image_view.subresourceRange.baseMipLevel   := 0;
           color_image_view.subresourceRange.levelCount     := 1;
           color_image_view.subresourceRange.baseArrayLayer := 0;
@@ -878,15 +897,15 @@ begin
 
      depth_format := info_.depth.format;
      vkGetPhysicalDeviceFormatProperties( info_.gpus[0], depth_format, @props );
-     if ( props.linearTilingFeatures and VkFormatFeatureFlags( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
+     if ( props.linearTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
      then image_info.tiling := VK_IMAGE_TILING_LINEAR
      else
-     if ( props.optimalTilingFeatures and VkFormatFeatureFlags( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
+     if ( props.optimalTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
      then image_info.tiling := VK_IMAGE_TILING_OPTIMAL
      else
      begin
           (* Try other depth formats? *)
-          Log.d( 'depth_format ' + Uint32( depth_format ).ToString + ' Unsupported.' );
+          Log.d( 'depth_format ' + Ord( depth_format ).ToString + ' Unsupported.' );
           RunError( 256-1 );
      end;
 
@@ -904,7 +923,7 @@ begin
      image_info.queueFamilyIndexCount := 0;
      image_info.pQueueFamilyIndices   := nil;
      image_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
-     image_info.usage                 := VkImageUsageFlags( VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT );
+     image_info.usage                 := Ord( VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT );
      image_info.flags                 := 0;
 
      mem_alloc.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
@@ -920,7 +939,7 @@ begin
      view_info.components.g                    := VK_COMPONENT_SWIZZLE_G;
      view_info.components.b                    := VK_COMPONENT_SWIZZLE_B;
      view_info.components.a                    := VK_COMPONENT_SWIZZLE_A;
-     view_info.subresourceRange.aspectMask     := VkImageAspectFlags( VK_IMAGE_ASPECT_DEPTH_BIT );
+     view_info.subresourceRange.aspectMask     := Ord( VK_IMAGE_ASPECT_DEPTH_BIT );
      view_info.subresourceRange.baseMipLevel   := 0;
      view_info.subresourceRange.levelCount     := 1;
      view_info.subresourceRange.baseArrayLayer := 0;
@@ -930,7 +949,7 @@ begin
 
      if ( depth_format = VK_FORMAT_D16_UNORM_S8_UINT ) or ( depth_format = VK_FORMAT_D24_UNORM_S8_UINT ) or
         ( depth_format = VK_FORMAT_D32_SFLOAT_S8_UINT )
-     then view_info.subresourceRange.aspectMask := view_info.subresourceRange.aspectMask or VkImageAspectFlags( VK_IMAGE_ASPECT_STENCIL_BIT );
+     then view_info.subresourceRange.aspectMask := view_info.subresourceRange.aspectMask or Ord( VK_IMAGE_ASPECT_STENCIL_BIT );
 
      (* Create image *)
      res := vkCreateImage( info_.device, @image_info, nil, @info_.depth.image );
@@ -940,7 +959,7 @@ begin
 
      mem_alloc.allocationSize := mem_reqs.size;
      (* Use the memory properties to determine the type of memory required *)
-     pass := memory_type_from_properties( info_, mem_reqs.memoryTypeBits, VkFlags( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex );
+     pass := memory_type_from_properties( info_, mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex );
      Assert( pass );
 
      (* Allocate memory *)
@@ -986,10 +1005,10 @@ begin
      cmd_pool_info.sType            := VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
      cmd_pool_info.pNext            := nil;
      cmd_pool_info.queueFamilyIndex := info_.graphics_queue_family_index;
-     cmd_pool_info.flags            := VkCommandPoolCreateFlags( VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
+     cmd_pool_info.flags            := Ord( VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
 
      res := vkCreateCommandPool( info_.device, @cmd_pool_info, nil, @info_.cmd_pool );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 end;
 
 procedure init_command_buffer( var info_:T_sample_info );
@@ -1006,7 +1025,7 @@ begin
      cmd.commandBufferCount := 1;
 
      res := vkAllocateCommandBuffers( info_.device, @cmd, @info_.cmd );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 end;
 
 procedure execute_begin_command_buffer( var info_:T_sample_info );
@@ -1022,7 +1041,7 @@ begin
      cmd_buf_info.pInheritanceInfo := nil;
 
      res := vkBeginCommandBuffer( info_.cmd, @cmd_buf_info );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 end;
 
 procedure init_renderpass( var info_:T_sample_info;
@@ -1041,7 +1060,7 @@ var
 begin
      (* DEPENDS on init_swap_chain() and init_depth_buffer() *)
 
-     assert( clear_ or ( initialLayout_ <> VK_IMAGE_LAYOUT_UNDEFINED ) );
+     Assert( clear_ or ( initialLayout_ <> VK_IMAGE_LAYOUT_UNDEFINED ) );
 
      (* Need attachments for render target and depth buffer *)
      attachments[0].format         := info_.format;
@@ -1093,10 +1112,10 @@ begin
      // Subpass dependency to wait for wsi image acquired semaphore before starting layout transition
      subpass_dependency.srcSubpass      := VK_SUBPASS_EXTERNAL;
      subpass_dependency.dstSubpass      := 0;
-     subpass_dependency.srcStageMask    := VkPipelineStageFlags( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
-     subpass_dependency.dstStageMask    := VkPipelineStageFlags( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
+     subpass_dependency.srcStageMask    := Ord( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
+     subpass_dependency.dstStageMask    := Ord( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
      subpass_dependency.srcAccessMask   := 0;
-     subpass_dependency.dstAccessMask   := VkAccessFlags( VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT );
+     subpass_dependency.dstAccessMask   := Ord( VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT );
      subpass_dependency.dependencyFlags := 0;
 
      rp_info.sType                := VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
@@ -1111,7 +1130,7 @@ begin
      rp_info.pDependencies        := @subpass_dependency;
 
      res := vkCreateRenderPass( info_.device, @rp_info, nil, @info_.render_pass );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 end;
 
 procedure execute_end_command_buffer( var info_:T_sample_info );
@@ -1119,7 +1138,7 @@ var
    res :VkResult;
 begin
      res := vkEndCommandBuffer( info_.cmd );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 end;
 
 procedure execute_queue_command_buffer( var info_:T_sample_info );
@@ -1138,7 +1157,7 @@ begin
      fenceInfo.flags := 0;
      vkCreateFence( info_.device, @fenceInfo, nil, @drawFence );
 
-     pipe_stage_flags := VkPipelineStageFlags( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
+     pipe_stage_flags := Ord( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
      submit_info[0].pNext                := nil;
      submit_info[0].sType                := VK_STRUCTURE_TYPE_SUBMIT_INFO;
      submit_info[0].waitSemaphoreCount   := 0;
@@ -1150,13 +1169,13 @@ begin
      submit_info[0].pSignalSemaphores    := nil;
 
      res := vkQueueSubmit( info_.graphics_queue, 1, @submit_info[0], drawFence );
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 
      repeat
            res := vkWaitForFences( info_.device, 1, @drawFence, VK_TRUE, FENCE_TIMEOUT );
 
      until res <> VK_TIMEOUT;
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 
      vkDestroyFence( info_.device, drawFence, nil );
 end;
@@ -1220,6 +1239,380 @@ var
 begin
      for i := 0 to info_.swapchainImageCount-1 do vkDestroyFramebuffer( info_.device, info_.framebuffers[i], nil );
      info_.framebuffers := nil;
+end;
+
+//////////////////////////////////////////////////////////////////////////////// 14-init_pipeline
+
+procedure init_vertex_buffer( var info_:T_sample_info; const vertexData_:P_void; dataSize_:T_uint32_t; dataStride_:T_uint32_t; use_texture_:T_bool );
+var
+   res        :VkResult;
+   pass       :T_bool;
+   buf_info   :VkBufferCreateInfo;
+   mem_reqs   :VkMemoryRequirements;
+   alloc_info :VkMemoryAllocateInfo;
+   pData      :P_uint8_t;
+begin
+     buf_info.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+     buf_info.pNext                 := nil;
+     buf_info.usage                 := Ord( VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
+     buf_info.size                  := dataSize_;
+     buf_info.queueFamilyIndexCount := 0;
+     buf_info.pQueueFamilyIndices   := nil;
+     buf_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
+     buf_info.flags                 := 0;
+     res := vkCreateBuffer( info_.device, @buf_info, nil, @info_.vertex_buffer.buf );
+     Assert( res = VK_SUCCESS );
+
+     vkGetBufferMemoryRequirements( info_.device, info_.vertex_buffer.buf, @mem_reqs );
+
+     alloc_info.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+     alloc_info.pNext           := nil;
+     alloc_info.memoryTypeIndex := 0;
+
+     alloc_info.allocationSize := mem_reqs.size;
+     pass := memory_type_from_properties( info_, mem_reqs.memoryTypeBits,
+                                          Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
+                                          alloc_info.memoryTypeIndex );
+     Assert( pass, 'No mappable, coherent memory' );
+
+     res := vkAllocateMemory( info_.device, @alloc_info, nil, @info_.vertex_buffer.mem );
+     Assert( res = VK_SUCCESS );
+     info_.vertex_buffer.buffer_info.range  := mem_reqs.size;
+     info_.vertex_buffer.buffer_info.offset := 0;
+
+     res := vkMapMemory( info_.device, info_.vertex_buffer.mem, 0, mem_reqs.size, 0, @pData );
+     Assert( res = VK_SUCCESS );
+
+     Move( vertexData_^, pData^, dataSize_ );
+
+     vkUnmapMemory( info_.device, info_.vertex_buffer.mem );
+
+     res := vkBindBufferMemory( info_.device, info_.vertex_buffer.buf, info_.vertex_buffer.mem, 0 );
+     Assert( res = VK_SUCCESS );
+
+     info_.vi_binding.binding   := 0;
+     info_.vi_binding.inputRate := VK_VERTEX_INPUT_RATE_VERTEX;
+     info_.vi_binding.stride    := dataStride_;
+
+     info_.vi_attribs[0].binding     := 0;
+     info_.vi_attribs[0].location    := 0;
+     info_.vi_attribs[0].format      := VK_FORMAT_R32G32B32A32_SFLOAT;
+     info_.vi_attribs[0].offset      := 0;
+     info_.vi_attribs[1].binding     := 0;
+     info_.vi_attribs[1].location    := 1;
+     if use_texture_
+     then info_.vi_attribs[1].format := VK_FORMAT_R32G32_SFLOAT
+     else info_.vi_attribs[1].format := VK_FORMAT_R32G32B32A32_SFLOAT;
+     info_.vi_attribs[1].offset      := 16;
+end;
+
+procedure init_descriptor_pool( var info_:T_sample_info; use_texture_:T_bool );
+var
+   res             :VkResult;
+   type_count      :array [ 0..2-1 ] of VkDescriptorPoolSize;
+   descriptor_pool :VkDescriptorPoolCreateInfo;
+begin
+     (* DEPENDS on init_uniform_buffer() and
+      * init_descriptor_and_pipeline_layouts() *)
+
+     type_count[0].type_           := VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+     type_count[0].descriptorCount := 1;
+     if use_texture_ then
+     begin
+          type_count[1].type_           := VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+          type_count[1].descriptorCount := 1;
+     end;
+
+     descriptor_pool.sType              := VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+     descriptor_pool.pNext              := nil;
+     descriptor_pool.maxSets            := 1;
+     if use_texture_
+     then descriptor_pool.poolSizeCount := 2
+     else descriptor_pool.poolSizeCount := 1;
+     descriptor_pool.pPoolSizes         := @type_count[0];
+
+     res := vkCreateDescriptorPool( info_.device, @descriptor_pool, nil, @info_.desc_pool );
+     Assert( res = VK_SUCCESS );
+end;
+
+procedure init_descriptor_set( var info_:T_sample_info; use_texture_:T_bool );
+var
+   res        :VkResult;
+   alloc_info :array [ 0..1-1 ] of VkDescriptorSetAllocateInfo;
+   writes     :array [ 0..2-1 ] of VkWriteDescriptorSet;
+begin
+     (* DEPENDS on init_descriptor_pool() *)
+
+     alloc_info[0].sType              := VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+     alloc_info[0].pNext              := nil;
+     alloc_info[0].descriptorPool     := info_.desc_pool;
+     alloc_info[0].descriptorSetCount := NUM_DESCRIPTOR_SETS;
+     alloc_info[0].pSetLayouts        := @info_.desc_layout[0];
+
+     SetLength( info_.desc_set, NUM_DESCRIPTOR_SETS );
+     res := vkAllocateDescriptorSets( info_.device, @alloc_info[0], @info_.desc_set[0] );
+     Assert( res = VK_SUCCESS );
+
+     writes[0].sType           := VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+     writes[0].pNext           := nil;
+     writes[0].dstSet          := info_.desc_set[0];
+     writes[0].descriptorCount := 1;
+     writes[0].descriptorType  := VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+     writes[0].pBufferInfo     := @info_.uniform_data.buffer_info;
+     writes[0].dstArrayElement := 0;
+     writes[0].dstBinding      := 0;
+
+     if use_texture_ then
+     begin
+          writes[1].sType           := VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+          writes[1].dstSet          := info_.desc_set[0];
+          writes[1].dstBinding      := 1;
+          writes[1].descriptorCount := 1;
+          writes[1].descriptorType  := VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+          writes[1].pImageInfo      := @info_.texture_data.image_info;
+          writes[1].dstArrayElement := 0;
+     end;
+
+     if use_texture_
+     then vkUpdateDescriptorSets( info_.device, 2, @writes[0], 0, nil )
+     else vkUpdateDescriptorSets( info_.device, 1, @writes[0], 0, nil );
+end;
+
+procedure init_shaders( var info_:T_sample_info; const vertShaderCI_:P_VkShaderModuleCreateInfo; const fragShaderCI_:P_VkShaderModuleCreateInfo );
+var
+   res :VkResult;
+begin
+     if vertShaderCI_ <> nil then
+     begin
+          info_.shaderStages[0].sType               := VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+          info_.shaderStages[0].pNext               := nil;
+          info_.shaderStages[0].pSpecializationInfo := nil;
+          info_.shaderStages[0].flags               := 0;
+          info_.shaderStages[0].stage               := VK_SHADER_STAGE_VERTEX_BIT;
+          info_.shaderStages[0].pName               := 'main';
+          res := vkCreateShaderModule( info_.device, vertShaderCI_, nil, @info_.shaderStages[0].module );
+          Assert( res = VK_SUCCESS );
+     end;
+
+     if fragShaderCI_ <> nil then
+     begin
+          info_.shaderStages[1].sType               := VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+          info_.shaderStages[1].pNext               := nil;
+          info_.shaderStages[1].pSpecializationInfo := nil;
+          info_.shaderStages[1].flags               := 0;
+          info_.shaderStages[1].stage               := VK_SHADER_STAGE_FRAGMENT_BIT;
+          info_.shaderStages[1].pName               := 'main';
+          res := vkCreateShaderModule( info_.device, fragShaderCI_, nil, @info_.shaderStages[1].module );
+          Assert( res = VK_SUCCESS );
+     end;
+end;
+
+procedure destroy_descriptor_pool( var info_:T_sample_info );
+begin
+     vkDestroyDescriptorPool( info_.device, info_.desc_pool, nil );
+end;
+
+procedure destroy_vertex_buffer( var info_:T_sample_info );
+begin
+     vkDestroyBuffer( info_.device, info_.vertex_buffer.buf, nil );
+     vkFreeMemory( info_.device, info_.vertex_buffer.mem, nil );
+end;
+
+procedure destroy_shaders( var info_:T_sample_info );
+begin
+     vkDestroyShaderModule( info_.device, info_.shaderStages[0].module, nil );
+     vkDestroyShaderModule( info_.device, info_.shaderStages[1].module, nil );
+end;
+
+//////////////////////////////////////////////////////////////////////////////// 15-draw_cube
+
+procedure init_viewports( var info_:T_sample_info );
+begin
+     info_.viewport.height   := info_.height;
+     info_.viewport.width    := info_.width;
+     info_.viewport.minDepth := 0.0;
+     info_.viewport.maxDepth := 1.0;
+     info_.viewport.x        := 0;
+     info_.viewport.y        := 0;
+     vkCmdSetViewport( info_.cmd, 0, NUM_VIEWPORTS, @info_.viewport );
+end;
+
+procedure init_scissors( var info_:T_sample_info );
+begin
+     info_.scissor.extent.width  := info_.width;
+     info_.scissor.extent.height := info_.height;
+     info_.scissor.offset.x      := 0;
+     info_.scissor.offset.y      := 0;
+     vkCmdSetScissor( info_.cmd, 0, NUM_SCISSORS, @info_.scissor );
+end;
+
+procedure init_pipeline_cache( var info:T_sample_info );
+var
+   res :VkResult;
+   pipelineCache :VkPipelineCacheCreateInfo;
+begin
+     pipelineCache.sType           := VK_STRUCTURE_TYPE_PIPELINE_CACHE_CREATE_INFO;
+     pipelineCache.pNext           := nil;
+     pipelineCache.initialDataSize := 0;
+     pipelineCache.pInitialData    := nil;
+     pipelineCache.flags           := 0;
+     res := vkCreatePipelineCache( info.device, @pipelineCache, nil, @info.pipelineCache );
+     Assert( res = VK_SUCCESS );
+end;
+
+procedure init_pipeline( var info:T_sample_info; include_depth:VkBool32; include_vi:VkBool32 = 1 );
+var
+   res :VkResult;
+   dynamicStateEnables :array [ 0..2-1 ] of VkDynamicState;  // Viewport + Scissor
+   dynamicState        :VkPipelineDynamicStateCreateInfo;
+   vi                  :VkPipelineVertexInputStateCreateInfo;
+   ia                  :VkPipelineInputAssemblyStateCreateInfo;
+   rs                  :VkPipelineRasterizationStateCreateInfo;
+   cb                  :VkPipelineColorBlendStateCreateInfo;
+   att_state           :array [ 0..1-1 ] of VkPipelineColorBlendAttachmentState;
+   vp                  :VkPipelineViewportStateCreateInfo;
+   viewports           :VkViewport;
+   scissor             :VkRect2D;
+   ds                  :VkPipelineDepthStencilStateCreateInfo;
+   ms                  :VkPipelineMultisampleStateCreateInfo;
+   pipeline            :VkGraphicsPipelineCreateInfo;
+begin
+     dynamicState.sType             := VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+     dynamicState.pNext             := nil;
+     dynamicState.pDynamicStates    := @dynamicStateEnables[0];
+     dynamicState.dynamicStateCount := 0;
+
+     vi.sType := VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+     if include_vi <> 0 then
+     begin
+          vi.pNext                           := nil;
+          vi.flags                           := 0;
+          vi.vertexBindingDescriptionCount   := 1;
+          vi.pVertexBindingDescriptions      := @info.vi_binding;
+          vi.vertexAttributeDescriptionCount := 2;
+          vi.pVertexAttributeDescriptions    := @info.vi_attribs[0];
+     end;
+     ia.sType                  := VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+     ia.pNext                  := nil;
+     ia.flags                  := 0;
+     ia.primitiveRestartEnable := VK_FALSE;
+     ia.topology               := VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+
+     rs.sType                   := VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+     rs.pNext                   := nil;
+     rs.flags                   := 0;
+     rs.polygonMode             := VK_POLYGON_MODE_FILL;
+     rs.cullMode                := Ord( VK_CULL_MODE_BACK_BIT );
+     rs.frontFace               := VK_FRONT_FACE_CLOCKWISE;
+     rs.depthClampEnable        := VK_FALSE;
+     rs.rasterizerDiscardEnable := VK_FALSE;
+     rs.depthBiasEnable         := VK_FALSE;
+     rs.depthBiasConstantFactor    := 0;
+     rs.depthBiasClamp             := 0;
+     rs.depthBiasSlopeFactor       := 0;
+     rs.lineWidth                  := 1.0;
+
+     cb.sType := VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+     cb.flags := 0;
+     cb.pNext := nil;
+     att_state[0].colorWriteMask      := $f;
+     att_state[0].blendEnable         := VK_FALSE;
+     att_state[0].alphaBlendOp        := VK_BLEND_OP_ADD;
+     att_state[0].colorBlendOp        := VK_BLEND_OP_ADD;
+     att_state[0].srcColorBlendFactor := VK_BLEND_FACTOR_ZERO;
+     att_state[0].dstColorBlendFactor := VK_BLEND_FACTOR_ZERO;
+     att_state[0].srcAlphaBlendFactor := VK_BLEND_FACTOR_ZERO;
+     att_state[0].dstAlphaBlendFactor := VK_BLEND_FACTOR_ZERO;
+     cb.attachmentCount   := 1;
+     cb.pAttachments      := @att_state[0];
+     cb.logicOpEnable     := VK_FALSE;
+     cb.logicOp           := VK_LOGIC_OP_NO_OP;
+     cb.blendConstants[0] := 1.0;
+     cb.blendConstants[1] := 1.0;
+     cb.blendConstants[2] := 1.0;
+     cb.blendConstants[3] := 1.0;
+
+     vp.sType := VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+     vp.pNext := nil;
+     vp.flags := 0;
+     // Temporary disabling dynamic viewport on Android because some of drivers doesn't
+     // support the feature.
+     viewports.minDepth := 0.0;
+     viewports.maxDepth := 1.0;
+     viewports.x        := 0;
+     viewports.y        := 0;
+     viewports.width    := info.width;
+     viewports.height   := info.height;
+     scissor.extent.width  := info.width;
+     scissor.extent.height := info.height;
+     scissor.offset.x      := 0;
+     scissor.offset.y      := 0;
+     vp.viewportCount := NUM_VIEWPORTS;
+     vp.scissorCount  := NUM_SCISSORS;
+     vp.pScissors     := @scissor;
+     vp.pViewports    := @viewports;
+     ds.sType                 := VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+     ds.pNext                 := nil;
+     ds.flags                 := 0;
+     ds.depthTestEnable       := include_depth;
+     ds.depthWriteEnable      := include_depth;
+     ds.depthCompareOp        := VK_COMPARE_OP_LESS_OR_EQUAL;
+     ds.depthBoundsTestEnable := VK_FALSE;
+     ds.stencilTestEnable     := VK_FALSE;
+     ds.back.failOp           := VK_STENCIL_OP_KEEP;
+     ds.back.passOp           := VK_STENCIL_OP_KEEP;
+     ds.back.compareOp        := VK_COMPARE_OP_ALWAYS;
+     ds.back.compareMask      := 0;
+     ds.back.reference        := 0;
+     ds.back.depthFailOp      := VK_STENCIL_OP_KEEP;
+     ds.back.writeMask        := 0;
+     ds.minDepthBounds        := 0;
+     ds.maxDepthBounds        := 0;
+     ds.stencilTestEnable     := VK_FALSE;
+     ds.front                 := ds.back;
+
+     ms.sType                  := VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+     ms.pNext                  := nil;
+     ms.flags                  := 0;
+     ms.pSampleMask            := nil;
+     ms.rasterizationSamples   := NUM_SAMPLES;
+     ms.sampleShadingEnable    := VK_FALSE;
+     ms.alphaToCoverageEnable := VK_FALSE;
+     ms.alphaToOneEnable      := VK_FALSE;
+     ms.minSampleShading      := 0.0;
+
+     pipeline.sType               := VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+     pipeline.pNext               := nil;
+     pipeline.layout              := info.pipeline_layout;
+     pipeline.basePipelineHandle  := VK_NULL_HANDLE;
+     pipeline.basePipelineIndex   := 0;
+     pipeline.flags               := 0;
+     pipeline.pVertexInputState   := @vi;
+     pipeline.pInputAssemblyState := @ia;
+     pipeline.pRasterizationState := @rs;
+     pipeline.pColorBlendState    := @cb;
+     pipeline.pTessellationState  := nil;
+     pipeline.pMultisampleState   := @ms;
+     pipeline.pDynamicState       := @dynamicState;
+     pipeline.pViewportState      := @vp;
+     pipeline.pDepthStencilState  := @ds;
+     pipeline.pStages             := @info.shaderStages[0];
+     pipeline.stageCount          := 2;
+     pipeline.renderPass          := info.render_pass;
+     pipeline.subpass             := 0;
+
+     res := vkCreateGraphicsPipelines(info.device, info.pipelineCache, 1, @pipeline, nil, @info.pipeline);
+     assert( res = VK_SUCCESS );
+end;
+
+procedure destroy_pipeline( var info_:T_sample_info );
+begin
+     vkDestroyPipeline( info_.device, info_.pipeline, nil );
+end;
+
+procedure destroy_pipeline_cache( var info_:T_sample_info );
+begin
+     vkDestroyPipelineCache( info_.device, info_.pipelineCache, nil );
 end;
 
 end. //######################################################################### ■
