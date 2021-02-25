@@ -1,6 +1,6 @@
 ﻿unit Main;
 
-{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/14-init_pipeline }
+{ https://github.com/LunarG/VulkanSamples/tree/master/API-Samples/15-draw_cube }
 
 (*
  * Vulkan Samples
@@ -23,12 +23,12 @@
 
 (*
 VULKAN_SAMPLE_SHORT_DESCRIPTION
-Create Graphics Pipeline
+Draw Cube
 *)
 
 (* This is part of the draw cube progression *)
 
-(* We've setup cmake to process 14-init_pipeline.vert and 14-init_pipeline.frag           *)
+(* We've setup cmake to process 15-draw_cube.vert and 15-draw_cube.frag                   *)
 (* files containing the glsl shader code for this sample.  The generate-spirv script uses *)
 (* glslangValidator to compile the glsl into spir-v and places the spir-v into a struct   *)
 (* into a generated header file                                                           *)
@@ -50,10 +50,12 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     { private 宣言 }
-    const sample_title = 'Graphics Pipeline Sample';
+    const sample_title = 'Draw Cube';
   public
     { public 宣言 }
-    info :T_sample_info;
+    info                   :T_sample_info;
+    imageAcquiredSemaphore :VkSemaphore;
+    drawFence              :VkFence;
   end;
 
 var
@@ -68,29 +70,26 @@ uses cube_data;
 procedure TForm1.FormCreate(Sender: TObject);
 const
      depthPresent :T_bool = True;
-type
-    T_dynamicStateEnables = array [ 0..2-1 ] of VkDynamicState;
+     offsets      :array [ 0..1-1 ] of VkDeviceSize = ( 0 );
 var
-   res                  :VkResult;
-   __init_pipeline_vert :TMemoryStream;
-   __init_pipeline_frag :TMemoryStream;
-   vert_info            :VkShaderModuleCreateInfo;
-   frag_info            :VkShaderModuleCreateInfo;
-   dynamicStateEnables  :T_dynamicStateEnables;  // Viewport + Scissor
-   dynamicState         :VkPipelineDynamicStateCreateInfo;
-   vi                   :VkPipelineVertexInputStateCreateInfo;
-   ia                   :VkPipelineInputAssemblyStateCreateInfo;
-   rs                   :VkPipelineRasterizationStateCreateInfo;
-   cb                   :VkPipelineColorBlendStateCreateInfo;
-   att_state            :array [ 0..1-1 ] of VkPipelineColorBlendAttachmentState;
-   vp                   :VkPipelineViewportStateCreateInfo;
-   ds                   :VkPipelineDepthStencilStateCreateInfo;
-   ms                   :VkPipelineMultisampleStateCreateInfo;
-   pipeline             :VkGraphicsPipelineCreateInfo;
+   res                              :VkResult;
+   __draw_cube_vert                 :TMemoryStream;
+   __draw_cube_frag                 :TMemoryStream;
+   vert_info                        :VkShaderModuleCreateInfo;
+   frag_info                        :VkShaderModuleCreateInfo;
+   clear_values                     :array [ 0..2-1 ] of VkClearValue;
+   imageAcquiredSemaphoreCreateInfo :VkSemaphoreCreateInfo;
+   rp_begin                         :VkRenderPassBeginInfo;
+   cmd_bufs                         :array [ 0..1-1 ] of VkCommandBuffer;
+   fenceInfo                        :VkFenceCreateInfo;
+   pipe_stage_flags                 :VkPipelineStageFlags;
+   submit_info                      :array [ 0..1-1 ] of VkSubmitInfo;
+   present                          :VkPresentInfoKHR;
 begin
-     __init_pipeline_vert := TMemoryStream.Create;
-     __init_pipeline_frag := TMemoryStream.Create;
+     __draw_cube_vert := TMemoryStream.Create;
+     __draw_cube_frag := TMemoryStream.Create;
 
+     process_command_line_args( info );
      init_global_layer_properties( info );
      init_instance_extension_names( info );
      init_device_extension_names( info );
@@ -101,6 +100,7 @@ begin
      init_window( info );
      init_swapchain_extension( info );
      init_device( info );
+
      init_command_pool( info );
      init_command_buffer( info );
      execute_begin_command_buffer( info );
@@ -108,154 +108,130 @@ begin
      init_swap_chain( info );
      init_depth_buffer( info );
      init_uniform_buffer( info );
-     init_renderpass( info, depthPresent );
-     init_framebuffers( info, depthPresent );
-     init_vertex_buffer( info, @g_vb_solid_face_colors_Data[0], SizeOf( T_Vertex ) * Length( g_vb_solid_face_colors_Data ),
-                         SizeOf( g_vb_solid_face_colors_Data[0] ), False );
      init_descriptor_and_pipeline_layouts( info, false );
-     init_descriptor_pool( info, false );
-     init_descriptor_set( info, false );
-     __init_pipeline_vert.LoadFromFile( '../../_DATA/14-init_pipeline.vert' );
-     __init_pipeline_frag.LoadFromFile( '../../_DATA/14-init_pipeline.frag' );
-     vert_info          := Default( VkShaderModuleCreateInfo );
-     frag_info          := Default( VkShaderModuleCreateInfo );
+     init_renderpass( info, depthPresent );
+     __draw_cube_vert.LoadFromFile( '../../_DATA/15-draw_cube.vert' );
+     __draw_cube_frag.LoadFromFile( '../../_DATA/15-draw_cube.frag' );
      vert_info.sType    := VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
      frag_info.sType    := VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-     vert_info.codeSize := __init_pipeline_vert.Size;
-     vert_info.pCode    := __init_pipeline_vert.Memory;
-     frag_info.codeSize := __init_pipeline_frag.Size;
-     frag_info.pCode    := __init_pipeline_frag.Memory;
+     vert_info.codeSize := __draw_cube_vert.Size;
+     vert_info.pCode    := __draw_cube_vert.Memory;
+     frag_info.codeSize := __draw_cube_frag.Size;
+     frag_info.pCode    := __draw_cube_frag.Memory;
      init_shaders( info, @vert_info, @frag_info );
+     init_framebuffers( info, depthPresent );
+     init_vertex_buffer( info, @g_vb_solid_face_colors_Data[0], SizeOf( T_Vertex ) * Length( g_vb_solid_face_colors_Data ),
+                         SizeOf( T_Vertex ), False );
+     init_descriptor_pool( info, false );
+     init_descriptor_set( info, false );
+     init_pipeline_cache( info );
+     if depthPresent then init_pipeline( info, 1 )
+                     else init_pipeline( info, 0 );
 
      (* VULKAN_KEY_START *)
-     dynamicStateEnables            := Default( T_dynamicStateEnables );
-     dynamicState                   := Default( VkPipelineDynamicStateCreateInfo );
-     dynamicState.sType             := VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
-     dynamicState.pNext             := nil;
-     dynamicState.pDynamicStates    := @dynamicStateEnables[0];
-     dynamicState.dynamicStateCount := 0;
 
-     vi.sType                           := VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-     vi.pNext                           := nil;
-     vi.flags                           := 0;
-     vi.vertexBindingDescriptionCount   := 1;
-     vi.pVertexBindingDescriptions      := @info.vi_binding;
-     vi.vertexAttributeDescriptionCount := 2;
-     vi.pVertexAttributeDescriptions    := @info.vi_attribs[0];
+     clear_values[0].color.float32[0]     := 0.2;
+     clear_values[0].color.float32[1]     := 0.2;
+     clear_values[0].color.float32[2]     := 0.2;
+     clear_values[0].color.float32[3]     := 0.2;
+     clear_values[1].depthStencil.depth   := 1.0;
+     clear_values[1].depthStencil.stencil := 0;
 
-     ia.sType                  := VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-     ia.pNext                  := nil;
-     ia.flags                  := 0;
-     ia.primitiveRestartEnable := VK_FALSE;
-     ia.topology               := VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+     imageAcquiredSemaphoreCreateInfo.sType := VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+     imageAcquiredSemaphoreCreateInfo.pNext := nil;
+     imageAcquiredSemaphoreCreateInfo.flags := 0;
 
-     rs.sType                   := VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
-     rs.pNext                   := nil;
-     rs.flags                   := 0;
-     rs.polygonMode             := VK_POLYGON_MODE_FILL;
-     rs.cullMode                := Ord( VK_CULL_MODE_BACK_BIT );
-     rs.frontFace               := VK_FRONT_FACE_CLOCKWISE;
-     rs.depthClampEnable        := VK_FALSE;
-     rs.rasterizerDiscardEnable := VK_FALSE;
-     rs.depthBiasEnable         := VK_FALSE;
-     rs.depthBiasConstantFactor := 0;
-     rs.depthBiasClamp          := 0;
-     rs.depthBiasSlopeFactor    := 0;
-     rs.lineWidth               := 1.0;
+     res := vkCreateSemaphore( info.device, @imageAcquiredSemaphoreCreateInfo, nil, @imageAcquiredSemaphore );
+     Assert( res = VK_SUCCESS );
 
-     cb.sType := VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
-     cb.pNext := nil;
-     cb.flags := 0;
-     att_state[0].colorWriteMask      := $f;
-     att_state[0].blendEnable         := VK_FALSE;
-     att_state[0].alphaBlendOp        := VK_BLEND_OP_ADD;
-     att_state[0].colorBlendOp        := VK_BLEND_OP_ADD;
-     att_state[0].srcColorBlendFactor := VK_BLEND_FACTOR_ZERO;
-     att_state[0].dstColorBlendFactor := VK_BLEND_FACTOR_ZERO;
-     att_state[0].srcAlphaBlendFactor := VK_BLEND_FACTOR_ZERO;
-     att_state[0].dstAlphaBlendFactor := VK_BLEND_FACTOR_ZERO;
-     cb.attachmentCount   := 1;
-     cb.pAttachments      := @att_state[0];
-     cb.logicOpEnable     := VK_FALSE;
-     cb.logicOp           := VK_LOGIC_OP_NO_OP;
-     cb.blendConstants[0] := 1.0;
-     cb.blendConstants[1] := 1.0;
-     cb.blendConstants[2] := 1.0;
-     cb.blendConstants[3] := 1.0;
+     // Get the index of the next available swapchain image:
+     res := vkAcquireNextImageKHR( info.device, info.swap_chain, UINT64_MAX, imageAcquiredSemaphore, VK_NULL_HANDLE,
+                                   @info.current_buffer );
+     // TODO: Deal with the VK_SUBOPTIMAL_KHR and VK_ERROR_OUT_OF_DATE_KHR
+     // return codes
+     Assert( res = VK_SUCCESS );
 
-     vp               := Default( VkPipelineViewportStateCreateInfo );
-     vp.sType         := VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-     vp.pNext         := nil;
-     vp.flags         := 0;
-     vp.viewportCount := NUM_VIEWPORTS;
-     dynamicStateEnables[dynamicState.dynamicStateCount] := VK_DYNAMIC_STATE_VIEWPORT;  Inc( dynamicState.dynamicStateCount );
-     vp.scissorCount  := NUM_SCISSORS;
-     dynamicStateEnables[dynamicState.dynamicStateCount] := VK_DYNAMIC_STATE_SCISSOR ;  Inc( dynamicState.dynamicStateCount );
-     vp.pScissors     := nil;
-     vp.pViewports    := nil;
+     rp_begin.sType                    := VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+     rp_begin.pNext                    := nil;
+     rp_begin.renderPass               := info.render_pass;
+     rp_begin.framebuffer              := info.framebuffers[info.current_buffer];
+     rp_begin.renderArea.offset.x      := 0;
+     rp_begin.renderArea.offset.y      := 0;
+     rp_begin.renderArea.extent.width  := info.width;
+     rp_begin.renderArea.extent.height := info.height;
+     rp_begin.clearValueCount          := 2;
+     rp_begin.pClearValues             := @clear_values[0];
 
-     ds.sType                 := VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-     ds.pNext                 := nil;
-     ds.flags                 := 0;
-     ds.depthTestEnable       := VK_TRUE;
-     ds.depthWriteEnable      := VK_TRUE;
-     ds.depthCompareOp        := VK_COMPARE_OP_LESS_OR_EQUAL;
-     ds.depthBoundsTestEnable := VK_FALSE;
-     ds.minDepthBounds        := 0;
-     ds.maxDepthBounds        := 0;
-     ds.stencilTestEnable     := VK_FALSE;
-     ds.back.failOp           := VK_STENCIL_OP_KEEP;
-     ds.back.passOp           := VK_STENCIL_OP_KEEP;
-     ds.back.compareOp        := VK_COMPARE_OP_ALWAYS;
-     ds.back.compareMask      := 0;
-     ds.back.reference        := 0;
-     ds.back.depthFailOp      := VK_STENCIL_OP_KEEP;
-     ds.back.writeMask        := 0;
-     ds.front                 := ds.back;
+     vkCmdBeginRenderPass( info.cmd, @rp_begin, VK_SUBPASS_CONTENTS_INLINE );   { TODO : ACCESS_VIOLATION @ nvoglv64.dll }
 
-     ms.sType                 := VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
-     ms.pNext                 := nil;
-     ms.flags                 := 0;
-     ms.pSampleMask           := nil;
-     ms.rasterizationSamples  := NUM_SAMPLES;
-     ms.sampleShadingEnable   := VK_FALSE;
-     ms.alphaToCoverageEnable := VK_FALSE;
-     ms.alphaToOneEnable      := VK_FALSE;
-     ms.minSampleShading      := 0.0;
+     vkCmdBindPipeline( info.cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, info.pipeline );
+     vkCmdBindDescriptorSets( info.cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, info.pipeline_layout, 0, NUM_DESCRIPTOR_SETS,
+                              @info.desc_set[0], 0, nil );
 
-     pipeline.sType               := VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
-     pipeline.pNext               := nil;
-     pipeline.layout              := info.pipeline_layout;
-     pipeline.basePipelineHandle  := VK_NULL_HANDLE;
-     pipeline.basePipelineIndex   := 0;
-     pipeline.flags               := 0;
-     pipeline.pVertexInputState   := @vi;
-     pipeline.pInputAssemblyState := @ia;
-     pipeline.pRasterizationState := @rs;
-     pipeline.pColorBlendState    := @cb;
-     pipeline.pTessellationState  := nil;
-     pipeline.pMultisampleState   := @ms;
-     pipeline.pDynamicState       := @dynamicState;
-     pipeline.pViewportState      := @vp;
-     pipeline.pDepthStencilState  := @ds;
-     pipeline.pStages             := @info.shaderStages[0];
-     pipeline.stageCount          := 2;
-     pipeline.renderPass          := info.render_pass;
-     pipeline.subpass             := 0;
+     vkCmdBindVertexBuffers( info.cmd, 0, 1, @info.vertex_buffer.buf, @offsets[0] );
 
-     res := vkCreateGraphicsPipelines( info.device, VK_NULL_HANDLE, 1, @pipeline, nil, @info.pipeline );  { TODO : res <> VK_SUCCESS }
-     Assert( res = VK_SUCCESS, 'vkCreateGraphicsPipelines' );
-     execute_end_command_buffer( info );
-     execute_queue_command_buffer( info );
+     init_viewports( info );
+     init_scissors( info );
+
+     vkCmdDraw( info.cmd, 12 * 3, 1, 0, 0 );
+     vkCmdEndRenderPass( info.cmd );
+     res := vkEndCommandBuffer( info.cmd );
+     cmd_bufs[0] := info.cmd;
+     fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+     fenceInfo.pNext := nil;
+     fenceInfo.flags := 0;
+     vkCreateFence( info.device, @fenceInfo, nil, @drawFence );
+
+     pipe_stage_flags := Ord( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
+     submit_info[0].pNext                := nil;
+     submit_info[0].sType                := VK_STRUCTURE_TYPE_SUBMIT_INFO;
+     submit_info[0].waitSemaphoreCount   := 1;
+     submit_info[0].pWaitSemaphores      := @imageAcquiredSemaphore;
+     submit_info[0].pWaitDstStageMask    := @pipe_stage_flags;
+     submit_info[0].commandBufferCount   := 1;
+     submit_info[0].pCommandBuffers      := @cmd_bufs[0];
+     submit_info[0].signalSemaphoreCount := 0;
+     submit_info[0].pSignalSemaphores    := nil;
+
+     (* Queue the command buffer for execution *)
+     res := vkQueueSubmit( info.graphics_queue, 1, @submit_info[0], drawFence );
+     Assert( res = VK_SUCCESS );
+
+     (* Now present the image in the window *)
+
+     present.sType              := VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+     present.pNext              := nil;
+     present.swapchainCount     := 1;
+     present.pSwapchains        := @info.swap_chain;
+     present.pImageIndices      := @info.current_buffer;
+     present.pWaitSemaphores    := nil;
+     present.waitSemaphoreCount := 0;
+     present.pResults           := nil;
+
+     (* Make sure command buffer is finished before presenting *)
+     repeat
+           res := vkWaitForFences( info.device, 1, @drawFence, VK_TRUE, FENCE_TIMEOUT );
+
+     until res <> VK_TIMEOUT;
+
+     Assert( res = VK_SUCCESS );
+     res := vkQueuePresentKHR( info.present_queue, @present );
+     Assert( res = VK_SUCCESS );
+
+     wait_seconds( 1 );
      (* VULKAN_KEY_END *)
+     if info.save_images then write_ppm( info, '15-draw_cube' );
 
-     __init_pipeline_vert.Free;
-     __init_pipeline_frag.Free;
+     __draw_cube_vert.Free;
+     __draw_cube_frag.Free;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     vkDestroyPipeline( info.device, info.pipeline, nil );
+     vkDestroySemaphore( info.device, imageAcquiredSemaphore, nil );
+     vkDestroyFence( info.device, drawFence, nil );
+     destroy_pipeline( info );
+     destroy_pipeline_cache( info );
      destroy_descriptor_pool( info );
      destroy_vertex_buffer( info );
      destroy_framebuffers( info );
