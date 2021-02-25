@@ -63,7 +63,7 @@ var
    queue_info       :VkDeviceQueueCreateInfo;
    found            :T_bool;
    i                :T_unsigned_int;
-   queue_priorities :array [ 0..0 ] of T_float;
+   queue_priorities :array [ 0..1-1 ] of T_float;
    device_info      :VkDeviceCreateInfo;
    device           :VkDevice;
    res              :VkResult;
