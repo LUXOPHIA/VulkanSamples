@@ -192,7 +192,7 @@ begin
      rp_begin.clearValueCount          := 2;
      rp_begin.pClearValues             := @clear_values[0];
 
-     vkCmdBeginRenderPass( info.cmd, @rp_begin, VK_SUBPASS_CONTENTS_INLINE );
+     vkCmdBeginRenderPass( info.cmd, @rp_begin, VK_SUBPASS_CONTENTS_INLINE );   { TODO : ACCESS_VIOLATION @ nvoglv64.dll }
 
      vkCmdBindVertexBuffers( info.cmd, 0,              (* Start Binding *)
                              1,                        (* Binding Count *)
