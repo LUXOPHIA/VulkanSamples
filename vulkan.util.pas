@@ -77,6 +77,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       * Structure for tracking information used / created / modified
       * by utility functions.
       *)
+     P_sample_info = ^T_sample_info;
      T_sample_info = record
      private
        const APP_NAME_STR_LEN = 80;
@@ -125,7 +126,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        queue_props                 :TArray<VkQueueFamilyProperties>;
        memory_properties           :VkPhysicalDeviceMemoryProperties;
 
-       framebuffers  :P_VkFramebuffer;
+       framebuffers  :TArray<VkFramebuffer>;
        width         :T_int;
        height        :T_int;
        format        :VkFormat;
@@ -197,18 +198,358 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
+const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
+
+     (* Number of samples needs to be the same at image creation,      *)
+     (* renderpass creation and pipeline creation.                     *)
+     NUM_SAMPLES = VK_SAMPLE_COUNT_1_BIT;
+
+     (* Number of descriptor sets needs to be the same at alloc,       *)
+     (* pipeline layout creation, and descriptor set layout creation   *)
+     NUM_DESCRIPTOR_SETS = 1;
+
+     (* Amount of time, in nanoseconds, to wait for a command buffer to complete *)
+     FENCE_TIMEOUT = 100000000;
+
+     (* Number of viewports and number of scissors have to be the same *)
+     (* at pipeline creation and in any call to set them dynamically   *)
+     (* They also have to be the same as each other                    *)
+     NUM_VIEWPORTS = 1;
+     NUM_SCISSORS  = NUM_VIEWPORTS;
 
 //var //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【変数】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
+function memory_type_from_properties( var info:T_sample_info; typeBits:T_uint32_t; requirements_mask:VkFlags; var typeIndex:T_uint32_t ) :T_bool;
+
+//////////////////////////////////////////////////////////////////////////////// 15-draw_cube
+
+function optionMatch( const option_:String; optionLine_:String ) :T_bool;
+procedure process_command_line_args( var info_:T_sample_info );
+procedure wait_seconds( seconds_:T_int );
+procedure set_image_layout( var info_:T_sample_info; image_:VkImage; aspectMask_:VkImageAspectFlags; old_image_layout_:VkImageLayout;
+                            new_image_layout_:VkImageLayout; src_stages_:VkPipelineStageFlags; dest_stages_:VkPipelineStageFlags );
+procedure write_ppm( var info_:T_sample_info; const basename_:String );
+
 implementation //############################################################### ■
+
+uses System.SysUtils, System.Classes,
+     FMX.Types;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
+
+function memory_type_from_properties( var info:T_sample_info; typeBits:T_uint32_t; requirements_mask:VkFlags; var typeIndex:T_uint32_t ) :T_bool;
+var
+   i :T_uint32_t;
+begin
+     // Search memtypes to find first index with those properties
+     for i := 0 to info.memory_properties.memoryTypeCount-1 do
+     begin
+          if ( typeBits and 1 ) = 1 then
+          begin
+               // Type is available, does it match user properties?
+               if info.memory_properties.memoryTypes[i].propertyFlags and requirements_mask = requirements_mask then
+               begin
+                    typeIndex := i;
+                    Exit( True );
+               end;
+          end;
+          typeBits := typeBits shr 1;
+     end;
+     // No memory types matched, return failure
+     Result := False;
+end;
+
+//////////////////////////////////////////////////////////////////////////////// 15-draw_cube
+
+function optionMatch( const option_:String; optionLine_:String ) :T_bool;
+begin
+     if option_ = optionLine_ then Result := True
+                              else Result := False;
+end;
+
+procedure process_command_line_args( var info_:T_sample_info );
+var
+   i :T_int;
+begin
+     for i := 1 to ParamCount-1 do
+     begin
+          if optionMatch( '--save-images', ParamStr( i ) ) then info_.save_images := true
+          else
+          if optionMatch( '--help', ParamStr( i ) ) or optionMatch( '-h', ParamStr( i ) ) then
+          begin
+               Log.d( #10'Other options:' );
+               Log.d( #9'--save-images'#10
+                    + #9#9'Save tests images as ppm files in current working '
+                    + 'directory.' );
+               Exit;
+          end
+          else
+          begin
+               Log.d( #10'Unrecognized option: ' + ParamStr( i ) );
+               Log.d( #10'Use --help or -h for option list.' );
+               Exit;
+          end;
+     end;
+end;
+
+procedure wait_seconds( seconds_:T_int );
+begin
+     Sleep( seconds_ * 1000 );
+end;
+
+procedure set_image_layout( var info_:T_sample_info; image_:VkImage; aspectMask_:VkImageAspectFlags; old_image_layout_:VkImageLayout;
+                            new_image_layout_:VkImageLayout; src_stages_:VkPipelineStageFlags; dest_stages_:VkPipelineStageFlags );
+var
+   image_memory_barrier :VkImageMemoryBarrier;
+begin
+     (* DEPENDS on info.cmd and info.queue initialized *)
+
+     Assert( NativeInt( info_.cmd            ) <> VK_NULL_HANDLE );
+     Assert( NativeInt( info_.graphics_queue ) <> VK_NULL_HANDLE );
+
+     image_memory_barrier.sType                           := VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+     image_memory_barrier.pNext                           := nil;
+     image_memory_barrier.srcAccessMask                   := 0;
+     image_memory_barrier.dstAccessMask                   := 0;
+     image_memory_barrier.oldLayout                       := old_image_layout_;
+     image_memory_barrier.newLayout                       := new_image_layout_;
+     image_memory_barrier.srcQueueFamilyIndex             := VK_QUEUE_FAMILY_IGNORED;
+     image_memory_barrier.dstQueueFamilyIndex             := VK_QUEUE_FAMILY_IGNORED;
+     image_memory_barrier.image                           := image_;
+     image_memory_barrier.subresourceRange.aspectMask     := aspectMask_;
+     image_memory_barrier.subresourceRange.baseMipLevel   := 0;
+     image_memory_barrier.subresourceRange.levelCount     := 1;
+     image_memory_barrier.subresourceRange.baseArrayLayer := 0;
+     image_memory_barrier.subresourceRange.layerCount     := 1;
+
+     case old_image_layout_ of
+       VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+          image_memory_barrier.srcAccessMask := Ord( VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT );
+
+       VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+          image_memory_barrier.srcAccessMask := Ord( VK_ACCESS_TRANSFER_WRITE_BIT         );
+
+       VK_IMAGE_LAYOUT_PREINITIALIZED:
+          image_memory_barrier.srcAccessMask := Ord( VK_ACCESS_HOST_WRITE_BIT             );
+     end;
+
+     case new_image_layout_ of
+       VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+          image_memory_barrier.dstAccessMask := Ord( VK_ACCESS_TRANSFER_WRITE_BIT                 );
+
+       VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+          image_memory_barrier.dstAccessMask := Ord( VK_ACCESS_TRANSFER_READ_BIT                  );
+
+       VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+          image_memory_barrier.dstAccessMask := Ord( VK_ACCESS_SHADER_READ_BIT                    );
+
+       VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+          image_memory_barrier.dstAccessMask := Ord( VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT         );
+
+       VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+          image_memory_barrier.dstAccessMask := Ord( VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT );
+     end;
+
+     vkCmdPipelineBarrier( info_.cmd, src_stages_, dest_stages_, 0, 0, nil, 0, nil, 1, @image_memory_barrier );
+end;
+
+procedure write_ppm( var info_:T_sample_info; const basename_:String );
+var
+   filename          :String;
+   x, y              :T_int;
+   res               :VkResult;
+   image_create_info :VkImageCreateInfo;
+   mem_alloc         :VkMemoryAllocateInfo;
+   mappableImage     :VkImage;
+   mappableMemory    :VkDeviceMemory;
+   mem_reqs          :VkMemoryRequirements;
+   pass              :T_bool;
+   cmd_buf_info      :VkCommandBufferBeginInfo;
+   copy_region       :VkImageCopy;
+   cmd_bufs          :array [ 0..1-1 ] of VkCommandBuffer;
+   fenceInfo         :VkFenceCreateInfo;
+   cmdFence          :VkFence;
+   submit_info       :array [ 0..1-1 ] of VkSubmitInfo;
+   subres            :VkImageSubresource;
+   sr_layout         :VkSubresourceLayout;
+   ptr               :P_char;
+   F                 :TFileStream;
+   S                 :String;
+   row               :P_uint32_t;
+   swapped           :T_uint32_t;
+begin
+     image_create_info.sType                 := VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+     image_create_info.pNext                 := nil;
+     image_create_info.imageType             := VK_IMAGE_TYPE_2D;
+     image_create_info.format                := info_.format;
+     image_create_info.extent.width          := info_.width;
+     image_create_info.extent.height         := info_.height;
+     image_create_info.extent.depth          := 1;
+     image_create_info.mipLevels             := 1;
+     image_create_info.arrayLayers           := 1;
+     image_create_info.samples               := VK_SAMPLE_COUNT_1_BIT;
+     image_create_info.tiling                := VK_IMAGE_TILING_LINEAR;
+     image_create_info.initialLayout         := VK_IMAGE_LAYOUT_UNDEFINED;
+     image_create_info.usage                 := Ord( VK_IMAGE_USAGE_TRANSFER_DST_BIT );
+     image_create_info.queueFamilyIndexCount := 0;
+     image_create_info.pQueueFamilyIndices   := nil;
+     image_create_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
+     image_create_info.flags                 := 0;
+
+     mem_alloc.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+     mem_alloc.pNext           := nil;
+     mem_alloc.allocationSize  := 0;
+     mem_alloc.memoryTypeIndex := 0;
+
+     (* Create a mappable image *)
+     res := vkCreateImage( info_.device, @image_create_info, nil, @mappableImage );
+     Assert( res = VK_SUCCESS );
+
+     vkGetImageMemoryRequirements( info_.device, mappableImage, @mem_reqs );
+
+     mem_alloc.allocationSize := mem_reqs.size;
+
+     (* Find the memory type that is host mappable *)
+     pass := memory_type_from_properties(
+                  info_, mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
+                  mem_alloc.memoryTypeIndex );
+     Assert( pass, 'No mappable, coherent memory' );
+
+     (* allocate memory *)
+     res := vkAllocateMemory( info_.device, @mem_alloc, nil, @mappableMemory );
+     Assert( res = VK_SUCCESS );
+
+     (* bind memory *)
+     res := vkBindImageMemory( info_.device, mappableImage, mappableMemory, 0 );
+     Assert( res = VK_SUCCESS );
+
+     cmd_buf_info.sType            := VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+     cmd_buf_info.pNext            := nil;
+     cmd_buf_info.flags            := 0;
+     cmd_buf_info.pInheritanceInfo := nil;
+
+     res := vkBeginCommandBuffer( info_.cmd, @cmd_buf_info );
+     Assert( res = VK_SUCCESS );
+     set_image_layout( info_, mappableImage, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_UNDEFINED,
+                       VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, Ord( VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT ), Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ) );
+
+     set_image_layout( info_, info_.buffers[info_.current_buffer].image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+                       VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, Ord( VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT ), Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ) );
+
+     copy_region.srcSubresource.aspectMask     := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
+     copy_region.srcSubresource.mipLevel       := 0;
+     copy_region.srcSubresource.baseArrayLayer := 0;
+     copy_region.srcSubresource.layerCount     := 1;
+     copy_region.srcOffset.x                   := 0;
+     copy_region.srcOffset.y                   := 0;
+     copy_region.srcOffset.z                   := 0;
+     copy_region.dstSubresource.aspectMask     := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
+     copy_region.dstSubresource.mipLevel       := 0;
+     copy_region.dstSubresource.baseArrayLayer := 0;
+     copy_region.dstSubresource.layerCount     := 1;
+     copy_region.dstOffset.x                   := 0;
+     copy_region.dstOffset.y                   := 0;
+     copy_region.dstOffset.z                   := 0;
+     copy_region.extent.width                  := info_.width;
+     copy_region.extent.height                 := info_.height;
+     copy_region.extent.depth                  := 1;
+
+     (* Put the copy command into the command buffer *)
+     vkCmdCopyImage( info_.cmd, info_.buffers[info_.current_buffer].image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, mappableImage,
+                     VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region);
+
+     set_image_layout( info_, mappableImage, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL,
+                       Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ), Ord( VK_PIPELINE_STAGE_HOST_BIT ) );
+
+     res := vkEndCommandBuffer( info_.cmd );
+     Assert( res = VK_SUCCESS );
+     cmd_bufs[0] := info_.cmd;
+     fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+     fenceInfo.pNext := nil;
+     fenceInfo.flags := 0;
+     vkCreateFence( info_.device, @fenceInfo, nil, @cmdFence );
+
+     submit_info[0].pNext                := nil;
+     submit_info[0].sType                := VK_STRUCTURE_TYPE_SUBMIT_INFO;
+     submit_info[0].waitSemaphoreCount   := 0;
+     submit_info[0].pWaitSemaphores      := nil;
+     submit_info[0].pWaitDstStageMask    := nil;
+     submit_info[0].commandBufferCount   := 1;
+     submit_info[0].pCommandBuffers      := @cmd_bufs[0];
+     submit_info[0].signalSemaphoreCount := 0;
+     submit_info[0].pSignalSemaphores    := nil;
+
+     (* Queue the command buffer for execution *)
+     res := vkQueueSubmit( info_.graphics_queue, 1, @submit_info[0], cmdFence );
+     Assert( res = VK_SUCCESS );
+
+     (* Make sure command buffer is finished before mapping *)
+     repeat
+           res := vkWaitForFences( info_.device, 1, @cmdFence, VK_TRUE, FENCE_TIMEOUT );
+
+     until res <> VK_TIMEOUT;
+     Assert( res = VK_SUCCESS );
+
+     vkDestroyFence( info_.device, cmdFence, nil );
+
+     filename := basename_ + '.ppm';
+
+     subres.aspectMask := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
+     subres.mipLevel   := 0;
+     subres.arrayLayer := 0;
+     vkGetImageSubresourceLayout( info_.device, mappableImage, @subres, @sr_layout );
+
+     res := vkMapMemory( info_.device, mappableMemory, 0, mem_reqs.size, 0, @ptr );
+     Assert( res = VK_SUCCESS );
+
+     Inc( ptr, sr_layout.offset );
+     F := TFileStream.Create( filename, fmCreate );
+
+     S := 'P6'                                               + #13#10;  F.Write( BytesOf( S ), Length( S ) );
+     S := info_.width.ToString + ' ' + info_.height.ToString + #13#10;  F.Write( BytesOf( S ), Length( S ) );
+     S := '255'                                              + #13#10;  F.Write( BytesOf( S ), Length( S ) );
+
+     for y := 0 to info_.height-1 do
+     begin
+          row := P_uint32_t( ptr );
+
+          if ( info_.format = VK_FORMAT_B8G8R8A8_UNORM ) or ( info_.format = VK_FORMAT_B8G8R8A8_SRGB ) then
+          begin
+               for x := 0 to info_.width-1 do
+               begin
+                    swapped := ( row^ and $ff00ff00 ) or ( row^ and $000000ff ) shl 16 or ( row^ and $00ff0000 ) shr 16;
+                    F.Write( swapped, 3 );
+                    Inc( row );
+               end;
+          end
+          else
+          if info_.format = VK_FORMAT_R8G8B8A8_UNORM then
+          begin
+               for x := 0 to info_.width-1 do
+               begin
+                    F.Write( row^, 3 );
+                    Inc( row );
+               end;
+          end
+          else
+          begin
+               Log.d( 'Unrecognized image format - will not write image files' );
+               Break;
+          end;
+
+          Inc( ptr, sr_layout.rowPitch );
+     end;
+
+     F.Free;
+     vkUnmapMemory( info_.device, mappableMemory );
+     vkDestroyImage( info_.device, mappableImage, nil );
+     vkFreeMemory( info_.device, mappableMemory, nil );
+end;
 
 end. //######################################################################### ■
