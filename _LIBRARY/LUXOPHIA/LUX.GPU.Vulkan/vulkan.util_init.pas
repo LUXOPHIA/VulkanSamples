@@ -220,27 +220,29 @@ var
    app_info  :VkApplicationInfo;
    inst_info :VkInstanceCreateInfo;
 begin
-    app_info.sType              := VK_STRUCTURE_TYPE_APPLICATION_INFO;
-    app_info.pNext              := nil;
-    app_info.pApplicationName   := app_short_name_;
-    app_info.applicationVersion := 1;
-    app_info.pEngineName        := app_short_name_;
-    app_info.engineVersion      := 1;
-    app_info.apiVersion         := VK_API_VERSION_1_0;
+     app_info                    := Default( VkApplicationInfo );
+     app_info.sType              := VK_STRUCTURE_TYPE_APPLICATION_INFO;
+     app_info.pNext              := nil;
+     app_info.pApplicationName   := app_short_name_;
+     app_info.applicationVersion := 1;
+     app_info.pEngineName        := app_short_name_;
+     app_info.engineVersion      := 1;
+     app_info.apiVersion         := VK_API_VERSION_1_0;
 
-    inst_info.sType                    := VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-    inst_info.pNext                    := nil;
-    inst_info.flags                    := 0;
-    inst_info.pApplicationInfo         := @app_info;
-    inst_info.enabledLayerCount        := Length( info_.instance_layer_names );
-    if Length( info_.instance_layer_names ) > 0
-    then inst_info.ppEnabledLayerNames := @info_.instance_layer_names[0]
-    else inst_info.ppEnabledLayerNames := nil;
-    inst_info.enabledExtensionCount    := Length( info_.instance_extension_names );
-    inst_info.ppEnabledExtensionNames  := @info_.instance_extension_names[0];
+     inst_info                          := Default( VkInstanceCreateInfo );
+     inst_info.sType                    := VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+     inst_info.pNext                    := nil;
+     inst_info.flags                    := 0;
+     inst_info.pApplicationInfo         := @app_info;
+     inst_info.enabledLayerCount        := Length( info_.instance_layer_names );
+     if Length( info_.instance_layer_names ) > 0
+     then inst_info.ppEnabledLayerNames := @info_.instance_layer_names[0]
+     else inst_info.ppEnabledLayerNames := nil;
+     inst_info.enabledExtensionCount    := Length( info_.instance_extension_names );
+     inst_info.ppEnabledExtensionNames  := @info_.instance_extension_names[0];
 
-    Result := vkCreateInstance( @inst_info, nil, @info_.inst );
-    Assert( Result = VK_SUCCESS );
+     Result := vkCreateInstance( @inst_info, nil, @info_.inst );
+     Assert( Result = VK_SUCCESS );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 03-init_device
@@ -324,7 +326,7 @@ begin
      found := False;
      for i := 0 to info_.queue_family_count-1 do
      begin
-          if ( info_.queue_props[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) > 0 then
+          if ( info_.queue_props[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
           begin
                info_.graphics_queue_family_index := i;
                found := True;
@@ -341,12 +343,14 @@ var
    device_info      :VkDeviceCreateInfo;
 begin
      queue_priorities[0]         := 0;
+     queue_info                  := Default( VkDeviceQueueCreateInfo );
      queue_info.sType            := VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
      queue_info.pNext            := nil;
      queue_info.queueCount       := 1;
      queue_info.pQueuePriorities := @queue_priorities[0];
      queue_info.queueFamilyIndex := info_.graphics_queue_family_index;
 
+     device_info                              := Default( VkDeviceCreateInfo );
      device_info.sType                        := VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
      device_info.pNext                        := nil;
      device_info.queueCreateInfoCount         := 1;
@@ -403,11 +407,13 @@ begin
      info := P_sample_info( GetWindowLongPtr( hWnd, GWLP_USERDATA ) );
 
      case uMsg of
-     WM_CLOSE: PostQuitMessage( 0 );
-     WM_PAINT: begin
-                    run( info^ );
-                    Exit( 0 );
-               end;
+       WM_CLOSE:
+          PostQuitMessage( 0 );
+       WM_PAINT:
+          begin
+               run( info^ );
+               Exit( 0 );
+          end;
      else
      end;
      Result := DefWindowProc( hWnd, uMsg, wParam, lParam );
@@ -492,6 +498,7 @@ begin
      (* DEPENDS on init_connection() and init_window() *)
 
      // Construct the surface description:
+     createInfo           := Default( VkWin32SurfaceCreateInfoKHR );
      createInfo.sType     := VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
      createInfo.pNext     := nil;
      createInfo.hinstance := info_.connection;
@@ -592,20 +599,21 @@ begin
           fov := fov * info_.height / info_.width;
      end;
      info_.Projection := TSingleM4.ProjPersH( fov, info_.width / info_.height, 0.1, 100 );
-     info_.View := TSingleM4.LookAt( TSingle3D.Create( -5, -3, -10 ),    // Camera is at (-5,3,-10), in World Space
-                                    TSingle3D.Create(  0,  0,   0 ),    // and looks at the origin
-                                    TSingle3D.Create(  0, -1,   0 ) );  // Head is up (set to 0,-1,0 to look upside-down)
+     info_.View := TSingleM4.LookAt( TSingle3D.Create( -5,  3, -10 ),    // Camera is at (-5,3,-10), in World Space
+                                     TSingle3D.Create(  0,  0,   0 ),    // and looks at the origin
+                                     TSingle3D.Create(  0, -1,   0 ) );  // Head is up (set to 0,-1,0 to look upside-down)
 
      info_.Model := TSingleM4.Identity;
      // Vulkan clip space has inverted Y and half Z.
      info_.Clip := TSingleM4.Create( +1.0,  0.0,  0.0,  0.0,
-                                     0.0, -1.0,  0.0,  0.0,
-                                     0.0,  0.0, +0.5,  0.0,
-                                     0.0,  0.0, +0.5, +1.0 );
+                                      0.0, -1.0,  0.0,  0.0,
+                                      0.0,  0.0, +0.5,  0.0,
+                                      0.0,  0.0, +0.5, +1.0 );
 
      info_.MVP := info_.Clip * info_.Projection * info_.View * info_.Model;
 
      (* VULKAN_KEY_START *)
+     buf_info                       := Default( VkBufferCreateInfo );
      buf_info.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
      buf_info.pNext                 := nil;
      buf_info.usage                 := Ord( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
@@ -619,6 +627,7 @@ begin
 
      vkGetBufferMemoryRequirements( info_.device, info_.uniform_data.buf, @mem_reqs );
 
+     alloc_info                 := Default( VkMemoryAllocateInfo );
      alloc_info.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
      alloc_info.pNext           := nil;
      alloc_info.memoryTypeIndex := 0;
@@ -670,7 +679,8 @@ begin
      end;
 
      (* Next take layout bindings and use them to create a descriptor set layout
-     *)
+      *)
+     descriptor_layout                   := Default( VkDescriptorSetLayoutCreateInfo );
      descriptor_layout.sType             := VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
      descriptor_layout.pNext             := nil;
      descriptor_layout.flags             := descSetLayoutCreateFlags_;
@@ -684,6 +694,7 @@ begin
      Assert( res = VK_SUCCESS );
 
      (* Now use the descriptor layout to create a pipeline layout *)
+     pPipelineLayoutCreateInfo                        := Default( VkPipelineLayoutCreateInfo );
      pPipelineLayoutCreateInfo.sType                  := VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
      pPipelineLayoutCreateInfo.pNext                  := nil;
      pPipelineLayoutCreateInfo.pushConstantRangeCount := 0;
@@ -808,6 +819,7 @@ begin
           end;
      end;
 
+     swapchain_ci                       := Default( VkSwapchainCreateInfoKHR );
      swapchain_ci.sType                 := VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
      swapchain_ci.pNext                 := nil;
      swapchain_ci.surface               := info_.surface;
@@ -820,7 +832,7 @@ begin
      swapchain_ci.imageArrayLayers      := 1;
      swapchain_ci.presentMode           := swapchainPresentMode;
      swapchain_ci.oldSwapchain          := VK_NULL_HANDLE;
-     swapchain_ci.clipped               := 0;
+     swapchain_ci.clipped               := 1;
      swapchain_ci.imageColorSpace       := VK_COLORSPACE_SRGB_NONLINEAR_KHR;
      swapchain_ci.imageUsage            := usageFlags_;
      swapchain_ci.imageSharingMode      := VK_SHARING_MODE_EXCLUSIVE;
@@ -852,6 +864,7 @@ begin
 
      for i := 0 to info_.swapchainImageCount-1 do
      begin
+          color_image_view                                 := Default( VkImageViewCreateInfo );
           color_image_view.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
           color_image_view.pNext                           := nil;
           color_image_view.format                          := info_.format;
@@ -909,6 +922,7 @@ begin
           RunError( 256-1 );
      end;
 
+     image_info                       := Default( VkImageCreateInfo );
      image_info.sType                 := VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
      image_info.pNext                 := nil;
      image_info.imageType             := VK_IMAGE_TYPE_2D;
@@ -926,11 +940,13 @@ begin
      image_info.usage                 := Ord( VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT );
      image_info.flags                 := 0;
 
+     mem_alloc                 := Default( VkMemoryAllocateInfo );
      mem_alloc.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
      mem_alloc.pNext           := nil;
      mem_alloc.allocationSize  := 0;
      mem_alloc.memoryTypeIndex := 0;
 
+     view_info                                 := Default( VkImageViewCreateInfo );
      view_info.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
      view_info.pNext                           := nil;
      view_info.image                           := VK_NULL_HANDLE;
@@ -1002,6 +1018,7 @@ var
 begin
      (* DEPENDS on init_swapchain_extension() *)
 
+     cmd_pool_info                  := Default( VkCommandPoolCreateInfo );
      cmd_pool_info.sType            := VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
      cmd_pool_info.pNext            := nil;
      cmd_pool_info.queueFamilyIndex := info_.graphics_queue_family_index;
@@ -1018,6 +1035,7 @@ var
 begin
      (* DEPENDS on init_swapchain_extension() and init_command_pool() *)
 
+     cmd                    := Default( VkCommandBufferAllocateInfo );
      cmd.sType              := VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
      cmd.pNext              := nil;
      cmd.commandPool        := info_.cmd_pool;
@@ -1035,6 +1053,7 @@ var
 begin
      (* DEPENDS on init_command_buffer() *)
 
+     cmd_buf_info                  := Default( VkCommandBufferBeginInfo );
      cmd_buf_info.sType            := VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
      cmd_buf_info.pNext            := nil;
      cmd_buf_info.flags            := 0;
@@ -1090,12 +1109,15 @@ begin
           attachments[1].flags          := 0;
      end;
 
+     color_reference            := Default( VkAttachmentReference );
      color_reference.attachment := 0;
      color_reference.layout     := VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
 
+     depth_reference            := Default( VkAttachmentReference );
      depth_reference.attachment := 1;
-     depth_reference.layout := VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+     depth_reference.layout     := VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
 
+     subpass                              := Default( VkSubpassDescription );
      subpass.pipelineBindPoint            := VK_PIPELINE_BIND_POINT_GRAPHICS;
      subpass.flags                        := 0;
      subpass.inputAttachmentCount         := 0;
@@ -1110,6 +1132,7 @@ begin
      subpass.pPreserveAttachments         := nil;
 
      // Subpass dependency to wait for wsi image acquired semaphore before starting layout transition
+     subpass_dependency                 := Default( VkSubpassDependency );
      subpass_dependency.srcSubpass      := VK_SUBPASS_EXTERNAL;
      subpass_dependency.dstSubpass      := 0;
      subpass_dependency.srcStageMask    := Ord( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
@@ -1118,6 +1141,7 @@ begin
      subpass_dependency.dstAccessMask   := Ord( VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT );
      subpass_dependency.dependencyFlags := 0;
 
+     rp_info                      := Default( VkRenderPassCreateInfo );
      rp_info.sType                := VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
      rp_info.pNext                := nil;
      if include_depth_
@@ -1142,13 +1166,15 @@ begin
 end;
 
 procedure execute_queue_command_buffer( var info_:T_sample_info );
+type
+    T_submit_info = array [ 0..1-1 ] of VkSubmitInfo;
 var
    res              :VkResult;
    cmd_bufs         :array [ 0..1-1 ] of VkCommandBuffer;
    fenceInfo        :VkFenceCreateInfo;
    drawFence        :VkFence;
    pipe_stage_flags :VkPipelineStageFlags;
-   submit_info      :array [ 0..1-1 ] of VkSubmitInfo;
+   submit_info      :T_submit_info;
 begin
      (* Queue the command buffer for execution *)
      cmd_bufs[0] := info_.cmd;
@@ -1158,6 +1184,7 @@ begin
      vkCreateFence( info_.device, @fenceInfo, nil, @drawFence );
 
      pipe_stage_flags := Ord( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
+     submit_info                         := Default( T_submit_info );
      submit_info[0].pNext                := nil;
      submit_info[0].sType                := VK_STRUCTURE_TYPE_SUBMIT_INFO;
      submit_info[0].waitSemaphoreCount   := 0;
@@ -1212,6 +1239,7 @@ begin
 
      attachments[1] := info_.depth.view;
 
+     fb_info                      := Default( VkFramebufferCreateInfo );
      fb_info.sType                := VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
      fb_info.pNext                := nil;
      fb_info.renderPass           := info_.render_pass;
@@ -1252,6 +1280,7 @@ var
    alloc_info :VkMemoryAllocateInfo;
    pData      :P_uint8_t;
 begin
+     buf_info                       := Default( VkBufferCreateInfo );
      buf_info.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
      buf_info.pNext                 := nil;
      buf_info.usage                 := Ord( VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
@@ -1265,6 +1294,7 @@ begin
 
      vkGetBufferMemoryRequirements( info_.device, info_.vertex_buffer.buf, @mem_reqs );
 
+     alloc_info                 := Default( VkMemoryAllocateInfo );
      alloc_info.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
      alloc_info.pNext           := nil;
      alloc_info.memoryTypeIndex := 0;
@@ -1323,6 +1353,7 @@ begin
           type_count[1].descriptorCount := 1;
      end;
 
+     descriptor_pool                    := Default( VkDescriptorPoolCreateInfo );
      descriptor_pool.sType              := VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
      descriptor_pool.pNext              := nil;
      descriptor_pool.maxSets            := 1;
@@ -1353,6 +1384,7 @@ begin
      res := vkAllocateDescriptorSets( info_.device, @alloc_info[0], @info_.desc_set[0] );
      Assert( res = VK_SUCCESS );
 
+     writes[0]                 := Default( VkWriteDescriptorSet );
      writes[0].sType           := VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
      writes[0].pNext           := nil;
      writes[0].dstSet          := info_.desc_set[0];
@@ -1364,6 +1396,7 @@ begin
 
      if use_texture_ then
      begin
+          writes[1]                 := Default( VkWriteDescriptorSet );
           writes[1].sType           := VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
           writes[1].dstSet          := info_.desc_set[0];
           writes[1].dstBinding      := 1;
@@ -1461,9 +1494,11 @@ begin
 end;
 
 procedure init_pipeline( var info:T_sample_info; include_depth:VkBool32; include_vi:VkBool32 = 1 );
+type
+    T_dynamicStateEnables = array [ 0..2-1 ] of VkDynamicState;
 var
    res :VkResult;
-   dynamicStateEnables :array [ 0..2-1 ] of VkDynamicState;  // Viewport + Scissor
+   dynamicStateEnables :T_dynamicStateEnables;  // Viewport + Scissor
    dynamicState        :VkPipelineDynamicStateCreateInfo;
    vi                  :VkPipelineVertexInputStateCreateInfo;
    ia                  :VkPipelineInputAssemblyStateCreateInfo;
@@ -1477,11 +1512,14 @@ var
    ms                  :VkPipelineMultisampleStateCreateInfo;
    pipeline            :VkGraphicsPipelineCreateInfo;
 begin
+     dynamicStateEnables            := Default( T_dynamicStateEnables );
+     dynamicState                   := Default( VkPipelineDynamicStateCreateInfo );
      dynamicState.sType             := VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
      dynamicState.pNext             := nil;
      dynamicState.pDynamicStates    := @dynamicStateEnables[0];
      dynamicState.dynamicStateCount := 0;
 
+     vi       := Default( VkPipelineVertexInputStateCreateInfo );
      vi.sType := VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
      if include_vi <> 0 then
      begin
@@ -1507,14 +1545,15 @@ begin
      rs.depthClampEnable        := VK_FALSE;
      rs.rasterizerDiscardEnable := VK_FALSE;
      rs.depthBiasEnable         := VK_FALSE;
-     rs.depthBiasConstantFactor    := 0;
-     rs.depthBiasClamp             := 0;
-     rs.depthBiasSlopeFactor       := 0;
-     rs.lineWidth                  := 1.0;
+     rs.depthBiasConstantFactor := 0;
+     rs.depthBiasClamp          := 0;
+     rs.depthBiasSlopeFactor    := 0;
+     rs.lineWidth               := 1.0;
 
      cb.sType := VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
      cb.flags := 0;
      cb.pNext := nil;
+
      att_state[0].colorWriteMask      := $f;
      att_state[0].blendEnable         := VK_FALSE;
      att_state[0].alphaBlendOp        := VK_BLEND_OP_ADD;
@@ -1523,6 +1562,7 @@ begin
      att_state[0].dstColorBlendFactor := VK_BLEND_FACTOR_ZERO;
      att_state[0].srcAlphaBlendFactor := VK_BLEND_FACTOR_ZERO;
      att_state[0].dstAlphaBlendFactor := VK_BLEND_FACTOR_ZERO;
+
      cb.attachmentCount   := 1;
      cb.pAttachments      := @att_state[0];
      cb.logicOpEnable     := VK_FALSE;
@@ -1532,25 +1572,17 @@ begin
      cb.blendConstants[2] := 1.0;
      cb.blendConstants[3] := 1.0;
 
-     vp.sType := VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-     vp.pNext := nil;
-     vp.flags := 0;
-     // Temporary disabling dynamic viewport on Android because some of drivers doesn't
-     // support the feature.
-     viewports.minDepth := 0.0;
-     viewports.maxDepth := 1.0;
-     viewports.x        := 0;
-     viewports.y        := 0;
-     viewports.width    := info.width;
-     viewports.height   := info.height;
-     scissor.extent.width  := info.width;
-     scissor.extent.height := info.height;
-     scissor.offset.x      := 0;
-     scissor.offset.y      := 0;
+     vp               := Default( VkPipelineViewportStateCreateInfo );
+     vp.sType         := VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+     vp.pNext         := nil;
+     vp.flags         := 0;
      vp.viewportCount := NUM_VIEWPORTS;
+     dynamicStateEnables[dynamicState.dynamicStateCount] := VK_DYNAMIC_STATE_VIEWPORT;  Inc( dynamicState.dynamicStateCount );
      vp.scissorCount  := NUM_SCISSORS;
-     vp.pScissors     := @scissor;
-     vp.pViewports    := @viewports;
+     dynamicStateEnables[dynamicState.dynamicStateCount] := VK_DYNAMIC_STATE_SCISSOR ;  Inc( dynamicState.dynamicStateCount );
+     vp.pScissors     := nil;
+     vp.pViewports    := nil;
+
      ds.sType                 := VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
      ds.pNext                 := nil;
      ds.flags                 := 0;
@@ -1571,12 +1603,12 @@ begin
      ds.stencilTestEnable     := VK_FALSE;
      ds.front                 := ds.back;
 
-     ms.sType                  := VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
-     ms.pNext                  := nil;
-     ms.flags                  := 0;
-     ms.pSampleMask            := nil;
-     ms.rasterizationSamples   := NUM_SAMPLES;
-     ms.sampleShadingEnable    := VK_FALSE;
+     ms.sType                 := VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+     ms.pNext                 := nil;
+     ms.flags                 := 0;
+     ms.pSampleMask           := nil;
+     ms.rasterizationSamples  := NUM_SAMPLES;
+     ms.sampleShadingEnable   := VK_FALSE;
      ms.alphaToCoverageEnable := VK_FALSE;
      ms.alphaToOneEnable      := VK_FALSE;
      ms.minSampleShading      := 0.0;
@@ -1602,7 +1634,7 @@ begin
      pipeline.subpass             := 0;
 
      res := vkCreateGraphicsPipelines(info.device, info.pipelineCache, 1, @pipeline, nil, @info.pipeline);
-     assert( res = VK_SUCCESS );
+     Assert( res = VK_SUCCESS );
 end;
 
 procedure destroy_pipeline( var info_:T_sample_info );
