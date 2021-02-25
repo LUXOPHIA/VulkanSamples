@@ -617,7 +617,7 @@ begin
      buf_info.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
      buf_info.pNext                 := nil;
      buf_info.usage                 := Ord( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
-     buf_info.size                  := sizeof(info_.MVP);
+     buf_info.size                  := SizeOf( info_.MVP );
      buf_info.queueFamilyIndexCount := 0;
      buf_info.pQueueFamilyIndices   := nil;
      buf_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
