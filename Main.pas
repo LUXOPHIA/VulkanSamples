@@ -61,9 +61,7 @@ implementation //###############################################################
 procedure TForm1.FormCreate(Sender: TObject);
 var
    res                 :VkResult;
-   vtx_spv             :TArray<T_unsigned_int>;
    moduleCreateInfo    :VkShaderModuleCreateInfo;
-   frag_spv            :TArray<T_unsigned_int>;
    __init_shaders_vert :TMemoryStream;
    __init_shaders_frag :TMemoryStream;
 begin
