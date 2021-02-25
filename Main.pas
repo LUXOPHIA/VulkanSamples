@@ -98,13 +98,13 @@ begin
 
      (* VULKAN_KEY_START *)
      (*
-     * Set up a vertex buffer:
-     * - Create a buffer
-     * - Map it and write the vertex data into it
-     * - Bind it using vkCmdBindVertexBuffers
-     * - Later, at pipeline creation,
-     * -      fill in vertex input part of the pipeline with relevent data
-     *)
+      * Set up a vertex buffer:
+      * - Create a buffer
+      * - Map it and write the vertex data into it
+      * - Bind it using vkCmdBindVertexBuffers
+      * - Later, at pipeline creation,
+      * -      fill in vertex input part of the pipeline with relevent data
+      *)
 
      buf_info.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
      buf_info.pNext                 := nil;
@@ -146,7 +146,7 @@ begin
      * pipeline *)
      info.vi_binding.binding   := 0;
      info.vi_binding.inputRate := VK_VERTEX_INPUT_RATE_VERTEX;
-     info.vi_binding.stride    := SizeOf( T_Vertex ) * Length( g_vb_solid_face_colors_Data );
+     info.vi_binding.stride    := SizeOf( g_vb_solid_face_colors_Data[0] );
 
      info.vi_attribs[0].binding  := 0;
      info.vi_attribs[0].location := 0;
