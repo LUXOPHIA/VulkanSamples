@@ -1506,8 +1506,6 @@ var
    cb                  :VkPipelineColorBlendStateCreateInfo;
    att_state           :array [ 0..1-1 ] of VkPipelineColorBlendAttachmentState;
    vp                  :VkPipelineViewportStateCreateInfo;
-   viewports           :VkViewport;
-   scissor             :VkRect2D;
    ds                  :VkPipelineDepthStencilStateCreateInfo;
    ms                  :VkPipelineMultisampleStateCreateInfo;
    pipeline            :VkGraphicsPipelineCreateInfo;
