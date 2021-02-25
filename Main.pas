@@ -112,6 +112,8 @@ begin
      init_renderpass( info, depthPresent );
      __draw_cube_vert.LoadFromFile( '../../_DATA/15-draw_cube.vert' );
      __draw_cube_frag.LoadFromFile( '../../_DATA/15-draw_cube.frag' );
+     vert_info          := Default( VkShaderModuleCreateInfo );
+     frag_info          := Default( VkShaderModuleCreateInfo );
      vert_info.sType    := VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
      frag_info.sType    := VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
      vert_info.codeSize := __draw_cube_vert.Size;
@@ -184,6 +186,7 @@ begin
      vkCreateFence( info.device, @fenceInfo, nil, @drawFence );
 
      pipe_stage_flags := Ord( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
+     submit_info[0]                      := Default( VkSubmitInfo );
      submit_info[0].pNext                := nil;
      submit_info[0].sType                := VK_STRUCTURE_TYPE_SUBMIT_INFO;
      submit_info[0].waitSemaphoreCount   := 1;
