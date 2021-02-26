@@ -103,10 +103,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        window                :T_xcb_window_t;
        atom_wm_delete_window :P_xcb_intern_atom_reply_t;
      {$ENDIF} // MSWINDOWS
-       Surface            :VkSurfaceKHR ;
-       Prepared           :T_bool;
-       Use_staging_buffer :T_bool;
-       Save_images        :T_bool;
+       surface            :VkSurfaceKHR;
+       prepared           :T_bool;
+       use_staging_buffer :T_bool;
+       save_images        :T_bool;
 
        instance_layer_names          :TArray<P_char>;
        instance_extension_names      :TArray<P_char>;
