@@ -89,7 +89,7 @@ begin
      layout_binding.stageFlags         := VkShaderStageFlags( VK_SHADER_STAGE_VERTEX_BIT );
      layout_binding.pImmutableSamplers := nil;
 
-      (* Next take layout bindings and use them to create a descriptor set layout
+     (* Next take layout bindings and use them to create a descriptor set layout
       *)
      descriptor_layout.sType        := VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
      descriptor_layout.pNext        := nil;
