@@ -28,7 +28,7 @@ Create Vulkan command buffer
 
 (* This is part of the draw cube progression *)
 
-interface //####################################################################
+interface //#################################################################### ■
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
@@ -54,7 +54,7 @@ type
 var
   Form1: TForm1;
 
-implementation //###############################################################
+implementation //############################################################### ■
 
 {$R *.fmx}
 
@@ -109,4 +109,4 @@ begin
      destroy_instance( info );
 end;
 
-end. //#########################################################################
+end. //######################################################################### ■
