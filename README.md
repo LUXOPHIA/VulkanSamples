@@ -2,6 +2,9 @@
 How to implement [Vulkan](https://www.khronos.org/vulkan/) in [Delphi](https://www.embarcadero.com/products/delphi).  
 [Vulkan](https://jp.khronos.org/vulkan/) を [Delphi](https://www.embarcadero.com/jp/products/delphi) で実装する方法。
 
+> ![](https://github.com/LUXOPHIA/VulkanSamples/raw/15-draw_cube/--------/_SCREENSHOT/15-draw_cube.png)  
+> Fig.1: 15-draw_cube
+
 ## ▼ [VulkanSamples](https://github.com/LunarG/VulkanSamples) @ [LunarG](https://github.com/LunarG)
 
 * [01-init_instance](https://github.com/LUXOPHIA/VulkanSamples/tree/01-init_instance)
