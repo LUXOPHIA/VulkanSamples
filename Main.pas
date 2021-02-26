@@ -58,7 +58,6 @@ implementation //###############################################################
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-   res                      :VkResult;
    using_major_version      :T_uint16_t;
    using_minor_version      :T_uint16_t;
    using_version_string     :String;
