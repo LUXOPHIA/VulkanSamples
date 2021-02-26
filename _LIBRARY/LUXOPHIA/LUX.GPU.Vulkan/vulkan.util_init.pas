@@ -599,7 +599,7 @@ begin
           fov := fov * info_.height / info_.width;
      end;
      info_.Projection := TSingleM4.ProjPersH( fov, info_.width / info_.height, 0.1, 100 );
-     info_.View := TSingleM4.LookAt( TSingle3D.Create( -5,  3, -10 ),    // Camera is at (-5,3,-10), in World Space
+     info_.View := TSingleM4.LookAt( TSingle3D.Create( -5, +3, -10 ),    // Camera is at (-5,3,-10), in World Space
                                      TSingle3D.Create(  0,  0,   0 ),    // and looks at the origin
                                      TSingle3D.Create(  0, -1,   0 ) );  // Head is up (set to 0,-1,0 to look upside-down)
 
@@ -607,8 +607,8 @@ begin
      // Vulkan clip space has inverted Y and half Z.
      info_.Clip := TSingleM4.Create( +1.0,  0.0,  0.0,  0.0,
                                       0.0, -1.0,  0.0,  0.0,
-                                      0.0,  0.0, +0.5,  0.0,
-                                      0.0,  0.0, +0.5, +1.0 );
+                                      0.0,  0.0, +0.5, +0.5,
+                                      0.0,  0.0,  0.0, +1.0 );
 
      info_.MVP := info_.Clip * info_.Projection * info_.View * info_.Model;
 
