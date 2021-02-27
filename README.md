@@ -2,8 +2,8 @@
 How to implement [Vulkan](https://www.khronos.org/vulkan/) in [Delphi](https://www.embarcadero.com/products/delphi).  
 [Vulkan](https://jp.khronos.org/vulkan/) を [Delphi](https://www.embarcadero.com/jp/products/delphi) で実装する方法。
 
-> ![](https://github.com/LUXOPHIA/VulkanSamples/raw/15-draw_cube/--------/_SCREENSHOT/15-draw_cube.png)  
-> Fig.1: 15-draw_cube
+> ![](./--------/_SCREENSHOT/draw_textured_cube.png)  
+> Fig.16: draw_textured_cube
 
 ## ▼ [VulkanSamples](https://github.com/LunarG/VulkanSamples) @ [LunarG](https://github.com/LunarG)
 
@@ -87,6 +87,7 @@ How to implement [Vulkan](https://www.khronos.org/vulkan/) in [Delphi](https://w
   procedure destroy_shaders( var info_:T_sample_info );
   ```
 * [15-draw_cube](https://github.com/LUXOPHIA/VulkanSamples/tree/15-draw_cube)
+  > ![](https://github.com/LUXOPHIA/VulkanSamples/raw/15-draw_cube/--------/_SCREENSHOT/15-draw_cube.png)  
   ```delphi
   procedure init_viewports( var info_:T_sample_info );
   procedure init_scissors( var info_:T_sample_info );
@@ -96,3 +97,13 @@ How to implement [Vulkan](https://www.khronos.org/vulkan/) in [Delphi](https://w
   procedure destroy_pipeline_cache( var info_:T_sample_info );
   ```
 * [16-vulkan_1_1](https://github.com/LUXOPHIA/VulkanSamples/tree/16-vulkan_1_1)
+
+* [draw_textured_cube](https://github.com/LUXOPHIA/VulkanSamples/tree/draw_textured_cube)
+  > ![](./--------/_SCREENSHOT/draw_textured_cube.png)  
+  ```delphi
+  procedure init_buffer( var info_:T_sample_info; var texObj_:T_texture_object );
+  procedure init_image( var info_:T_sample_info; var texObj_:T_texture_object; const textureName_:String; extraUsages_:VkImageUsageFlags; extraFeatures_:VkFormatFeatureFlags );
+  procedure init_sampler( var info_:T_sample_info; var sampler_:VkSampler );
+  procedure init_texture( var info_:T_sample_info; const textureName_:String = ''; extraUsages_:VkImageUsageFlags = 0; extraFeatures_:VkFormatFeatureFlags = 0 );
+  procedure destroy_textures( var info_:T_sample_info );
+  ```
