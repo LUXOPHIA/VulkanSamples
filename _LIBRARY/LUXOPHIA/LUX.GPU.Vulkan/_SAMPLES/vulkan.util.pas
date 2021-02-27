@@ -232,9 +232,13 @@ procedure set_image_layout( var info_:T_sample_info; image_:VkImage; aspectMask_
                             new_image_layout_:VkImageLayout; src_stages_:VkPipelineStageFlags; dest_stages_:VkPipelineStageFlags );
 procedure write_ppm( var info_:T_sample_info; const basename_:String );
 
+//////////////////////////////////////////////////////////////////////////////// draw_textured_cube
+
+function read_ppm( const filename_:String; var width_:T_int; var height_:T_int; rowPitch_:T_uint64_t; dataPtr_:P_unsigned_char ) :T_bool;
+
 implementation //############################################################### ■
 
-uses System.SysUtils, System.Classes,
+uses System.SysUtils, System.Classes, 
      FMX.Types;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
@@ -550,6 +554,128 @@ begin
      vkUnmapMemory( info_.device, mappableMemory );
      vkDestroyImage( info_.device, mappableImage, nil );
      vkFreeMemory( info_.device, mappableMemory, nil );
+end;
+
+//////////////////////////////////////////////////////////////////////////////// draw_textured_cube
+
+function read_ppm( const filename_:String; var width_:T_int; var height_:T_int; rowPitch_:T_uint64_t; dataPtr_:P_unsigned_char ) :T_bool;
+type
+    T_ReadHeader = reference to function( var S:String ) :Boolean;
+const
+     saneDimension :T_int = 32768;  //??
+var
+    magicStr  :String;
+   heightStr  :String;
+    widthStr  :String;
+   formatStr  :String;
+   fPtr       :TFileStream;
+   ReadHeader :T_ReadHeader;
+   count      :T_int;
+   x, y       :T_int;
+   rowPtr     :P_unsigned_char;
+begin
+     // PPM format expected from http://netpbm.sourceforge.net/doc/ppm.html
+     //  1. magic number
+     //  2. whitespace
+     //  3. width
+     //  4. whitespace
+     //  5. height
+     //  6. whitespace
+     //  7. max color value
+     //  8. whitespace
+     //  7. data
+
+     // Comments are not supported, but are detected and we kick out
+     // Only 8 bits per channel is supported
+     // If dataPtr is nullptr, only width and height are returned
+
+     // Read in values from the PPM file as characters to check for comments
+      magicStr := '';
+      widthStr := '';
+     heightStr := '';
+     formatStr := '';
+
+     try
+          fPtr := TFileStream.Create( filename_, fmOpenRead or fmShareDenyWrite );
+
+          try
+               // Read the four values from file, accounting with any and all whitepace
+               ReadHeader := function( var S:String ) :Boolean
+               var
+                  C :T_char;
+               begin
+                    while fPtr.Read( C, 1 ) = 1 do
+                    begin
+                         if C in [ #09, #10, #13, #32 ] then Exit( True );
+                         S := S + Char( C );
+                    end;
+                    Result := False;
+               end;
+               Assert( ReadHeader(  magicStr ) );
+               Assert( ReadHeader(  widthStr ) );
+               Assert( ReadHeader( heightStr ) );
+               Assert( ReadHeader( formatStr ) );
+
+               // Kick out if comments present
+               if ( magicStr.Chars[0] = '#' ) or ( widthStr.Chars[0] = '#' ) or ( heightStr.Chars[0] = '#' ) or ( formatStr.Chars[0] = '#' ) then
+               begin
+                    Log.d( 'Unhandled comment in PPM file' );
+                    Exit( False );
+               end;
+
+               // Only one magic value is valid
+               if magicStr <> 'P6' then
+               begin
+                    Log.d( 'Unhandled PPM magic number: ' + magicStr );
+                    Exit( False );
+               end;
+
+               width_  := StrToInt(  widthStr );
+               height_ := StrToInt( heightStr );
+
+               // Ensure we got something sane for width/height
+               if (  width_ <= 0 ) or (  width_ > saneDimension ) then
+               begin
+                    Log.d( 'Width seems wrong.  Update read_ppm if not: ' + width_.ToString );
+                    Exit( False );
+               end;
+               if ( height_ <= 0 ) or ( height_ > saneDimension ) then
+               begin
+                    Log.d( 'Height seems wrong.  Update read_ppm if not: ' + height_.ToString );
+                    Exit( False );
+               end;
+
+               if dataPtr_ = nil then
+               begin
+                    // If no destination pointer, caller only wanted dimensions
+                    Exit( True );
+               end;
+
+               // Now read the data
+               for y := 0 to height_-1 do
+               begin
+                    rowPtr := dataPtr_;
+                    for x := 0 to width_-1 do
+                    begin
+                         count := fPtr.Read( rowPtr^, 3 );
+                         Assert( count = 3 );
+                         Inc( rowPtr, 3 ); rowPtr^ := 255; (* Alpha of 1 *)
+                         Inc( rowPtr );
+                    end;
+                    Inc( dataPtr_, rowPitch_ );
+               end;
+
+               Result := True;
+
+          finally
+                 fPtr.Free;
+          end;
+
+     except
+           Log.d( 'Bad filename in read_ppm: ' + filename_ );
+
+           Result := False;
+     end;
 end;
 
 end. //######################################################################### ■
