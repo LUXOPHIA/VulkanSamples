@@ -206,7 +206,7 @@ begin
 
            Result := vkEnumerateInstanceLayerProperties( @instance_layer_count, @vk_props[0] );
 
-        until Result <> VK_INCOMPLETE;
+     until Result <> VK_INCOMPLETE;
 
      (*
       * Now gather the extension list for each instance layer.
