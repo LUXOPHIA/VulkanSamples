@@ -220,14 +220,15 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Code\LUX.Code.C.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan_core.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan_win32.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\_SAMPLES\vulkan.util_init.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\_SAMPLES\vulkan.util.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\_SAMPLES\cube_data.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Buffer.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Shader.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Pipeline.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Device.pas"/>
+        <DCCReference Include="_LIBRARY\vulkan.util_init.pas"/>
+        <DCCReference Include="_LIBRARY\vulkan.util.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.root.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

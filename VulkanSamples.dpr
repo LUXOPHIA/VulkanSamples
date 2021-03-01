@@ -20,14 +20,15 @@ uses
   LUX.Code.C in '_LIBRARY\LUXOPHIA\LUX\Code\LUX.Code.C.pas',
   vulkan_core in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan_core.pas',
   vulkan_win32 in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan_win32.pas',
-  vulkan.util_init in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\_SAMPLES\vulkan.util_init.pas',
-  vulkan.util in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\_SAMPLES\vulkan.util.pas',
   cube_data in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\_SAMPLES\cube_data.pas',
   LUX.GPU.Vulkan in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.pas',
   LUX.GPU.Vulkan.Buffer in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Buffer.pas',
   LUX.GPU.Vulkan.Shader in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Shader.pas',
   LUX.GPU.Vulkan.Pipeline in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Pipeline.pas',
-  LUX.GPU.Vulkan.Device in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Device.pas';
+  LUX.GPU.Vulkan.Device in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Device.pas',
+  vulkan.util_init in '_LIBRARY\vulkan.util_init.pas',
+  vulkan.util in '_LIBRARY\vulkan.util.pas',
+  LUX.GPU.Vulkan.root in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.root.pas';
 
 {$R *.res}
 
