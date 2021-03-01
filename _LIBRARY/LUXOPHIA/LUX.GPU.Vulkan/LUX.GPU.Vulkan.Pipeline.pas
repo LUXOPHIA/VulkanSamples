@@ -2,17 +2,15 @@
 
 interface //#################################################################### ■
 
-uses SYstem.Generics.Collections,
-     WinApi.Windows,
+uses System.Generics.Collections,
      vulkan_core, vulkan_win32,
      vulkan.util,
-     LUX, LUX.D1, LUX.D2, LUX.D3, LUX.D4, LUX.D4x4,
-     LUX.GPU.Vulkan,
+     LUX.GPU.Vulkan.root,
      LUX.GPU.Vulkan.Shader;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkShaders = TObjectList<TVkShader>;
+     TVkShaders<TVulkan_:class> = class(  TObjectList<TVkShader<TVulkan_>> ) end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -20,21 +18,24 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkPipeline
 
-     TVkPipeline = class( TVkObject )
+     TVkPipeline<TVulkan_:class> = class( TVkObject<TVulkan_> )
      private
+       type TVkShaders_ = TVkShaders<TVulkan_>;
+            TVkShader_  = TVkShader<TVulkan_>;
+            T_dynamicStateEnables = array [ 0..2-1 ] of VkDynamicState;
      protected
        _Handle    :VkPipeline;
        _DepthTest :Boolean;
-       _Shaders   :TVkShaders;
+       _Shaders   :TVkShaders_;
        ///// メソッド
        procedure DestroHandle;
      public
-       constructor Create( const Vulkan_:TVulkan; const DepthTest_:Boolean );
+       constructor Create( const Vulkan_:TVulkan_; const DepthTest_:Boolean );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        property Handle  :VkPipeline read _Handle ;
-       property Shaders :TVkShaders read _Shaders;
+       property Shaders :TVkShaders_ read _Shaders;
        ///// メソッド
        procedure CreateHandle;
      end;
@@ -46,6 +47,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
 implementation //############################################################### ■
+
+uses LUX.GPU.Vulkan;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -59,9 +62,7 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkPipeline.CreateHandle;
-type
-    T_dynamicStateEnables = array [ 0..2-1 ] of VkDynamicState;
+procedure TVkPipeline<TVulkan_>.CreateHandle;
 var
    res :VkResult;
    dynamicStateEnables :T_dynamicStateEnables;  // Viewport + Scissor
@@ -77,7 +78,7 @@ var
    pipeline            :VkGraphicsPipelineCreateInfo;
 
    shaderStages : TArray<VkPipelineShaderStageCreateInfo>;
-   S :TVkShader;
+   S :TVkShader_;
 begin
      dynamicStateEnables            := Default( T_dynamicStateEnables );
      dynamicState                   := Default( VkPipelineDynamicStateCreateInfo );
@@ -91,9 +92,9 @@ begin
      vi.pNext                           := nil;
      vi.flags                           := 0;
      vi.vertexBindingDescriptionCount   := 1;
-     vi.pVertexBindingDescriptions      := @_Vulkan.Info.vi_binding;
+     vi.pVertexBindingDescriptions      := @TVulkan( Vulkan ).Info.vi_binding;
      vi.vertexAttributeDescriptionCount := 2;
-     vi.pVertexAttributeDescriptions    := @_Vulkan.Info.vi_attribs[0];
+     vi.pVertexAttributeDescriptions    := @TVulkan( Vulkan ).Info.vi_attribs[0];
 
      ia.sType                  := VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
      ia.pNext                  := nil;
@@ -184,7 +185,7 @@ begin
 
      pipeline.sType               := VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
      pipeline.pNext               := nil;
-     pipeline.layout              := _Vulkan.Info.pipeline_layout;
+     pipeline.layout              := TVulkan( Vulkan ).Info.pipeline_layout;
      pipeline.basePipelineHandle  := VK_NULL_HANDLE;
      pipeline.basePipelineIndex   := 0;
      pipeline.flags               := 0;
@@ -203,36 +204,36 @@ begin
      pipeline.pStages             := @shaderStages[0];
      pipeline.stageCount          := Length( shaderStages );
 
-     pipeline.renderPass          := _Vulkan.Info.render_pass;
+     pipeline.renderPass          := TVulkan( Vulkan ).Info.render_pass;
      pipeline.subpass             := 0;
 
-     res := vkCreateGraphicsPipelines(_Vulkan.Info.device, _Vulkan.Info.pipelineCache, 1, @pipeline, nil, @_Handle );
+     res := vkCreateGraphicsPipelines(TVulkan( Vulkan ).Info.device, TVulkan( Vulkan ).Info.pipelineCache, 1, @pipeline, nil, @_Handle );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure TVkPipeline.DestroHandle;
+procedure TVkPipeline<TVulkan_>.DestroHandle;
 begin
-     vkDestroyPipeline( _Vulkan.Info.device, _Handle, nil );
+     vkDestroyPipeline( TVulkan( Vulkan ).Info.device, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkPipeline.Create( const Vulkan_:TVulkan; const DepthTest_:Boolean );
+constructor TVkPipeline<TVulkan_>.Create( const Vulkan_:TVulkan_; const DepthTest_:Boolean );
 begin
      inherited Create( Vulkan_ );
 
      _DepthTest := DepthTest_;
 
-     _Shaders := TVkShaders.Create;
+     _Shaders := TVkShaders_.Create;
 end;
 
-procedure TVkPipeline.AfterConstruction;
+procedure TVkPipeline<TVulkan_>.AfterConstruction;
 begin
      inherited;
 
 end;
 
-destructor TVkPipeline.Destroy;
+destructor TVkPipeline<TVulkan_>.Destroy;
 begin
      DestroHandle;
 
