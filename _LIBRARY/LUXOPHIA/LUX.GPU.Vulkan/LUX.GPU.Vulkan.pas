@@ -298,10 +298,10 @@ begin
      mem_alloc.memoryTypeIndex := 0;
 
      (* Create a mappable image *)
-     res := vkCreateImage( Vulkan_.Devices.Devices[ 0 ].Device, @image_create_info, nil, @mappableImage );
+     res := vkCreateImage( Vulkan_.Devices.Devices[ 0 ].Handle, @image_create_info, nil, @mappableImage );
      Assert( res = VK_SUCCESS );
 
-     vkGetImageMemoryRequirements( Vulkan_.Devices.Devices[ 0 ].Device, mappableImage, @mem_reqs );
+     vkGetImageMemoryRequirements( Vulkan_.Devices.Devices[ 0 ].Handle, mappableImage, @mem_reqs );
 
      mem_alloc.allocationSize := mem_reqs.size;
 
@@ -312,11 +312,11 @@ begin
      Assert( pass, 'No mappable, coherent memory' );
 
      (* allocate memory *)
-     res := vkAllocateMemory( Vulkan_.Devices.Devices[ 0 ].Device, @mem_alloc, nil, @mappableMemory );
+     res := vkAllocateMemory( Vulkan_.Devices.Devices[ 0 ].Handle, @mem_alloc, nil, @mappableMemory );
      Assert( res = VK_SUCCESS );
 
      (* bind memory *)
-     res := vkBindImageMemory( Vulkan_.Devices.Devices[ 0 ].Device, mappableImage, mappableMemory, 0 );
+     res := vkBindImageMemory( Vulkan_.Devices.Devices[ 0 ].Handle, mappableImage, mappableMemory, 0 );
      Assert( res = VK_SUCCESS );
 
      cmd_buf_info.sType            := VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -363,7 +363,7 @@ begin
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
-     vkCreateFence( Vulkan_.Devices.Devices[ 0 ].Device, @fenceInfo, nil, @cmdFence );
+     vkCreateFence( Vulkan_.Devices.Devices[ 0 ].Handle, @fenceInfo, nil, @cmdFence );
 
      submit_info[0].pNext                := nil;
      submit_info[0].sType                := VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -381,21 +381,21 @@ begin
 
      (* Make sure command buffer is finished before mapping *)
      repeat
-           res := vkWaitForFences( Vulkan_.Devices.Devices[ 0 ].Device, 1, @cmdFence, VK_TRUE, FENCE_TIMEOUT );
+           res := vkWaitForFences( Vulkan_.Devices.Devices[ 0 ].Handle, 1, @cmdFence, VK_TRUE, FENCE_TIMEOUT );
 
      until res <> VK_TIMEOUT;
      Assert( res = VK_SUCCESS );
 
-     vkDestroyFence( Vulkan_.Devices.Devices[ 0 ].Device, cmdFence, nil );
+     vkDestroyFence( Vulkan_.Devices.Devices[ 0 ].Handle, cmdFence, nil );
 
      filename := basename_ + '.ppm';
 
      subres.aspectMask := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
      subres.mipLevel   := 0;
      subres.arrayLayer := 0;
-     vkGetImageSubresourceLayout( Vulkan_.Devices.Devices[ 0 ].Device, mappableImage, @subres, @sr_layout );
+     vkGetImageSubresourceLayout( Vulkan_.Devices.Devices[ 0 ].Handle, mappableImage, @subres, @sr_layout );
 
-     res := vkMapMemory( Vulkan_.Devices.Devices[ 0 ].Device, mappableMemory, 0, mem_reqs.size, 0, @ptr );
+     res := vkMapMemory( Vulkan_.Devices.Devices[ 0 ].Handle, mappableMemory, 0, mem_reqs.size, 0, @ptr );
      Assert( res = VK_SUCCESS );
 
      Inc( ptr, sr_layout.offset );
@@ -437,9 +437,9 @@ begin
      end;
 
      F.Free;
-     vkUnmapMemory( Vulkan_.Devices.Devices[ 0 ].Device, mappableMemory );
-     vkDestroyImage( Vulkan_.Devices.Devices[ 0 ].Device, mappableImage, nil );
-     vkFreeMemory( Vulkan_.Devices.Devices[ 0 ].Device, mappableMemory, nil );
+     vkUnmapMemory( Vulkan_.Devices.Devices[ 0 ].Handle, mappableMemory );
+     vkDestroyImage( Vulkan_.Devices.Devices[ 0 ].Handle, mappableImage, nil );
+     vkFreeMemory( Vulkan_.Devices.Devices[ 0 ].Handle, mappableMemory, nil );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// draw_textured_cube
