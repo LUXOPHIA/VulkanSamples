@@ -2,8 +2,7 @@
 
 interface //#################################################################### ■
 
-uses vulkan_core, vulkan_win32,
-     LUX.GPU.Vulkan.root;
+uses vulkan_core, vulkan_win32;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -13,11 +12,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer
 
-     TVkBuffer<TVulkan_:class> = class( TVkObject<TVulkan_> )
+     TVkBuffer<TParent_:class> = class
      private
      protected
      public
-       constructor Create( const Vulkan_:TVulkan_ );
+       constructor Create( const Parent_:TParent_ );
        procedure AfterConstruction; override;
        destructor Destroy; override;
      end;
@@ -42,19 +41,19 @@ implementation //###############################################################
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkBuffer<TVulkan_>.Create( const Vulkan_:TVulkan_ );
+constructor TVkBuffer<TParent_>.Create( const Parent_:TParent_ );
+begin
+     inherited Create;
+
+end;
+
+procedure TVkBuffer<TParent_>.AfterConstruction;
 begin
      inherited;
 
 end;
 
-procedure TVkBuffer<TVulkan_>.AfterConstruction;
-begin
-     inherited;
-
-end;
-
-destructor TVkBuffer<TVulkan_>.Destroy;
+destructor TVkBuffer<TParent_>.Destroy;
 begin
 
      inherited;

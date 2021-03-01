@@ -7,17 +7,18 @@ uses System.Classes,
      vulkan.util,
      LUX.Code.C,
      LUX.GPU.Vulkan.root,
-     LUX.GPU.Vulkan.Device,
-     LUX.GPU.Vulkan.Buffer,
      LUX.GPU.Vulkan.Shader,
-     LUX.GPU.Vulkan.Pipeline;
+     LUX.GPU.Vulkan.Buffer,
+     LUX.GPU.Vulkan.Pipeline,
+     LUX.GPU.Vulkan.Device,
+     LUX.GPU.Vulkan.Instance;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
      TVulkan       = class;
      TVkInstance   = TVkInstance<TVulkan>;
-     TVkDevices    = TVkDevices<TVulkan>;
-     TVkDevice     = TVkDevice<TVulkan>;
+     TVkDevices    = TVkDevices<TVkInstance>;
+     TVkDevice     = TVkDevice<TVkInstance>;
      TVkPipeline   = TVkPipeline<TVkDevice>;
      TVkShader     = TVkShader<TVkPipeline>;
      TVkShaderVert = TVkShaderVert<TVkPipeline>;
