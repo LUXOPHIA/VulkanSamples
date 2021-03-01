@@ -212,7 +212,7 @@ constructor TVkDevice<TVulkan_>.Create( const Devices_:TVkDevices_; const Handle
 begin
      inherited Create;
 
-     _Devices := Devices_;
+     _Devices     := Devices_;
      _PhysHandle  := Handle_;
 end;
 
