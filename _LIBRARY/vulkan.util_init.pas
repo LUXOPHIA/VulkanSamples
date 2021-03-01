@@ -41,9 +41,6 @@ uses vulkan_core, vulkan_win32,
 
 //////////////////////////////////////////////////////////////////////////////// 01-init_instance
 
-function init_global_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
-function init_global_layer_properties( const Vulkan_:TVulkan ) :VkResult;
-
 //////////////////////////////////////////////////////////////////////////////// 02-enumerate_devices
 
 //////////////////////////////////////////////////////////////////////////////// 03-init_device
@@ -145,71 +142,6 @@ uses System.Types, System.Math, System.SysUtils,
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
 //////////////////////////////////////////////////////////////////////////////// 01-init_instance
-
-function init_global_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
-var
-   instance_extensions      :P_VkExtensionProperties;
-   instance_extension_count :T_uint32_t;
-   layer_name               :P_char;
-begin
-     layer_name := layer_props_.properties.layerName;
-
-     repeat
-           Result := vkEnumerateInstanceExtensionProperties( layer_name, @instance_extension_count, nil );
-           if Result <> VK_SUCCESS then Exit;
-
-           if instance_extension_count = 0 then Exit( VK_SUCCESS );
-
-           SetLength( layer_props_.instance_extensions, instance_extension_count );
-           instance_extensions := @layer_props_.instance_extensions[0];
-           Result := vkEnumerateInstanceExtensionProperties( layer_name, @instance_extension_count, instance_extensions );
-
-     until Result <> VK_INCOMPLETE;
-end;
-
-function init_global_layer_properties( const Vulkan_:TVulkan ) :VkResult;
-var
-   instance_layer_count :T_uint32_t;
-   vk_props             :TArray<VkLayerProperties>;
-   i                    :T_uint32_t;
-   layer_props          :T_layer_properties;
-begin
-     (*
-      * It's possible, though very rare, that the number of
-      * instance layers could change. For example, installing something
-      * could include new layers that the loader would pick up
-      * between the initial query for the count and the
-      * request for VkLayerProperties. The loader indicates that
-      * by returning a VK_INCOMPLETE status and will update the
-      * the count parameter.
-      * The count parameter will be updated with the number of
-      * entries loaded into the data pointer - in case the number
-      * of layers went down or is smaller than the size given.
-      *)
-     repeat
-           Result := vkEnumerateInstanceLayerProperties( @instance_layer_count, nil );
-           if Result <> VK_SUCCESS then Exit;
-
-           if instance_layer_count = 0 then Exit( VK_SUCCESS );
-
-           SetLength( vk_props, instance_layer_count );
-
-           Result := vkEnumerateInstanceLayerProperties( @instance_layer_count, @vk_props[0] );
-
-     until Result <> VK_INCOMPLETE;
-
-     (*
-      * Now gather the extension list for each instance layer.
-      *)
-     for i := 0 to instance_layer_count-1 do
-     begin
-          layer_props.properties := vk_props[i];
-          Result := init_global_extension_properties( layer_props );
-          if Result <> VK_SUCCESS then Exit;
-          Vulkan_.Info.instance_layer_properties := Vulkan_.Info.instance_layer_properties + [ layer_props ];
-     end;
-     vk_props := nil;
-end;
 
 //////////////////////////////////////////////////////////////////////////////// 02-enumerate_devices
 
