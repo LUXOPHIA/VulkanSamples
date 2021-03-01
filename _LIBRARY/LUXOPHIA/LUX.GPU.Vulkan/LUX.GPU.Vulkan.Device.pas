@@ -5,7 +5,6 @@ interface //####################################################################
 uses System.Generics.Collections,
      vulkan_core, vulkan_win32,
      vulkan.util,
-     LUX, LUX.D1, LUX.D2, LUX.D3, LUX.D4, LUX.D4x4,
      LUX.GPU.Vulkan.root;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
