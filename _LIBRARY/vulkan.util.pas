@@ -200,8 +200,6 @@ function memory_type_from_properties( var info:T_sample_info; typeBits:T_uint32_
 
 //////////////////////////////////////////////////////////////////////////////// 15-draw_cube
 
-function optionMatch( const option_:String; optionLine_:String ) :T_bool;
-procedure process_command_line_args( var info_:T_sample_info );
 procedure wait_seconds( seconds_:T_int );
 procedure set_image_layout( var info_:T_sample_info; image_:VkImage; aspectMask_:VkImageAspectFlags; old_image_layout_:VkImageLayout;
                             new_image_layout_:VkImageLayout; src_stages_:VkPipelineStageFlags; dest_stages_:VkPipelineStageFlags );
@@ -245,37 +243,6 @@ begin
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 15-draw_cube
-
-function optionMatch( const option_:String; optionLine_:String ) :T_bool;
-begin
-     if option_ = optionLine_ then Result := True
-                              else Result := False;
-end;
-
-procedure process_command_line_args( var info_:T_sample_info );
-var
-   i :T_int;
-begin
-     for i := 1 to ParamCount-1 do
-     begin
-          if optionMatch( '--save-images', ParamStr( i ) ) then info_.save_images := true
-          else
-          if optionMatch( '--help', ParamStr( i ) ) or optionMatch( '-h', ParamStr( i ) ) then
-          begin
-               Log.d( #10'Other options:' );
-               Log.d( #9'--save-images'#10
-                    + #9#9'Save tests images as ppm files in current working '
-                    + 'directory.' );
-               Exit;
-          end
-          else
-          begin
-               Log.d( #10'Unrecognized option: ' + ParamStr( i ) );
-               Log.d( #10'Use --help or -h for option list.' );
-               Exit;
-          end;
-     end;
-end;
 
 procedure wait_seconds( seconds_:T_int );
 begin
