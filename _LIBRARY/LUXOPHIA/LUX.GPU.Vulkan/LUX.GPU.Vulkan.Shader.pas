@@ -82,12 +82,12 @@ uses System.Classes,
 
 procedure TVkShader<TVulkan_>.CreateModule;
 begin
-     Assert( vkCreateShaderModule( TVulkan( Vulkan ).Info.device, @_Module, nil, @_Stage.module ) = VK_SUCCESS );
+     Assert( vkCreateShaderModule( TVulkan( Vulkan ).Devices.Devices[0].Handle, @_Module, nil, @_Stage.module ) = VK_SUCCESS );
 end;
 
 procedure TVkShader<TVulkan_>.DestroModule;
 begin
-     vkDestroyShaderModule( TVulkan( Vulkan ).Info.device, _Stage.module, nil );
+     vkDestroyShaderModule( TVulkan( Vulkan ).Devices.Devices[0].Handle, _Stage.module, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public

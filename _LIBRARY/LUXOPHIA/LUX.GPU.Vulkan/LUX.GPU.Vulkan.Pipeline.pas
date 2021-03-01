@@ -207,13 +207,13 @@ begin
      pipeline.renderPass          := TVulkan( Vulkan ).Info.render_pass;
      pipeline.subpass             := 0;
 
-     res := vkCreateGraphicsPipelines(TVulkan( Vulkan ).Info.device, TVulkan( Vulkan ).Info.pipelineCache, 1, @pipeline, nil, @_Handle );
+     res := vkCreateGraphicsPipelines( TVulkan( Vulkan ).Devices.Devices[0].Handle, TVulkan( Vulkan ).Info.pipelineCache, 1, @pipeline, nil, @_Handle );
      Assert( res = VK_SUCCESS );
 end;
 
 procedure TVkPipeline<TVulkan_>.DestroHandle;
 begin
-     vkDestroyPipeline( TVulkan( Vulkan ).Info.device, _Handle, nil );
+     vkDestroyPipeline( TVulkan( Vulkan ).Devices.Devices[0].Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
