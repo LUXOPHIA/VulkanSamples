@@ -82,41 +82,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        const APP_NAME_STR_LEN = 80;
      public
-     {$IFDEF MSWINDOWS }
        connection :T_HINSTANCE;                                // hInstance - Windows Instance
        name       :array [ 0..APP_NAME_STR_LEN-1 ] of T_char;  // Name to put on the window/icon
        window     :T_HWND;                                     // hWnd - window handle
-     {$ELSEIF Defined( VK_USE_PLATFORM_METAL_EXT ) }
-       caMetalLayer :P_void;
-     {$ELSEIF Android }
-       fpCreateAndroidSurfaceKHR :PFN_vkCreateAndroidSurfaceKHR;
-     {$ELSEIF Defined( VK_USE_PLATFORM_WAYLAND_KHR ) }
-       display       :P_wl_display;
-       registry      :P_wl_registry ;
-       compositor    :P_wl_compositor;
-       window        :P_wl_surface;
-       shell         :P_wl_shell;
-       shell_surface :P_wl_shell_surface;
-     {$ELSE}
-       connection            :P_xcb_connection_t;
-       screen                :P_xcb_screen_t;
-       window                :T_xcb_window_t;
-       atom_wm_delete_window :P_xcb_intern_atom_reply_t;
-     {$ENDIF} // MSWINDOWS
        surface            :VkSurfaceKHR;
        prepared           :T_bool;
        use_staging_buffer :T_bool;
        save_images        :T_bool;
 
-       instance_layer_names          :TArray<P_char>;
        instance_extension_names      :TArray<P_char>;
        instance_layer_properties     :TArray<T_layer_properties>;
-       instance_extension_properties :TArray<VkExtensionProperties> ;
-       inst                          :VkInstance;
 
        device_extension_names      :TArray<P_char>;
        device_extension_properties :TArray<VkExtensionProperties>;
-       gpus                        :TArray<VkPhysicalDevice>;
        device                      :VkDevice;
        graphics_queue              :VkQueue;
        present_queue               :VkQueue;
@@ -177,9 +155,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        desc_layout     :TArray<VkDescriptorSetLayout>;
        pipelineCache   :VkPipelineCache;
        render_pass     :VkRenderPass;
-       pipeline        :VkPipeline;
-
-       shaderStages : array [ 0..2-1 ] of VkPipelineShaderStageCreateInfo;
 
        desc_pool :VkDescriptorPool;
        desc_set  :TArray<VkDescriptorSet>;
