@@ -61,7 +61,6 @@ begin
      _Vulkan := TVulkan.Create;
 
      _Vulkan.Instance := TVkInstance.Create( _Vulkan );
-     _Vulkan.Devices := TVkDevices.Create( _Vulkan.Instance );
      init_window_size( _Vulkan, 500, 500 );
      init_window( _Vulkan );
      init_swapchain_extension( _Vulkan );
@@ -80,7 +79,7 @@ begin
      init_descriptor_pool( _Vulkan, True );
      init_descriptor_set( _Vulkan, True );
      init_pipeline_cache( _Vulkan );
-     _Pipeline := TVkPipeline.Create( _Vulkan.Devices.Devices[0], depthPresent );
+     _Pipeline := TVkPipeline.Create( _Vulkan.Instance.Devices.Devices[0], depthPresent );
      _ShaderVert := TVkShaderVert.Create( _Pipeline );
      _ShaderFrag := TVkShaderFrag.Create( _Pipeline );
      _ShaderVert.LoadFromFile( '../../_DATA/draw_textured_cube.vert' );
@@ -100,11 +99,11 @@ begin
      imageAcquiredSemaphoreCreateInfo.pNext := nil;
      imageAcquiredSemaphoreCreateInfo.flags := 0;
 
-     res := vkCreateSemaphore(  _Vulkan.Devices.Devices[0].Handle, @imageAcquiredSemaphoreCreateInfo, nil, @imageAcquiredSemaphore );
+     res := vkCreateSemaphore(  _Vulkan.Instance.Devices.Devices[0].Handle, @imageAcquiredSemaphoreCreateInfo, nil, @imageAcquiredSemaphore );
      Assert( res = VK_SUCCESS );
 
      // Get the index of the next available swapchain image:
-     res := vkAcquireNextImageKHR(  _Vulkan.Devices.Devices[0].Handle,  _Vulkan.Info.swap_chain, UINT64_MAX, imageAcquiredSemaphore, VK_NULL_HANDLE,
+     res := vkAcquireNextImageKHR(  _Vulkan.Instance.Devices.Devices[0].Handle,  _Vulkan.Info.swap_chain, UINT64_MAX, imageAcquiredSemaphore, VK_NULL_HANDLE,
                                    @ _Vulkan.Info.current_buffer );
      // TODO: Deal with the VK_SUBOPTIMAL_KHR and VK_ERROR_OUT_OF_DATE_KHR
      // return codes
@@ -142,7 +141,7 @@ begin
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
-     vkCreateFence( _Vulkan.Devices.Devices[0].Handle, @fenceInfo, nil, @drawFence );
+     vkCreateFence( _Vulkan.Instance.Devices.Devices[0].Handle, @fenceInfo, nil, @drawFence );
 
      pipe_stage_flags := Ord( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
      submit_info[0]                      := Default( VkSubmitInfo );
@@ -173,7 +172,7 @@ begin
 
      (* Make sure command buffer is finished before presenting *)
      repeat
-           res := vkWaitForFences( _Vulkan.Devices.Devices[0].Handle, 1, @drawFence, VK_TRUE, FENCE_TIMEOUT );
+           res := vkWaitForFences( _Vulkan.Instance.Devices.Devices[0].Handle, 1, @drawFence, VK_TRUE, FENCE_TIMEOUT );
      until res <> VK_TIMEOUT;
      Assert( res = VK_SUCCESS );
      res := vkQueuePresentKHR( _Vulkan.Info.present_queue, @present );
@@ -186,8 +185,8 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     vkDestroyFence( _Vulkan.Devices.Devices[0].Handle, drawFence, nil );
-     vkDestroySemaphore( _Vulkan.Devices.Devices[0].Handle, imageAcquiredSemaphore, nil );
+     vkDestroyFence( _Vulkan.Instance.Devices.Devices[0].Handle, drawFence, nil );
+     vkDestroySemaphore( _Vulkan.Instance.Devices.Devices[0].Handle, imageAcquiredSemaphore, nil );
      _Pipeline.Free;
      destroy_pipeline_cache( _Vulkan );
      destroy_textures( _Vulkan );
@@ -202,7 +201,6 @@ begin
      destroy_command_buffer( _Vulkan );
      destroy_command_pool( _Vulkan );
      destroy_window( _Vulkan );
-     _Vulkan.Devices.Free;
      _Vulkan.Instance.Free;
 
      _Vulkan.Free;
