@@ -3,8 +3,7 @@
 interface //#################################################################### ■
 
 uses vulkan_core, vulkan_win32,
-     LUX, LUX.D1, LUX.D2, LUX.D3, LUX.D4, LUX.D4x4,
-     LUX.GPU.Vulkan;
+     LUX.GPU.Vulkan.root;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -14,7 +13,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkShader
 
-     TVkShader = class( TVkObject )
+     TVkShader<TVulkan_:class> = class( TVkObject<TVulkan_> )
      private
      protected
        _Module :VkShaderModuleCreateInfo;
@@ -24,7 +23,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure CreateModule; virtual;
        procedure DestroModule; virtual;
      public
-       constructor Create( const Vulkan_:TVulkan );
+       constructor Create( const Vulkan_:TVulkan_ );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
@@ -36,22 +35,22 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkShaderVert
 
-     TVkShaderVert = class( TVkShader )
+     TVkShaderVert<TVulkan_:class> = class( TVkShader<TVulkan_> )
      private
      protected
      public
-       constructor Create( const Vulkan_:TVulkan );
+       constructor Create( const Vulkan_:TVulkan_ );
        procedure AfterConstruction; override;
        destructor Destroy; override;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkShaderFrag
 
-     TVkShaderFrag = class( TVkShader )
+     TVkShaderFrag<TVulkan_:class> = class( TVkShader<TVulkan_> )
      private
      protected
      public
-       constructor Create( const Vulkan_:TVulkan );
+       constructor Create( const Vulkan_:TVulkan_ );
        procedure AfterConstruction; override;
        destructor Destroy; override;
      end;
@@ -64,7 +63,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
-uses System.Classes;
+uses System.Classes,
+     LUX.GPU.Vulkan;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -80,19 +80,19 @@ uses System.Classes;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkShader.CreateModule;
+procedure TVkShader<TVulkan_>.CreateModule;
 begin
-     Assert( vkCreateShaderModule( _Vulkan.Info.device, @_Module, nil, @_Stage.module ) = VK_SUCCESS );
+     Assert( vkCreateShaderModule( TVulkan( Vulkan ).Info.device, @_Module, nil, @_Stage.module ) = VK_SUCCESS );
 end;
 
-procedure TVkShader.DestroModule;
+procedure TVkShader<TVulkan_>.DestroModule;
 begin
-     vkDestroyShaderModule( _Vulkan.Info.device, _Stage.module, nil );
+     vkDestroyShaderModule( TVulkan( Vulkan ).Info.device, _Stage.module, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkShader.Create( const Vulkan_:TVulkan );
+constructor TVkShader<TVulkan_>.Create( const Vulkan_:TVulkan_ );
 begin
      inherited;
 
@@ -111,13 +111,13 @@ begin
      _Stage.pSpecializationInfo := nil;
 end;
 
-procedure TVkShader.AfterConstruction;
+procedure TVkShader<TVulkan_>.AfterConstruction;
 begin
      inherited;
 
 end;
 
-destructor TVkShader.Destroy;
+destructor TVkShader<TVulkan_>.Destroy;
 begin
      if _Stage.module > 0 then DestroModule;
 
@@ -126,7 +126,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkShader.LoadFromFile( const FileName_:String );
+procedure TVkShader<TVulkan_>.LoadFromFile( const FileName_:String );
 var
    F :TMemoryStream;
 begin
@@ -152,20 +152,20 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkShaderVert.Create( const Vulkan_:TVulkan );
+constructor TVkShaderVert<TVulkan_>.Create( const Vulkan_:TVulkan_ );
 begin
      inherited;
 
      _Stage.stage := VK_SHADER_STAGE_VERTEX_BIT;
 end;
 
-procedure TVkShaderVert.AfterConstruction;
+procedure TVkShaderVert<TVulkan_>.AfterConstruction;
 begin
      inherited;
 
 end;
 
-destructor TVkShaderVert.Destroy;
+destructor TVkShaderVert<TVulkan_>.Destroy;
 begin
 
      inherited;
@@ -179,20 +179,20 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkShaderFrag.Create( const Vulkan_:TVulkan );
+constructor TVkShaderFrag<TVulkan_>.Create( const Vulkan_:TVulkan_ );
 begin
      inherited;
 
      _Stage.stage := VK_SHADER_STAGE_FRAGMENT_BIT;
 end;
 
-procedure TVkShaderFrag.AfterConstruction;
+procedure TVkShaderFrag<TVulkan_>.AfterConstruction;
 begin
      inherited;
 
 end;
 
-destructor TVkShaderFrag.Destroy;
+destructor TVkShaderFrag<TVulkan_>.Destroy;
 begin
 
      inherited;
