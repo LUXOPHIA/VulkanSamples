@@ -43,6 +43,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _Devices :TVkDevices_;
        _Handle  :VkPhysicalDevice;
+       _Props   :VkPhysicalDeviceProperties;
        /////
        ///// メソッド
        function init_device_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
@@ -51,8 +52,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Devices :TVkDevices_      read _Devices;
-       property Handle  :VkPhysicalDevice read _Handle ;
+       property Devices :TVkDevices_                read _Devices;
+       property Handle  :VkPhysicalDevice           read _Handle ;
+       property Props   :VkPhysicalDeviceProperties read _Props  ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -172,10 +174,10 @@ begin
 
      (* This is as good a place as any to do this *)
      vkGetPhysicalDeviceMemoryProperties( Handle, @TVkDevices( Devices ).Vulkan.Info.memory_properties );
-     vkGetPhysicalDeviceProperties( Handle, @TVkDevices( Devices ).Vulkan.Info.gpu_props );
+     vkGetPhysicalDeviceProperties( Handle, @_Props );
      (* query device extensions for enabled layers *)
-     for I := 0 to Length( TVkDevices( Devices ).Vulkan.Info.instance_layer_properties )-1
-     do init_device_extension_properties( TVkDevices( Devices ).Vulkan.Info.instance_layer_properties[I] );
+     for I := 0 to Length( TVkDevices( Devices ).Vulkan.Layers )-1
+     do init_device_extension_properties( TVkDevices( Devices ).Vulkan.Layers[I] );
 end;
 
 destructor TVkDevice<TVulkan_>.Destroy;
