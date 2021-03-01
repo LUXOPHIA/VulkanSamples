@@ -61,7 +61,7 @@ begin
      _Vulkan := TVulkan.Create;
 
      _Vulkan.Instance := TVkInstance.Create( _Vulkan );
-     _Vulkan.Devices := TVkDevices.Create( _Vulkan );
+     _Vulkan.Devices := TVkDevices.Create( _Vulkan.Instance );
      init_window_size( _Vulkan, 500, 500 );
      init_window( _Vulkan );
      init_swapchain_extension( _Vulkan );
