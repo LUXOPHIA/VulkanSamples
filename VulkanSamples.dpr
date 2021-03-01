@@ -22,7 +22,11 @@ uses
   vulkan_win32 in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\vulkan_win32.pas',
   vulkan.util_init in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\_SAMPLES\vulkan.util_init.pas',
   vulkan.util in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\_SAMPLES\vulkan.util.pas',
-  cube_data in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\_SAMPLES\cube_data.pas';
+  cube_data in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\_SAMPLES\cube_data.pas',
+  LUX.GPU.Vulkan in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.pas',
+  LUX.GPU.Vulkan.Buffer in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Buffer.pas',
+  LUX.GPU.Vulkan.Shader in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Shader.pas',
+  LUX.GPU.Vulkan.Pipeline in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Pipeline.pas';
 
 {$R *.res}
 
