@@ -19,11 +19,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TVkInstance<TVulkan_:class> = class( TVkObject<TVulkan_> )
      private
+       type TVkInstance_ = TVkInstance<TVulkan_>;
+            TVkDevices_  = TVkDevices<TVkInstance_>;
      protected
        _Handle     :VkInstance;
        _Name       :String;
        _Layers     :TStringList;
        _Extensions :TStringList;
+       _Devices    :TVkDevices_;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -32,8 +35,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Handle :VkInstance read _Handle            ;
-       property Name   :String     read _Name   write _Name;
+       property Handle     :VkInstance  read _Handle                ;
+       property Name       :String      read _Name       write _Name;
+       property Layers     :TStringList read _Layers                ;
+       property Extensions :TStringList read _Extensions            ;
+       property Devices    :TVkDevices_ read _Devices               ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -105,20 +111,25 @@ begin
 
      _Layers     := TStringList.Create;
      _Extensions := TStringList.Create;
+
+     _Extensions.Add( VK_KHR_SURFACE_EXTENSION_NAME       );
+     _Extensions.Add( VK_KHR_WIN32_SURFACE_EXTENSION_NAME );
+
+     CreateHandle;
+
+     _Devices := TVkDevices_.Create( Self );
 end;
 
 procedure TVkInstance<TVulkan_>.AfterConstruction;
 begin
      inherited;
 
-     _Extensions.Add( VK_KHR_SURFACE_EXTENSION_NAME       );
-     _Extensions.Add( VK_KHR_WIN32_SURFACE_EXTENSION_NAME );
-
-     CreateHandle;
 end;
 
 destructor TVkInstance<TVulkan_>.Destroy;
 begin
+     _Devices.Free;
+
      DestroHandle;
 
      _Layers    .Free;
