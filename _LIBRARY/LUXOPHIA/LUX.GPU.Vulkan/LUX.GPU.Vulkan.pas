@@ -18,9 +18,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVkInstance   = TVkInstance<TVulkan>;
      TVkDevices    = TVkDevices<TVulkan>;
      TVkDevice     = TVkDevice<TVulkan>;
-     TVkShaderVert = TVkShaderVert<TVulkan>;
-     TVkShaderFrag = TVkShaderFrag<TVulkan>;
-     TVkPipeline   = TVkPipeline<TVulkan,TVkDevice>;
+     TVkPipeline   = TVkPipeline<TVkDevice>;
+     TVkShader     = TVkShader<TVkPipeline>;
+     TVkShaderVert = TVkShaderVert<TVkPipeline>;
+     TVkShaderFrag = TVkShaderFrag<TVkPipeline>;
 
      TVkLayers = TArray<T_layer_properties>;
 
