@@ -60,7 +60,6 @@ var
 begin
      _Vulkan := TVulkan.Create;
 
-     init_global_layer_properties( _Vulkan );
      init_device_extension_names( _Vulkan );
      _Vulkan.Instance := TVkInstance.Create( _Vulkan );
      //init_enumerate_device( _Vulkan );
