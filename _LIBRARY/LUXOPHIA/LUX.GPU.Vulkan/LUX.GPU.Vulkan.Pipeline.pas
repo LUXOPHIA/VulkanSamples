@@ -10,31 +10,31 @@ uses System.Generics.Collections,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkShaders<TVulkan_:class> = class(  TObjectList<TVkShader<TVulkan_>> ) end;
-
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkPipeline
 
-     TVkPipeline<TVulkan_:class> = class( TVkObject<TVulkan_> )
+     TVkPipeline<TVulkan_,TDevice_:class> = class
      private
-       type TVkShaders_ = TVkShaders<TVulkan_>;
-            TVkShader_  = TVkShader<TVulkan_>;
+       type TVkShader_  = TVkShader<TVulkan_>;
+            TVkShaders_ = TObjectList<TVkShader_>;
             T_dynamicStateEnables = array [ 0..2-1 ] of VkDynamicState;
      protected
+       _Device    :TDevice_;
        _Handle    :VkPipeline;
        _DepthTest :Boolean;
        _Shaders   :TVkShaders_;
        ///// メソッド
        procedure DestroHandle;
      public
-       constructor Create( const Vulkan_:TVulkan_; const DepthTest_:Boolean );
+       constructor Create( const Device_:TDevice_; const DepthTest_:Boolean );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Handle  :VkPipeline read _Handle ;
+       property Device  :TDevice_    read _Device ;
+       property Handle  :VkPipeline  read _Handle ;
        property Shaders :TVkShaders_ read _Shaders;
        ///// メソッド
        procedure CreateHandle;
@@ -62,7 +62,7 @@ uses LUX.GPU.Vulkan;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkPipeline<TVulkan_>.CreateHandle;
+procedure TVkPipeline<TVulkan_,TDevice_>.CreateHandle;
 var
    res :VkResult;
    dynamicStateEnables :T_dynamicStateEnables;  // Viewport + Scissor
@@ -92,9 +92,9 @@ begin
      vi.pNext                           := nil;
      vi.flags                           := 0;
      vi.vertexBindingDescriptionCount   := 1;
-     vi.pVertexBindingDescriptions      := @TVulkan( Vulkan ).Info.vi_binding;
+     vi.pVertexBindingDescriptions      := @TVkDevice( _Device ).Devices.Vulkan.Info.vi_binding;
      vi.vertexAttributeDescriptionCount := 2;
-     vi.pVertexAttributeDescriptions    := @TVulkan( Vulkan ).Info.vi_attribs[0];
+     vi.pVertexAttributeDescriptions    := @TVkDevice( _Device ).Devices.Vulkan.Info.vi_attribs[0];
 
      ia.sType                  := VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
      ia.pNext                  := nil;
@@ -185,7 +185,7 @@ begin
 
      pipeline.sType               := VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
      pipeline.pNext               := nil;
-     pipeline.layout              := TVulkan( Vulkan ).Info.pipeline_layout;
+     pipeline.layout              := TVkDevice( _Device ).Devices.Vulkan.Info.pipeline_layout;
      pipeline.basePipelineHandle  := VK_NULL_HANDLE;
      pipeline.basePipelineIndex   := 0;
      pipeline.flags               := 0;
@@ -204,36 +204,36 @@ begin
      pipeline.pStages             := @shaderStages[0];
      pipeline.stageCount          := Length( shaderStages );
 
-     pipeline.renderPass          := TVulkan( Vulkan ).Info.render_pass;
+     pipeline.renderPass          := TVkDevice( _Device ).Devices.Vulkan.Info.render_pass;
      pipeline.subpass             := 0;
 
-     res := vkCreateGraphicsPipelines( TVulkan( Vulkan ).Devices.Devices[0].Handle, TVulkan( Vulkan ).Info.pipelineCache, 1, @pipeline, nil, @_Handle );
+     res := vkCreateGraphicsPipelines( TVkDevice( _Device ).Handle, TVkDevice( _Device ).Devices.Vulkan.Info.pipelineCache, 1, @pipeline, nil, @_Handle );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure TVkPipeline<TVulkan_>.DestroHandle;
+procedure TVkPipeline<TVulkan_,TDevice_>.DestroHandle;
 begin
-     vkDestroyPipeline( TVulkan( Vulkan ).Devices.Devices[0].Handle, _Handle, nil );
+     vkDestroyPipeline( TVkDevice( _Device ).Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkPipeline<TVulkan_>.Create( const Vulkan_:TVulkan_; const DepthTest_:Boolean );
+constructor TVkPipeline<TVulkan_,TDevice_>.Create( const Device_:TDevice_; const DepthTest_:Boolean );
 begin
-     inherited Create( Vulkan_ );
+     inherited Create;
 
+     _Device    := Device_;
      _DepthTest := DepthTest_;
-
-     _Shaders := TVkShaders_.Create;
+     _Shaders   := TVkShaders_.Create;
 end;
 
-procedure TVkPipeline<TVulkan_>.AfterConstruction;
+procedure TVkPipeline<TVulkan_,TDevice_>.AfterConstruction;
 begin
      inherited;
 
 end;
 
-destructor TVkPipeline<TVulkan_>.Destroy;
+destructor TVkPipeline<TVulkan_,TDevice_>.Destroy;
 begin
      DestroHandle;
 
