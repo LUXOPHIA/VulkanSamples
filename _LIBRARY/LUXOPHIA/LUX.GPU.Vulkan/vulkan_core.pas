@@ -4323,182 +4323,182 @@ procedure vkCmdExecuteCommands(
 {$ENDIF}
 
 
-const VK_VERSION_1_1 = 1;
+const VK_VERSION_1_1     = 1;
 // Vulkan 1.1 version number
 const VK_API_VERSION_1_1 = {VK_MAKE_VERSION( 1, 1, 0 )} ( 1 shl 22 ) or ( 1 shl 12 ) or 0; // Patch version should always be set to 0
 
-type P_VkSamplerYcbcrConversion = ^VkSamplerYcbcrConversion;
-     VkSamplerYcbcrConversion = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+type P_VkSamplerYcbcrConversion   = ^VkSamplerYcbcrConversion;
+       VkSamplerYcbcrConversion   = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 type P_VkDescriptorUpdateTemplate = ^VkDescriptorUpdateTemplate;
-     VkDescriptorUpdateTemplate = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-const VK_MAX_DEVICE_GROUP_SIZE          = 32;
-const VK_LUID_SIZE                      = 8;
-const VK_QUEUE_FAMILY_EXTERNAL          = UInt32( $FFFFFFFF )-1; {(~0U-1)}
+       VkDescriptorUpdateTemplate = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
+const VK_MAX_DEVICE_GROUP_SIZE = 32;
+const VK_LUID_SIZE             = 8;
+const VK_QUEUE_FAMILY_EXTERNAL = UInt32( $FFFFFFFF )-1; {(~0U-1)}
 
 type P_VkPointClippingBehavior = ^VkPointClippingBehavior;
      VkPointClippingBehavior = (
-       VK_POINT_CLIPPING_BEHAVIOR_ALL_CLIP_PLANES = 0,
-       VK_POINT_CLIPPING_BEHAVIOR_USER_CLIP_PLANES_ONLY = 1,
-       VK_POINT_CLIPPING_BEHAVIOR_ALL_CLIP_PLANES_KHR = VK_POINT_CLIPPING_BEHAVIOR_ALL_CLIP_PLANES,
+       VK_POINT_CLIPPING_BEHAVIOR_ALL_CLIP_PLANES           = 0,
+       VK_POINT_CLIPPING_BEHAVIOR_USER_CLIP_PLANES_ONLY     = 1,
+       VK_POINT_CLIPPING_BEHAVIOR_ALL_CLIP_PLANES_KHR       = VK_POINT_CLIPPING_BEHAVIOR_ALL_CLIP_PLANES,
        VK_POINT_CLIPPING_BEHAVIOR_USER_CLIP_PLANES_ONLY_KHR = VK_POINT_CLIPPING_BEHAVIOR_USER_CLIP_PLANES_ONLY,
-       VK_POINT_CLIPPING_BEHAVIOR_MAX_ENUM = $7FFFFFFF
+       VK_POINT_CLIPPING_BEHAVIOR_MAX_ENUM                  = $7FFFFFFF
      );
 
 type P_VkTessellationDomainOrigin = ^VkTessellationDomainOrigin;
      VkTessellationDomainOrigin = (
-       VK_TESSELLATION_DOMAIN_ORIGIN_UPPER_LEFT = 0,
-       VK_TESSELLATION_DOMAIN_ORIGIN_LOWER_LEFT = 1,
+       VK_TESSELLATION_DOMAIN_ORIGIN_UPPER_LEFT     = 0,
+       VK_TESSELLATION_DOMAIN_ORIGIN_LOWER_LEFT     = 1,
        VK_TESSELLATION_DOMAIN_ORIGIN_UPPER_LEFT_KHR = VK_TESSELLATION_DOMAIN_ORIGIN_UPPER_LEFT,
        VK_TESSELLATION_DOMAIN_ORIGIN_LOWER_LEFT_KHR = VK_TESSELLATION_DOMAIN_ORIGIN_LOWER_LEFT,
-       VK_TESSELLATION_DOMAIN_ORIGIN_MAX_ENUM = $7FFFFFFF
+       VK_TESSELLATION_DOMAIN_ORIGIN_MAX_ENUM       = $7FFFFFFF
      );
 
 type P_VkSamplerYcbcrModelConversion = ^VkSamplerYcbcrModelConversion;
      VkSamplerYcbcrModelConversion = (
-       VK_SAMPLER_YCBCR_MODEL_CONVERSION_RGB_IDENTITY = 0,
-       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_IDENTITY = 1,
-       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709 = 2,
-       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_601 = 3,
-       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_2020 = 4,
-       VK_SAMPLER_YCBCR_MODEL_CONVERSION_RGB_IDENTITY_KHR = VK_SAMPLER_YCBCR_MODEL_CONVERSION_RGB_IDENTITY,
+       VK_SAMPLER_YCBCR_MODEL_CONVERSION_RGB_IDENTITY       = 0,
+       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_IDENTITY     = 1,
+       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709          = 2,
+       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_601          = 3,
+       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_2020         = 4,
+       VK_SAMPLER_YCBCR_MODEL_CONVERSION_RGB_IDENTITY_KHR   = VK_SAMPLER_YCBCR_MODEL_CONVERSION_RGB_IDENTITY,
        VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_IDENTITY_KHR = VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_IDENTITY,
-       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709_KHR = VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
-       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_601_KHR = VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_601,
-       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_2020_KHR = VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_2020,
-       VK_SAMPLER_YCBCR_MODEL_CONVERSION_MAX_ENUM = $7FFFFFFF
+       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709_KHR      = VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
+       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_601_KHR      = VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_601,
+       VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_2020_KHR     = VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_2020,
+       VK_SAMPLER_YCBCR_MODEL_CONVERSION_MAX_ENUM           = $7FFFFFFF
      );
 
 type P_VkSamplerYcbcrRange = ^VkSamplerYcbcrRange;
      VkSamplerYcbcrRange = (
-       VK_SAMPLER_YCBCR_RANGE_ITU_FULL = 0,
-       VK_SAMPLER_YCBCR_RANGE_ITU_NARROW = 1,
-       VK_SAMPLER_YCBCR_RANGE_ITU_FULL_KHR = VK_SAMPLER_YCBCR_RANGE_ITU_FULL,
+       VK_SAMPLER_YCBCR_RANGE_ITU_FULL       = 0,
+       VK_SAMPLER_YCBCR_RANGE_ITU_NARROW     = 1,
+       VK_SAMPLER_YCBCR_RANGE_ITU_FULL_KHR   = VK_SAMPLER_YCBCR_RANGE_ITU_FULL,
        VK_SAMPLER_YCBCR_RANGE_ITU_NARROW_KHR = VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
-       VK_SAMPLER_YCBCR_RANGE_MAX_ENUM = $7FFFFFFF
+       VK_SAMPLER_YCBCR_RANGE_MAX_ENUM       = $7FFFFFFF
      );
 
 type P_VkChromaLocation = ^VkChromaLocation;
      VkChromaLocation = (
-       VK_CHROMA_LOCATION_COSITED_EVEN = 0,
-       VK_CHROMA_LOCATION_MIDPOINT = 1,
+       VK_CHROMA_LOCATION_COSITED_EVEN     = 0,
+       VK_CHROMA_LOCATION_MIDPOINT         = 1,
        VK_CHROMA_LOCATION_COSITED_EVEN_KHR = VK_CHROMA_LOCATION_COSITED_EVEN,
-       VK_CHROMA_LOCATION_MIDPOINT_KHR = VK_CHROMA_LOCATION_MIDPOINT,
-       VK_CHROMA_LOCATION_MAX_ENUM = $7FFFFFFF
+       VK_CHROMA_LOCATION_MIDPOINT_KHR     = VK_CHROMA_LOCATION_MIDPOINT,
+       VK_CHROMA_LOCATION_MAX_ENUM         = $7FFFFFFF
      );
 
 type P_VkDescriptorUpdateTemplateType = ^VkDescriptorUpdateTemplateType;
      VkDescriptorUpdateTemplateType = (
-       VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_DESCRIPTOR_SET = 0,
+       VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_DESCRIPTOR_SET       = 0,
        VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_PUSH_DESCRIPTORS_KHR = 1,
-       VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_DESCRIPTOR_SET_KHR = VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_DESCRIPTOR_SET,
-       VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_MAX_ENUM = $7FFFFFFF
+       VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_DESCRIPTOR_SET_KHR   = VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_DESCRIPTOR_SET,
+       VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_MAX_ENUM             = $7FFFFFFF
      );
 
 type P_VkSubgroupFeatureFlagBits = ^VkSubgroupFeatureFlagBits;
      VkSubgroupFeatureFlagBits = (
-       VK_SUBGROUP_FEATURE_BASIC_BIT = $00000001,
-       VK_SUBGROUP_FEATURE_VOTE_BIT = $00000002,
-       VK_SUBGROUP_FEATURE_ARITHMETIC_BIT = $00000004,
-       VK_SUBGROUP_FEATURE_BALLOT_BIT = $00000008,
-       VK_SUBGROUP_FEATURE_SHUFFLE_BIT = $00000010,
+       VK_SUBGROUP_FEATURE_BASIC_BIT            = $00000001,
+       VK_SUBGROUP_FEATURE_VOTE_BIT             = $00000002,
+       VK_SUBGROUP_FEATURE_ARITHMETIC_BIT       = $00000004,
+       VK_SUBGROUP_FEATURE_BALLOT_BIT           = $00000008,
+       VK_SUBGROUP_FEATURE_SHUFFLE_BIT          = $00000010,
        VK_SUBGROUP_FEATURE_SHUFFLE_RELATIVE_BIT = $00000020,
-       VK_SUBGROUP_FEATURE_CLUSTERED_BIT = $00000040,
-       VK_SUBGROUP_FEATURE_QUAD_BIT = $00000080,
-       VK_SUBGROUP_FEATURE_PARTITIONED_BIT_NV = $00000100,
-       VK_SUBGROUP_FEATURE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
+       VK_SUBGROUP_FEATURE_CLUSTERED_BIT        = $00000040,
+       VK_SUBGROUP_FEATURE_QUAD_BIT             = $00000080,
+       VK_SUBGROUP_FEATURE_PARTITIONED_BIT_NV   = $00000100,
+       VK_SUBGROUP_FEATURE_FLAG_BITS_MAX_ENUM   = $7FFFFFFF
      );
 type P_VkSubgroupFeatureFlags = ^VkSubgroupFeatureFlags;
      VkSubgroupFeatureFlags = VkFlags;
 
 type P_VkPeerMemoryFeatureFlagBits = ^VkPeerMemoryFeatureFlagBits;
      VkPeerMemoryFeatureFlagBits = (
-       VK_PEER_MEMORY_FEATURE_COPY_SRC_BIT = $00000001,
-       VK_PEER_MEMORY_FEATURE_COPY_DST_BIT = $00000002,
-       VK_PEER_MEMORY_FEATURE_GENERIC_SRC_BIT = $00000004,
-       VK_PEER_MEMORY_FEATURE_GENERIC_DST_BIT = $00000008,
-       VK_PEER_MEMORY_FEATURE_COPY_SRC_BIT_KHR = VK_PEER_MEMORY_FEATURE_COPY_SRC_BIT,
-       VK_PEER_MEMORY_FEATURE_COPY_DST_BIT_KHR = VK_PEER_MEMORY_FEATURE_COPY_DST_BIT,
+       VK_PEER_MEMORY_FEATURE_COPY_SRC_BIT        = $00000001,
+       VK_PEER_MEMORY_FEATURE_COPY_DST_BIT        = $00000002,
+       VK_PEER_MEMORY_FEATURE_GENERIC_SRC_BIT     = $00000004,
+       VK_PEER_MEMORY_FEATURE_GENERIC_DST_BIT     = $00000008,
+       VK_PEER_MEMORY_FEATURE_COPY_SRC_BIT_KHR    = VK_PEER_MEMORY_FEATURE_COPY_SRC_BIT,
+       VK_PEER_MEMORY_FEATURE_COPY_DST_BIT_KHR    = VK_PEER_MEMORY_FEATURE_COPY_DST_BIT,
        VK_PEER_MEMORY_FEATURE_GENERIC_SRC_BIT_KHR = VK_PEER_MEMORY_FEATURE_GENERIC_SRC_BIT,
        VK_PEER_MEMORY_FEATURE_GENERIC_DST_BIT_KHR = VK_PEER_MEMORY_FEATURE_GENERIC_DST_BIT,
-       VK_PEER_MEMORY_FEATURE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
+       VK_PEER_MEMORY_FEATURE_FLAG_BITS_MAX_ENUM  = $7FFFFFFF
      );
 type P_VkPeerMemoryFeatureFlags = ^VkPeerMemoryFeatureFlags;
      VkPeerMemoryFeatureFlags = VkFlags;
 
 type P_VkMemoryAllocateFlagBits = ^VkMemoryAllocateFlagBits;
      VkMemoryAllocateFlagBits = (
-       VK_MEMORY_ALLOCATE_DEVICE_MASK_BIT = $00000001,
-       VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT = $00000002,
-       VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_CAPTURE_REPLAY_BIT = $00000004,
-       VK_MEMORY_ALLOCATE_DEVICE_MASK_BIT_KHR = VK_MEMORY_ALLOCATE_DEVICE_MASK_BIT,
-       VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT_KHR = VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
+       VK_MEMORY_ALLOCATE_DEVICE_MASK_BIT                       = $00000001,
+       VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT                    = $00000002,
+       VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_CAPTURE_REPLAY_BIT     = $00000004,
+       VK_MEMORY_ALLOCATE_DEVICE_MASK_BIT_KHR                   = VK_MEMORY_ALLOCATE_DEVICE_MASK_BIT,
+       VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT_KHR                = VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_BIT,
        VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_CAPTURE_REPLAY_BIT_KHR = VK_MEMORY_ALLOCATE_DEVICE_ADDRESS_CAPTURE_REPLAY_BIT,
-       VK_MEMORY_ALLOCATE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
+       VK_MEMORY_ALLOCATE_FLAG_BITS_MAX_ENUM                    = $7FFFFFFF
      );
-type P_VkMemoryAllocateFlags = ^VkMemoryAllocateFlags;
-     VkMemoryAllocateFlags = VkFlags;
-type P_VkCommandPoolTrimFlags = ^VkCommandPoolTrimFlags;
-     VkCommandPoolTrimFlags = VkFlags;
+type P_VkMemoryAllocateFlags                 = ^VkMemoryAllocateFlags;
+       VkMemoryAllocateFlags                 = VkFlags;
+type P_VkCommandPoolTrimFlags                = ^VkCommandPoolTrimFlags;
+       VkCommandPoolTrimFlags                = VkFlags;
 type P_VkDescriptorUpdateTemplateCreateFlags = ^VkDescriptorUpdateTemplateCreateFlags;
-     VkDescriptorUpdateTemplateCreateFlags = VkFlags;
+       VkDescriptorUpdateTemplateCreateFlags = VkFlags;
 
 type P_VkExternalMemoryHandleTypeFlagBits = ^VkExternalMemoryHandleTypeFlagBits;
      VkExternalMemoryHandleTypeFlagBits = (
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_FD_BIT = $00000001,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_BIT = $00000002,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT = $00000004,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D11_TEXTURE_BIT = $00000008,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D11_TEXTURE_KMT_BIT = $00000010,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_HEAP_BIT = $00000020,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_RESOURCE_BIT = $00000040,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_DMA_BUF_BIT_EXT = $00000200,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_FD_BIT                       = $00000001,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_BIT                    = $00000002,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT                = $00000004,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D11_TEXTURE_BIT                   = $00000008,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D11_TEXTURE_KMT_BIT               = $00000010,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_HEAP_BIT                      = $00000020,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_RESOURCE_BIT                  = $00000040,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_DMA_BUF_BIT_EXT                     = $00000200,
        VK_EXTERNAL_MEMORY_HANDLE_TYPE_ANDROID_HARDWARE_BUFFER_BIT_ANDROID = $00000400,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_HOST_ALLOCATION_BIT_EXT = $00000080,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_HOST_MAPPED_FOREIGN_MEMORY_BIT_EXT = $00000100,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_FD_BIT_KHR = VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_FD_BIT,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_BIT_KHR = VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_BIT,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT_KHR = VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D11_TEXTURE_BIT_KHR = VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D11_TEXTURE_BIT,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D11_TEXTURE_KMT_BIT_KHR = VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D11_TEXTURE_KMT_BIT,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_HEAP_BIT_KHR = VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_HEAP_BIT,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_RESOURCE_BIT_KHR = VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_RESOURCE_BIT,
-       VK_EXTERNAL_MEMORY_HANDLE_TYPE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_HOST_ALLOCATION_BIT_EXT             = $00000080,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_HOST_MAPPED_FOREIGN_MEMORY_BIT_EXT  = $00000100,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_FD_BIT_KHR                   = VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_FD_BIT,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_BIT_KHR                = VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_BIT,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT_KHR            = VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D11_TEXTURE_BIT_KHR               = VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D11_TEXTURE_BIT,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D11_TEXTURE_KMT_BIT_KHR           = VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D11_TEXTURE_KMT_BIT,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_HEAP_BIT_KHR                  = VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_HEAP_BIT,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_RESOURCE_BIT_KHR              = VK_EXTERNAL_MEMORY_HANDLE_TYPE_D3D12_RESOURCE_BIT,
+       VK_EXTERNAL_MEMORY_HANDLE_TYPE_FLAG_BITS_MAX_ENUM                  = $7FFFFFFF
      );
 type P_VkExternalMemoryHandleTypeFlags = ^VkExternalMemoryHandleTypeFlags;
-     VkExternalMemoryHandleTypeFlags = VkFlags;
+       VkExternalMemoryHandleTypeFlags = VkFlags;
 
 type P_VkExternalMemoryFeatureFlagBits = ^VkExternalMemoryFeatureFlagBits;
      VkExternalMemoryFeatureFlagBits = (
-       VK_EXTERNAL_MEMORY_FEATURE_DEDICATED_ONLY_BIT = $00000001,
-       VK_EXTERNAL_MEMORY_FEATURE_EXPORTABLE_BIT = $00000002,
-       VK_EXTERNAL_MEMORY_FEATURE_IMPORTABLE_BIT = $00000004,
+       VK_EXTERNAL_MEMORY_FEATURE_DEDICATED_ONLY_BIT     = $00000001,
+       VK_EXTERNAL_MEMORY_FEATURE_EXPORTABLE_BIT         = $00000002,
+       VK_EXTERNAL_MEMORY_FEATURE_IMPORTABLE_BIT         = $00000004,
        VK_EXTERNAL_MEMORY_FEATURE_DEDICATED_ONLY_BIT_KHR = VK_EXTERNAL_MEMORY_FEATURE_DEDICATED_ONLY_BIT,
-       VK_EXTERNAL_MEMORY_FEATURE_EXPORTABLE_BIT_KHR = VK_EXTERNAL_MEMORY_FEATURE_EXPORTABLE_BIT,
-       VK_EXTERNAL_MEMORY_FEATURE_IMPORTABLE_BIT_KHR = VK_EXTERNAL_MEMORY_FEATURE_IMPORTABLE_BIT,
-       VK_EXTERNAL_MEMORY_FEATURE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
+       VK_EXTERNAL_MEMORY_FEATURE_EXPORTABLE_BIT_KHR     = VK_EXTERNAL_MEMORY_FEATURE_EXPORTABLE_BIT,
+       VK_EXTERNAL_MEMORY_FEATURE_IMPORTABLE_BIT_KHR     = VK_EXTERNAL_MEMORY_FEATURE_IMPORTABLE_BIT,
+       VK_EXTERNAL_MEMORY_FEATURE_FLAG_BITS_MAX_ENUM     = $7FFFFFFF
      );
 type P_VkExternalMemoryFeatureFlags = ^VkExternalMemoryFeatureFlags;
      VkExternalMemoryFeatureFlags = VkFlags;
 
 type P_VkExternalFenceHandleTypeFlagBits = ^VkExternalFenceHandleTypeFlagBits;
      VkExternalFenceHandleTypeFlagBits = (
-       VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_FD_BIT = $00000001,
-       VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_WIN32_BIT = $00000002,
-       VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT = $00000004,
-       VK_EXTERNAL_FENCE_HANDLE_TYPE_SYNC_FD_BIT = $00000008,
-       VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_FD_BIT_KHR = VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_FD_BIT,
-       VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_WIN32_BIT_KHR = VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_WIN32_BIT,
+       VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_FD_BIT            = $00000001,
+       VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_WIN32_BIT         = $00000002,
+       VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT     = $00000004,
+       VK_EXTERNAL_FENCE_HANDLE_TYPE_SYNC_FD_BIT              = $00000008,
+       VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_FD_BIT_KHR        = VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_FD_BIT,
+       VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_WIN32_BIT_KHR     = VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_WIN32_BIT,
        VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT_KHR = VK_EXTERNAL_FENCE_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT,
-       VK_EXTERNAL_FENCE_HANDLE_TYPE_SYNC_FD_BIT_KHR = VK_EXTERNAL_FENCE_HANDLE_TYPE_SYNC_FD_BIT,
-       VK_EXTERNAL_FENCE_HANDLE_TYPE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
+       VK_EXTERNAL_FENCE_HANDLE_TYPE_SYNC_FD_BIT_KHR          = VK_EXTERNAL_FENCE_HANDLE_TYPE_SYNC_FD_BIT,
+       VK_EXTERNAL_FENCE_HANDLE_TYPE_FLAG_BITS_MAX_ENUM       = $7FFFFFFF
      );
 type P_VkExternalFenceHandleTypeFlags = ^VkExternalFenceHandleTypeFlags;
      VkExternalFenceHandleTypeFlags = VkFlags;
 
 type P_VkExternalFenceFeatureFlagBits = ^VkExternalFenceFeatureFlagBits;
      VkExternalFenceFeatureFlagBits = (
-       VK_EXTERNAL_FENCE_FEATURE_EXPORTABLE_BIT = $00000001,
-       VK_EXTERNAL_FENCE_FEATURE_IMPORTABLE_BIT = $00000002,
+       VK_EXTERNAL_FENCE_FEATURE_EXPORTABLE_BIT     = $00000001,
+       VK_EXTERNAL_FENCE_FEATURE_IMPORTABLE_BIT     = $00000002,
        VK_EXTERNAL_FENCE_FEATURE_EXPORTABLE_BIT_KHR = VK_EXTERNAL_FENCE_FEATURE_EXPORTABLE_BIT,
        VK_EXTERNAL_FENCE_FEATURE_IMPORTABLE_BIT_KHR = VK_EXTERNAL_FENCE_FEATURE_IMPORTABLE_BIT,
        VK_EXTERNAL_FENCE_FEATURE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
@@ -4508,8 +4508,8 @@ type P_VkExternalFenceFeatureFlags = ^VkExternalFenceFeatureFlags;
 
 type P_VkFenceImportFlagBits = ^VkFenceImportFlagBits;
      VkFenceImportFlagBits = (
-       VK_FENCE_IMPORT_TEMPORARY_BIT = $00000001,
-       VK_FENCE_IMPORT_TEMPORARY_BIT_KHR = VK_FENCE_IMPORT_TEMPORARY_BIT,
+       VK_FENCE_IMPORT_TEMPORARY_BIT      = $00000001,
+       VK_FENCE_IMPORT_TEMPORARY_BIT_KHR  = VK_FENCE_IMPORT_TEMPORARY_BIT,
        VK_FENCE_IMPORT_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
 type P_VkFenceImportFlags = ^VkFenceImportFlags;
@@ -4517,8 +4517,8 @@ type P_VkFenceImportFlags = ^VkFenceImportFlags;
 
 type P_VkSemaphoreImportFlagBits = ^VkSemaphoreImportFlagBits;
      VkSemaphoreImportFlagBits = (
-       VK_SEMAPHORE_IMPORT_TEMPORARY_BIT = $00000001,
-       VK_SEMAPHORE_IMPORT_TEMPORARY_BIT_KHR = VK_SEMAPHORE_IMPORT_TEMPORARY_BIT,
+       VK_SEMAPHORE_IMPORT_TEMPORARY_BIT      = $00000001,
+       VK_SEMAPHORE_IMPORT_TEMPORARY_BIT_KHR  = VK_SEMAPHORE_IMPORT_TEMPORARY_BIT,
        VK_SEMAPHORE_IMPORT_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
 type P_VkSemaphoreImportFlags = ^VkSemaphoreImportFlags;
@@ -4526,169 +4526,169 @@ type P_VkSemaphoreImportFlags = ^VkSemaphoreImportFlags;
 
 type P_VkExternalSemaphoreHandleTypeFlagBits = ^VkExternalSemaphoreHandleTypeFlagBits;
      VkExternalSemaphoreHandleTypeFlagBits = (
-       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_FD_BIT = $00000001,
-       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_WIN32_BIT = $00000002,
-       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT = $00000004,
-       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_D3D12_FENCE_BIT = $00000008,
-       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_SYNC_FD_BIT = $00000010,
-       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_D3D11_FENCE_BIT = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_D3D12_FENCE_BIT,
-       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_FD_BIT_KHR = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_FD_BIT,
-       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_WIN32_BIT_KHR = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_WIN32_BIT,
+       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_FD_BIT            = $00000001,
+       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_WIN32_BIT         = $00000002,
+       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT     = $00000004,
+       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_D3D12_FENCE_BIT          = $00000008,
+       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_SYNC_FD_BIT              = $00000010,
+       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_D3D11_FENCE_BIT          = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_D3D12_FENCE_BIT,
+       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_FD_BIT_KHR        = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_FD_BIT,
+       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_WIN32_BIT_KHR     = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_WIN32_BIT,
        VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT_KHR = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_OPAQUE_WIN32_KMT_BIT,
-       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_D3D12_FENCE_BIT_KHR = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_D3D12_FENCE_BIT,
-       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_SYNC_FD_BIT_KHR = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_SYNC_FD_BIT,
-       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
+       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_D3D12_FENCE_BIT_KHR      = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_D3D12_FENCE_BIT,
+       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_SYNC_FD_BIT_KHR          = VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_SYNC_FD_BIT,
+       VK_EXTERNAL_SEMAPHORE_HANDLE_TYPE_FLAG_BITS_MAX_ENUM       = $7FFFFFFF
      );
 type P_VkExternalSemaphoreHandleTypeFlags = ^VkExternalSemaphoreHandleTypeFlags;
      VkExternalSemaphoreHandleTypeFlags = VkFlags;
 
 type P_VkExternalSemaphoreFeatureFlagBits = ^VkExternalSemaphoreFeatureFlagBits;
      VkExternalSemaphoreFeatureFlagBits = (
-       VK_EXTERNAL_SEMAPHORE_FEATURE_EXPORTABLE_BIT = $00000001,
-       VK_EXTERNAL_SEMAPHORE_FEATURE_IMPORTABLE_BIT = $00000002,
+       VK_EXTERNAL_SEMAPHORE_FEATURE_EXPORTABLE_BIT     = $00000001,
+       VK_EXTERNAL_SEMAPHORE_FEATURE_IMPORTABLE_BIT     = $00000002,
        VK_EXTERNAL_SEMAPHORE_FEATURE_EXPORTABLE_BIT_KHR = VK_EXTERNAL_SEMAPHORE_FEATURE_EXPORTABLE_BIT,
        VK_EXTERNAL_SEMAPHORE_FEATURE_IMPORTABLE_BIT_KHR = VK_EXTERNAL_SEMAPHORE_FEATURE_IMPORTABLE_BIT,
        VK_EXTERNAL_SEMAPHORE_FEATURE_FLAG_BITS_MAX_ENUM = $7FFFFFFF
      );
 type P_VkExternalSemaphoreFeatureFlags = ^VkExternalSemaphoreFeatureFlags;
-     VkExternalSemaphoreFeatureFlags = VkFlags;
+       VkExternalSemaphoreFeatureFlags = VkFlags;
 type P_VkPhysicalDeviceSubgroupProperties = ^VkPhysicalDeviceSubgroupProperties;
      VkPhysicalDeviceSubgroupProperties = record
-       sType :VkStructureType;
-       pNext :P_void;
-       subgroupSize :T_uint32_t;
-       supportedStages :VkShaderStageFlags;
-       supportedOperations :VkSubgroupFeatureFlags;
+       sType                     :VkStructureType;
+       pNext                     :P_void;
+       subgroupSize              :T_uint32_t;
+       supportedStages           :VkShaderStageFlags;
+       supportedOperations       :VkSubgroupFeatureFlags;
        quadOperationsInAllStages :VkBool32;
      end;
 
 type P_VkBindBufferMemoryInfo = ^VkBindBufferMemoryInfo;
      VkBindBufferMemoryInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
-       buffer :VkBuffer;
-       memory :VkDeviceMemory;
+       sType        :VkStructureType;
+       pNext        :P_void;
+       buffer       :VkBuffer;
+       memory       :VkDeviceMemory;
        memoryOffset :VkDeviceSize;
      end;
 
 type P_VkBindImageMemoryInfo = ^VkBindImageMemoryInfo;
      VkBindImageMemoryInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
-       image :VkImage;
-       memory :VkDeviceMemory;
+       sType        :VkStructureType;
+       pNext        :P_void;
+       image        :VkImage;
+       memory       :VkDeviceMemory;
        memoryOffset :VkDeviceSize;
      end;
 
 type P_VkPhysicalDevice16BitStorageFeatures = ^VkPhysicalDevice16BitStorageFeatures;
      VkPhysicalDevice16BitStorageFeatures = record
-       sType :VkStructureType;
-       pNext :P_void;
-       storageBuffer16BitAccess :VkBool32;
+       sType                              :VkStructureType;
+       pNext                              :P_void;
+       storageBuffer16BitAccess           :VkBool32;
        uniformAndStorageBuffer16BitAccess :VkBool32;
-       storagePushConstant16 :VkBool32;
-       storageInputOutput16 :VkBool32;
+       storagePushConstant16              :VkBool32;
+       storageInputOutput16               :VkBool32;
      end;
 
 type P_VkMemoryDedicatedRequirements = ^VkMemoryDedicatedRequirements;
      VkMemoryDedicatedRequirements = record
-       sType :VkStructureType;
-       pNext :P_void;
-       prefersDedicatedAllocation :VkBool32;
+       sType                       :VkStructureType;
+       pNext                       :P_void;
+       prefersDedicatedAllocation  :VkBool32;
        requiresDedicatedAllocation :VkBool32;
      end;
 
 type P_VkMemoryDedicatedAllocateInfo = ^VkMemoryDedicatedAllocateInfo;
      VkMemoryDedicatedAllocateInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
-       image :VkImage;
+       sType  :VkStructureType;
+       pNext  :P_void;
+       image  :VkImage;
        buffer :VkBuffer;
      end;
 
 type P_VkMemoryAllocateFlagsInfo = ^VkMemoryAllocateFlagsInfo;
      VkMemoryAllocateFlagsInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
-       flags :VkMemoryAllocateFlags;
+       sType      :VkStructureType;
+       pNext      :P_void;
+       flags      :VkMemoryAllocateFlags;
        deviceMask :T_uint32_t;
      end;
 
 type P_VkDeviceGroupRenderPassBeginInfo = ^VkDeviceGroupRenderPassBeginInfo;
      VkDeviceGroupRenderPassBeginInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
-       deviceMask :T_uint32_t;
+       sType                 :VkStructureType;
+       pNext                 :P_void;
+       deviceMask            :T_uint32_t;
        deviceRenderAreaCount :T_uint32_t;
-       pDeviceRenderAreas :P_VkRect2D;
+       pDeviceRenderAreas    :P_VkRect2D;
      end;
 
 type P_VkDeviceGroupCommandBufferBeginInfo = ^VkDeviceGroupCommandBufferBeginInfo;
      VkDeviceGroupCommandBufferBeginInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType      :VkStructureType;
+       pNext      :P_void;
        deviceMask :T_uint32_t;
      end;
 
 type P_VkDeviceGroupSubmitInfo = ^VkDeviceGroupSubmitInfo;
      VkDeviceGroupSubmitInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
-       waitSemaphoreCount :T_uint32_t;
-       pWaitSemaphoreDeviceIndices :P_uint32_t;
-       commandBufferCount :T_uint32_t;
-       pCommandBufferDeviceMasks :P_uint32_t;
-       signalSemaphoreCount :T_uint32_t;
+       sType                         :VkStructureType;
+       pNext                         :P_void;
+       waitSemaphoreCount            :T_uint32_t;
+       pWaitSemaphoreDeviceIndices   :P_uint32_t;
+       commandBufferCount            :T_uint32_t;
+       pCommandBufferDeviceMasks     :P_uint32_t;
+       signalSemaphoreCount          :T_uint32_t;
        pSignalSemaphoreDeviceIndices :P_uint32_t;
      end;
 
 type P_VkDeviceGroupBindSparseInfo = ^VkDeviceGroupBindSparseInfo;
      VkDeviceGroupBindSparseInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType               :VkStructureType;
+       pNext               :P_void;
        resourceDeviceIndex :T_uint32_t;
-       memoryDeviceIndex :T_uint32_t;
+       memoryDeviceIndex   :T_uint32_t;
      end;
 
 type P_VkBindBufferMemoryDeviceGroupInfo = ^VkBindBufferMemoryDeviceGroupInfo;
      VkBindBufferMemoryDeviceGroupInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType            :VkStructureType;
+       pNext            :P_void;
        deviceIndexCount :T_uint32_t;
-       pDeviceIndices :P_uint32_t;
+       pDeviceIndices   :P_uint32_t;
      end;
 
 type P_VkBindImageMemoryDeviceGroupInfo = ^VkBindImageMemoryDeviceGroupInfo;
      VkBindImageMemoryDeviceGroupInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
-       deviceIndexCount :T_uint32_t;
-       pDeviceIndices :P_uint32_t;
+       sType                        :VkStructureType;
+       pNext                        :P_void;
+       deviceIndexCount             :T_uint32_t;
+       pDeviceIndices               :P_uint32_t;
        splitInstanceBindRegionCount :T_uint32_t;
-       pSplitInstanceBindRegions :P_VkRect2D;
+       pSplitInstanceBindRegions    :P_VkRect2D;
      end;
 
 type P_VkPhysicalDeviceGroupProperties = ^VkPhysicalDeviceGroupProperties;
      VkPhysicalDeviceGroupProperties = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType               :VkStructureType;
+       pNext               :P_void;
        physicalDeviceCount :T_uint32_t;
-       physicalDevices :array [ 0..VK_MAX_DEVICE_GROUP_SIZE-1 ] of VkPhysicalDevice;
-       subsetAllocation :VkBool32;
+       physicalDevices     :array [ 0..VK_MAX_DEVICE_GROUP_SIZE-1 ] of VkPhysicalDevice;
+       subsetAllocation    :VkBool32;
      end;
 
 type P_VkDeviceGroupDeviceCreateInfo = ^VkDeviceGroupDeviceCreateInfo;
      VkDeviceGroupDeviceCreateInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType               :VkStructureType;
+       pNext               :P_void;
        physicalDeviceCount :T_uint32_t;
-       pPhysicalDevices :P_VkPhysicalDevice;
+       pPhysicalDevices    :P_VkPhysicalDevice;
      end;
 
 type P_VkBufferMemoryRequirementsInfo2 = ^VkBufferMemoryRequirementsInfo2;
      VkBufferMemoryRequirementsInfo2 = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType  :VkStructureType;
+       pNext  :P_void;
        buffer :VkBuffer;
      end;
 
@@ -4708,109 +4708,109 @@ type P_VkImageSparseMemoryRequirementsInfo2 = ^VkImageSparseMemoryRequirementsIn
 
 type P_VkMemoryRequirements2 = ^VkMemoryRequirements2;
      VkMemoryRequirements2 = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType              :VkStructureType;
+       pNext              :P_void;
        memoryRequirements :VkMemoryRequirements;
      end;
 
 type P_VkSparseImageMemoryRequirements2 = ^VkSparseImageMemoryRequirements2;
      VkSparseImageMemoryRequirements2 = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType              :VkStructureType;
+       pNext              :P_void;
        memoryRequirements :VkSparseImageMemoryRequirements;
      end;
 
 type P_VkPhysicalDeviceFeatures2 = ^VkPhysicalDeviceFeatures2;
      VkPhysicalDeviceFeatures2 = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType    :VkStructureType;
+       pNext    :P_void;
        features :VkPhysicalDeviceFeatures;
      end;
 
 type P_VkPhysicalDeviceProperties2 = ^VkPhysicalDeviceProperties2;
      VkPhysicalDeviceProperties2 = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType      :VkStructureType;
+       pNext      :P_void;
        properties :VkPhysicalDeviceProperties;
      end;
 
 type P_VkFormatProperties2 = ^VkFormatProperties2;
      VkFormatProperties2 = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType            :VkStructureType;
+       pNext            :P_void;
        formatProperties :VkFormatProperties;
      end;
 
 type P_VkImageFormatProperties2 = ^VkImageFormatProperties2;
      VkImageFormatProperties2 = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                 :VkStructureType;
+       pNext                 :P_void;
        imageFormatProperties :VkImageFormatProperties;
      end;
 
 type P_VkPhysicalDeviceImageFormatInfo2 = ^VkPhysicalDeviceImageFormatInfo2;
      VkPhysicalDeviceImageFormatInfo2 = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType  :VkStructureType;
+       pNext  :P_void;
        format :VkFormat;
-       type_ :VkImageType;
+       type_  :VkImageType;
        tiling :VkImageTiling;
-       usage :VkImageUsageFlags;
-       flags :VkImageCreateFlags;
+       usage  :VkImageUsageFlags;
+       flags  :VkImageCreateFlags;
      end;
 
 type P_VkQueueFamilyProperties2 = ^VkQueueFamilyProperties2;
      VkQueueFamilyProperties2 = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                 :VkStructureType;
+       pNext                 :P_void;
        queueFamilyProperties :VkQueueFamilyProperties;
      end;
 
 type P_VkPhysicalDeviceMemoryProperties2 = ^VkPhysicalDeviceMemoryProperties2;
      VkPhysicalDeviceMemoryProperties2 = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType            :VkStructureType;
+       pNext            :P_void;
        memoryProperties :VkPhysicalDeviceMemoryProperties;
      end;
 
 type P_VkSparseImageFormatProperties2 = ^VkSparseImageFormatProperties2;
      VkSparseImageFormatProperties2 = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType      :VkStructureType;
+       pNext      :P_void;
        properties :VkSparseImageFormatProperties;
      end;
 
 type P_VkPhysicalDeviceSparseImageFormatInfo2 = ^VkPhysicalDeviceSparseImageFormatInfo2;
      VkPhysicalDeviceSparseImageFormatInfo2 = record
-       sType :VkStructureType;
-       pNext :P_void;
-       format :VkFormat;
-       type_ :VkImageType;
+       sType   :VkStructureType;
+       pNext   :P_void;
+       format  :VkFormat;
+       type_   :VkImageType;
        samples :VkSampleCountFlagBits;
-       usage :VkImageUsageFlags;
-       tiling :VkImageTiling;
+       usage   :VkImageUsageFlags;
+       tiling  :VkImageTiling;
      end;
 
 type P_VkPhysicalDevicePointClippingProperties = ^VkPhysicalDevicePointClippingProperties;
      VkPhysicalDevicePointClippingProperties = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                 :VkStructureType;
+       pNext                 :P_void;
        pointClippingBehavior :VkPointClippingBehavior;
      end;
 
 type P_VkInputAttachmentAspectReference = ^VkInputAttachmentAspectReference;
      VkInputAttachmentAspectReference = record
-       subpass :T_uint32_t;
+       subpass              :T_uint32_t;
        inputAttachmentIndex :T_uint32_t;
-       aspectMask :VkImageAspectFlags;
+       aspectMask           :VkImageAspectFlags;
      end;
 
 type P_VkRenderPassInputAttachmentAspectCreateInfo = ^VkRenderPassInputAttachmentAspectCreateInfo;
      VkRenderPassInputAttachmentAspectCreateInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                :VkStructureType;
+       pNext                :P_void;
        aspectReferenceCount :T_uint32_t;
-       pAspectReferences :P_VkInputAttachmentAspectReference;
+       pAspectReferences    :P_VkInputAttachmentAspectReference;
      end;
 
 type P_VkImageViewUsageCreateInfo = ^VkImageViewUsageCreateInfo;
@@ -4822,46 +4822,46 @@ type P_VkImageViewUsageCreateInfo = ^VkImageViewUsageCreateInfo;
 
 type P_VkPipelineTessellationDomainOriginStateCreateInfo = ^VkPipelineTessellationDomainOriginStateCreateInfo;
      VkPipelineTessellationDomainOriginStateCreateInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType        :VkStructureType;
+       pNext        :P_void;
        domainOrigin :VkTessellationDomainOrigin;
      end;
 
 type P_VkRenderPassMultiviewCreateInfo = ^VkRenderPassMultiviewCreateInfo;
      VkRenderPassMultiviewCreateInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
-       subpassCount :T_uint32_t;
-       pViewMasks :P_uint32_t;
-       dependencyCount :T_uint32_t;
-       pViewOffsets :P_int32_t;
+       sType                :VkStructureType;
+       pNext                :P_void;
+       subpassCount         :T_uint32_t;
+       pViewMasks           :P_uint32_t;
+       dependencyCount      :T_uint32_t;
+       pViewOffsets         :P_int32_t;
        correlationMaskCount :T_uint32_t;
-       pCorrelationMasks :P_uint32_t;
+       pCorrelationMasks    :P_uint32_t;
      end;
 
 type P_VkPhysicalDeviceMultiviewFeatures = ^VkPhysicalDeviceMultiviewFeatures;
      VkPhysicalDeviceMultiviewFeatures = record
-       sType :VkStructureType;
-       pNext :P_void;
-       multiview :VkBool32;
-       multiviewGeometryShader :VkBool32;
+       sType                       :VkStructureType;
+       pNext                       :P_void;
+       multiview                   :VkBool32;
+       multiviewGeometryShader     :VkBool32;
        multiviewTessellationShader :VkBool32;
      end;
 
 type P_VkPhysicalDeviceMultiviewProperties = ^VkPhysicalDeviceMultiviewProperties;
      VkPhysicalDeviceMultiviewProperties = record
-       sType :VkStructureType;
-       pNext :P_void;
-       maxMultiviewViewCount :T_uint32_t;
+       sType                     :VkStructureType;
+       pNext                     :P_void;
+       maxMultiviewViewCount     :T_uint32_t;
        maxMultiviewInstanceIndex :T_uint32_t;
      end;
 
 type P_VkPhysicalDeviceVariablePointersFeatures = ^VkPhysicalDeviceVariablePointersFeatures;
      VkPhysicalDeviceVariablePointersFeatures = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                         :VkStructureType;
+       pNext                         :P_void;
        variablePointersStorageBuffer :VkBool32;
-       variablePointers :VkBool32;
+       variablePointers              :VkBool32;
      end;
 
 type P_VkPhysicalDeviceVariablePointerFeatures = ^VkPhysicalDeviceVariablePointerFeatures;
@@ -4869,275 +4869,275 @@ type P_VkPhysicalDeviceVariablePointerFeatures = ^VkPhysicalDeviceVariablePointe
 
 type P_VkPhysicalDeviceProtectedMemoryFeatures = ^VkPhysicalDeviceProtectedMemoryFeatures;
      VkPhysicalDeviceProtectedMemoryFeatures = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType           :VkStructureType;
+       pNext           :P_void;
        protectedMemory :VkBool32;
      end;
 
 type P_VkPhysicalDeviceProtectedMemoryProperties = ^VkPhysicalDeviceProtectedMemoryProperties;
      VkPhysicalDeviceProtectedMemoryProperties = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType            :VkStructureType;
+       pNext            :P_void;
        protectedNoFault :VkBool32;
      end;
 
 type P_VkDeviceQueueInfo2 = ^VkDeviceQueueInfo2;
      VkDeviceQueueInfo2 = record
-       sType :VkStructureType;
-       pNext :P_void;
-       flags :VkDeviceQueueCreateFlags;
+       sType            :VkStructureType;
+       pNext            :P_void;
+       flags            :VkDeviceQueueCreateFlags;
        queueFamilyIndex :T_uint32_t;
-       queueIndex :T_uint32_t;
+       queueIndex       :T_uint32_t;
      end;
 
 type P_VkProtectedSubmitInfo = ^VkProtectedSubmitInfo;
      VkProtectedSubmitInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType           :VkStructureType;
+       pNext           :P_void;
        protectedSubmit :VkBool32;
      end;
 
 type P_VkSamplerYcbcrConversionCreateInfo = ^VkSamplerYcbcrConversionCreateInfo;
      VkSamplerYcbcrConversionCreateInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
-       format :VkFormat;
-       ycbcrModel :VkSamplerYcbcrModelConversion;
-       ycbcrRange :VkSamplerYcbcrRange;
-       components :VkComponentMapping;
-       xChromaOffset :VkChromaLocation;
-       yChromaOffset :VkChromaLocation;
-       chromaFilter :VkFilter;
+       sType                       :VkStructureType;
+       pNext                       :P_void;
+       format                      :VkFormat;
+       ycbcrModel                  :VkSamplerYcbcrModelConversion;
+       ycbcrRange                  :VkSamplerYcbcrRange;
+       components                  :VkComponentMapping;
+       xChromaOffset               :VkChromaLocation;
+       yChromaOffset               :VkChromaLocation;
+       chromaFilter                :VkFilter;
        forceExplicitReconstruction :VkBool32;
      end;
 
 type P_VkSamplerYcbcrConversionInfo = ^VkSamplerYcbcrConversionInfo;
      VkSamplerYcbcrConversionInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType      :VkStructureType;
+       pNext      :P_void;
        conversion :VkSamplerYcbcrConversion;
      end;
 
 type P_VkBindImagePlaneMemoryInfo = ^VkBindImagePlaneMemoryInfo;
      VkBindImagePlaneMemoryInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType       :VkStructureType;
+       pNext       :P_void;
        planeAspect :VkImageAspectFlagBits;
      end;
 
 type P_VkImagePlaneMemoryRequirementsInfo = ^VkImagePlaneMemoryRequirementsInfo;
      VkImagePlaneMemoryRequirementsInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType       :VkStructureType;
+       pNext       :P_void;
        planeAspect :VkImageAspectFlagBits;
      end;
 
 type P_VkPhysicalDeviceSamplerYcbcrConversionFeatures = ^VkPhysicalDeviceSamplerYcbcrConversionFeatures;
      VkPhysicalDeviceSamplerYcbcrConversionFeatures = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                  :VkStructureType;
+       pNext                  :P_void;
        samplerYcbcrConversion :VkBool32;
      end;
 
 type P_VkSamplerYcbcrConversionImageFormatProperties = ^VkSamplerYcbcrConversionImageFormatProperties;
      VkSamplerYcbcrConversionImageFormatProperties = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                               :VkStructureType;
+       pNext                               :P_void;
        combinedImageSamplerDescriptorCount :T_uint32_t;
      end;
 
 type P_VkDescriptorUpdateTemplateEntry = ^VkDescriptorUpdateTemplateEntry;
      VkDescriptorUpdateTemplateEntry = record
-       dstBinding :T_uint32_t;
+       dstBinding      :T_uint32_t;
        dstArrayElement :T_uint32_t;
        descriptorCount :T_uint32_t;
-       descriptorType :VkDescriptorType;
-       offset :T_size_t;
-       stride :T_size_t;
+       descriptorType  :VkDescriptorType;
+       offset          :T_size_t;
+       stride          :T_size_t;
      end;
 
 type P_VkDescriptorUpdateTemplateCreateInfo = ^VkDescriptorUpdateTemplateCreateInfo;
      VkDescriptorUpdateTemplateCreateInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
-       flags :VkDescriptorUpdateTemplateCreateFlags;
+       sType                      :VkStructureType;
+       pNext                      :P_void;
+       flags                      :VkDescriptorUpdateTemplateCreateFlags;
        descriptorUpdateEntryCount :T_uint32_t;
-       pDescriptorUpdateEntries :P_VkDescriptorUpdateTemplateEntry;
-       templateType :VkDescriptorUpdateTemplateType;
-       descriptorSetLayout :VkDescriptorSetLayout;
-       pipelineBindPoint :VkPipelineBindPoint;
-       pipelineLayout :VkPipelineLayout;
-       set_ :T_uint32_t;
+       pDescriptorUpdateEntries   :P_VkDescriptorUpdateTemplateEntry;
+       templateType               :VkDescriptorUpdateTemplateType;
+       descriptorSetLayout        :VkDescriptorSetLayout;
+       pipelineBindPoint          :VkPipelineBindPoint;
+       pipelineLayout             :VkPipelineLayout;
+       set_                       :T_uint32_t;
      end;
 
 type P_VkExternalMemoryProperties = ^VkExternalMemoryProperties;
      VkExternalMemoryProperties = record
-       externalMemoryFeatures :VkExternalMemoryFeatureFlags;
+       externalMemoryFeatures        :VkExternalMemoryFeatureFlags;
        exportFromImportedHandleTypes :VkExternalMemoryHandleTypeFlags;
-       compatibleHandleTypes :VkExternalMemoryHandleTypeFlags;
+       compatibleHandleTypes         :VkExternalMemoryHandleTypeFlags;
      end;
 
 type P_VkPhysicalDeviceExternalImageFormatInfo = ^VkPhysicalDeviceExternalImageFormatInfo;
      VkPhysicalDeviceExternalImageFormatInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType      :VkStructureType;
+       pNext      :P_void;
        handleType :VkExternalMemoryHandleTypeFlagBits;
      end;
 
 type P_VkExternalImageFormatProperties = ^VkExternalImageFormatProperties;
      VkExternalImageFormatProperties = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                    :VkStructureType;
+       pNext                    :P_void;
        externalMemoryProperties :VkExternalMemoryProperties;
      end;
 
 type P_VkPhysicalDeviceExternalBufferInfo = ^VkPhysicalDeviceExternalBufferInfo;
      VkPhysicalDeviceExternalBufferInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
-       flags :VkBufferCreateFlags;
-       usage :VkBufferUsageFlags;
+       sType      :VkStructureType;
+       pNext      :P_void;
+       flags      :VkBufferCreateFlags;
+       usage      :VkBufferUsageFlags;
        handleType :VkExternalMemoryHandleTypeFlagBits;
      end;
 
 type P_VkExternalBufferProperties = ^VkExternalBufferProperties;
      VkExternalBufferProperties = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                    :VkStructureType;
+       pNext                    :P_void;
        externalMemoryProperties :VkExternalMemoryProperties;
      end;
 
 type P_VkPhysicalDeviceIDProperties = ^VkPhysicalDeviceIDProperties;
      VkPhysicalDeviceIDProperties = record
-       sType :VkStructureType;
-       pNext :P_void;
-       deviceUUID :array [ 0..VK_UUID_SIZE-1 ] of T_uint8_t;
-       driverUUID :array [ 0..VK_UUID_SIZE-1 ] of T_uint8_t;
-       deviceLUID :array [ 0..VK_LUID_SIZE-1 ] of T_uint8_t;
-       deviceNodeMask :T_uint32_t;
+       sType           :VkStructureType;
+       pNext           :P_void;
+       deviceUUID      :array [ 0..VK_UUID_SIZE-1 ] of T_uint8_t;
+       driverUUID      :array [ 0..VK_UUID_SIZE-1 ] of T_uint8_t;
+       deviceLUID      :array [ 0..VK_LUID_SIZE-1 ] of T_uint8_t;
+       deviceNodeMask  :T_uint32_t;
        deviceLUIDValid :VkBool32;
      end;
 
 type P_VkExternalMemoryImageCreateInfo = ^VkExternalMemoryImageCreateInfo;
      VkExternalMemoryImageCreateInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType       :VkStructureType;
+       pNext       :P_void;
        handleTypes :VkExternalMemoryHandleTypeFlags;
      end;
 
 type P_VkExternalMemoryBufferCreateInfo = ^VkExternalMemoryBufferCreateInfo;
      VkExternalMemoryBufferCreateInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType       :VkStructureType;
+       pNext       :P_void;
        handleTypes :VkExternalMemoryHandleTypeFlags;
      end;
 
 type P_VkExportMemoryAllocateInfo = ^VkExportMemoryAllocateInfo;
      VkExportMemoryAllocateInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType       :VkStructureType;
+       pNext       :P_void;
        handleTypes :VkExternalMemoryHandleTypeFlags;
      end;
 
 type P_VkPhysicalDeviceExternalFenceInfo = ^VkPhysicalDeviceExternalFenceInfo;
      VkPhysicalDeviceExternalFenceInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType      :VkStructureType;
+       pNext      :P_void;
        handleType :VkExternalFenceHandleTypeFlagBits;
      end;
 
 type P_VkExternalFenceProperties = ^VkExternalFenceProperties;
      VkExternalFenceProperties = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                         :VkStructureType;
+       pNext                         :P_void;
        exportFromImportedHandleTypes :VkExternalFenceHandleTypeFlags;
-       compatibleHandleTypes :VkExternalFenceHandleTypeFlags;
-       externalFenceFeatures :VkExternalFenceFeatureFlags;
+       compatibleHandleTypes         :VkExternalFenceHandleTypeFlags;
+       externalFenceFeatures         :VkExternalFenceFeatureFlags;
      end;
 
 type P_VkExportFenceCreateInfo = ^VkExportFenceCreateInfo;
      VkExportFenceCreateInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType       :VkStructureType;
+       pNext       :P_void;
        handleTypes :VkExternalFenceHandleTypeFlags;
      end;
 
 type P_VkExportSemaphoreCreateInfo = ^VkExportSemaphoreCreateInfo;
      VkExportSemaphoreCreateInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType       :VkStructureType;
+       pNext       :P_void;
        handleTypes :VkExternalSemaphoreHandleTypeFlags;
      end;
 
 type P_VkPhysicalDeviceExternalSemaphoreInfo = ^VkPhysicalDeviceExternalSemaphoreInfo;
      VkPhysicalDeviceExternalSemaphoreInfo = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType      :VkStructureType;
+       pNext      :P_void;
        handleType :VkExternalSemaphoreHandleTypeFlagBits;
      end;
 
 type P_VkExternalSemaphoreProperties = ^VkExternalSemaphoreProperties;
      VkExternalSemaphoreProperties = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                         :VkStructureType;
+       pNext                         :P_void;
        exportFromImportedHandleTypes :VkExternalSemaphoreHandleTypeFlags;
-       compatibleHandleTypes :VkExternalSemaphoreHandleTypeFlags;
-       externalSemaphoreFeatures :VkExternalSemaphoreFeatureFlags;
+       compatibleHandleTypes         :VkExternalSemaphoreHandleTypeFlags;
+       externalSemaphoreFeatures     :VkExternalSemaphoreFeatureFlags;
      end;
 
 type P_VkPhysicalDeviceMaintenance3Properties = ^VkPhysicalDeviceMaintenance3Properties;
      VkPhysicalDeviceMaintenance3Properties = record
-       sType :VkStructureType;
-       pNext :P_void;
-       maxPerSetDescriptors :T_uint32_t;
+       sType                   :VkStructureType;
+       pNext                   :P_void;
+       maxPerSetDescriptors    :T_uint32_t;
        maxMemoryAllocationSize :VkDeviceSize;
      end;
 
 type P_VkDescriptorSetLayoutSupport = ^VkDescriptorSetLayoutSupport;
      VkDescriptorSetLayoutSupport = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType     :VkStructureType;
+       pNext     :P_void;
        supported :VkBool32;
      end;
 
 type P_VkPhysicalDeviceShaderDrawParametersFeatures = ^VkPhysicalDeviceShaderDrawParametersFeatures;
      VkPhysicalDeviceShaderDrawParametersFeatures = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                :VkStructureType;
+       pNext                :P_void;
        shaderDrawParameters :VkBool32;
      end;
 
 type P_VkPhysicalDeviceShaderDrawParameterFeatures = ^VkPhysicalDeviceShaderDrawParameterFeatures;
-     VkPhysicalDeviceShaderDrawParameterFeatures = VkPhysicalDeviceShaderDrawParametersFeatures;
+       VkPhysicalDeviceShaderDrawParameterFeatures = VkPhysicalDeviceShaderDrawParametersFeatures;
 
-type PFN_vkEnumerateInstanceVersion = function( pApiVersion_:P_uint32_t ) :VkResult;
-type PFN_vkBindBufferMemory2 = function( device_:VkDevice; bindInfoCount_:T_uint32_t; const pBindInfos_:P_VkBindBufferMemoryInfo ) :VkResult;
-type PFN_vkBindImageMemory2 = function( device_:VkDevice; bindInfoCount_:T_uint32_t; const pBindInfos_:P_VkBindImageMemoryInfo ) :VkResult;
-type PFN_vkGetDeviceGroupPeerMemoryFeatures = procedure( device_:VkDevice; heapIndex_:T_uint32_t; localDeviceIndex_:T_uint32_t; remoteDeviceIndex_:T_uint32_t; pPeerMemoryFeatures_:P_VkPeerMemoryFeatureFlags );
-type PFN_vkCmdSetDeviceMask = procedure( commandBuffer_:VkCommandBuffer; deviceMask_:T_uint32_t );
-type PFN_vkCmdDispatchBase = procedure( commandBuffer_:VkCommandBuffer; baseGroupX_:T_uint32_t; baseGroupY_:T_uint32_t; baseGroupZ_:T_uint32_t; groupCountX_:T_uint32_t; groupCountY_:T_uint32_t; groupCountZ_:T_uint32_t );
-type PFN_vkEnumeratePhysicalDeviceGroups = function( instance_:VkInstance; pPhysicalDeviceGroupCount_:P_uint32_t; pPhysicalDeviceGroupProperties_:P_VkPhysicalDeviceGroupProperties ) :VkResult;
-type PFN_vkGetImageMemoryRequirements2 = procedure( device_:VkDevice; const pInfo_:P_VkImageMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
-type PFN_vkGetBufferMemoryRequirements2 = procedure( device_:VkDevice; const pInfo_:P_VkBufferMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
-type PFN_vkGetImageSparseMemoryRequirements2 = procedure( device_:VkDevice; const pInfo_:P_VkImageSparseMemoryRequirementsInfo2; pSparseMemoryRequirementCount_:P_uint32_t; pSparseMemoryRequirements_:P_VkSparseImageMemoryRequirements2 );
-type PFN_vkGetPhysicalDeviceFeatures2 = procedure( physicalDevice_:VkPhysicalDevice; pFeatures_:P_VkPhysicalDeviceFeatures2 );
-type PFN_vkGetPhysicalDeviceProperties2 = procedure( physicalDevice_:VkPhysicalDevice; pProperties_:P_VkPhysicalDeviceProperties2 );
-type PFN_vkGetPhysicalDeviceFormatProperties2 = procedure( physicalDevice_:VkPhysicalDevice; format_:VkFormat; pFormatProperties_:P_VkFormatProperties2 );
-type PFN_vkGetPhysicalDeviceImageFormatProperties2 = function( physicalDevice_:VkPhysicalDevice; const pImageFormatInfo_:P_VkPhysicalDeviceImageFormatInfo2; pImageFormatProperties_:P_VkImageFormatProperties2 ) :VkResult;
-type PFN_vkGetPhysicalDeviceQueueFamilyProperties2 = procedure( physicalDevice_:VkPhysicalDevice; pQueueFamilyPropertyCount_:P_uint32_t; pQueueFamilyProperties_:P_VkQueueFamilyProperties2 );
-type PFN_vkGetPhysicalDeviceMemoryProperties2 = procedure( physicalDevice_:VkPhysicalDevice; pMemoryProperties_:P_VkPhysicalDeviceMemoryProperties2 );
+type PFN_vkEnumerateInstanceVersion                      = function( pApiVersion_:P_uint32_t ) :VkResult;
+type PFN_vkBindBufferMemory2                             = function( device_:VkDevice; bindInfoCount_:T_uint32_t; const pBindInfos_:P_VkBindBufferMemoryInfo ) :VkResult;
+type PFN_vkBindImageMemory2                              = function( device_:VkDevice; bindInfoCount_:T_uint32_t; const pBindInfos_:P_VkBindImageMemoryInfo ) :VkResult;
+type PFN_vkGetDeviceGroupPeerMemoryFeatures              = procedure( device_:VkDevice; heapIndex_:T_uint32_t; localDeviceIndex_:T_uint32_t; remoteDeviceIndex_:T_uint32_t; pPeerMemoryFeatures_:P_VkPeerMemoryFeatureFlags );
+type PFN_vkCmdSetDeviceMask                              = procedure( commandBuffer_:VkCommandBuffer; deviceMask_:T_uint32_t );
+type PFN_vkCmdDispatchBase                               = procedure( commandBuffer_:VkCommandBuffer; baseGroupX_:T_uint32_t; baseGroupY_:T_uint32_t; baseGroupZ_:T_uint32_t; groupCountX_:T_uint32_t; groupCountY_:T_uint32_t; groupCountZ_:T_uint32_t );
+type PFN_vkEnumeratePhysicalDeviceGroups                 = function( instance_:VkInstance; pPhysicalDeviceGroupCount_:P_uint32_t; pPhysicalDeviceGroupProperties_:P_VkPhysicalDeviceGroupProperties ) :VkResult;
+type PFN_vkGetImageMemoryRequirements2                   = procedure( device_:VkDevice; const pInfo_:P_VkImageMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
+type PFN_vkGetBufferMemoryRequirements2                  = procedure( device_:VkDevice; const pInfo_:P_VkBufferMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
+type PFN_vkGetImageSparseMemoryRequirements2             = procedure( device_:VkDevice; const pInfo_:P_VkImageSparseMemoryRequirementsInfo2; pSparseMemoryRequirementCount_:P_uint32_t; pSparseMemoryRequirements_:P_VkSparseImageMemoryRequirements2 );
+type PFN_vkGetPhysicalDeviceFeatures2                    = procedure( physicalDevice_:VkPhysicalDevice; pFeatures_:P_VkPhysicalDeviceFeatures2 );
+type PFN_vkGetPhysicalDeviceProperties2                  = procedure( physicalDevice_:VkPhysicalDevice; pProperties_:P_VkPhysicalDeviceProperties2 );
+type PFN_vkGetPhysicalDeviceFormatProperties2            = procedure( physicalDevice_:VkPhysicalDevice; format_:VkFormat; pFormatProperties_:P_VkFormatProperties2 );
+type PFN_vkGetPhysicalDeviceImageFormatProperties2       = function( physicalDevice_:VkPhysicalDevice; const pImageFormatInfo_:P_VkPhysicalDeviceImageFormatInfo2; pImageFormatProperties_:P_VkImageFormatProperties2 ) :VkResult;
+type PFN_vkGetPhysicalDeviceQueueFamilyProperties2       = procedure( physicalDevice_:VkPhysicalDevice; pQueueFamilyPropertyCount_:P_uint32_t; pQueueFamilyProperties_:P_VkQueueFamilyProperties2 );
+type PFN_vkGetPhysicalDeviceMemoryProperties2            = procedure( physicalDevice_:VkPhysicalDevice; pMemoryProperties_:P_VkPhysicalDeviceMemoryProperties2 );
 type PFN_vkGetPhysicalDeviceSparseImageFormatProperties2 = procedure( physicalDevice_:VkPhysicalDevice; const pFormatInfo_:P_VkPhysicalDeviceSparseImageFormatInfo2; pPropertyCount_:P_uint32_t; pProperties_:P_VkSparseImageFormatProperties2 );
-type PFN_vkTrimCommandPool = procedure( device_:VkDevice; commandPool_:VkCommandPool; flags_:VkCommandPoolTrimFlags );
-type PFN_vkGetDeviceQueue2 = procedure( device_:VkDevice; const pQueueInfo_:P_VkDeviceQueueInfo2; pQueue_:P_VkQueue );
-type PFN_vkCreateSamplerYcbcrConversion = function( device_:VkDevice; const pCreateInfo_:P_VkSamplerYcbcrConversionCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pYcbcrConversion_:P_VkSamplerYcbcrConversion ) :VkResult;
-type PFN_vkDestroySamplerYcbcrConversion = procedure( device_:VkDevice; ycbcrConversion_:VkSamplerYcbcrConversion; const pAllocator_:P_VkAllocationCallbacks );
-type PFN_vkCreateDescriptorUpdateTemplate = function( device_:VkDevice; const pCreateInfo_:P_VkDescriptorUpdateTemplateCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pDescriptorUpdateTemplate_:P_VkDescriptorUpdateTemplate ) :VkResult;
-type PFN_vkDestroyDescriptorUpdateTemplate = procedure( device_:VkDevice; descriptorUpdateTemplate_:VkDescriptorUpdateTemplate; const pAllocator_:P_VkAllocationCallbacks );
-type PFN_vkUpdateDescriptorSetWithTemplate = procedure( device_:VkDevice; descriptorSet_:VkDescriptorSet; descriptorUpdateTemplate_:VkDescriptorUpdateTemplate; const pData_:P_void );
-type PFN_vkGetPhysicalDeviceExternalBufferProperties = procedure( physicalDevice_:VkPhysicalDevice; const pExternalBufferInfo_:P_VkPhysicalDeviceExternalBufferInfo; pExternalBufferProperties_:P_VkExternalBufferProperties );
-type PFN_vkGetPhysicalDeviceExternalFenceProperties = procedure( physicalDevice_:VkPhysicalDevice; const pExternalFenceInfo_:P_VkPhysicalDeviceExternalFenceInfo; pExternalFenceProperties_:P_VkExternalFenceProperties );
-type PFN_vkGetPhysicalDeviceExternalSemaphoreProperties = procedure( physicalDevice_:VkPhysicalDevice; const pExternalSemaphoreInfo_:P_VkPhysicalDeviceExternalSemaphoreInfo; pExternalSemaphoreProperties_:P_VkExternalSemaphoreProperties );
-type PFN_vkGetDescriptorSetLayoutSupport = procedure( device_:VkDevice; const pCreateInfo_:P_VkDescriptorSetLayoutCreateInfo; pSupport_:P_VkDescriptorSetLayoutSupport );
+type PFN_vkTrimCommandPool                               = procedure( device_:VkDevice; commandPool_:VkCommandPool; flags_:VkCommandPoolTrimFlags );
+type PFN_vkGetDeviceQueue2                               = procedure( device_:VkDevice; const pQueueInfo_:P_VkDeviceQueueInfo2; pQueue_:P_VkQueue );
+type PFN_vkCreateSamplerYcbcrConversion                  = function( device_:VkDevice; const pCreateInfo_:P_VkSamplerYcbcrConversionCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pYcbcrConversion_:P_VkSamplerYcbcrConversion ) :VkResult;
+type PFN_vkDestroySamplerYcbcrConversion                 = procedure( device_:VkDevice; ycbcrConversion_:VkSamplerYcbcrConversion; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCreateDescriptorUpdateTemplate                = function( device_:VkDevice; const pCreateInfo_:P_VkDescriptorUpdateTemplateCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pDescriptorUpdateTemplate_:P_VkDescriptorUpdateTemplate ) :VkResult;
+type PFN_vkDestroyDescriptorUpdateTemplate               = procedure( device_:VkDevice; descriptorUpdateTemplate_:VkDescriptorUpdateTemplate; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkUpdateDescriptorSetWithTemplate               = procedure( device_:VkDevice; descriptorSet_:VkDescriptorSet; descriptorUpdateTemplate_:VkDescriptorUpdateTemplate; const pData_:P_void );
+type PFN_vkGetPhysicalDeviceExternalBufferProperties     = procedure( physicalDevice_:VkPhysicalDevice; const pExternalBufferInfo_:P_VkPhysicalDeviceExternalBufferInfo; pExternalBufferProperties_:P_VkExternalBufferProperties );
+type PFN_vkGetPhysicalDeviceExternalFenceProperties      = procedure( physicalDevice_:VkPhysicalDevice; const pExternalFenceInfo_:P_VkPhysicalDeviceExternalFenceInfo; pExternalFenceProperties_:P_VkExternalFenceProperties );
+type PFN_vkGetPhysicalDeviceExternalSemaphoreProperties  = procedure( physicalDevice_:VkPhysicalDevice; const pExternalSemaphoreInfo_:P_VkPhysicalDeviceExternalSemaphoreInfo; pExternalSemaphoreProperties_:P_VkExternalSemaphoreProperties );
+type PFN_vkGetDescriptorSetLayoutSupport                 = procedure( device_:VkDevice; const pCreateInfo_:P_VkDescriptorSetLayoutCreateInfo; pSupport_:P_VkDescriptorSetLayoutSupport );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkEnumerateInstanceVersion(
