@@ -24,7 +24,8 @@ interface //####################################################################
 
 uses vulkan_core, vulkan_win32,
      vulkan.util,
-     LUX.Code.C;
+     LUX.Code.C,
+     LUX.GPU.Vulkan;
 
 //type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -41,36 +42,29 @@ uses vulkan_core, vulkan_win32,
 //////////////////////////////////////////////////////////////////////////////// 01-init_instance
 
 function init_global_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
-function init_global_layer_properties( var info_:T_sample_info ) :VkResult;
+function init_global_layer_properties( const Vulkan_:TVulkan ) :VkResult;
 
 //////////////////////////////////////////////////////////////////////////////// 02-enumerate_devices
 
-function init_instance( var info_:T_sample_info; const app_short_name_:P_char ) :VkResult;
-
 //////////////////////////////////////////////////////////////////////////////// 03-init_device
-
-function init_device_extension_properties( var info_:T_sample_info; var layer_props_:T_layer_properties ) :VkResult;
-function init_enumerate_device( var info_:T_sample_info; gpu_count_:T_uint32_t = 1 ) :VkResult;
-procedure destroy_instance( var info_:T_sample_info );
 
 //////////////////////////////////////////////////////////////////////////////// 04-init_command_buffer
 
-procedure init_queue_family_index( var info_:T_sample_info );
-function init_device( var info_:T_sample_info ) :VkResult;
-procedure destroy_device( var info_:T_sample_info );
+function init_device( const Vulkan_:TVulkan ) :VkResult;
+procedure destroy_device( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 05-init_swapchain
 
-procedure init_instance_extension_names( var info_:T_sample_info );
-procedure init_device_extension_names( var info_:T_sample_info );
-procedure init_window_size( var info_:T_sample_info; default_width_,default_height_:UInt32 );
-procedure init_connection( var info_:T_sample_info );
-procedure init_window( var info_:T_sample_info );
-procedure destroy_window( var info_:T_sample_info );
+procedure init_instance_extension_names( const Vulkan_:TVulkan );
+procedure init_device_extension_names( const Vulkan_:TVulkan );
+procedure init_window_size( const Vulkan_:TVulkan; default_width_,default_height_:UInt32 );
+procedure init_connection( const Vulkan_:TVulkan );
+procedure init_window( const Vulkan_:TVulkan );
+procedure destroy_window( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 06-init_depth_buffer
 
-procedure init_swapchain_extension( var info_:T_sample_info );
+procedure init_swapchain_extension( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 07-init_uniform_buffer
 
@@ -78,68 +72,64 @@ procedure init_swapchain_extension( var info_:T_sample_info );
 
 //////////////////////////////////////////////////////////////////////////////// 09-init_descriptor_set
 
-procedure init_uniform_buffer( var info_:T_sample_info );
-procedure init_descriptor_and_pipeline_layouts( var info_:T_sample_info; use_texture_:T_bool; descSetLayoutCreateFlags_:VkDescriptorSetLayoutCreateFlags = 0 );
-procedure destroy_uniform_buffer( var info_:T_sample_info );
-procedure destroy_descriptor_and_pipeline_layouts( var info_:T_sample_info );
+procedure init_uniform_buffer( const Vulkan_:TVulkan );
+procedure init_descriptor_and_pipeline_layouts( const Vulkan_:TVulkan; use_texture_:T_bool; descSetLayoutCreateFlags_:VkDescriptorSetLayoutCreateFlags = 0 );
+procedure destroy_uniform_buffer( const Vulkan_:TVulkan );
+procedure destroy_descriptor_and_pipeline_layouts( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 10-init_render_pass
 
-procedure init_device_queue( var info_:T_sample_info );
-procedure init_swap_chain( var info_:T_sample_info; usageFlags_:VkImageUsageFlags = Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
-procedure init_depth_buffer( var info_:T_sample_info );
-procedure destroy_depth_buffer( var info_:T_sample_info );
-procedure destroy_swap_chain( var info_:T_sample_info );
+procedure init_device_queue( const Vulkan_:TVulkan );
+procedure init_swap_chain( const Vulkan_:TVulkan; usageFlags_:VkImageUsageFlags = Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
+procedure init_depth_buffer( const Vulkan_:TVulkan );
+procedure destroy_depth_buffer( const Vulkan_:TVulkan );
+procedure destroy_swap_chain( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 11-init_shaders
 
 //////////////////////////////////////////////////////////////////////////////// 12-init_frame_buffers
 
-procedure init_command_pool( var info_:T_sample_info );
-procedure init_command_buffer( var info_:T_sample_info );
-procedure execute_begin_command_buffer( var info_:T_sample_info );
-procedure init_renderpass( var info_:T_sample_info;
+procedure init_command_pool( const Vulkan_:TVulkan );
+procedure init_command_buffer( const Vulkan_:TVulkan );
+procedure execute_begin_command_buffer( const Vulkan_:TVulkan );
+procedure init_renderpass( const Vulkan_:TVulkan;
                            include_depth_:T_bool;
                            clear_:T_bool = True;
                            finalLayout_:VkImageLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
                            initialLayout_:VkImageLayout = VK_IMAGE_LAYOUT_UNDEFINED );
-procedure execute_end_command_buffer( var info_:T_sample_info );
-procedure execute_queue_command_buffer( var info_:T_sample_info );
-procedure destroy_renderpass( var info_:T_sample_info );
-procedure destroy_command_buffer( var info_:T_sample_info );
-procedure destroy_command_pool( var info_:T_sample_info );
+procedure execute_end_command_buffer( const Vulkan_:TVulkan );
+procedure execute_queue_command_buffer( const Vulkan_:TVulkan );
+procedure destroy_renderpass( const Vulkan_:TVulkan );
+procedure destroy_command_buffer( const Vulkan_:TVulkan );
+procedure destroy_command_pool( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 13-init_vertex_buffer
 
-procedure init_framebuffers( var info_:T_sample_info; include_depth:T_bool );
-procedure destroy_framebuffers( var info_:T_sample_info );
+procedure init_framebuffers( const Vulkan_:TVulkan; include_depth:T_bool );
+procedure destroy_framebuffers( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 14-init_pipeline
 
-procedure init_vertex_buffer( var info_:T_sample_info; const vertexData_:P_void; dataSize_:T_uint32_t; dataStride_:T_uint32_t; use_texture_:T_bool );
-procedure init_descriptor_pool( var info_:T_sample_info; use_texture_:T_bool );
-procedure init_descriptor_set( var info_:T_sample_info; use_texture_:T_bool );
-procedure init_shaders( var info_:T_sample_info; const vertShaderCI_:P_VkShaderModuleCreateInfo; const fragShaderCI_:P_VkShaderModuleCreateInfo );
-procedure destroy_descriptor_pool( var info_:T_sample_info );
-procedure destroy_vertex_buffer( var info_:T_sample_info );
-procedure destroy_shaders( var info_:T_sample_info );
+procedure init_vertex_buffer( const Vulkan_:TVulkan; const vertexData_:P_void; dataSize_:T_uint32_t; dataStride_:T_uint32_t; use_texture_:T_bool );
+procedure init_descriptor_pool( const Vulkan_:TVulkan; use_texture_:T_bool );
+procedure init_descriptor_set( const Vulkan_:TVulkan; use_texture_:T_bool );
+procedure destroy_descriptor_pool( const Vulkan_:TVulkan );
+procedure destroy_vertex_buffer( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 15-draw_cube
 
-procedure init_viewports( var info_:T_sample_info );
-procedure init_scissors( var info_:T_sample_info );
-procedure init_pipeline_cache( var info:T_sample_info );
-procedure init_pipeline( var info:T_sample_info; include_depth:VkBool32; include_vi:VkBool32 = 1 );
-procedure destroy_pipeline( var info_:T_sample_info );
-procedure destroy_pipeline_cache( var info_:T_sample_info );
+procedure init_viewports( const Vulkan_:TVulkan );
+procedure init_scissors( const Vulkan_:TVulkan );
+procedure init_pipeline_cache( const Vulkan_:TVulkan );
+procedure destroy_pipeline_cache( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// draw_textured_cube
 
-procedure init_buffer( var info_:T_sample_info; var texObj_:T_texture_object );
-procedure init_image( var info_:T_sample_info; var texObj_:T_texture_object; const textureName_:String; extraUsages_:VkImageUsageFlags; extraFeatures_:VkFormatFeatureFlags );
-procedure init_sampler( var info_:T_sample_info; var sampler_:VkSampler );
-procedure init_texture( var info_:T_sample_info; const textureName_:String = ''; extraUsages_:VkImageUsageFlags = 0; extraFeatures_:VkFormatFeatureFlags = 0 );
-procedure destroy_textures( var info_:T_sample_info );
+procedure init_buffer( const Vulkan_:TVulkan; var texObj_:T_texture_object );
+procedure init_image( const Vulkan_:TVulkan; var texObj_:T_texture_object; const textureName_:String; extraUsages_:VkImageUsageFlags; extraFeatures_:VkFormatFeatureFlags );
+procedure init_sampler( const Vulkan_:TVulkan; var sampler_:VkSampler );
+procedure init_texture( const Vulkan_:TVulkan; const textureName_:String = ''; extraUsages_:VkImageUsageFlags = 0; extraFeatures_:VkFormatFeatureFlags = 0 );
+procedure destroy_textures( const Vulkan_:TVulkan );
 
 implementation //############################################################### ■
 
@@ -177,7 +167,7 @@ begin
      until Result <> VK_INCOMPLETE;
 end;
 
-function init_global_layer_properties( var info_:T_sample_info ) :VkResult;
+function init_global_layer_properties( const Vulkan_:TVulkan ) :VkResult;
 var
    instance_layer_count :T_uint32_t;
    vk_props             :TArray<VkLayerProperties>;
@@ -216,135 +206,18 @@ begin
           layer_props.properties := vk_props[i];
           Result := init_global_extension_properties( layer_props );
           if Result <> VK_SUCCESS then Exit;
-          info_.instance_layer_properties := info_.instance_layer_properties + [ layer_props ];
+          Vulkan_.Info.instance_layer_properties := Vulkan_.Info.instance_layer_properties + [ layer_props ];
      end;
      vk_props := nil;
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 02-enumerate_devices
 
-function init_instance( var info_:T_sample_info; const app_short_name_:P_char ) :VkResult;
-var
-   app_info  :VkApplicationInfo;
-   inst_info :VkInstanceCreateInfo;
-begin
-     app_info                    := Default( VkApplicationInfo );
-     app_info.sType              := VK_STRUCTURE_TYPE_APPLICATION_INFO;
-     app_info.pNext              := nil;
-     app_info.pApplicationName   := app_short_name_;
-     app_info.applicationVersion := 1;
-     app_info.pEngineName        := app_short_name_;
-     app_info.engineVersion      := 1;
-     app_info.apiVersion         := VK_API_VERSION_1_0;
-
-     inst_info                          := Default( VkInstanceCreateInfo );
-     inst_info.sType                    := VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-     inst_info.pNext                    := nil;
-     inst_info.flags                    := 0;
-     inst_info.pApplicationInfo         := @app_info;
-     inst_info.enabledLayerCount        := Length( info_.instance_layer_names );
-     if Length( info_.instance_layer_names ) > 0
-     then inst_info.ppEnabledLayerNames := @info_.instance_layer_names[0]
-     else inst_info.ppEnabledLayerNames := nil;
-     inst_info.enabledExtensionCount    := Length( info_.instance_extension_names );
-     inst_info.ppEnabledExtensionNames  := @info_.instance_extension_names[0];
-
-     Result := vkCreateInstance( @inst_info, nil, @info_.inst );
-     Assert( Result = VK_SUCCESS );
-end;
-
 //////////////////////////////////////////////////////////////////////////////// 03-init_device
-
-function init_device_extension_properties( var info_:T_sample_info; var layer_props_:T_layer_properties ) :VkResult;
-var
-   device_extensions      :P_VkExtensionProperties;
-   device_extension_count :T_uint32_t;
-   layer_name             :P_char;
-begin
-     layer_name := layer_props_.properties.layerName;
-
-     repeat
-           Result := vkEnumerateDeviceExtensionProperties( info_.gpus[0], layer_name, @device_extension_count, nil );
-           if Result <> VK_SUCCESS then Exit;
-
-           if device_extension_count = 0 then Exit( VK_SUCCESS );
-
-           SetLength( layer_props_.device_extensions, device_extension_count );
-           device_extensions := @layer_props_.device_extensions[0];
-           Result := vkEnumerateDeviceExtensionProperties( info_.gpus[0], layer_name, @device_extension_count, device_extensions );
-
-     until Result <> VK_INCOMPLETE;
-end;
-
-function init_enumerate_device( var info_:T_sample_info; gpu_count_:T_uint32_t = 1 ) :VkResult;
-var
-   req_count :T_uint32_t;
-   I         :Integer;
-begin
-     req_count := gpu_count_;
-     Result := vkEnumeratePhysicalDevices( info_.inst, @gpu_count_, nil );
-     Assert( ( Result = VK_SUCCESS ) and ( gpu_count_ > 0 ) );
-     SetLength( info_.gpus, gpu_count_ );
-
-     Result := vkEnumeratePhysicalDevices( info_.inst, @gpu_count_, @info_.gpus[0] );
-     Assert( ( Result = VK_SUCCESS ) and ( gpu_count_ >= req_count ) );
-
-     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[0], @info_.queue_family_count, nil );
-     Assert( info_.queue_family_count >= 1 );
-
-     SetLength( info_.queue_props, info_.queue_family_count );
-     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[0], @info_.queue_family_count, @info_.queue_props[0] );
-     Assert( info_.queue_family_count >= 1 );
-
-     (* This is as good a place as any to do this *)
-     vkGetPhysicalDeviceMemoryProperties( info_.gpus[0], @info_.memory_properties );
-     vkGetPhysicalDeviceProperties( info_.gpus[0], @info_.gpu_props );
-     (* query device extensions for enabled layers *)
-     for I := 0 to Length( info_.instance_layer_properties )-1
-     do init_device_extension_properties( info_, info_.instance_layer_properties[I] );
-end;
-
-procedure destroy_instance( var info_:T_sample_info );
-begin
-     vkDestroyInstance( info_.inst, nil );
-end;
 
 //////////////////////////////////////////////////////////////////////////////// 04-init_command_buffer
 
-procedure init_queue_family_index( var info_:T_sample_info );
-var
-   found :T_bool;
-   i     :T_unsigned_int;
-begin
-     (* This routine simply finds a graphics queue for a later vkCreateDevice,
-      * without consideration for which queue family can present an image.
-      * Do not use this if your intent is to present later in your sample,
-      * instead use the init_connection, init_window, init_swapchain_extension,
-      * init_device call sequence to get a graphics and present compatible queue
-      * family
-      *)
-
-     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[0], @info_.queue_family_count, nil );
-     Assert( info_.queue_family_count >= 1 );
-
-     SetLength( info_.queue_props, info_.queue_family_count );
-     vkGetPhysicalDeviceQueueFamilyProperties( info_.gpus[0], @info_.queue_family_count, @info_.queue_props[0] );
-     Assert( info_.queue_family_count >= 1 );
-
-     found := False;
-     for i := 0 to info_.queue_family_count-1 do
-     begin
-          if ( info_.queue_props[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
-          begin
-               info_.graphics_queue_family_index := i;
-               found := True;
-               Break;
-          end;
-     end;
-     Assert( found );
-end;
-
-function init_device( var info_:T_sample_info ) :VkResult;
+function init_device( const Vulkan_:TVulkan ) :VkResult;
 var
    queue_info       :VkDeviceQueueCreateInfo;
    queue_priorities :array [ 0..1-1 ] of T_float;
@@ -356,49 +229,47 @@ begin
      queue_info.pNext            := nil;
      queue_info.queueCount       := 1;
      queue_info.pQueuePriorities := @queue_priorities[0];
-     queue_info.queueFamilyIndex := info_.graphics_queue_family_index;
-
+     queue_info.queueFamilyIndex := Vulkan_.Info.graphics_queue_family_index;
      device_info                              := Default( VkDeviceCreateInfo );
      device_info.sType                        := VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
      device_info.pNext                        := nil;
      device_info.queueCreateInfoCount         := 1;
      device_info.pQueueCreateInfos            := @queue_info;
-     device_info.enabledExtensionCount        := Length( info_.device_extension_names );
+     device_info.enabledExtensionCount        := Length( Vulkan_.Info.device_extension_names );
      if device_info.enabledExtensionCount > 0
-     then device_info.ppEnabledExtensionNames := @info_.device_extension_names[0]
+     then device_info.ppEnabledExtensionNames := @Vulkan_.Info.device_extension_names[0]
      else device_info.ppEnabledExtensionNames := nil;
      device_info.pEnabledFeatures             := nil;
-
-     Result := vkCreateDevice( info_.gpus[0], @device_info, nil, @info_.device );
+     Result := vkCreateDevice( Vulkan_.Devices.Devices[ 0 ].Handle, @device_info, nil, @Vulkan_.Info.device );
      Assert( Result = VK_SUCCESS );
 end;
 
-procedure destroy_device( var info_:T_sample_info );
+procedure destroy_device( const Vulkan_:TVulkan );
 begin
-     vkDeviceWaitIdle( info_.device );
-     vkDestroyDevice( info_.device, nil );
+     vkDeviceWaitIdle( Vulkan_.Info.device );
+     vkDestroyDevice( Vulkan_.Info.device, nil );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 05-init_swapchain
 
-procedure init_instance_extension_names( var info_:T_sample_info );
+procedure init_instance_extension_names( const Vulkan_:TVulkan );
 begin
-     info_.instance_extension_names := info_.instance_extension_names + [ VK_KHR_SURFACE_EXTENSION_NAME         ];
-     info_.instance_extension_names := info_.instance_extension_names + [ VK_KHR_WIN32_SURFACE_EXTENSION_NAME   ];
+     Vulkan_.Info.instance_extension_names := Vulkan_.Info.instance_extension_names + [ VK_KHR_SURFACE_EXTENSION_NAME         ];
+     Vulkan_.Info.instance_extension_names := Vulkan_.Info.instance_extension_names + [ VK_KHR_WIN32_SURFACE_EXTENSION_NAME   ];
 end;
 
-procedure init_device_extension_names( var info_:T_sample_info );
+procedure init_device_extension_names( const Vulkan_:TVulkan );
 begin
-     info_.device_extension_names := info_.device_extension_names + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
+     Vulkan_.Info.device_extension_names := Vulkan_.Info.device_extension_names + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
 end;
 
-procedure init_window_size( var info_:T_sample_info; default_width_,default_height_:UInt32 );
+procedure init_window_size( const Vulkan_:TVulkan; default_width_,default_height_:UInt32 );
 begin
-     info_.width  := default_width_;
-     info_.height := default_height_;
+     Vulkan_.Info.width  := default_width_;
+     Vulkan_.Info.height := default_height_;
 end;
 
-procedure init_connection( var info_:T_sample_info );
+procedure init_connection( const Vulkan_:TVulkan );
 begin
 
 end;
@@ -427,16 +298,16 @@ begin
      Result := DefWindowProc( hWnd, uMsg, wParam, lParam );
 end;
 
-procedure init_window( var info_:T_sample_info );
+procedure init_window( const Vulkan_:TVulkan );
 var
    win_class :WNDCLASSEX;
    wr        :TRect;
 begin
-     Assert( info_.width  > 0 );
-     Assert( info_.height > 0 );
+     Assert( Vulkan_.Info.width  > 0 );
+     Assert( Vulkan_.Info.height > 0 );
 
-     info_.connection := GetModuleHandle( nil );
-     info_.name       := 'Sample';
+     Vulkan_.Info.connection := GetModuleHandle( nil );
+     Vulkan_.Info.name       := 'Sample';
 
      // Initialize the window class structure:
      win_class.cbSize        := SizeOf( WNDCLASSEX );
@@ -444,12 +315,12 @@ begin
      win_class.lpfnWndProc   := @WndProc;
      win_class.cbClsExtra    := 0;
      win_class.cbWndExtra    := 0;
-     win_class.hInstance     := info_.connection;  // hInstance
+     win_class.hInstance     := Vulkan_.Info.connection;  // hInstance
      win_class.hIcon         := LoadIcon( 0, IDI_APPLICATION );
      win_class.hCursor       := LoadCursor( 0, IDC_ARROW );
      win_class.hbrBackground := HBRUSH( GetStockObject( WHITE_BRUSH ) );
      win_class.lpszMenuName  := nil;
-     win_class.lpszClassName := LPCWSTR( WideString( info_.name ) );
+     win_class.lpszClassName := LPCWSTR( WideString( Vulkan_.Info.name ) );
      win_class.hIconSm       := LoadIcon( 0, IDI_WINLOGO );
      // Register window class:
      if RegisterClassEx( win_class ) = 0 then
@@ -459,32 +330,32 @@ begin
           RunError( 1 );
      end;
      // Create window with the registered class:
-     wr := TRect.Create( 0, 0, info_.width, info_.height );
+     wr := TRect.Create( 0, 0, Vulkan_.Info.width, Vulkan_.Info.height );
      AdjustWindowRect( wr, WS_OVERLAPPEDWINDOW, False );
-     info_.window := CreateWindowEx( 0,
-                                    LPCWSTR( WideString( info_.name ) ),              // class name
-                                    LPCWSTR( WideString( info_.name ) ),              // app name
+     Vulkan_.Info.window := CreateWindowEx( 0,
+                                    LPCWSTR( WideString( Vulkan_.Info.name ) ),              // class name
+                                    LPCWSTR( WideString( Vulkan_.Info.name ) ),              // app name
                                     WS_OVERLAPPEDWINDOW or WS_VISIBLE or WS_SYSMENU,  // window style
                                     100, 100,                                         // x/y coords
                                     wr.right - wr.left,                               // width
                                     wr.bottom - wr.top,                               // height
                                     0,                                                // handle to parent
                                     0,                                                // handle to menu
-                                    info_.connection,                                 // hInstance
+                                    Vulkan_.Info.connection,                                 // hInstance
                                     nil );                                            // no extra parameters
-     if info_.window = 0 then
+     if Vulkan_.Info.window = 0 then
      begin
           // It didn't work, so try to give a useful error:
           Log.d( 'Cannot create a window in which to draw!' );
           RunError( 1 );
      end;
-     SetWindowLongPtr( info_.window, GWLP_USERDATA, LONG_PTR( @info_ ) );
+     SetWindowLongPtr( Vulkan_.Info.window, GWLP_USERDATA, LONG_PTR( @Vulkan_.Info ) );
 end;
 
-procedure destroy_window( var info_:T_sample_info );
+procedure destroy_window( const Vulkan_:TVulkan );
 begin
-     vkDestroySurfaceKHR( info_.inst, info_.surface, nil );
-     DestroyWindow( info_.window );
+     vkDestroySurfaceKHR( Vulkan_.Instance.Handle, Vulkan_.Info.surface, nil );
+     DestroyWindow( Vulkan_.Info.window );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 06-init_depth_buffer
@@ -494,7 +365,7 @@ end;
 *)
 const PREFERRED_SURFACE_FORMAT = VK_FORMAT_B8G8R8A8_UNORM;
 
-procedure init_swapchain_extension( var info_:T_sample_info );
+procedure init_swapchain_extension( const Vulkan_:TVulkan );
 var
    res              :VkResult;
    createInfo       :VkWin32SurfaceCreateInfoKHR;
@@ -509,44 +380,44 @@ begin
      createInfo           := Default( VkWin32SurfaceCreateInfoKHR );
      createInfo.sType     := VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
      createInfo.pNext     := nil;
-     createInfo.hinstance := info_.connection;
-     createInfo.hwnd      := info_.window;
-     res := vkCreateWin32SurfaceKHR( info_.inst, @createInfo, nil, @info_.surface );
+     createInfo.hinstance := Vulkan_.Info.connection;
+     createInfo.hwnd      := Vulkan_.Info.window;
+     res := vkCreateWin32SurfaceKHR( Vulkan_.Instance.Handle, @createInfo, nil, @Vulkan_.Info.surface );
      Assert( res = VK_SUCCESS );
 
      // Iterate over each queue to learn whether it supports presenting:
-     SetLength( pSupportsPresent, info_.queue_family_count );
-     for i := 0 to info_.queue_family_count-1
-     do vkGetPhysicalDeviceSurfaceSupportKHR( info_.gpus[0], i, info_.surface, @pSupportsPresent[i] );
+     SetLength( pSupportsPresent, Vulkan_.Info.queue_family_count );
+     for i := 0 to Vulkan_.Info.queue_family_count-1
+     do vkGetPhysicalDeviceSurfaceSupportKHR( Vulkan_.Devices.Devices[ 0 ].Handle, i, Vulkan_.Info.surface, @pSupportsPresent[i] );
 
      // Search for a graphics and a present queue in the array of queue
      // families, try to find one that supports both
-     info_.graphics_queue_family_index := UINT32_MAX;
-     info_.present_queue_family_index  := UINT32_MAX;
-     for i := 0 to info_.queue_family_count-1 do
+     Vulkan_.Info.graphics_queue_family_index := UINT32_MAX;
+     Vulkan_.Info.present_queue_family_index  := UINT32_MAX;
+     for i := 0 to Vulkan_.Info.queue_family_count-1 do
      begin
-          if ( info_.queue_props[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
+          if ( Vulkan_.Info.queue_props[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
           begin
-               if info_.graphics_queue_family_index = UINT32_MAX then info_.graphics_queue_family_index := i;
+               if Vulkan_.Info.graphics_queue_family_index = UINT32_MAX then Vulkan_.Info.graphics_queue_family_index := i;
 
                if pSupportsPresent[i] = VK_TRUE then
                begin
-                    info_.graphics_queue_family_index := i;
-                    info_.present_queue_family_index  := i;
+                    Vulkan_.Info.graphics_queue_family_index := i;
+                    Vulkan_.Info.present_queue_family_index  := i;
                     Break;
                end;
           end;
      end;
 
-     if info_.present_queue_family_index = UINT32_MAX then
+     if Vulkan_.Info.present_queue_family_index = UINT32_MAX then
      begin
           // If didn't find a queue that supports both graphics and present, then
           // find a separate present queue.
-          for i := 0 to info_.queue_family_count-1 do
+          for i := 0 to Vulkan_.Info.queue_family_count-1 do
           begin
                if pSupportsPresent[i] = VK_TRUE then
                begin
-                    info_.present_queue_family_index := i;
+                    Vulkan_.Info.present_queue_family_index := i;
                     Break;
                end;
           end;
@@ -555,29 +426,29 @@ begin
 
      // Generate error if could not find queues that support graphics
      // and present
-     if ( info_.graphics_queue_family_index = UINT32_MAX ) or ( info_.present_queue_family_index = UINT32_MAX ) then
+     if ( Vulkan_.Info.graphics_queue_family_index = UINT32_MAX ) or ( Vulkan_.Info.present_queue_family_index = UINT32_MAX ) then
      begin
           Log.d( 'Could not find a queues for both graphics and present' );
           RunError( 256-1 );
      end;
 
      // Get the list of VkFormats that are supported:
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( info_.gpus[0], info_.surface, @formatCount, nil );
+     res := vkGetPhysicalDeviceSurfaceFormatsKHR( Vulkan_.Devices.Devices[ 0 ].Handle, Vulkan_.Info.surface, @formatCount, nil );
      Assert( res = VK_SUCCESS );
      SetLength( surfFormats, formatCount );
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( info_.gpus[0], info_.surface, @formatCount, @surfFormats[0] );
+     res := vkGetPhysicalDeviceSurfaceFormatsKHR( Vulkan_.Devices.Devices[ 0 ].Handle, Vulkan_.Info.surface, @formatCount, @surfFormats[0] );
      Assert( res = VK_SUCCESS );
 
      // If the device supports our preferred surface format, use it.
      // Otherwise, use whatever the device's first reported surface
      // format is.
      Assert( formatCount >= 1 );
-     info_.format := surfFormats[0].format;
+     Vulkan_.Info.format := surfFormats[0].format;
      for i := 0 to formatCount-1 do
      begin
           if surfFormats[i].format = PREFERRED_SURFACE_FORMAT then
           begin
-               info_.format := PREFERRED_SURFACE_FORMAT;
+               Vulkan_.Info.format := PREFERRED_SURFACE_FORMAT;
                break;
           end;
      end;
@@ -591,7 +462,7 @@ end;
 
 //////////////////////////////////////////////////////////////////////////////// 09-init_descriptor_set
 
-procedure init_uniform_buffer( var info_:T_sample_info );
+procedure init_uniform_buffer( const Vulkan_:TVulkan );
 var
    res        :VkResult;
    pass       :T_bool;
@@ -602,38 +473,38 @@ var
    pData      :P_uint8_t;
 begin
      fov := DegToRad( 45 );
-     if info_.width > info_.height then
+     if Vulkan_.Info.width > Vulkan_.Info.height then
      begin
-          fov := fov * info_.height / info_.width;
+          fov := fov * Vulkan_.Info.height / Vulkan_.Info.width;
      end;
-     info_.Projection := TSingleM4.ProjPersH( fov, info_.width / info_.height, 0.1, 100 );
-     info_.View := TSingleM4.LookAt( TSingle3D.Create( -5, +3, -10 ),    // Camera is at (-5,3,-10), in World Space
+     Vulkan_.Info.Projection := TSingleM4.ProjPersH( fov, Vulkan_.Info.width / Vulkan_.Info.height, 0.1, 100 );
+     Vulkan_.Info.View := TSingleM4.LookAt( TSingle3D.Create( -5, +3, -10 ),    // Camera is at (-5,3,-10), in World Space
                                      TSingle3D.Create(  0,  0,   0 ),    // and looks at the origin
                                      TSingle3D.Create(  0, -1,   0 ) );  // Head is up (set to 0,-1,0 to look upside-down)
 
-     info_.Model := TSingleM4.Identity;
+     Vulkan_.Info.Model := TSingleM4.Identity;
      // Vulkan clip space has inverted Y and half Z.
-     info_.Clip := TSingleM4.Create( +1.0,  0.0,  0.0,  0.0,
+     Vulkan_.Info.Clip := TSingleM4.Create( +1.0,  0.0,  0.0,  0.0,
                                       0.0, -1.0,  0.0,  0.0,
                                       0.0,  0.0, +0.5, +0.5,
                                       0.0,  0.0,  0.0, +1.0 );
 
-     info_.MVP := info_.Clip * info_.Projection * info_.View * info_.Model;
+     Vulkan_.Info.MVP := Vulkan_.Info.Clip * Vulkan_.Info.Projection * Vulkan_.Info.View * Vulkan_.Info.Model;
 
      (* VULKAN_KEY_START *)
      buf_info                       := Default( VkBufferCreateInfo );
      buf_info.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
      buf_info.pNext                 := nil;
      buf_info.usage                 := Ord( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
-     buf_info.size                  := SizeOf( info_.MVP );
+     buf_info.size                  := SizeOf( Vulkan_.Info.MVP );
      buf_info.queueFamilyIndexCount := 0;
      buf_info.pQueueFamilyIndices   := nil;
      buf_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
      buf_info.flags                 := 0;
-     res := vkCreateBuffer( info_.device, @buf_info, nil, @info_.uniform_data.buf );
+     res := vkCreateBuffer( Vulkan_.Info.device, @buf_info, nil, @Vulkan_.Info.uniform_data.buf );
      Assert( res = VK_SUCCESS );
 
-     vkGetBufferMemoryRequirements( info_.device, info_.uniform_data.buf, @mem_reqs );
+     vkGetBufferMemoryRequirements( Vulkan_.Info.device, Vulkan_.Info.uniform_data.buf, @mem_reqs );
 
      alloc_info                 := Default( VkMemoryAllocateInfo );
      alloc_info.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
@@ -641,30 +512,30 @@ begin
      alloc_info.memoryTypeIndex := 0;
 
      alloc_info.allocationSize := mem_reqs.size;
-     pass := memory_type_from_properties( info_, mem_reqs.memoryTypeBits,
+     pass := memory_type_from_properties( Vulkan_.Info, mem_reqs.memoryTypeBits,
                                           Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
                                           alloc_info.memoryTypeIndex );
      Assert( pass, 'No mappable, coherent memory' );
 
-     res := vkAllocateMemory( info_.device, @alloc_info, nil, @info_.uniform_data.mem );
+     res := vkAllocateMemory( Vulkan_.Info.device, @alloc_info, nil, @Vulkan_.Info.uniform_data.mem );
      Assert( res = VK_SUCCESS );
 
-     res := vkMapMemory( info_.device, info_.uniform_data.mem, 0, mem_reqs.size, 0, @pData );
+     res := vkMapMemory( Vulkan_.Info.device, Vulkan_.Info.uniform_data.mem, 0, mem_reqs.size, 0, @pData );
      Assert( res = VK_SUCCESS );
 
-     Move( info_.MVP, pData^, SizeOf( info_.MVP ) );
+     Move( Vulkan_.Info.MVP, pData^, SizeOf( Vulkan_.Info.MVP ) );
 
-     vkUnmapMemory( info_.device, info_.uniform_data.mem );
+     vkUnmapMemory( Vulkan_.Info.device, Vulkan_.Info.uniform_data.mem );
 
-     res := vkBindBufferMemory( info_.device, info_.uniform_data.buf, info_.uniform_data.mem, 0 );
+     res := vkBindBufferMemory( Vulkan_.Info.device, Vulkan_.Info.uniform_data.buf, Vulkan_.Info.uniform_data.mem, 0 );
      Assert( res = VK_SUCCESS );
 
-     info_.uniform_data.buffer_info.buffer := info_.uniform_data.buf;
-     info_.uniform_data.buffer_info.offset := 0;
-     info_.uniform_data.buffer_info.range  := SizeOf( info_.MVP );
+     Vulkan_.Info.uniform_data.buffer_info.buffer := Vulkan_.Info.uniform_data.buf;
+     Vulkan_.Info.uniform_data.buffer_info.offset := 0;
+     Vulkan_.Info.uniform_data.buffer_info.range  := SizeOf( Vulkan_.Info.MVP );
 end;
 
-procedure init_descriptor_and_pipeline_layouts( var info_:T_sample_info; use_texture_:T_bool; descSetLayoutCreateFlags_:VkDescriptorSetLayoutCreateFlags = 0 );
+procedure init_descriptor_and_pipeline_layouts( const Vulkan_:TVulkan; use_texture_:T_bool; descSetLayoutCreateFlags_:VkDescriptorSetLayoutCreateFlags = 0 );
 var
    layout_bindings           :array [ 0..2-1 ] of VkDescriptorSetLayoutBinding;
    descriptor_layout         :VkDescriptorSetLayoutCreateInfo;
@@ -697,8 +568,8 @@ begin
      else descriptor_layout.bindingCount := 1;
      descriptor_layout.pBindings         := @layout_bindings[0];
 
-     SetLength( info_.desc_layout, NUM_DESCRIPTOR_SETS );
-     res := vkCreateDescriptorSetLayout( info_.device, @descriptor_layout, nil, @info_.desc_layout[0] );
+     SetLength( Vulkan_.Info.desc_layout, NUM_DESCRIPTOR_SETS );
+     res := vkCreateDescriptorSetLayout( Vulkan_.Info.device, @descriptor_layout, nil, @Vulkan_.Info.desc_layout[0] );
      Assert( res = VK_SUCCESS );
 
      (* Now use the descriptor layout to create a pipeline layout *)
@@ -708,39 +579,39 @@ begin
      pPipelineLayoutCreateInfo.pushConstantRangeCount := 0;
      pPipelineLayoutCreateInfo.pPushConstantRanges    := nil;
      pPipelineLayoutCreateInfo.setLayoutCount         := NUM_DESCRIPTOR_SETS;
-     pPipelineLayoutCreateInfo.pSetLayouts            := @info_.desc_layout[0];
+     pPipelineLayoutCreateInfo.pSetLayouts            := @Vulkan_.Info.desc_layout[0];
 
-     res := vkCreatePipelineLayout( info_.device, @pPipelineLayoutCreateInfo, nil, @info_.pipeline_layout );
+     res := vkCreatePipelineLayout( Vulkan_.Info.device, @pPipelineLayoutCreateInfo, nil, @Vulkan_.Info.pipeline_layout );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure destroy_uniform_buffer( var info_:T_sample_info );
+procedure destroy_uniform_buffer( const Vulkan_:TVulkan );
 begin
-     vkDestroyBuffer( info_.device, info_.uniform_data.buf, nil );
-     vkFreeMemory( info_.device, info_.uniform_data.mem, nil );
+     vkDestroyBuffer( Vulkan_.Info.device, Vulkan_.Info.uniform_data.buf, nil );
+     vkFreeMemory( Vulkan_.Info.device, Vulkan_.Info.uniform_data.mem, nil );
 end;
 
-procedure destroy_descriptor_and_pipeline_layouts( var info_:T_sample_info );
+procedure destroy_descriptor_and_pipeline_layouts( const Vulkan_:TVulkan );
 var
    i :T_int;
 begin
-     for i := 0 to NUM_DESCRIPTOR_SETS-1 do vkDestroyDescriptorSetLayout( info_.device, info_.desc_layout[i], nil );
-     vkDestroyPipelineLayout( info_.device, info_.pipeline_layout, nil );
+     for i := 0 to NUM_DESCRIPTOR_SETS-1 do vkDestroyDescriptorSetLayout( Vulkan_.Info.device, Vulkan_.Info.desc_layout[i], nil );
+     vkDestroyPipelineLayout( Vulkan_.Info.device, Vulkan_.Info.pipeline_layout, nil );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 10-init_render_pass
 
-procedure init_device_queue( var info_:T_sample_info );
+procedure init_device_queue( const Vulkan_:TVulkan );
 begin
      (* DEPENDS on init_swapchain_extension() *)
 
-     vkGetDeviceQueue( info_.device, info_.graphics_queue_family_index, 0, @info_.graphics_queue );
-     if info_.graphics_queue_family_index = info_.present_queue_family_index
-     then info_.present_queue := info_.graphics_queue
-     else vkGetDeviceQueue( info_.device, info_.present_queue_family_index, 0, @info_.present_queue );
+     vkGetDeviceQueue( Vulkan_.Info.device, Vulkan_.Info.graphics_queue_family_index, 0, @Vulkan_.Info.graphics_queue );
+     if Vulkan_.Info.graphics_queue_family_index = Vulkan_.Info.present_queue_family_index
+     then Vulkan_.Info.present_queue := Vulkan_.Info.graphics_queue
+     else vkGetDeviceQueue( Vulkan_.Info.device, Vulkan_.Info.present_queue_family_index, 0, @Vulkan_.Info.present_queue );
 end;
 
-procedure init_swap_chain( var info_:T_sample_info; usageFlags_:VkImageUsageFlags = Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
+procedure init_swap_chain( const Vulkan_:TVulkan; usageFlags_:VkImageUsageFlags = Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
 var
    res                            :VkResult;
    surfCapabilities               :VkSurfaceCapabilitiesKHR;
@@ -761,14 +632,14 @@ var
 begin
      (* DEPENDS on info.cmd and info.queue initialized *)
 
-     res := vkGetPhysicalDeviceSurfaceCapabilitiesKHR( info_.gpus[0], info_.surface, @surfCapabilities );
+     res := vkGetPhysicalDeviceSurfaceCapabilitiesKHR( Vulkan_.Devices.Devices[ 0 ].Handle, Vulkan_.Info.surface, @surfCapabilities );
      Assert( res = VK_SUCCESS );
 
-     res := vkGetPhysicalDeviceSurfacePresentModesKHR( info_.gpus[0], info_.surface, @presentModeCount, nil );
+     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Devices.Devices[ 0 ].Handle, Vulkan_.Info.surface, @presentModeCount, nil );
      Assert( res = VK_SUCCESS );
      SetLength( presentModes, presentModeCount );
      Assert( Length( presentModes ) > 0 );
-     res := vkGetPhysicalDeviceSurfacePresentModesKHR( info_.gpus[0], info_.surface, @presentModeCount, @presentModes[0] );
+     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Devices.Devices[ 0 ].Handle, Vulkan_.Info.surface, @presentModeCount, @presentModes[0] );
      Assert( res = VK_SUCCESS );
 
      // width and height are either both 0xFFFFFFFF, or both not 0xFFFFFFFF.
@@ -776,8 +647,8 @@ begin
      begin
           // If the surface size is undefined, the size is set to
           // the size of the images requested.
-          swapchainExtent.width  := info_.width;
-          swapchainExtent.height := info_.height;
+          swapchainExtent.width  := Vulkan_.Info.width;
+          swapchainExtent.height := Vulkan_.Info.height;
           if swapchainExtent.width < surfCapabilities.minImageExtent.width
           then swapchainExtent.width := surfCapabilities.minImageExtent.width
           else
@@ -830,9 +701,9 @@ begin
      swapchain_ci                       := Default( VkSwapchainCreateInfoKHR );
      swapchain_ci.sType                 := VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
      swapchain_ci.pNext                 := nil;
-     swapchain_ci.surface               := info_.surface;
+     swapchain_ci.surface               := Vulkan_.Info.surface;
      swapchain_ci.minImageCount         := desiredNumberOfSwapChainImages;
-     swapchain_ci.imageFormat           := info_.format;
+     swapchain_ci.imageFormat           := Vulkan_.Info.format;
      swapchain_ci.imageExtent.width     := swapchainExtent.width;
      swapchain_ci.imageExtent.height    := swapchainExtent.height;
      swapchain_ci.preTransform          := preTransform;
@@ -846,9 +717,9 @@ begin
      swapchain_ci.imageSharingMode      := VK_SHARING_MODE_EXCLUSIVE;
      swapchain_ci.queueFamilyIndexCount := 0;
      swapchain_ci.pQueueFamilyIndices   := nil;
-     queueFamilyIndices[0] := info_.graphics_queue_family_index;
-     queueFamilyIndices[1] := info_.present_queue_family_index;
-     if info_.graphics_queue_family_index <> info_.present_queue_family_index then
+     queueFamilyIndices[0] := Vulkan_.Info.graphics_queue_family_index;
+     queueFamilyIndices[1] := Vulkan_.Info.present_queue_family_index;
+     if Vulkan_.Info.graphics_queue_family_index <> Vulkan_.Info.present_queue_family_index then
      begin
           // If the graphics and present queues are from different queue families,
           // we either have to explicitly transfer ownership of images between the
@@ -859,23 +730,23 @@ begin
           swapchain_ci.pQueueFamilyIndices   := @queueFamilyIndices[0];
      end;
 
-     res := vkCreateSwapchainKHR( info_.device, @swapchain_ci, nil, @info_.swap_chain );
+     res := vkCreateSwapchainKHR( Vulkan_.Info.device, @swapchain_ci, nil, @Vulkan_.Info.swap_chain );
      Assert( res = VK_SUCCESS );
 
-     res := vkGetSwapchainImagesKHR( info_.device, info_.swap_chain, @info_.swapchainImageCount, nil );
+     res := vkGetSwapchainImagesKHR( Vulkan_.Info.device, Vulkan_.Info.swap_chain, @Vulkan_.Info.swapchainImageCount, nil );
      Assert( res = VK_SUCCESS );
 
-     SetLength( swapchainImages, info_.swapchainImageCount );
+     SetLength( swapchainImages, Vulkan_.Info.swapchainImageCount );
      Assert( Length( swapchainImages ) > 0 );
-     res := vkGetSwapchainImagesKHR( info_.device, info_.swap_chain, @info_.swapchainImageCount, @swapchainImages[0] );
+     res := vkGetSwapchainImagesKHR( Vulkan_.Info.device, Vulkan_.Info.swap_chain, @Vulkan_.Info.swapchainImageCount, @swapchainImages[0] );
      Assert( res = VK_SUCCESS );
 
-     for i := 0 to info_.swapchainImageCount-1 do
+     for i := 0 to Vulkan_.Info.swapchainImageCount-1 do
      begin
           color_image_view                                 := Default( VkImageViewCreateInfo );
           color_image_view.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
           color_image_view.pNext                           := nil;
-          color_image_view.format                          := info_.format;
+          color_image_view.format                          := Vulkan_.Info.format;
           color_image_view.components.r                    := VK_COMPONENT_SWIZZLE_R;
           color_image_view.components.g                    := VK_COMPONENT_SWIZZLE_G;
           color_image_view.components.b                    := VK_COMPONENT_SWIZZLE_B;
@@ -892,17 +763,17 @@ begin
 
           color_image_view.image := sc_buffer.image;
 
-          res := vkCreateImageView( info_.device, @color_image_view, nil, @sc_buffer.view );
-          info_.buffers := info_.buffers + [ sc_buffer ];
+          res := vkCreateImageView( Vulkan_.Info.device, @color_image_view, nil, @sc_buffer.view );
+          Vulkan_.Info.buffers := Vulkan_.Info.buffers + [ sc_buffer ];
           Assert( res = VK_SUCCESS );
      end;
      swapchainImages := nil;
-     info_.current_buffer := 0;
+     Vulkan_.Info.current_buffer := 0;
 
      if nil <> presentModes then presentModes := nil;
 end;
 
-procedure init_depth_buffer( var info_:T_sample_info );
+procedure init_depth_buffer( const Vulkan_:TVulkan );
 var
    res          :VkResult;
    pass         :T_bool;
@@ -914,10 +785,10 @@ var
    mem_reqs     :VkMemoryRequirements;
 begin
      (* allow custom depth formats *)
-     if info_.depth.format = VK_FORMAT_UNDEFINED then info_.depth.format := VK_FORMAT_D16_UNORM;
+     if Vulkan_.Info.depth.format = VK_FORMAT_UNDEFINED then Vulkan_.Info.depth.format := VK_FORMAT_D16_UNORM;
 
-     depth_format := info_.depth.format;
-     vkGetPhysicalDeviceFormatProperties( info_.gpus[0], depth_format, @props );
+     depth_format := Vulkan_.Info.depth.format;
+     vkGetPhysicalDeviceFormatProperties( Vulkan_.Devices.Devices[ 0 ].Handle, depth_format, @props );
      if ( props.linearTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
      then image_info.tiling := VK_IMAGE_TILING_LINEAR
      else
@@ -935,8 +806,8 @@ begin
      image_info.pNext                 := nil;
      image_info.imageType             := VK_IMAGE_TYPE_2D;
      image_info.format                := depth_format;
-     image_info.extent.width          := info_.width;
-     image_info.extent.height         := info_.height;
+     image_info.extent.width          := Vulkan_.Info.width;
+     image_info.extent.height         := Vulkan_.Info.height;
      image_info.extent.depth          := 1;
      image_info.mipLevels             := 1;
      image_info.arrayLayers           := 1;
@@ -976,50 +847,50 @@ begin
      then view_info.subresourceRange.aspectMask := view_info.subresourceRange.aspectMask or Ord( VK_IMAGE_ASPECT_STENCIL_BIT );
 
      (* Create image *)
-     res := vkCreateImage( info_.device, @image_info, nil, @info_.depth.image );
+     res := vkCreateImage( Vulkan_.Info.device, @image_info, nil, @Vulkan_.Info.depth.image );
      Assert( res = VK_SUCCESS );
 
-     vkGetImageMemoryRequirements( info_.device, info_.depth.image, @mem_reqs );
+     vkGetImageMemoryRequirements( Vulkan_.Info.device, Vulkan_.Info.depth.image, @mem_reqs );
 
      mem_alloc.allocationSize := mem_reqs.size;
      (* Use the memory properties to determine the type of memory required *)
-     pass := memory_type_from_properties( info_, mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex );
+     pass := memory_type_from_properties( Vulkan_.Info, mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex );
      Assert( pass );
 
      (* Allocate memory *)
-     res := vkAllocateMemory( info_.device, @mem_alloc, nil, @info_.depth.mem );
+     res := vkAllocateMemory( Vulkan_.Info.device, @mem_alloc, nil, @Vulkan_.Info.depth.mem );
      Assert( res = VK_SUCCESS );
 
      (* Bind memory *)
-     res := vkBindImageMemory( info_.device, info_.depth.image, info_.depth.mem, 0 );
+     res := vkBindImageMemory( Vulkan_.Info.device, Vulkan_.Info.depth.image, Vulkan_.Info.depth.mem, 0 );
      Assert( res = VK_SUCCESS );
 
      (* Create image view *)
-     view_info.image := info_.depth.image;
-     res := vkCreateImageView( info_.device, @view_info, nil, @info_.depth.view );
+     view_info.image := Vulkan_.Info.depth.image;
+     res := vkCreateImageView( Vulkan_.Info.device, @view_info, nil, @Vulkan_.Info.depth.view );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure destroy_depth_buffer( var info_:T_sample_info );
+procedure destroy_depth_buffer( const Vulkan_:TVulkan );
 begin
-     vkDestroyImageView( info_.device, info_.depth.view, nil );
-     vkDestroyImage( info_.device, info_.depth.image, nil );
-     vkFreeMemory( info_.device, info_.depth.mem, nil );
+     vkDestroyImageView( Vulkan_.Info.device, Vulkan_.Info.depth.view, nil );
+     vkDestroyImage( Vulkan_.Info.device, Vulkan_.Info.depth.image, nil );
+     vkFreeMemory( Vulkan_.Info.device, Vulkan_.Info.depth.mem, nil );
 end;
 
-procedure destroy_swap_chain( var info_:T_sample_info );
+procedure destroy_swap_chain( const Vulkan_:TVulkan );
 var
    I :T_uint32_t;
 begin
-     for i := 0 to info_.swapchainImageCount-1 do vkDestroyImageView( info_.device, info_.buffers[i].view, nil );
-     vkDestroySwapchainKHR( info_.device, info_.swap_chain, nil );
+     for i := 0 to Vulkan_.Info.swapchainImageCount-1 do vkDestroyImageView( Vulkan_.Info.device, Vulkan_.Info.buffers[i].view, nil );
+     vkDestroySwapchainKHR( Vulkan_.Info.device, Vulkan_.Info.swap_chain, nil );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 11-init_shaders
 
 //////////////////////////////////////////////////////////////////////////////// 12-init_frame_buffers
 
-procedure init_command_pool( var info_:T_sample_info );
+procedure init_command_pool( const Vulkan_:TVulkan );
 var
    res           :VkResult;
    cmd_pool_info :VkCommandPoolCreateInfo;
@@ -1029,14 +900,14 @@ begin
      cmd_pool_info                  := Default( VkCommandPoolCreateInfo );
      cmd_pool_info.sType            := VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
      cmd_pool_info.pNext            := nil;
-     cmd_pool_info.queueFamilyIndex := info_.graphics_queue_family_index;
+     cmd_pool_info.queueFamilyIndex := Vulkan_.Info.graphics_queue_family_index;
      cmd_pool_info.flags            := Ord( VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
 
-     res := vkCreateCommandPool( info_.device, @cmd_pool_info, nil, @info_.cmd_pool );
+     res := vkCreateCommandPool( Vulkan_.Info.device, @cmd_pool_info, nil, @Vulkan_.Info.cmd_pool );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure init_command_buffer( var info_:T_sample_info );
+procedure init_command_buffer( const Vulkan_:TVulkan );
 var
    res :VkResult;
    cmd :VkCommandBufferAllocateInfo;
@@ -1046,15 +917,15 @@ begin
      cmd                    := Default( VkCommandBufferAllocateInfo );
      cmd.sType              := VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
      cmd.pNext              := nil;
-     cmd.commandPool        := info_.cmd_pool;
+     cmd.commandPool        := Vulkan_.Info.cmd_pool;
      cmd.level              := VK_COMMAND_BUFFER_LEVEL_PRIMARY;
      cmd.commandBufferCount := 1;
 
-     res := vkAllocateCommandBuffers( info_.device, @cmd, @info_.cmd );
+     res := vkAllocateCommandBuffers( Vulkan_.Info.device, @cmd, @Vulkan_.Info.cmd );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure execute_begin_command_buffer( var info_:T_sample_info );
+procedure execute_begin_command_buffer( const Vulkan_:TVulkan );
 var
    res          :VkResult;
    cmd_buf_info :VkCommandBufferBeginInfo;
@@ -1067,11 +938,11 @@ begin
      cmd_buf_info.flags            := 0;
      cmd_buf_info.pInheritanceInfo := nil;
 
-     res := vkBeginCommandBuffer( info_.cmd, @cmd_buf_info );
+     res := vkBeginCommandBuffer( Vulkan_.Info.cmd, @cmd_buf_info );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure init_renderpass( var info_:T_sample_info;
+procedure init_renderpass( const Vulkan_:TVulkan;
                            include_depth_:T_bool;
                            clear_:T_bool = True;
                            finalLayout_:VkImageLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
@@ -1090,7 +961,7 @@ begin
      Assert( clear_ or ( initialLayout_ <> VK_IMAGE_LAYOUT_UNDEFINED ) );
 
      (* Need attachments for render target and depth buffer *)
-     attachments[0].format         := info_.format;
+     attachments[0].format         := Vulkan_.Info.format;
      attachments[0].samples        := NUM_SAMPLES;
      if clear_
      then attachments[0].loadOp    := VK_ATTACHMENT_LOAD_OP_CLEAR
@@ -1104,7 +975,7 @@ begin
 
      if include_depth_ then
      begin
-          attachments[1].format         := info_.depth.format;
+          attachments[1].format         := Vulkan_.Info.depth.format;
           attachments[1].samples        := NUM_SAMPLES;
           if clear_
           then attachments[1].loadOp    := VK_ATTACHMENT_LOAD_OP_CLEAR
@@ -1161,19 +1032,19 @@ begin
      rp_info.dependencyCount      := 1;
      rp_info.pDependencies        := @subpass_dependency;
 
-     res := vkCreateRenderPass( info_.device, @rp_info, nil, @info_.render_pass );
+     res := vkCreateRenderPass( Vulkan_.Info.device, @rp_info, nil, @Vulkan_.Info.render_pass );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure execute_end_command_buffer( var info_:T_sample_info );
+procedure execute_end_command_buffer( const Vulkan_:TVulkan );
 var
    res :VkResult;
 begin
-     res := vkEndCommandBuffer( info_.cmd );
+     res := vkEndCommandBuffer( Vulkan_.Info.cmd );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure execute_queue_command_buffer( var info_:T_sample_info );
+procedure execute_queue_command_buffer( const Vulkan_:TVulkan );
 type
     T_submit_info = array [ 0..1-1 ] of VkSubmitInfo;
 var
@@ -1185,11 +1056,11 @@ var
    submit_info      :T_submit_info;
 begin
      (* Queue the command buffer for execution *)
-     cmd_bufs[0] := info_.cmd;
+     cmd_bufs[0] := Vulkan_.Info.cmd;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
-     vkCreateFence( info_.device, @fenceInfo, nil, @drawFence );
+     vkCreateFence( Vulkan_.Info.device, @fenceInfo, nil, @drawFence );
 
      pipe_stage_flags := Ord( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
      submit_info                         := Default( T_submit_info );
@@ -1203,39 +1074,39 @@ begin
      submit_info[0].signalSemaphoreCount := 0;
      submit_info[0].pSignalSemaphores    := nil;
 
-     res := vkQueueSubmit( info_.graphics_queue, 1, @submit_info[0], drawFence );
+     res := vkQueueSubmit( Vulkan_.Info.graphics_queue, 1, @submit_info[0], drawFence );
      Assert( res = VK_SUCCESS );
 
      repeat
-           res := vkWaitForFences( info_.device, 1, @drawFence, VK_TRUE, FENCE_TIMEOUT );
+           res := vkWaitForFences( Vulkan_.Info.device, 1, @drawFence, VK_TRUE, FENCE_TIMEOUT );
 
      until res <> VK_TIMEOUT;
      Assert( res = VK_SUCCESS );
 
-     vkDestroyFence( info_.device, drawFence, nil );
+     vkDestroyFence( Vulkan_.Info.device, drawFence, nil );
 end;
 
-procedure destroy_renderpass( var info_:T_sample_info );
+procedure destroy_renderpass( const Vulkan_:TVulkan );
 begin
-     vkDestroyRenderPass( info_.device, info_.render_pass, nil );
+     vkDestroyRenderPass( Vulkan_.Info.device, Vulkan_.Info.render_pass, nil );
 end;
 
-procedure destroy_command_buffer( var info_:T_sample_info );
+procedure destroy_command_buffer( const Vulkan_:TVulkan );
 var
    cmd_bufs :array [ 0..1-1 ] of VkCommandBuffer;
 begin
-     cmd_bufs[0] := info_.cmd;
-     vkFreeCommandBuffers( info_.device, info_.cmd_pool, 1, @cmd_bufs[0] );
+     cmd_bufs[0] := Vulkan_.Info.cmd;
+     vkFreeCommandBuffers( Vulkan_.Info.device, Vulkan_.Info.cmd_pool, 1, @cmd_bufs[0] );
 end;
 
-procedure destroy_command_pool( var info_:T_sample_info );
+procedure destroy_command_pool( const Vulkan_:TVulkan );
 begin
-     vkDestroyCommandPool( info_.device, info_.cmd_pool, nil );
+     vkDestroyCommandPool( Vulkan_.Info.device, Vulkan_.Info.cmd_pool, nil );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 13-init_vertex_buffer
 
-procedure init_framebuffers( var info_:T_sample_info; include_depth:T_bool );
+procedure init_framebuffers( const Vulkan_:TVulkan; include_depth:T_bool );
 var
    res         :VkResult;
    attachments :array [ 0..2-1 ] of VkImageView;
@@ -1245,41 +1116,41 @@ begin
      (* DEPENDS on init_depth_buffer(), init_renderpass() and
       * init_swapchain_extension() *)
 
-     attachments[1] := info_.depth.view;
+     attachments[1] := Vulkan_.Info.depth.view;
 
      fb_info                      := Default( VkFramebufferCreateInfo );
      fb_info.sType                := VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
      fb_info.pNext                := nil;
-     fb_info.renderPass           := info_.render_pass;
+     fb_info.renderPass           := Vulkan_.Info.render_pass;
      if include_depth
      then fb_info.attachmentCount := 2
      else fb_info.attachmentCount := 1;
      fb_info.pAttachments         := @attachments[0];
-     fb_info.width                := info_.width;
-     fb_info.height               := info_.height;
+     fb_info.width                := Vulkan_.Info.width;
+     fb_info.height               := Vulkan_.Info.height;
      fb_info.layers               := 1;
 
-     SetLength( info_.framebuffers, info_.swapchainImageCount );
+     SetLength( Vulkan_.Info.framebuffers, Vulkan_.Info.swapchainImageCount );
 
-     for i := 0 to info_.swapchainImageCount-1 do
+     for i := 0 to Vulkan_.Info.swapchainImageCount-1 do
      begin
-          attachments[0] := info_.buffers[i].view;
-          res := vkCreateFramebuffer( info_.device, @fb_info, nil, @info_.framebuffers[i] );
+          attachments[0] := Vulkan_.Info.buffers[i].view;
+          res := vkCreateFramebuffer( Vulkan_.Info.device, @fb_info, nil, @Vulkan_.Info.framebuffers[i] );
           Assert( res = VK_SUCCESS );
      end;
 end;
 
-procedure destroy_framebuffers( var info_:T_sample_info );
+procedure destroy_framebuffers( const Vulkan_:TVulkan );
 var
    i :T_uint32_t;
 begin
-     for i := 0 to info_.swapchainImageCount-1 do vkDestroyFramebuffer( info_.device, info_.framebuffers[i], nil );
-     info_.framebuffers := nil;
+     for i := 0 to Vulkan_.Info.swapchainImageCount-1 do vkDestroyFramebuffer( Vulkan_.Info.device, Vulkan_.Info.framebuffers[i], nil );
+     Vulkan_.Info.framebuffers := nil;
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 14-init_pipeline
 
-procedure init_vertex_buffer( var info_:T_sample_info; const vertexData_:P_void; dataSize_:T_uint32_t; dataStride_:T_uint32_t; use_texture_:T_bool );
+procedure init_vertex_buffer( const Vulkan_:TVulkan; const vertexData_:P_void; dataSize_:T_uint32_t; dataStride_:T_uint32_t; use_texture_:T_bool );
 var
    res        :VkResult;
    pass       :T_bool;
@@ -1297,10 +1168,10 @@ begin
      buf_info.pQueueFamilyIndices   := nil;
      buf_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
      buf_info.flags                 := 0;
-     res := vkCreateBuffer( info_.device, @buf_info, nil, @info_.vertex_buffer.buf );
+     res := vkCreateBuffer( Vulkan_.Info.device, @buf_info, nil, @Vulkan_.Info.vertex_buffer.buf );
      Assert( res = VK_SUCCESS );
 
-     vkGetBufferMemoryRequirements( info_.device, info_.vertex_buffer.buf, @mem_reqs );
+     vkGetBufferMemoryRequirements( Vulkan_.Info.device, Vulkan_.Info.vertex_buffer.buf, @mem_reqs );
 
      alloc_info                 := Default( VkMemoryAllocateInfo );
      alloc_info.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
@@ -1308,43 +1179,43 @@ begin
      alloc_info.memoryTypeIndex := 0;
 
      alloc_info.allocationSize := mem_reqs.size;
-     pass := memory_type_from_properties( info_, mem_reqs.memoryTypeBits,
+     pass := memory_type_from_properties( Vulkan_.Info, mem_reqs.memoryTypeBits,
                                           Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
                                           alloc_info.memoryTypeIndex );
      Assert( pass, 'No mappable, coherent memory' );
 
-     res := vkAllocateMemory( info_.device, @alloc_info, nil, @info_.vertex_buffer.mem );
+     res := vkAllocateMemory( Vulkan_.Info.device, @alloc_info, nil, @Vulkan_.Info.vertex_buffer.mem );
      Assert( res = VK_SUCCESS );
-     info_.vertex_buffer.buffer_info.range  := mem_reqs.size;
-     info_.vertex_buffer.buffer_info.offset := 0;
+     Vulkan_.Info.vertex_buffer.buffer_info.range  := mem_reqs.size;
+     Vulkan_.Info.vertex_buffer.buffer_info.offset := 0;
 
-     res := vkMapMemory( info_.device, info_.vertex_buffer.mem, 0, mem_reqs.size, 0, @pData );
+     res := vkMapMemory( Vulkan_.Info.device, Vulkan_.Info.vertex_buffer.mem, 0, mem_reqs.size, 0, @pData );
      Assert( res = VK_SUCCESS );
 
      Move( vertexData_^, pData^, dataSize_ );
 
-     vkUnmapMemory( info_.device, info_.vertex_buffer.mem );
+     vkUnmapMemory( Vulkan_.Info.device, Vulkan_.Info.vertex_buffer.mem );
 
-     res := vkBindBufferMemory( info_.device, info_.vertex_buffer.buf, info_.vertex_buffer.mem, 0 );
+     res := vkBindBufferMemory( Vulkan_.Info.device, Vulkan_.Info.vertex_buffer.buf, Vulkan_.Info.vertex_buffer.mem, 0 );
      Assert( res = VK_SUCCESS );
 
-     info_.vi_binding.binding   := 0;
-     info_.vi_binding.inputRate := VK_VERTEX_INPUT_RATE_VERTEX;
-     info_.vi_binding.stride    := dataStride_;
+     Vulkan_.Info.vi_binding.binding   := 0;
+     Vulkan_.Info.vi_binding.inputRate := VK_VERTEX_INPUT_RATE_VERTEX;
+     Vulkan_.Info.vi_binding.stride    := dataStride_;
 
-     info_.vi_attribs[0].binding     := 0;
-     info_.vi_attribs[0].location    := 0;
-     info_.vi_attribs[0].format      := VK_FORMAT_R32G32B32A32_SFLOAT;
-     info_.vi_attribs[0].offset      := 0;
-     info_.vi_attribs[1].binding     := 0;
-     info_.vi_attribs[1].location    := 1;
+     Vulkan_.Info.vi_attribs[0].binding     := 0;
+     Vulkan_.Info.vi_attribs[0].location    := 0;
+     Vulkan_.Info.vi_attribs[0].format      := VK_FORMAT_R32G32B32A32_SFLOAT;
+     Vulkan_.Info.vi_attribs[0].offset      := 0;
+     Vulkan_.Info.vi_attribs[1].binding     := 0;
+     Vulkan_.Info.vi_attribs[1].location    := 1;
      if use_texture_
-     then info_.vi_attribs[1].format := VK_FORMAT_R32G32_SFLOAT
-     else info_.vi_attribs[1].format := VK_FORMAT_R32G32B32A32_SFLOAT;
-     info_.vi_attribs[1].offset      := 16;
+     then Vulkan_.Info.vi_attribs[1].format := VK_FORMAT_R32G32_SFLOAT
+     else Vulkan_.Info.vi_attribs[1].format := VK_FORMAT_R32G32B32A32_SFLOAT;
+     Vulkan_.Info.vi_attribs[1].offset      := 16;
 end;
 
-procedure init_descriptor_pool( var info_:T_sample_info; use_texture_:T_bool );
+procedure init_descriptor_pool( const Vulkan_:TVulkan; use_texture_:T_bool );
 var
    res             :VkResult;
    type_count      :array [ 0..2-1 ] of VkDescriptorPoolSize;
@@ -1370,11 +1241,11 @@ begin
      else descriptor_pool.poolSizeCount := 1;
      descriptor_pool.pPoolSizes         := @type_count[0];
 
-     res := vkCreateDescriptorPool( info_.device, @descriptor_pool, nil, @info_.desc_pool );
+     res := vkCreateDescriptorPool( Vulkan_.Info.device, @descriptor_pool, nil, @Vulkan_.Info.desc_pool );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure init_descriptor_set( var info_:T_sample_info; use_texture_:T_bool );
+procedure init_descriptor_set( const Vulkan_:TVulkan; use_texture_:T_bool );
 var
    res        :VkResult;
    alloc_info :array [ 0..1-1 ] of VkDescriptorSetAllocateInfo;
@@ -1384,21 +1255,21 @@ begin
 
      alloc_info[0].sType              := VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
      alloc_info[0].pNext              := nil;
-     alloc_info[0].descriptorPool     := info_.desc_pool;
+     alloc_info[0].descriptorPool     := Vulkan_.Info.desc_pool;
      alloc_info[0].descriptorSetCount := NUM_DESCRIPTOR_SETS;
-     alloc_info[0].pSetLayouts        := @info_.desc_layout[0];
+     alloc_info[0].pSetLayouts        := @Vulkan_.Info.desc_layout[0];
 
-     SetLength( info_.desc_set, NUM_DESCRIPTOR_SETS );
-     res := vkAllocateDescriptorSets( info_.device, @alloc_info[0], @info_.desc_set[0] );
+     SetLength( Vulkan_.Info.desc_set, NUM_DESCRIPTOR_SETS );
+     res := vkAllocateDescriptorSets( Vulkan_.Info.device, @alloc_info[0], @Vulkan_.Info.desc_set[0] );
      Assert( res = VK_SUCCESS );
 
      writes[0]                 := Default( VkWriteDescriptorSet );
      writes[0].sType           := VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
      writes[0].pNext           := nil;
-     writes[0].dstSet          := info_.desc_set[0];
+     writes[0].dstSet          := Vulkan_.Info.desc_set[0];
      writes[0].descriptorCount := 1;
      writes[0].descriptorType  := VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-     writes[0].pBufferInfo     := @info_.uniform_data.buffer_info;
+     writes[0].pBufferInfo     := @Vulkan_.Info.uniform_data.buffer_info;
      writes[0].dstArrayElement := 0;
      writes[0].dstBinding      := 0;
 
@@ -1406,88 +1277,53 @@ begin
      begin
           writes[1]                 := Default( VkWriteDescriptorSet );
           writes[1].sType           := VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-          writes[1].dstSet          := info_.desc_set[0];
+          writes[1].dstSet          := Vulkan_.Info.desc_set[0];
           writes[1].dstBinding      := 1;
           writes[1].descriptorCount := 1;
           writes[1].descriptorType  := VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-          writes[1].pImageInfo      := @info_.texture_data.image_info;
+          writes[1].pImageInfo      := @Vulkan_.Info.texture_data.image_info;
           writes[1].dstArrayElement := 0;
      end;
 
      if use_texture_
-     then vkUpdateDescriptorSets( info_.device, 2, @writes[0], 0, nil )
-     else vkUpdateDescriptorSets( info_.device, 1, @writes[0], 0, nil );
+     then vkUpdateDescriptorSets( Vulkan_.Info.device, 2, @writes[0], 0, nil )
+     else vkUpdateDescriptorSets( Vulkan_.Info.device, 1, @writes[0], 0, nil );
 end;
 
-procedure init_shaders( var info_:T_sample_info; const vertShaderCI_:P_VkShaderModuleCreateInfo; const fragShaderCI_:P_VkShaderModuleCreateInfo );
-var
-   res :VkResult;
+procedure destroy_descriptor_pool( const Vulkan_:TVulkan );
 begin
-     if vertShaderCI_ <> nil then
-     begin
-          info_.shaderStages[0].sType               := VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-          info_.shaderStages[0].pNext               := nil;
-          info_.shaderStages[0].pSpecializationInfo := nil;
-          info_.shaderStages[0].flags               := 0;
-          info_.shaderStages[0].stage               := VK_SHADER_STAGE_VERTEX_BIT;
-          info_.shaderStages[0].pName               := 'main';
-          res := vkCreateShaderModule( info_.device, vertShaderCI_, nil, @info_.shaderStages[0].module );
-          Assert( res = VK_SUCCESS );
-     end;
-
-     if fragShaderCI_ <> nil then
-     begin
-          info_.shaderStages[1].sType               := VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-          info_.shaderStages[1].pNext               := nil;
-          info_.shaderStages[1].pSpecializationInfo := nil;
-          info_.shaderStages[1].flags               := 0;
-          info_.shaderStages[1].stage               := VK_SHADER_STAGE_FRAGMENT_BIT;
-          info_.shaderStages[1].pName               := 'main';
-          res := vkCreateShaderModule( info_.device, fragShaderCI_, nil, @info_.shaderStages[1].module );
-          Assert( res = VK_SUCCESS );
-     end;
+     vkDestroyDescriptorPool( Vulkan_.Info.device, Vulkan_.Info.desc_pool, nil );
 end;
 
-procedure destroy_descriptor_pool( var info_:T_sample_info );
+procedure destroy_vertex_buffer( const Vulkan_:TVulkan );
 begin
-     vkDestroyDescriptorPool( info_.device, info_.desc_pool, nil );
-end;
-
-procedure destroy_vertex_buffer( var info_:T_sample_info );
-begin
-     vkDestroyBuffer( info_.device, info_.vertex_buffer.buf, nil );
-     vkFreeMemory( info_.device, info_.vertex_buffer.mem, nil );
-end;
-
-procedure destroy_shaders( var info_:T_sample_info );
-begin
-     vkDestroyShaderModule( info_.device, info_.shaderStages[0].module, nil );
-     vkDestroyShaderModule( info_.device, info_.shaderStages[1].module, nil );
+     vkDestroyBuffer( Vulkan_.Info.device, Vulkan_.Info.vertex_buffer.buf, nil );
+     vkFreeMemory( Vulkan_.Info.device, Vulkan_.Info.vertex_buffer.mem, nil );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 15-draw_cube
 
-procedure init_viewports( var info_:T_sample_info );
+procedure init_viewports( const Vulkan_:TVulkan );
 begin
-     info_.viewport.height   := info_.height;
-     info_.viewport.width    := info_.width;
-     info_.viewport.minDepth := 0.0;
-     info_.viewport.maxDepth := 1.0;
-     info_.viewport.x        := 0;
-     info_.viewport.y        := 0;
-     vkCmdSetViewport( info_.cmd, 0, NUM_VIEWPORTS, @info_.viewport );
+     Vulkan_.Info.viewport.height   := Vulkan_.Info.height;
+     Vulkan_.Info.viewport.width    := Vulkan_.Info.width;
+     Vulkan_.Info.viewport.minDepth := 0.0;
+     Vulkan_.Info.viewport.maxDepth := 1.0;
+     Vulkan_.Info.viewport.x        := 0;
+     Vulkan_.Info.viewport.y        := 0;
+     vkCmdSetViewport( Vulkan_.Info.cmd, 0, NUM_VIEWPORTS, @Vulkan_.Info.viewport );
 end;
 
-procedure init_scissors( var info_:T_sample_info );
+procedure init_scissors( const Vulkan_:TVulkan );
 begin
-     info_.scissor.extent.width  := info_.width;
-     info_.scissor.extent.height := info_.height;
-     info_.scissor.offset.x      := 0;
-     info_.scissor.offset.y      := 0;
-     vkCmdSetScissor( info_.cmd, 0, NUM_SCISSORS, @info_.scissor );
+     Vulkan_.Info.scissor.extent.width  := Vulkan_.Info.width;
+     Vulkan_.Info.scissor.extent.height := Vulkan_.Info.height;
+     Vulkan_.Info.scissor.offset.x      := 0;
+     Vulkan_.Info.scissor.offset.y      := 0;
+     vkCmdSetScissor( Vulkan_.Info.cmd, 0, NUM_SCISSORS, @Vulkan_.Info.scissor );
 end;
 
-procedure init_pipeline_cache( var info:T_sample_info );
+procedure init_pipeline_cache( const Vulkan_:TVulkan );
 var
    res :VkResult;
    pipelineCache :VkPipelineCacheCreateInfo;
@@ -1497,165 +1333,18 @@ begin
      pipelineCache.initialDataSize := 0;
      pipelineCache.pInitialData    := nil;
      pipelineCache.flags           := 0;
-     res := vkCreatePipelineCache( info.device, @pipelineCache, nil, @info.pipelineCache );
+     res := vkCreatePipelineCache( Vulkan_.Info.device, @pipelineCache, nil, @Vulkan_.Info.pipelineCache );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure init_pipeline( var info:T_sample_info; include_depth:VkBool32; include_vi:VkBool32 = 1 );
-type
-    T_dynamicStateEnables = array [ 0..2-1 ] of VkDynamicState;
-var
-   res :VkResult;
-   dynamicStateEnables :T_dynamicStateEnables;  // Viewport + Scissor
-   dynamicState        :VkPipelineDynamicStateCreateInfo;
-   vi                  :VkPipelineVertexInputStateCreateInfo;
-   ia                  :VkPipelineInputAssemblyStateCreateInfo;
-   rs                  :VkPipelineRasterizationStateCreateInfo;
-   cb                  :VkPipelineColorBlendStateCreateInfo;
-   att_state           :array [ 0..1-1 ] of VkPipelineColorBlendAttachmentState;
-   vp                  :VkPipelineViewportStateCreateInfo;
-   ds                  :VkPipelineDepthStencilStateCreateInfo;
-   ms                  :VkPipelineMultisampleStateCreateInfo;
-   pipeline            :VkGraphicsPipelineCreateInfo;
+procedure destroy_pipeline_cache( const Vulkan_:TVulkan );
 begin
-     dynamicStateEnables            := Default( T_dynamicStateEnables );
-     dynamicState                   := Default( VkPipelineDynamicStateCreateInfo );
-     dynamicState.sType             := VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
-     dynamicState.pNext             := nil;
-     dynamicState.pDynamicStates    := @dynamicStateEnables[0];
-     dynamicState.dynamicStateCount := 0;
-
-     vi       := Default( VkPipelineVertexInputStateCreateInfo );
-     vi.sType := VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-     if include_vi <> 0 then
-     begin
-          vi.pNext                           := nil;
-          vi.flags                           := 0;
-          vi.vertexBindingDescriptionCount   := 1;
-          vi.pVertexBindingDescriptions      := @info.vi_binding;
-          vi.vertexAttributeDescriptionCount := 2;
-          vi.pVertexAttributeDescriptions    := @info.vi_attribs[0];
-     end;
-     ia.sType                  := VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-     ia.pNext                  := nil;
-     ia.flags                  := 0;
-     ia.primitiveRestartEnable := VK_FALSE;
-     ia.topology               := VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-
-     rs.sType                   := VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
-     rs.pNext                   := nil;
-     rs.flags                   := 0;
-     rs.polygonMode             := VK_POLYGON_MODE_FILL;
-     rs.cullMode                := Ord( VK_CULL_MODE_BACK_BIT );
-     rs.frontFace               := VK_FRONT_FACE_CLOCKWISE;
-     rs.depthClampEnable        := VK_FALSE;
-     rs.rasterizerDiscardEnable := VK_FALSE;
-     rs.depthBiasEnable         := VK_FALSE;
-     rs.depthBiasConstantFactor := 0;
-     rs.depthBiasClamp          := 0;
-     rs.depthBiasSlopeFactor    := 0;
-     rs.lineWidth               := 1.0;
-
-     cb.sType := VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
-     cb.flags := 0;
-     cb.pNext := nil;
-
-     att_state[0].colorWriteMask      := $f;
-     att_state[0].blendEnable         := VK_FALSE;
-     att_state[0].alphaBlendOp        := VK_BLEND_OP_ADD;
-     att_state[0].colorBlendOp        := VK_BLEND_OP_ADD;
-     att_state[0].srcColorBlendFactor := VK_BLEND_FACTOR_ZERO;
-     att_state[0].dstColorBlendFactor := VK_BLEND_FACTOR_ZERO;
-     att_state[0].srcAlphaBlendFactor := VK_BLEND_FACTOR_ZERO;
-     att_state[0].dstAlphaBlendFactor := VK_BLEND_FACTOR_ZERO;
-
-     cb.attachmentCount   := 1;
-     cb.pAttachments      := @att_state[0];
-     cb.logicOpEnable     := VK_FALSE;
-     cb.logicOp           := VK_LOGIC_OP_NO_OP;
-     cb.blendConstants[0] := 1.0;
-     cb.blendConstants[1] := 1.0;
-     cb.blendConstants[2] := 1.0;
-     cb.blendConstants[3] := 1.0;
-
-     vp               := Default( VkPipelineViewportStateCreateInfo );
-     vp.sType         := VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-     vp.pNext         := nil;
-     vp.flags         := 0;
-     vp.viewportCount := NUM_VIEWPORTS;
-     dynamicStateEnables[dynamicState.dynamicStateCount] := VK_DYNAMIC_STATE_VIEWPORT;  Inc( dynamicState.dynamicStateCount );
-     vp.scissorCount  := NUM_SCISSORS;
-     dynamicStateEnables[dynamicState.dynamicStateCount] := VK_DYNAMIC_STATE_SCISSOR ;  Inc( dynamicState.dynamicStateCount );
-     vp.pScissors     := nil;
-     vp.pViewports    := nil;
-
-     ds.sType                 := VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-     ds.pNext                 := nil;
-     ds.flags                 := 0;
-     ds.depthTestEnable       := include_depth;
-     ds.depthWriteEnable      := include_depth;
-     ds.depthCompareOp        := VK_COMPARE_OP_LESS_OR_EQUAL;
-     ds.depthBoundsTestEnable := VK_FALSE;
-     ds.stencilTestEnable     := VK_FALSE;
-     ds.back.failOp           := VK_STENCIL_OP_KEEP;
-     ds.back.passOp           := VK_STENCIL_OP_KEEP;
-     ds.back.compareOp        := VK_COMPARE_OP_ALWAYS;
-     ds.back.compareMask      := 0;
-     ds.back.reference        := 0;
-     ds.back.depthFailOp      := VK_STENCIL_OP_KEEP;
-     ds.back.writeMask        := 0;
-     ds.minDepthBounds        := 0;
-     ds.maxDepthBounds        := 0;
-     ds.stencilTestEnable     := VK_FALSE;
-     ds.front                 := ds.back;
-
-     ms.sType                 := VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
-     ms.pNext                 := nil;
-     ms.flags                 := 0;
-     ms.pSampleMask           := nil;
-     ms.rasterizationSamples  := NUM_SAMPLES;
-     ms.sampleShadingEnable   := VK_FALSE;
-     ms.alphaToCoverageEnable := VK_FALSE;
-     ms.alphaToOneEnable      := VK_FALSE;
-     ms.minSampleShading      := 0.0;
-
-     pipeline.sType               := VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
-     pipeline.pNext               := nil;
-     pipeline.layout              := info.pipeline_layout;
-     pipeline.basePipelineHandle  := VK_NULL_HANDLE;
-     pipeline.basePipelineIndex   := 0;
-     pipeline.flags               := 0;
-     pipeline.pVertexInputState   := @vi;
-     pipeline.pInputAssemblyState := @ia;
-     pipeline.pRasterizationState := @rs;
-     pipeline.pColorBlendState    := @cb;
-     pipeline.pTessellationState  := nil;
-     pipeline.pMultisampleState   := @ms;
-     pipeline.pDynamicState       := @dynamicState;
-     pipeline.pViewportState      := @vp;
-     pipeline.pDepthStencilState  := @ds;
-     pipeline.pStages             := @info.shaderStages[0];
-     pipeline.stageCount          := 2;
-     pipeline.renderPass          := info.render_pass;
-     pipeline.subpass             := 0;
-
-     res := vkCreateGraphicsPipelines(info.device, info.pipelineCache, 1, @pipeline, nil, @info.pipeline);
-     Assert( res = VK_SUCCESS );
-end;
-
-procedure destroy_pipeline( var info_:T_sample_info );
-begin
-     vkDestroyPipeline( info_.device, info_.pipeline, nil );
-end;
-
-procedure destroy_pipeline_cache( var info_:T_sample_info );
-begin
-     vkDestroyPipelineCache( info_.device, info_.pipelineCache, nil );
+     vkDestroyPipelineCache( Vulkan_.Info.device, Vulkan_.Info.pipelineCache, nil );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// draw_textured_cube
 
-procedure init_buffer( var info_:T_sample_info; var texObj_:T_texture_object );
+procedure init_buffer( const Vulkan_:TVulkan; var texObj_:T_texture_object );
 var
    res                :VkResult;
    pass               :T_bool;
@@ -1673,7 +1362,7 @@ begin
      buffer_create_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
      buffer_create_info.queueFamilyIndexCount := 0;
      buffer_create_info.pQueueFamilyIndices   := nil;
-     res := vkCreateBuffer( info_.device, @buffer_create_info, nil, @texObj_.buffer );
+     res := vkCreateBuffer( Vulkan_.Info.device, @buffer_create_info, nil, @texObj_.buffer );
      Assert( res = VK_SUCCESS );
 
      mem_alloc                 := Default( VkMemoryAllocateInfo );
@@ -1682,24 +1371,24 @@ begin
      mem_alloc.allocationSize  := 0;
      mem_alloc.memoryTypeIndex := 0;
 
-     vkGetBufferMemoryRequirements( info_.device, texObj_.buffer, @mem_reqs );
+     vkGetBufferMemoryRequirements( Vulkan_.Info.device, texObj_.buffer, @mem_reqs );
      mem_alloc.allocationSize := mem_reqs.size;
      texObj_.buffer_size := mem_reqs.size;
 
      requirements := Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
-     pass := memory_type_from_properties( info_, mem_reqs.memoryTypeBits, requirements, mem_alloc.memoryTypeIndex );
+     pass := memory_type_from_properties( Vulkan_.Info, mem_reqs.memoryTypeBits, requirements, mem_alloc.memoryTypeIndex );
      Assert( pass, '"No mappable, coherent memory' );
 
      (* allocate memory *)
-     res := vkAllocateMemory(info_.device, @mem_alloc, nil, @( texObj_.buffer_memory) );
+     res := vkAllocateMemory(Vulkan_.Info.device, @mem_alloc, nil, @( texObj_.buffer_memory) );
      Assert( res = VK_SUCCESS );
 
      (* bind memory *)
-     res := vkBindBufferMemory( info_.device, texObj_.buffer, texObj_.buffer_memory, 0 );
+     res := vkBindBufferMemory( Vulkan_.Info.device, texObj_.buffer, texObj_.buffer_memory, 0 );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure init_image( var info_:T_sample_info; var texObj_:T_texture_object; const textureName_:String; extraUsages_:VkImageUsageFlags; extraFeatures_:VkFormatFeatureFlags );
+procedure init_image( const Vulkan_:TVulkan; var texObj_:T_texture_object; const textureName_:String; extraUsages_:VkImageUsageFlags; extraFeatures_:VkFormatFeatureFlags );
 var
    res               :VkResult;
    pass              :T_bool;
@@ -1740,7 +1429,7 @@ begin
           end;
      end;
 
-     vkGetPhysicalDeviceFormatProperties( info_.gpus[0], VK_FORMAT_R8G8B8A8_UNORM, @formatProps );
+     vkGetPhysicalDeviceFormatProperties( Vulkan_.Devices.Devices[ 0 ].Handle, VK_FORMAT_R8G8B8A8_UNORM, @formatProps );
 
      (* See if we can use a linear tiled image for a texture, if not, we will
       * need a staging buffer for the texture data *)
@@ -1750,7 +1439,7 @@ begin
      if texObj_.needs_staging then
      begin
           Assert( ( formatProps.optimalTilingFeatures and allFeatures ) = allFeatures );
-          init_buffer( info_, texObj_ );
+          init_buffer( Vulkan_, texObj_ );
           extraUsages_ := extraUsages_ or Ord( VK_IMAGE_USAGE_TRANSFER_DST_BIT );
      end
      else
@@ -1788,34 +1477,34 @@ begin
      mem_alloc.allocationSize  := 0;
      mem_alloc.memoryTypeIndex := 0;
 
-     res := vkCreateImage( info_.device, @image_create_info, nil, @texObj_.image );
+     res := vkCreateImage( Vulkan_.Info.device, @image_create_info, nil, @texObj_.image );
      Assert( res = VK_SUCCESS );
 
-     vkGetImageMemoryRequirements( info_.device, texObj_.image, @mem_reqs );
+     vkGetImageMemoryRequirements( Vulkan_.Info.device, texObj_.image, @mem_reqs );
 
      mem_alloc.allocationSize := mem_reqs.size;
 
      if texObj_.needs_staging
      then requirements := 0
      else requirements := Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
-     pass := memory_type_from_properties( info_, mem_reqs.memoryTypeBits, requirements, mem_alloc.memoryTypeIndex );
+     pass := memory_type_from_properties( Vulkan_.Info, mem_reqs.memoryTypeBits, requirements, mem_alloc.memoryTypeIndex );
      Assert( pass );
 
      (* allocate memory *)
-     res := vkAllocateMemory(info_.device, @mem_alloc, nil, @( texObj_.image_memory) );
+     res := vkAllocateMemory(Vulkan_.Info.device, @mem_alloc, nil, @( texObj_.image_memory) );
      Assert( res = VK_SUCCESS );
 
      (* bind memory *)
-     res := vkBindImageMemory( info_.device, texObj_.image, texObj_.image_memory, 0 );
+     res := vkBindImageMemory( Vulkan_.Info.device, texObj_.image, texObj_.image_memory, 0 );
      Assert( res = VK_SUCCESS );
 
-     res := vkEndCommandBuffer( info_.cmd );
+     res := vkEndCommandBuffer( Vulkan_.Info.cmd );
      Assert( res = VK_SUCCESS );
-     cmd_bufs[0] := info_.cmd;
+     cmd_bufs[0] := Vulkan_.Info.cmd;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
-     vkCreateFence( info_.device, @fenceInfo, nil, @cmdFence );
+     vkCreateFence( Vulkan_.Info.device, @fenceInfo, nil, @cmdFence );
 
      submit_info[0]                      := Default( VkSubmitInfo );
      submit_info[0].pNext                := nil;
@@ -1829,7 +1518,7 @@ begin
      submit_info[0].pSignalSemaphores    := nil;
 
      (* Queue the command buffer for execution *)
-     res := vkQueueSubmit( info_.graphics_queue, 1, @submit_info[0], cmdFence );
+     res := vkQueueSubmit( Vulkan_.Info.graphics_queue, 1, @submit_info[0], cmdFence );
      Assert( res = VK_SUCCESS );
 
      subres            := Default( VkImageSubresource );
@@ -1841,21 +1530,21 @@ begin
      if not texObj_.needs_staging then
      begin
           (* Get the subresource layout so we know what the row pitch is *)
-          vkGetImageSubresourceLayout( info_.device, texObj_.image, @subres, @layout );
+          vkGetImageSubresourceLayout( Vulkan_.Info.device, texObj_.image, @subres, @layout );
      end;
 
      (* Make sure command buffer is finished before mapping *)
      repeat
-           res := vkWaitForFences( info_.device, 1, @cmdFence, VK_TRUE, FENCE_TIMEOUT );
+           res := vkWaitForFences( Vulkan_.Info.device, 1, @cmdFence, VK_TRUE, FENCE_TIMEOUT );
 
      until res <> VK_TIMEOUT;
      Assert( res = VK_SUCCESS );
 
-     vkDestroyFence( info_.device, cmdFence, nil );
+     vkDestroyFence( Vulkan_.Info.device, cmdFence, nil );
 
      if texObj_.needs_staging
-     then res := vkMapMemory( info_.device, texObj_.buffer_memory, 0, texObj_.buffer_size, 0, @data )
-     else res := vkMapMemory( info_.device, texObj_.image_memory , 0, mem_reqs.size     , 0, @data );
+     then res := vkMapMemory( Vulkan_.Info.device, texObj_.buffer_memory, 0, texObj_.buffer_size, 0, @data )
+     else res := vkMapMemory( Vulkan_.Info.device, texObj_.image_memory , 0, mem_reqs.size     , 0, @data );
      Assert( res = VK_SUCCESS );
 
      (* Read the ppm file into the mappable image's memory *)
@@ -1868,8 +1557,8 @@ begin
      end;
 
      if texObj_.needs_staging
-     then vkUnmapMemory( info_.device, texObj_.buffer_memory )
-     else vkUnmapMemory( info_.device, texObj_.image_memory  );
+     then vkUnmapMemory( Vulkan_.Info.device, texObj_.buffer_memory )
+     else vkUnmapMemory( Vulkan_.Info.device, texObj_.image_memory  );
 
      cmd_buf_info                  := Default( VkCommandBufferBeginInfo );
      cmd_buf_info.sType            := VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -1877,23 +1566,23 @@ begin
      cmd_buf_info.flags            := 0;
      cmd_buf_info.pInheritanceInfo := nil;
 
-     res := vkResetCommandBuffer( info_.cmd, 0 );
+     res := vkResetCommandBuffer( Vulkan_.Info.cmd, 0 );
      Assert( res = VK_SUCCESS );
-     res := vkBeginCommandBuffer( info_.cmd, @cmd_buf_info );
+     res := vkBeginCommandBuffer( Vulkan_.Info.cmd, @cmd_buf_info );
      Assert( res = VK_SUCCESS );
 
      if not texObj_.needs_staging then
      begin
           (* If we can use the linear tiled image as a texture, just do it *)
           texObj_.imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-          set_image_layout( info_, texObj_.image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_PREINITIALIZED, texObj_.imageLayout,
+          set_image_layout( Vulkan_.Info, texObj_.image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_PREINITIALIZED, texObj_.imageLayout,
                             Ord( VK_PIPELINE_STAGE_HOST_BIT ), Ord( VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT ) );
      end
      else
      begin
           (* Since we're going to blit to the texture image, set its layout to
            * DESTINATION_OPTIMAL *)
-          set_image_layout( info_, texObj_.image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_UNDEFINED,
+          set_image_layout( Vulkan_.Info, texObj_.image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_UNDEFINED,
                             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, Ord( VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT ), Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ) );
 
           copy_region.bufferOffset                    := 0;
@@ -1911,12 +1600,12 @@ begin
           copy_region.imageExtent.depth               := 1;
 
           (* Put the copy command into the command buffer *)
-          vkCmdCopyBufferToImage( info_.cmd, texObj_.buffer, texObj_.image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
+          vkCmdCopyBufferToImage( Vulkan_.Info.cmd, texObj_.buffer, texObj_.image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
 
           (* Set the layout for the texture image from DESTINATION_OPTIMAL to
            * SHADER_READ_ONLY *)
           texObj_.imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-          set_image_layout( info_, texObj_.image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, texObj_.imageLayout,
+          set_image_layout( Vulkan_.Info, texObj_.image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, texObj_.imageLayout,
                             Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ), Ord( VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT ) );
      end;
 
@@ -1938,11 +1627,11 @@ begin
 
      (* create image view *)
      view_info.image := texObj_.image;
-     res := vkCreateImageView( info_.device, @view_info, nil, @texObj_.view );
+     res := vkCreateImageView( Vulkan_.Info.device, @view_info, nil, @texObj_.view );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure init_sampler( var info_:T_sample_info; var sampler_:VkSampler );
+procedure init_sampler( const Vulkan_:TVulkan; var sampler_:VkSampler );
 var
    res               :VkResult;
    samplerCreateInfo :VkSamplerCreateInfo;
@@ -1965,40 +1654,40 @@ begin
      samplerCreateInfo.borderColor      := VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE;
 
      (* create sampler *)
-     res := vkCreateSampler( info_.device, @samplerCreateInfo, nil, @sampler_ );
+     res := vkCreateSampler( Vulkan_.Info.device, @samplerCreateInfo, nil, @sampler_ );
      Assert( res = VK_SUCCESS );
 end;
 
-procedure init_texture( var info_:T_sample_info; const textureName_:String = ''; extraUsages_:VkImageUsageFlags = 0; extraFeatures_:VkFormatFeatureFlags = 0 );
+procedure init_texture( const Vulkan_:TVulkan; const textureName_:String = ''; extraUsages_:VkImageUsageFlags = 0; extraFeatures_:VkFormatFeatureFlags = 0 );
 var
    texObj :T_texture_object;
 begin
      (* create image *)
-     init_image( info_, texObj, textureName_, extraUsages_, extraFeatures_ );
+     init_image( Vulkan_, texObj, textureName_, extraUsages_, extraFeatures_ );
 
      (* create sampler *)
-     init_sampler( info_, texObj.sampler );
+     init_sampler( Vulkan_, texObj.sampler );
 
-     info_.textures := info_.textures + [ texObj ];
+     Vulkan_.Info.textures := Vulkan_.Info.textures + [ texObj ];
 
      (* track a description of the texture *)
-     info_.texture_data.image_info.imageView   := info_.textures[ High( info_.textures ) ].view;
-     info_.texture_data.image_info.sampler     := info_.textures[ High( info_.textures ) ].sampler;
-     info_.texture_data.image_info.imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+     Vulkan_.Info.texture_data.image_info.imageView   := Vulkan_.Info.textures[ High( Vulkan_.Info.textures ) ].view;
+     Vulkan_.Info.texture_data.image_info.sampler     := Vulkan_.Info.textures[ High( Vulkan_.Info.textures ) ].sampler;
+     Vulkan_.Info.texture_data.image_info.imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 end;
 
-procedure destroy_textures( var info_:T_sample_info );
+procedure destroy_textures( const Vulkan_:TVulkan );
 var
    i :T_size_t;
 begin
-     for i := 0 to Length( info_.textures )-1 do
+     for i := 0 to Length( Vulkan_.Info.textures )-1 do
      begin
-          vkDestroySampler  ( info_.device, info_.textures[i].sampler      , nil );
-          vkDestroyImageView( info_.device, info_.textures[i].view         , nil );
-          vkDestroyImage    ( info_.device, info_.textures[i].image        , nil );
-          vkFreeMemory      ( info_.device, info_.textures[i].image_memory , nil );
-          vkDestroyBuffer   ( info_.device, info_.textures[i].buffer       , nil );
-          vkFreeMemory      ( info_.device, info_.textures[i].buffer_memory, nil );
+          vkDestroySampler  ( Vulkan_.Info.device, Vulkan_.Info.textures[i].sampler      , nil );
+          vkDestroyImageView( Vulkan_.Info.device, Vulkan_.Info.textures[i].view         , nil );
+          vkDestroyImage    ( Vulkan_.Info.device, Vulkan_.Info.textures[i].image        , nil );
+          vkFreeMemory      ( Vulkan_.Info.device, Vulkan_.Info.textures[i].image_memory , nil );
+          vkDestroyBuffer   ( Vulkan_.Info.device, Vulkan_.Info.textures[i].buffer       , nil );
+          vkFreeMemory      ( Vulkan_.Info.device, Vulkan_.Info.textures[i].buffer_memory, nil );
      end;
 end;
 
