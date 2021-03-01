@@ -35,6 +35,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Vulkan_:TVulkan );
        procedure AfterConstruction; override;
        destructor Destroy; override;
+       ///// プロパティ
+       property Vulkan :TVulkan read _Vulkan;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInstance
