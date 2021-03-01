@@ -75,18 +75,16 @@ begin
      init_uniform_buffer( _Vulkan );
      init_descriptor_and_pipeline_layouts( _Vulkan, true );
      init_renderpass( _Vulkan, depthPresent );
-     _ShaderVert := TVkShaderVert.Create( _Vulkan );
-     _ShaderFrag := TVkShaderFrag.Create( _Vulkan );
-     _ShaderVert.LoadFromFile( '../../_DATA/draw_textured_cube.vert' );
-     _ShaderFrag.LoadFromFile( '../../_DATA/draw_textured_cube.frag' );
      init_framebuffers( _Vulkan, depthPresent );
      init_vertex_buffer( _Vulkan, @g_vb_texture_Data[0], SizeOf( T_VertexUV ) * Length( g_vb_texture_Data ), SizeOf( T_VertexUV ), True );
      init_descriptor_pool( _Vulkan, True );
      init_descriptor_set( _Vulkan, True );
      init_pipeline_cache( _Vulkan );
      _Pipeline := TVkPipeline.Create( _Vulkan.Devices.Devices[0], depthPresent );
-     _Pipeline.Shaders.Add( _ShaderVert );
-     _Pipeline.Shaders.Add( _ShaderFrag );
+     _ShaderVert := TVkShaderVert.Create( _Pipeline );
+     _ShaderFrag := TVkShaderFrag.Create( _Pipeline );
+     _ShaderVert.LoadFromFile( '../../_DATA/draw_textured_cube.vert' );
+     _ShaderFrag.LoadFromFile( '../../_DATA/draw_textured_cube.frag' );
      _Pipeline.CreateHandle;
 
      (* VULKAN_KEY_START *)
