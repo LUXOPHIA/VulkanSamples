@@ -136,7 +136,6 @@ end;
 
 function TVkDevice<TVulkan_>.init_device_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
 var
-   device_extensions      :P_VkExtensionProperties;
    device_extension_count :UInt32;
    layer_name             :PAnsiChar;
 begin
@@ -149,8 +148,7 @@ begin
            if device_extension_count = 0 then Exit( VK_SUCCESS );
 
            SetLength( layer_props_.device_extensions, device_extension_count );
-           device_extensions := @layer_props_.device_extensions[0];
-           Result := vkEnumerateDeviceExtensionProperties( PhysHandle, layer_name, @device_extension_count, device_extensions );
+           Result := vkEnumerateDeviceExtensionProperties( PhysHandle, layer_name, @device_extension_count, @layer_props_.device_extensions[0] );
 
      until Result <> VK_INCOMPLETE;
 end;
