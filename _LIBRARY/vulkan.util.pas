@@ -91,7 +91,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        save_images        :T_bool;
 
        instance_extension_names      :TArray<P_char>;
-       instance_layer_properties     :TArray<T_layer_properties>;
 
        device_extension_names      :TArray<P_char>;
        device_extension_properties :TArray<VkExtensionProperties>;
@@ -100,7 +99,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        present_queue               :VkQueue;
        graphics_queue_family_index :T_uint32_t;
        present_queue_family_index  :T_uint32_t;
-       gpu_props                   :VkPhysicalDeviceProperties;
        queue_props                 :TArray<VkQueueFamilyProperties>;
        memory_properties           :VkPhysicalDeviceMemoryProperties;
 
