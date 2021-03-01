@@ -6,12 +6,12 @@ uses System.Generics.Collections,
      vulkan_core, vulkan_win32,
      vulkan.util,
      LUX, LUX.D1, LUX.D2, LUX.D3, LUX.D4, LUX.D4x4,
-     LUX.GPU.Vulkan;
+     LUX.GPU.Vulkan.root;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkDevices = class;
-     TVkDevice  = class;
+     TVkDevices<TVulkan_:class> = class;
+     TVkDevice<TVulkan_:class>  = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -19,37 +19,40 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevices
 
-     TVkDevices = class( TVkObject )
+     TVkDevices<TVulkan_:class> = class( TVkObject<TVulkan_> )
      private
+       type TVkDevice_ = TVkDevice<TVulkan_>;
      protected
-       _Devices :TObjectList<TVkDevice>;
+       _Devices :TObjectList<TVkDevice_>;
        ///// アクセス
        ///// メソッド
        procedure GetDevices;
      public
-       constructor Create( const Vulkan_:TVulkan );
+       constructor Create( const Vulkan_:TVulkan_ );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
+       property Devices :TObjectList<TVkDevice_> read _Devices;
        ///// メソッド
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevice
 
-     TVkDevice = class
+     TVkDevice<TVulkan_:class> = class
      private
+       type TVkDevices_ = TVkDevices<TVulkan_>;
      protected
-       _Devices :TVkDevices;
+       _Devices :TVkDevices_;
        _Handle  :VkPhysicalDevice;
        /////
        ///// メソッド
        function init_device_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
      public
-       constructor Create( const Devices_:TVkDevices; const Handle_:VkPhysicalDevice );
+       constructor Create( const Devices_:TVkDevices_; const Handle_:VkPhysicalDevice );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Devices :TVkDevices       read _Devices;
+       property Devices :TVkDevices_      read _Devices;
        property Handle  :VkPhysicalDevice read _Handle ;
      end;
 
@@ -61,7 +64,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
-uses System.Classes;
+uses System.Classes,
+     LUX.GPU.Vulkan;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -77,37 +81,38 @@ uses System.Classes;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkDevices.GetDevices;
+procedure TVkDevices<TVulkan_>.GetDevices;
 var
-   gpu_count_, req_count :UInt32;
-   G :VkPhysicalDevice;
+   DsN :UInt32;
+   Ds :TArray<VkPhysicalDevice>;
+   D :VkPhysicalDevice;
 begin
-     req_count := 1;
-     Assert( ( vkEnumeratePhysicalDevices( _Vulkan.Info.inst, @gpu_count_, nil ) = VK_SUCCESS ) and ( gpu_count_ > 0 ) );
-     SetLength( _Vulkan.Info.gpus, gpu_count_ );
+     Assert( ( vkEnumeratePhysicalDevices( TVulkan( Vulkan ).Instance.Handle, @DsN, nil ) = VK_SUCCESS ) and ( DsN > 0 ) );
 
-     Assert( ( vkEnumeratePhysicalDevices( _Vulkan.Info.inst, @gpu_count_, @_Vulkan.Info.gpus[0] ) = VK_SUCCESS ) and ( gpu_count_ >= req_count ) );
+     SetLength( Ds, DsN );
 
-     for G in _Vulkan.Info.gpus do _Devices.Add( TVkDevice.Create( Self, G ) );
+     Assert( ( vkEnumeratePhysicalDevices( TVulkan( Vulkan ).Instance.Handle, @DsN, @Ds[0] ) = VK_SUCCESS ) and ( DsN > 0 ) );
+
+     for D in Ds do _Devices.Add( TVkDevice_.Create( Self, D ) );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkDevices.Create( const Vulkan_:TVulkan );
+constructor TVkDevices<TVulkan_>.Create( const Vulkan_:TVulkan_ );
 begin
      inherited;
 
-     _Devices := TObjectList<TVkDevice>.Create;
+     _Devices := TObjectList<TVkDevice_>.Create;
 end;
 
-procedure TVkDevices.AfterConstruction;
+procedure TVkDevices<TVulkan_>.AfterConstruction;
 begin
      inherited;
 
      GetDevices;
 end;
 
-destructor TVkDevices.Destroy;
+destructor TVkDevices<TVulkan_>.Destroy;
 begin
      _Devices.Free;
 
@@ -124,7 +129,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkDevice.Create( const Devices_:TVkDevices; const Handle_:VkPhysicalDevice );
+constructor TVkDevice<TVulkan_>.Create( const Devices_:TVkDevices_; const Handle_:VkPhysicalDevice );
 begin
      inherited Create;
 
@@ -132,7 +137,7 @@ begin
      _Handle  := Handle_;
 end;
 
-function TVkDevice.init_device_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
+function TVkDevice<TVulkan_>.init_device_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
 var
    device_extensions      :P_VkExtensionProperties;
    device_extension_count :UInt32;
@@ -153,28 +158,28 @@ begin
      until Result <> VK_INCOMPLETE;
 end;
 
-procedure TVkDevice.AfterConstruction;
+procedure TVkDevice<TVulkan_>.AfterConstruction;
 var
    I :Integer;
 begin
      inherited;
 
-     vkGetPhysicalDeviceQueueFamilyProperties( Handle, @Devices.Vulkan.Info.queue_family_count, nil );
-     Assert( Devices.Vulkan.Info.queue_family_count > 1 );
+     vkGetPhysicalDeviceQueueFamilyProperties( Handle, @TVkDevices( Devices ).Vulkan.Info.queue_family_count, nil );
+     Assert( TVkDevices( Devices ).Vulkan.Info.queue_family_count > 1 );
 
-     SetLength( Devices.Vulkan.Info.queue_props, Devices.Vulkan.Info.queue_family_count );
-     vkGetPhysicalDeviceQueueFamilyProperties( Handle, @Devices.Vulkan.Info.queue_family_count, @Devices.Vulkan.Info.queue_props[0] );
-     Assert( Devices.Vulkan.Info.queue_family_count > 1 );
+     SetLength( TVkDevices( Devices ).Vulkan.Info.queue_props, TVkDevices( Devices ).Vulkan.Info.queue_family_count );
+     vkGetPhysicalDeviceQueueFamilyProperties( Handle, @TVkDevices( Devices ).Vulkan.Info.queue_family_count, @TVkDevices( Devices ).Vulkan.Info.queue_props[0] );
+     Assert( TVkDevices( Devices ).Vulkan.Info.queue_family_count > 1 );
 
      (* This is as good a place as any to do this *)
-     vkGetPhysicalDeviceMemoryProperties( Handle, @Devices.Vulkan.Info.memory_properties );
-     vkGetPhysicalDeviceProperties( Handle, @Devices.Vulkan.Info.gpu_props );
+     vkGetPhysicalDeviceMemoryProperties( Handle, @TVkDevices( Devices ).Vulkan.Info.memory_properties );
+     vkGetPhysicalDeviceProperties( Handle, @TVkDevices( Devices ).Vulkan.Info.gpu_props );
      (* query device extensions for enabled layers *)
-     for I := 0 to Length( Devices.Vulkan.Info.instance_layer_properties )-1
-     do init_device_extension_properties( Devices.Vulkan.Info.instance_layer_properties[I] );
+     for I := 0 to Length( TVkDevices( Devices ).Vulkan.Info.instance_layer_properties )-1
+     do init_device_extension_properties( TVkDevices( Devices ).Vulkan.Info.instance_layer_properties[I] );
 end;
 
-destructor TVkDevice.Destroy;
+destructor TVkDevice<TVulkan_>.Destroy;
 begin
 
      inherited;
