@@ -84,7 +84,7 @@ begin
      init_descriptor_pool( _Vulkan, True );
      init_descriptor_set( _Vulkan, True );
      init_pipeline_cache( _Vulkan );
-     _Pipeline := TVkPipeline.Create( _Vulkan, depthPresent );
+     _Pipeline := TVkPipeline.Create( _Vulkan.Devices.Devices[0], depthPresent );
      _Pipeline.Shaders.Add( _ShaderVert );
      _Pipeline.Shaders.Add( _ShaderFrag );
      _Pipeline.CreateHandle;
