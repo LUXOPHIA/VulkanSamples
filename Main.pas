@@ -10,6 +10,7 @@ uses
   vulkan.util, vulkan.util_init,
   LUX, LUX.Code.C,
   LUX.GPU.Vulkan,
+  LUX.GPU.Vulkan.Device,
   LUX.GPU.Vulkan.Buffer,
   LUX.GPU.Vulkan.Shader,
   LUX.GPU.Vulkan.Pipeline;
@@ -26,6 +27,7 @@ type
     { public 宣言 }
     _Vulkan     :TVulkan;
     _Instance   :TVkInstance;
+    _Devices    :TVkDevices;
     _ShaderVert :TVkShaderVert;
     _ShaderFrag :TVkShaderFrag;
     _Pipeline   :TVkPipeline;
@@ -62,13 +64,11 @@ begin
 
      process_command_line_args( _Vulkan.Info );
      init_global_layer_properties( _Vulkan.Info );
-     init_instance_extension_names( _Vulkan.Info );
      init_device_extension_names( _Vulkan.Info );
-     //init_instance( _Vulkan.Info, sample_title );
      _Instance := TVkInstance.Create( _Vulkan );
-     init_enumerate_device( _Vulkan.Info );
+     //init_enumerate_device( _Vulkan.Info );
+     _Devices := TVkDevices.Create( _Vulkan );
      init_window_size( _Vulkan.Info, 500, 500 );
-     init_connection( _Vulkan.Info );
      init_window( _Vulkan.Info );
      init_swapchain_extension( _Vulkan.Info );
      init_device( _Vulkan.Info );
@@ -212,7 +212,7 @@ begin
      destroy_command_pool( _Vulkan.Info );
      destroy_device( _Vulkan.Info );
      destroy_window( _Vulkan.Info );
-     //destroy_instance( _Vulkan.Info );
+     _Devices.Free;
      _Instance.Free;
 
      _Vulkan.Free;

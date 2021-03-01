@@ -26,7 +26,8 @@ uses
   LUX.GPU.Vulkan in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.pas',
   LUX.GPU.Vulkan.Buffer in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Buffer.pas',
   LUX.GPU.Vulkan.Shader in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Shader.pas',
-  LUX.GPU.Vulkan.Pipeline in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Pipeline.pas';
+  LUX.GPU.Vulkan.Pipeline in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Pipeline.pas',
+  LUX.GPU.Vulkan.Device in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Device.pas';
 
 {$R *.res}
 
