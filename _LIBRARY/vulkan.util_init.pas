@@ -410,14 +410,14 @@ var
 begin
      (* DEPENDS on info.cmd and info.queue initialized *)
 
-     res := vkGetPhysicalDeviceSurfaceCapabilitiesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Info.surface, @surfCapabilities );
+     res := vkGetPhysicalDeviceSurfaceCapabilitiesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Instance.Devices[0].Window.Surface.Handle, @surfCapabilities );
      Assert( res = VK_SUCCESS );
 
-     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Info.surface, @presentModeCount, nil );
+     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Instance.Devices[0].Window.Surface.Handle, @presentModeCount, nil );
      Assert( res = VK_SUCCESS );
      SetLength( presentModes, presentModeCount );
      Assert( Length( presentModes ) > 0 );
-     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Info.surface, @presentModeCount, @presentModes[0] );
+     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Instance.Devices[0].Window.Surface.Handle, @presentModeCount, @presentModes[0] );
      Assert( res = VK_SUCCESS );
 
      // width and height are either both 0xFFFFFFFF, or both not 0xFFFFFFFF.
@@ -479,7 +479,7 @@ begin
      swapchain_ci                       := Default( VkSwapchainCreateInfoKHR );
      swapchain_ci.sType                 := VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
      swapchain_ci.pNext                 := nil;
-     swapchain_ci.surface               := Vulkan_.Info.surface;
+     swapchain_ci.surface               := Vulkan_.Instance.Devices[0].Window.Surface.Handle;
      swapchain_ci.minImageCount         := desiredNumberOfSwapChainImages;
      swapchain_ci.imageFormat           := Vulkan_.Info.format;
      swapchain_ci.imageExtent.width     := swapchainExtent.width;
