@@ -17,8 +17,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _Window :TVkWindow_;
        _Handle :VkSurfaceKHR;
-       _Format :VkFormat;
-       _PresentQueueFamilyI :UInt32;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -29,8 +27,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// プロパティ
        property Window              :TVkWindow_   read _Window;
        property Handle              :VkSurfaceKHR read _Handle;
-       property Format              :VkFormat     read _Format;
-       property PresentQueueFamilyI :UInt32       read _PresentQueueFamilyI;
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -58,18 +54,8 @@ uses System.SysUtils,
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
 procedure TVkSurface<TVkWindow_>.CreateHandle;
-const
-     (* Use this surface format if it's available.  This ensures that generated
-      * images are similar on different devices and with different drivers.
-      *)
-     PREFERRED_SURFACE_FORMAT = VK_FORMAT_B8G8R8A8_UNORM;
 var
-   res              :VkResult;
-   createInfo       :VkWin32SurfaceCreateInfoKHR;
-   pSupportsPresent :TArray<VkBool32>;
-   i                :UInt32;
-   formatCount      :UInt32;
-   surfFormats      :TArray<VkSurfaceFormatKHR>;
+   createInfo :VkWin32SurfaceCreateInfoKHR;
 begin
      (* DEPENDS on init_connection() and init_window() *)
 
@@ -79,83 +65,12 @@ begin
      createInfo.pNext     := nil;
      createInfo.hinstance := TVkWindow( _Window ).connection;
      createInfo.hwnd      := TVkWindow( _Window ).window;
-     res := vkCreateWin32SurfaceKHR( TVkWindow( _Window ).Device.Devices.Instance.Handle, @createInfo, nil, @_Handle );
-     Assert( res = VK_SUCCESS );
-
-     // Iterate over each queue to learn whether it supports presenting:
-     SetLength( pSupportsPresent, TVkWindow( _Window ).Device.QueueFamilysN );
-     for i := 0 to TVkWindow( _Window ).Device.QueueFamilysN-1
-     do vkGetPhysicalDeviceSurfaceSupportKHR( TVkWindow( _Window ).Device.PhysHandle, i, _Handle, @pSupportsPresent[i] );
-
-     // Search for a graphics and a present queue in the array of queue
-     // families, try to find one that supports both
-     TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.graphics_queue_family_index := UINT32.MaxValue;
-     _PresentQueueFamilyI  := UINT32.MaxValue;
-     for i := 0 to TVkWindow( _Window ).Device.QueueFamilysN-1 do
-     begin
-          if ( TVkWindow( _Window ).Device.QueueFamilys[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
-          begin
-               if TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.graphics_queue_family_index = UINT32.MaxValue then TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.graphics_queue_family_index := i;
-
-               if pSupportsPresent[i] = VK_TRUE then
-               begin
-                    TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.graphics_queue_family_index := i;
-                    _PresentQueueFamilyI  := i;
-                    Break;
-               end;
-          end;
-     end;
-
-     if _PresentQueueFamilyI = UINT32.MaxValue then
-     begin
-          // If didn't find a queue that supports both graphics and present, then
-          // find a separate present queue.
-          for i := 0 to TVkWindow( _Window ).Device.QueueFamilysN-1 do
-          begin
-               if pSupportsPresent[i] = VK_TRUE then
-               begin
-                    _PresentQueueFamilyI := i;
-                    Break;
-               end;
-          end;
-     end;
-     pSupportsPresent := nil;
-
-     // Generate error if could not find queues that support graphics
-     // and present
-     if ( TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.graphics_queue_family_index = UINT32.MaxValue ) or ( _PresentQueueFamilyI = UINT32.MaxValue ) then
-     begin
-          Log.d( 'Could not find a queues for both graphics and present' );
-          RunError( 256-1 );
-     end;
-
-     // Get the list of VkFormats that are supported:
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( TVkWindow( _Window ).Device.PhysHandle, _Handle, @formatCount, nil );
-     Assert( res = VK_SUCCESS );
-     SetLength( surfFormats, formatCount );
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( TVkWindow( _Window ).Device.PhysHandle, _Handle, @formatCount, @surfFormats[0] );
-     Assert( res = VK_SUCCESS );
-
-     // If the device supports our preferred surface format, use it.
-     // Otherwise, use whatever the device's first reported surface
-     // format is.
-     Assert( formatCount >= 1 );
-     _Format := surfFormats[0].format;
-     for i := 0 to formatCount-1 do
-     begin
-          if surfFormats[i].format = PREFERRED_SURFACE_FORMAT then
-          begin
-               _Format := PREFERRED_SURFACE_FORMAT;
-               break;
-          end;
-     end;
-
-     surfFormats := nil;
+     Assert( vkCreateWin32SurfaceKHR( TVkWindow( _Window ).Instance.Handle, @createInfo, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkSurface<TVkWindow_>.DestroHandle;
 begin
-     vkDestroySurfaceKHR( TVkWindow( _Window ).Device.Devices.Instance.Handle, _Handle, nil );
+     vkDestroySurfaceKHR( TVkWindow( _Window ).Instance.Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
