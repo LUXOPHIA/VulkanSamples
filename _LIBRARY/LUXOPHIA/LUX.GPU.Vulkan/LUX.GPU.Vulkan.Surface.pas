@@ -16,6 +16,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        type TVkSurface_ = TVkSurface<TVkWindow_>;
      protected
        _Window :TVkWindow_;
+       _Handle :VkSurfaceKHR;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -24,7 +25,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Window :TVkWindow_ read _Window;
+       property Window :TVkWindow_   read _Window;
+       property Handle :VkSurfaceKHR read _Handle;
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -73,13 +75,13 @@ begin
      createInfo.pNext     := nil;
      createInfo.hinstance := TVkWindow( _Window ).connection;
      createInfo.hwnd      := TVkWindow( _Window ).window;
-     res := vkCreateWin32SurfaceKHR( TVkWindow( _Window ).Device.Devices.Instance.Handle, @createInfo, nil, @TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.surface );
+     res := vkCreateWin32SurfaceKHR( TVkWindow( _Window ).Device.Devices.Instance.Handle, @createInfo, nil, @_Handle );
      Assert( res = VK_SUCCESS );
 
      // Iterate over each queue to learn whether it supports presenting:
      SetLength( pSupportsPresent, TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.queue_family_count );
      for i := 0 to TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.queue_family_count-1
-     do vkGetPhysicalDeviceSurfaceSupportKHR( TVkWindow( _Window ).Device.Devices.Instance.Devices[0].PhysHandle, i, TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.surface, @pSupportsPresent[i] );
+     do vkGetPhysicalDeviceSurfaceSupportKHR( TVkWindow( _Window ).Device.Devices.Instance.Devices[0].PhysHandle, i, _Handle, @pSupportsPresent[i] );
 
      // Search for a graphics and a present queue in the array of queue
      // families, try to find one that supports both
@@ -124,10 +126,10 @@ begin
      end;
 
      // Get the list of VkFormats that are supported:
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( TVkWindow( _Window ).Device.PhysHandle, TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.surface, @formatCount, nil );
+     res := vkGetPhysicalDeviceSurfaceFormatsKHR( TVkWindow( _Window ).Device.PhysHandle, _Handle, @formatCount, nil );
      Assert( res = VK_SUCCESS );
      SetLength( surfFormats, formatCount );
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( TVkWindow( _Window ).Device.PhysHandle, TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.surface, @formatCount, @surfFormats[0] );
+     res := vkGetPhysicalDeviceSurfaceFormatsKHR( TVkWindow( _Window ).Device.PhysHandle, _Handle, @formatCount, @surfFormats[0] );
      Assert( res = VK_SUCCESS );
 
      // If the device supports our preferred surface format, use it.
@@ -149,8 +151,7 @@ end;
 
 procedure TVkSurface<TVkWindow_>.DestroHandle;
 begin
-     vkDestroySurfaceKHR( TVkWindow( _Window ).Device.Devices.Instance.Handle,
-                          TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.surface, nil );
+     vkDestroySurfaceKHR( TVkWindow( _Window ).Device.Devices.Instance.Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
