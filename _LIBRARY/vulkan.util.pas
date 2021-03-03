@@ -95,7 +95,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        memory_properties           :VkPhysicalDeviceMemoryProperties;
 
        framebuffers  :TArray<VkFramebuffer>;
-       format        :VkFormat;
 
        swapchainImageCount    :T_uint32_t;
        swap_chain             :VkSwapchainKHR;
