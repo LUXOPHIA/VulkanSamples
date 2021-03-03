@@ -91,7 +91,7 @@ begin
      TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.present_queue_family_index  := UINT32.MaxValue;
      for i := 0 to TVkWindow( _Window ).Device.QueueFamilysN-1 do
      begin
-          if ( TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.queue_props[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
+          if ( TVkWindow( _Window ).Device.QueueFamilys[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
           begin
                if TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.graphics_queue_family_index = UINT32.MaxValue then TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.graphics_queue_family_index := i;
 
