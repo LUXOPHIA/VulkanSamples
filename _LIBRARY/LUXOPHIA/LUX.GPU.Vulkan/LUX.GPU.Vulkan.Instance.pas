@@ -5,6 +5,7 @@ interface //####################################################################
 uses System.Classes,
      vulkan_core, vulkan_win32,
      LUX.GPU.Vulkan.root,
+     LUX.GPU.Vulkan.Window,
      LUX.GPU.Vulkan.Device;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -21,12 +22,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        type TVkInstance_ = TVkInstance<TVulkan_>;
             TVkDevices_  = TVkDevices<TVkInstance_>;
+            TVkWindow_   = TVkWindow<TVkInstance_>;
      protected
        _Handle     :VkInstance;
        _Name       :String;
        _Layers     :TStringList;
        _Extensions :TStringList;
        _Devices    :TVkDevices_;
+       _Window     :TVkWindow_;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -35,11 +38,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Handle     :VkInstance  read _Handle                ;
-       property Name       :String      read _Name       write _Name;
-       property Layers     :TStringList read _Layers                ;
-       property Extensions :TStringList read _Extensions            ;
-       property Devices    :TVkDevices_ read _Devices               ;
+       property Handle     :VkInstance  read _Handle                   ;
+       property Name       :String      read _Name       write _Name   ;
+       property Layers     :TStringList read _Layers                   ;
+       property Extensions :TStringList read _Extensions               ;
+       property Devices    :TVkDevices_ read _Devices    write _Devices;
+       property Window     :TVkWindow_  read _Window     write _Window ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -119,8 +123,6 @@ begin
      _Extensions.Add( VK_KHR_WIN32_SURFACE_EXTENSION_NAME );
 
      CreateHandle;
-
-     _Devices := TVkDevices_.Create( Self );
 end;
 
 procedure TVkInstance<TVulkan_>.AfterConstruction;
