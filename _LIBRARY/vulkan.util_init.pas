@@ -163,15 +163,15 @@ begin
      createInfo           := Default( VkWin32SurfaceCreateInfoKHR );
      createInfo.sType     := VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
      createInfo.pNext     := nil;
-     createInfo.hinstance := Vulkan_.Instance.Devices.Devices[0].Window.connection;
-     createInfo.hwnd      := Vulkan_.Instance.Devices.Devices[0].Window.window;
+     createInfo.hinstance := Vulkan_.Instance.Devices[0].Window.connection;
+     createInfo.hwnd      := Vulkan_.Instance.Devices[0].Window.window;
      res := vkCreateWin32SurfaceKHR( Vulkan_.Instance.Handle, @createInfo, nil, @Vulkan_.Info.surface );
      Assert( res = VK_SUCCESS );
 
      // Iterate over each queue to learn whether it supports presenting:
      SetLength( pSupportsPresent, Vulkan_.Info.queue_family_count );
      for i := 0 to Vulkan_.Info.queue_family_count-1
-     do vkGetPhysicalDeviceSurfaceSupportKHR( Vulkan_.Instance.Devices.Devices[ 0 ].PhysHandle, i, Vulkan_.Info.surface, @pSupportsPresent[i] );
+     do vkGetPhysicalDeviceSurfaceSupportKHR( Vulkan_.Instance.Devices[0].PhysHandle, i, Vulkan_.Info.surface, @pSupportsPresent[i] );
 
      // Search for a graphics and a present queue in the array of queue
      // families, try to find one that supports both
@@ -216,10 +216,10 @@ begin
      end;
 
      // Get the list of VkFormats that are supported:
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( Vulkan_.Instance.Devices.Devices[ 0 ].PhysHandle, Vulkan_.Info.surface, @formatCount, nil );
+     res := vkGetPhysicalDeviceSurfaceFormatsKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Info.surface, @formatCount, nil );
      Assert( res = VK_SUCCESS );
      SetLength( surfFormats, formatCount );
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( Vulkan_.Instance.Devices.Devices[ 0 ].PhysHandle, Vulkan_.Info.surface, @formatCount, @surfFormats[0] );
+     res := vkGetPhysicalDeviceSurfaceFormatsKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Info.surface, @formatCount, @surfFormats[0] );
      Assert( res = VK_SUCCESS );
 
      // If the device supports our preferred surface format, use it.
@@ -256,11 +256,11 @@ var
    pData      :P_uint8_t;
 begin
      fov := DegToRad( 45 );
-     if Vulkan_.Instance.Devices.Devices[0].Window.width > Vulkan_.Instance.Devices.Devices[0].Window.height then
+     if Vulkan_.Instance.Devices[0].Window.width > Vulkan_.Instance.Devices[0].Window.height then
      begin
-          fov := fov * Vulkan_.Instance.Devices.Devices[0].Window.height / Vulkan_.Instance.Devices.Devices[0].Window.width;
+          fov := fov * Vulkan_.Instance.Devices[0].Window.height / Vulkan_.Instance.Devices[0].Window.width;
      end;
-     Vulkan_.Info.Projection := TSingleM4.ProjPersH( fov, Vulkan_.Instance.Devices.Devices[0].Window.width / Vulkan_.Instance.Devices.Devices[0].Window.height, 0.1, 100 );
+     Vulkan_.Info.Projection := TSingleM4.ProjPersH( fov, Vulkan_.Instance.Devices[0].Window.width / Vulkan_.Instance.Devices[0].Window.height, 0.1, 100 );
      Vulkan_.Info.View := TSingleM4.LookAt( TSingle3D.Create( -5, +3, -10 ),    // Camera is at (-5,3,-10), in World Space
                                      TSingle3D.Create(  0,  0,   0 ),    // and looks at the origin
                                      TSingle3D.Create(  0, -1,   0 ) );  // Head is up (set to 0,-1,0 to look upside-down)
@@ -284,10 +284,10 @@ begin
      buf_info.pQueueFamilyIndices   := nil;
      buf_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
      buf_info.flags                 := 0;
-     res := vkCreateBuffer( Vulkan_.Instance.Devices.Devices[0].Handle, @buf_info, nil, @Vulkan_.Info.uniform_data.buf );
+     res := vkCreateBuffer( Vulkan_.Instance.Devices[0].Handle, @buf_info, nil, @Vulkan_.Info.uniform_data.buf );
      Assert( res = VK_SUCCESS );
 
-     vkGetBufferMemoryRequirements( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.uniform_data.buf, @mem_reqs );
+     vkGetBufferMemoryRequirements( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.uniform_data.buf, @mem_reqs );
 
      alloc_info                 := Default( VkMemoryAllocateInfo );
      alloc_info.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
@@ -300,17 +300,17 @@ begin
                                           alloc_info.memoryTypeIndex );
      Assert( pass, 'No mappable, coherent memory' );
 
-     res := vkAllocateMemory( Vulkan_.Instance.Devices.Devices[0].Handle, @alloc_info, nil, @Vulkan_.Info.uniform_data.mem );
+     res := vkAllocateMemory( Vulkan_.Instance.Devices[0].Handle, @alloc_info, nil, @Vulkan_.Info.uniform_data.mem );
      Assert( res = VK_SUCCESS );
 
-     res := vkMapMemory( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.uniform_data.mem, 0, mem_reqs.size, 0, @pData );
+     res := vkMapMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.uniform_data.mem, 0, mem_reqs.size, 0, @pData );
      Assert( res = VK_SUCCESS );
 
      Move( Vulkan_.Info.MVP, pData^, SizeOf( Vulkan_.Info.MVP ) );
 
-     vkUnmapMemory( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.uniform_data.mem );
+     vkUnmapMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.uniform_data.mem );
 
-     res := vkBindBufferMemory( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.uniform_data.buf, Vulkan_.Info.uniform_data.mem, 0 );
+     res := vkBindBufferMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.uniform_data.buf, Vulkan_.Info.uniform_data.mem, 0 );
      Assert( res = VK_SUCCESS );
 
      Vulkan_.Info.uniform_data.buffer_info.buffer := Vulkan_.Info.uniform_data.buf;
@@ -352,7 +352,7 @@ begin
      descriptor_layout.pBindings         := @layout_bindings[0];
 
      SetLength( Vulkan_.Info.desc_layout, NUM_DESCRIPTOR_SETS );
-     res := vkCreateDescriptorSetLayout( Vulkan_.Instance.Devices.Devices[0].Handle, @descriptor_layout, nil, @Vulkan_.Info.desc_layout[0] );
+     res := vkCreateDescriptorSetLayout( Vulkan_.Instance.Devices[0].Handle, @descriptor_layout, nil, @Vulkan_.Info.desc_layout[0] );
      Assert( res = VK_SUCCESS );
 
      (* Now use the descriptor layout to create a pipeline layout *)
@@ -364,22 +364,22 @@ begin
      pPipelineLayoutCreateInfo.setLayoutCount         := NUM_DESCRIPTOR_SETS;
      pPipelineLayoutCreateInfo.pSetLayouts            := @Vulkan_.Info.desc_layout[0];
 
-     res := vkCreatePipelineLayout( Vulkan_.Instance.Devices.Devices[0].Handle, @pPipelineLayoutCreateInfo, nil, @Vulkan_.Info.pipeline_layout );
+     res := vkCreatePipelineLayout( Vulkan_.Instance.Devices[0].Handle, @pPipelineLayoutCreateInfo, nil, @Vulkan_.Info.pipeline_layout );
      Assert( res = VK_SUCCESS );
 end;
 
 procedure destroy_uniform_buffer( const Vulkan_:TVulkan );
 begin
-     vkDestroyBuffer( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.uniform_data.buf, nil );
-     vkFreeMemory( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.uniform_data.mem, nil );
+     vkDestroyBuffer( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.uniform_data.buf, nil );
+     vkFreeMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.uniform_data.mem, nil );
 end;
 
 procedure destroy_descriptor_and_pipeline_layouts( const Vulkan_:TVulkan );
 var
    i :T_int;
 begin
-     for i := 0 to NUM_DESCRIPTOR_SETS-1 do vkDestroyDescriptorSetLayout( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.desc_layout[i], nil );
-     vkDestroyPipelineLayout( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.pipeline_layout, nil );
+     for i := 0 to NUM_DESCRIPTOR_SETS-1 do vkDestroyDescriptorSetLayout( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.desc_layout[i], nil );
+     vkDestroyPipelineLayout( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.pipeline_layout, nil );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 10-init_render_pass
@@ -388,10 +388,10 @@ procedure init_device_queue( const Vulkan_:TVulkan );
 begin
      (* DEPENDS on init_swapchain_extension() *)
 
-     vkGetDeviceQueue( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.graphics_queue_family_index, 0, @Vulkan_.Info.graphics_queue );
+     vkGetDeviceQueue( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.graphics_queue_family_index, 0, @Vulkan_.Info.graphics_queue );
      if Vulkan_.Info.graphics_queue_family_index = Vulkan_.Info.present_queue_family_index
      then Vulkan_.Info.present_queue := Vulkan_.Info.graphics_queue
-     else vkGetDeviceQueue( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.present_queue_family_index, 0, @Vulkan_.Info.present_queue );
+     else vkGetDeviceQueue( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.present_queue_family_index, 0, @Vulkan_.Info.present_queue );
 end;
 
 procedure init_swap_chain( const Vulkan_:TVulkan; usageFlags_:VkImageUsageFlags = Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
@@ -415,14 +415,14 @@ var
 begin
      (* DEPENDS on info.cmd and info.queue initialized *)
 
-     res := vkGetPhysicalDeviceSurfaceCapabilitiesKHR( Vulkan_.Instance.Devices.Devices[ 0 ].PhysHandle, Vulkan_.Info.surface, @surfCapabilities );
+     res := vkGetPhysicalDeviceSurfaceCapabilitiesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Info.surface, @surfCapabilities );
      Assert( res = VK_SUCCESS );
 
-     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Instance.Devices.Devices[ 0 ].PhysHandle, Vulkan_.Info.surface, @presentModeCount, nil );
+     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Info.surface, @presentModeCount, nil );
      Assert( res = VK_SUCCESS );
      SetLength( presentModes, presentModeCount );
      Assert( Length( presentModes ) > 0 );
-     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Instance.Devices.Devices[ 0 ].PhysHandle, Vulkan_.Info.surface, @presentModeCount, @presentModes[0] );
+     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Info.surface, @presentModeCount, @presentModes[0] );
      Assert( res = VK_SUCCESS );
 
      // width and height are either both 0xFFFFFFFF, or both not 0xFFFFFFFF.
@@ -430,8 +430,8 @@ begin
      begin
           // If the surface size is undefined, the size is set to
           // the size of the images requested.
-          swapchainExtent.width  := Vulkan_.Instance.Devices.Devices[0].Window.width;
-          swapchainExtent.height := Vulkan_.Instance.Devices.Devices[0].Window.height;
+          swapchainExtent.width  := Vulkan_.Instance.Devices[0].Window.width;
+          swapchainExtent.height := Vulkan_.Instance.Devices[0].Window.height;
           if swapchainExtent.width < surfCapabilities.minImageExtent.width
           then swapchainExtent.width := surfCapabilities.minImageExtent.width
           else
@@ -513,15 +513,15 @@ begin
           swapchain_ci.pQueueFamilyIndices   := @queueFamilyIndices[0];
      end;
 
-     res := vkCreateSwapchainKHR( Vulkan_.Instance.Devices.Devices[0].Handle, @swapchain_ci, nil, @Vulkan_.Info.swap_chain );
+     res := vkCreateSwapchainKHR( Vulkan_.Instance.Devices[0].Handle, @swapchain_ci, nil, @Vulkan_.Info.swap_chain );
      Assert( res = VK_SUCCESS );
 
-     res := vkGetSwapchainImagesKHR( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.swap_chain, @Vulkan_.Info.swapchainImageCount, nil );
+     res := vkGetSwapchainImagesKHR( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.swap_chain, @Vulkan_.Info.swapchainImageCount, nil );
      Assert( res = VK_SUCCESS );
 
      SetLength( swapchainImages, Vulkan_.Info.swapchainImageCount );
      Assert( Length( swapchainImages ) > 0 );
-     res := vkGetSwapchainImagesKHR( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.swap_chain, @Vulkan_.Info.swapchainImageCount, @swapchainImages[0] );
+     res := vkGetSwapchainImagesKHR( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.swap_chain, @Vulkan_.Info.swapchainImageCount, @swapchainImages[0] );
      Assert( res = VK_SUCCESS );
 
      for i := 0 to Vulkan_.Info.swapchainImageCount-1 do
@@ -546,7 +546,7 @@ begin
 
           color_image_view.image := sc_buffer.image;
 
-          res := vkCreateImageView( Vulkan_.Instance.Devices.Devices[0].Handle, @color_image_view, nil, @sc_buffer.view );
+          res := vkCreateImageView( Vulkan_.Instance.Devices[0].Handle, @color_image_view, nil, @sc_buffer.view );
           Vulkan_.Info.buffers := Vulkan_.Info.buffers + [ sc_buffer ];
           Assert( res = VK_SUCCESS );
      end;
@@ -571,7 +571,7 @@ begin
      if Vulkan_.Info.depth.format = VK_FORMAT_UNDEFINED then Vulkan_.Info.depth.format := VK_FORMAT_D16_UNORM;
 
      depth_format := Vulkan_.Info.depth.format;
-     vkGetPhysicalDeviceFormatProperties( Vulkan_.Instance.Devices.Devices[ 0 ].PhysHandle, depth_format, @props );
+     vkGetPhysicalDeviceFormatProperties( Vulkan_.Instance.Devices[0].PhysHandle, depth_format, @props );
      if ( props.linearTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
      then image_info.tiling := VK_IMAGE_TILING_LINEAR
      else
@@ -589,8 +589,8 @@ begin
      image_info.pNext                 := nil;
      image_info.imageType             := VK_IMAGE_TYPE_2D;
      image_info.format                := depth_format;
-     image_info.extent.width          := Vulkan_.Instance.Devices.Devices[0].Window.width;
-     image_info.extent.height         := Vulkan_.Instance.Devices.Devices[0].Window.height;
+     image_info.extent.width          := Vulkan_.Instance.Devices[0].Window.width;
+     image_info.extent.height         := Vulkan_.Instance.Devices[0].Window.height;
      image_info.extent.depth          := 1;
      image_info.mipLevels             := 1;
      image_info.arrayLayers           := 1;
@@ -630,10 +630,10 @@ begin
      then view_info.subresourceRange.aspectMask := view_info.subresourceRange.aspectMask or Ord( VK_IMAGE_ASPECT_STENCIL_BIT );
 
      (* Create image *)
-     res := vkCreateImage( Vulkan_.Instance.Devices.Devices[0].Handle, @image_info, nil, @Vulkan_.Info.depth.image );
+     res := vkCreateImage( Vulkan_.Instance.Devices[0].Handle, @image_info, nil, @Vulkan_.Info.depth.image );
      Assert( res = VK_SUCCESS );
 
-     vkGetImageMemoryRequirements( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.depth.image, @mem_reqs );
+     vkGetImageMemoryRequirements( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.depth.image, @mem_reqs );
 
      mem_alloc.allocationSize := mem_reqs.size;
      (* Use the memory properties to determine the type of memory required *)
@@ -641,32 +641,32 @@ begin
      Assert( pass );
 
      (* Allocate memory *)
-     res := vkAllocateMemory( Vulkan_.Instance.Devices.Devices[0].Handle, @mem_alloc, nil, @Vulkan_.Info.depth.mem );
+     res := vkAllocateMemory( Vulkan_.Instance.Devices[0].Handle, @mem_alloc, nil, @Vulkan_.Info.depth.mem );
      Assert( res = VK_SUCCESS );
 
      (* Bind memory *)
-     res := vkBindImageMemory( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.depth.image, Vulkan_.Info.depth.mem, 0 );
+     res := vkBindImageMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.depth.image, Vulkan_.Info.depth.mem, 0 );
      Assert( res = VK_SUCCESS );
 
      (* Create image view *)
      view_info.image := Vulkan_.Info.depth.image;
-     res := vkCreateImageView( Vulkan_.Instance.Devices.Devices[0].Handle, @view_info, nil, @Vulkan_.Info.depth.view );
+     res := vkCreateImageView( Vulkan_.Instance.Devices[0].Handle, @view_info, nil, @Vulkan_.Info.depth.view );
      Assert( res = VK_SUCCESS );
 end;
 
 procedure destroy_depth_buffer( const Vulkan_:TVulkan );
 begin
-     vkDestroyImageView( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.depth.view, nil );
-     vkDestroyImage( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.depth.image, nil );
-     vkFreeMemory( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.depth.mem, nil );
+     vkDestroyImageView( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.depth.view, nil );
+     vkDestroyImage( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.depth.image, nil );
+     vkFreeMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.depth.mem, nil );
 end;
 
 procedure destroy_swap_chain( const Vulkan_:TVulkan );
 var
    I :T_uint32_t;
 begin
-     for i := 0 to Vulkan_.Info.swapchainImageCount-1 do vkDestroyImageView( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.buffers[i].view, nil );
-     vkDestroySwapchainKHR( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.swap_chain, nil );
+     for i := 0 to Vulkan_.Info.swapchainImageCount-1 do vkDestroyImageView( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.buffers[i].view, nil );
+     vkDestroySwapchainKHR( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.swap_chain, nil );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 11-init_shaders
@@ -686,7 +686,7 @@ begin
      cmd_pool_info.queueFamilyIndex := Vulkan_.Info.graphics_queue_family_index;
      cmd_pool_info.flags            := Ord( VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
 
-     res := vkCreateCommandPool( Vulkan_.Instance.Devices.Devices[0].Handle, @cmd_pool_info, nil, @Vulkan_.Info.cmd_pool );
+     res := vkCreateCommandPool( Vulkan_.Instance.Devices[0].Handle, @cmd_pool_info, nil, @Vulkan_.Info.cmd_pool );
      Assert( res = VK_SUCCESS );
 end;
 
@@ -704,7 +704,7 @@ begin
      cmd.level              := VK_COMMAND_BUFFER_LEVEL_PRIMARY;
      cmd.commandBufferCount := 1;
 
-     res := vkAllocateCommandBuffers( Vulkan_.Instance.Devices.Devices[0].Handle, @cmd, @Vulkan_.Info.cmd );
+     res := vkAllocateCommandBuffers( Vulkan_.Instance.Devices[0].Handle, @cmd, @Vulkan_.Info.cmd );
      Assert( res = VK_SUCCESS );
 end;
 
@@ -815,7 +815,7 @@ begin
      rp_info.dependencyCount      := 1;
      rp_info.pDependencies        := @subpass_dependency;
 
-     res := vkCreateRenderPass( Vulkan_.Instance.Devices.Devices[0].Handle, @rp_info, nil, @Vulkan_.Info.render_pass );
+     res := vkCreateRenderPass( Vulkan_.Instance.Devices[0].Handle, @rp_info, nil, @Vulkan_.Info.render_pass );
      Assert( res = VK_SUCCESS );
 end;
 
@@ -843,7 +843,7 @@ begin
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
-     vkCreateFence( Vulkan_.Instance.Devices.Devices[0].Handle, @fenceInfo, nil, @drawFence );
+     vkCreateFence( Vulkan_.Instance.Devices[0].Handle, @fenceInfo, nil, @drawFence );
 
      pipe_stage_flags := Ord( VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT );
      submit_info                         := Default( T_submit_info );
@@ -861,17 +861,17 @@ begin
      Assert( res = VK_SUCCESS );
 
      repeat
-           res := vkWaitForFences( Vulkan_.Instance.Devices.Devices[0].Handle, 1, @drawFence, VK_TRUE, FENCE_TIMEOUT );
+           res := vkWaitForFences( Vulkan_.Instance.Devices[0].Handle, 1, @drawFence, VK_TRUE, FENCE_TIMEOUT );
 
      until res <> VK_TIMEOUT;
      Assert( res = VK_SUCCESS );
 
-     vkDestroyFence( Vulkan_.Instance.Devices.Devices[0].Handle, drawFence, nil );
+     vkDestroyFence( Vulkan_.Instance.Devices[0].Handle, drawFence, nil );
 end;
 
 procedure destroy_renderpass( const Vulkan_:TVulkan );
 begin
-     vkDestroyRenderPass( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.render_pass, nil );
+     vkDestroyRenderPass( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.render_pass, nil );
 end;
 
 procedure destroy_command_buffer( const Vulkan_:TVulkan );
@@ -879,12 +879,12 @@ var
    cmd_bufs :array [ 0..1-1 ] of VkCommandBuffer;
 begin
      cmd_bufs[0] := Vulkan_.Info.cmd;
-     vkFreeCommandBuffers( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.cmd_pool, 1, @cmd_bufs[0] );
+     vkFreeCommandBuffers( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.cmd_pool, 1, @cmd_bufs[0] );
 end;
 
 procedure destroy_command_pool( const Vulkan_:TVulkan );
 begin
-     vkDestroyCommandPool( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.cmd_pool, nil );
+     vkDestroyCommandPool( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.cmd_pool, nil );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 13-init_vertex_buffer
@@ -909,8 +909,8 @@ begin
      then fb_info.attachmentCount := 2
      else fb_info.attachmentCount := 1;
      fb_info.pAttachments         := @attachments[0];
-     fb_info.width                := Vulkan_.Instance.Devices.Devices[0].Window.width;
-     fb_info.height               := Vulkan_.Instance.Devices.Devices[0].Window.height;
+     fb_info.width                := Vulkan_.Instance.Devices[0].Window.width;
+     fb_info.height               := Vulkan_.Instance.Devices[0].Window.height;
      fb_info.layers               := 1;
 
      SetLength( Vulkan_.Info.framebuffers, Vulkan_.Info.swapchainImageCount );
@@ -918,7 +918,7 @@ begin
      for i := 0 to Vulkan_.Info.swapchainImageCount-1 do
      begin
           attachments[0] := Vulkan_.Info.buffers[i].view;
-          res := vkCreateFramebuffer( Vulkan_.Instance.Devices.Devices[0].Handle, @fb_info, nil, @Vulkan_.Info.framebuffers[i] );
+          res := vkCreateFramebuffer( Vulkan_.Instance.Devices[0].Handle, @fb_info, nil, @Vulkan_.Info.framebuffers[i] );
           Assert( res = VK_SUCCESS );
      end;
 end;
@@ -927,7 +927,7 @@ procedure destroy_framebuffers( const Vulkan_:TVulkan );
 var
    i :T_uint32_t;
 begin
-     for i := 0 to Vulkan_.Info.swapchainImageCount-1 do vkDestroyFramebuffer( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.framebuffers[i], nil );
+     for i := 0 to Vulkan_.Info.swapchainImageCount-1 do vkDestroyFramebuffer( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.framebuffers[i], nil );
      Vulkan_.Info.framebuffers := nil;
 end;
 
@@ -951,10 +951,10 @@ begin
      buf_info.pQueueFamilyIndices   := nil;
      buf_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
      buf_info.flags                 := 0;
-     res := vkCreateBuffer( Vulkan_.Instance.Devices.Devices[0].Handle, @buf_info, nil, @Vulkan_.Info.vertex_buffer.buf );
+     res := vkCreateBuffer( Vulkan_.Instance.Devices[0].Handle, @buf_info, nil, @Vulkan_.Info.vertex_buffer.buf );
      Assert( res = VK_SUCCESS );
 
-     vkGetBufferMemoryRequirements( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.vertex_buffer.buf, @mem_reqs );
+     vkGetBufferMemoryRequirements( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.vertex_buffer.buf, @mem_reqs );
 
      alloc_info                 := Default( VkMemoryAllocateInfo );
      alloc_info.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
@@ -967,19 +967,19 @@ begin
                                           alloc_info.memoryTypeIndex );
      Assert( pass, 'No mappable, coherent memory' );
 
-     res := vkAllocateMemory( Vulkan_.Instance.Devices.Devices[0].Handle, @alloc_info, nil, @Vulkan_.Info.vertex_buffer.mem );
+     res := vkAllocateMemory( Vulkan_.Instance.Devices[0].Handle, @alloc_info, nil, @Vulkan_.Info.vertex_buffer.mem );
      Assert( res = VK_SUCCESS );
      Vulkan_.Info.vertex_buffer.buffer_info.range  := mem_reqs.size;
      Vulkan_.Info.vertex_buffer.buffer_info.offset := 0;
 
-     res := vkMapMemory( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.vertex_buffer.mem, 0, mem_reqs.size, 0, @pData );
+     res := vkMapMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.vertex_buffer.mem, 0, mem_reqs.size, 0, @pData );
      Assert( res = VK_SUCCESS );
 
      Move( vertexData_^, pData^, dataSize_ );
 
-     vkUnmapMemory( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.vertex_buffer.mem );
+     vkUnmapMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.vertex_buffer.mem );
 
-     res := vkBindBufferMemory( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.vertex_buffer.buf, Vulkan_.Info.vertex_buffer.mem, 0 );
+     res := vkBindBufferMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.vertex_buffer.buf, Vulkan_.Info.vertex_buffer.mem, 0 );
      Assert( res = VK_SUCCESS );
 
      Vulkan_.Info.vi_binding.binding   := 0;
@@ -1024,7 +1024,7 @@ begin
      else descriptor_pool.poolSizeCount := 1;
      descriptor_pool.pPoolSizes         := @type_count[0];
 
-     res := vkCreateDescriptorPool( Vulkan_.Instance.Devices.Devices[0].Handle, @descriptor_pool, nil, @Vulkan_.Info.desc_pool );
+     res := vkCreateDescriptorPool( Vulkan_.Instance.Devices[0].Handle, @descriptor_pool, nil, @Vulkan_.Info.desc_pool );
      Assert( res = VK_SUCCESS );
 end;
 
@@ -1043,7 +1043,7 @@ begin
      alloc_info[0].pSetLayouts        := @Vulkan_.Info.desc_layout[0];
 
      SetLength( Vulkan_.Info.desc_set, NUM_DESCRIPTOR_SETS );
-     res := vkAllocateDescriptorSets( Vulkan_.Instance.Devices.Devices[0].Handle, @alloc_info[0], @Vulkan_.Info.desc_set[0] );
+     res := vkAllocateDescriptorSets( Vulkan_.Instance.Devices[0].Handle, @alloc_info[0], @Vulkan_.Info.desc_set[0] );
      Assert( res = VK_SUCCESS );
 
      writes[0]                 := Default( VkWriteDescriptorSet );
@@ -1069,27 +1069,27 @@ begin
      end;
 
      if use_texture_
-     then vkUpdateDescriptorSets( Vulkan_.Instance.Devices.Devices[0].Handle, 2, @writes[0], 0, nil )
-     else vkUpdateDescriptorSets( Vulkan_.Instance.Devices.Devices[0].Handle, 1, @writes[0], 0, nil );
+     then vkUpdateDescriptorSets( Vulkan_.Instance.Devices[0].Handle, 2, @writes[0], 0, nil )
+     else vkUpdateDescriptorSets( Vulkan_.Instance.Devices[0].Handle, 1, @writes[0], 0, nil );
 end;
 
 procedure destroy_descriptor_pool( const Vulkan_:TVulkan );
 begin
-     vkDestroyDescriptorPool( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.desc_pool, nil );
+     vkDestroyDescriptorPool( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.desc_pool, nil );
 end;
 
 procedure destroy_vertex_buffer( const Vulkan_:TVulkan );
 begin
-     vkDestroyBuffer( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.vertex_buffer.buf, nil );
-     vkFreeMemory( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.vertex_buffer.mem, nil );
+     vkDestroyBuffer( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.vertex_buffer.buf, nil );
+     vkFreeMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.vertex_buffer.mem, nil );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 15-draw_cube
 
 procedure init_viewports( const Vulkan_:TVulkan );
 begin
-     Vulkan_.Info.viewport.height   := Vulkan_.Instance.Devices.Devices[0].Window.height;
-     Vulkan_.Info.viewport.width    := Vulkan_.Instance.Devices.Devices[0].Window.width;
+     Vulkan_.Info.viewport.height   := Vulkan_.Instance.Devices[0].Window.height;
+     Vulkan_.Info.viewport.width    := Vulkan_.Instance.Devices[0].Window.width;
      Vulkan_.Info.viewport.minDepth := 0.0;
      Vulkan_.Info.viewport.maxDepth := 1.0;
      Vulkan_.Info.viewport.x        := 0;
@@ -1099,8 +1099,8 @@ end;
 
 procedure init_scissors( const Vulkan_:TVulkan );
 begin
-     Vulkan_.Info.scissor.extent.width  := Vulkan_.Instance.Devices.Devices[0].Window.width;
-     Vulkan_.Info.scissor.extent.height := Vulkan_.Instance.Devices.Devices[0].Window.height;
+     Vulkan_.Info.scissor.extent.width  := Vulkan_.Instance.Devices[0].Window.width;
+     Vulkan_.Info.scissor.extent.height := Vulkan_.Instance.Devices[0].Window.height;
      Vulkan_.Info.scissor.offset.x      := 0;
      Vulkan_.Info.scissor.offset.y      := 0;
      vkCmdSetScissor( Vulkan_.Info.cmd, 0, NUM_SCISSORS, @Vulkan_.Info.scissor );
@@ -1116,13 +1116,13 @@ begin
      pipelineCache.initialDataSize := 0;
      pipelineCache.pInitialData    := nil;
      pipelineCache.flags           := 0;
-     res := vkCreatePipelineCache( Vulkan_.Instance.Devices.Devices[0].Handle, @pipelineCache, nil, @Vulkan_.Info.pipelineCache );
+     res := vkCreatePipelineCache( Vulkan_.Instance.Devices[0].Handle, @pipelineCache, nil, @Vulkan_.Info.pipelineCache );
      Assert( res = VK_SUCCESS );
 end;
 
 procedure destroy_pipeline_cache( const Vulkan_:TVulkan );
 begin
-     vkDestroyPipelineCache( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.pipelineCache, nil );
+     vkDestroyPipelineCache( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.pipelineCache, nil );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// draw_textured_cube
@@ -1145,7 +1145,7 @@ begin
      buffer_create_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
      buffer_create_info.queueFamilyIndexCount := 0;
      buffer_create_info.pQueueFamilyIndices   := nil;
-     res := vkCreateBuffer( Vulkan_.Instance.Devices.Devices[0].Handle, @buffer_create_info, nil, @texObj_.buffer );
+     res := vkCreateBuffer( Vulkan_.Instance.Devices[0].Handle, @buffer_create_info, nil, @texObj_.buffer );
      Assert( res = VK_SUCCESS );
 
      mem_alloc                 := Default( VkMemoryAllocateInfo );
@@ -1154,7 +1154,7 @@ begin
      mem_alloc.allocationSize  := 0;
      mem_alloc.memoryTypeIndex := 0;
 
-     vkGetBufferMemoryRequirements( Vulkan_.Instance.Devices.Devices[0].Handle, texObj_.buffer, @mem_reqs );
+     vkGetBufferMemoryRequirements( Vulkan_.Instance.Devices[0].Handle, texObj_.buffer, @mem_reqs );
      mem_alloc.allocationSize := mem_reqs.size;
      texObj_.buffer_size := mem_reqs.size;
 
@@ -1163,11 +1163,11 @@ begin
      Assert( pass, '"No mappable, coherent memory' );
 
      (* allocate memory *)
-     res := vkAllocateMemory(Vulkan_.Instance.Devices.Devices[0].Handle, @mem_alloc, nil, @( texObj_.buffer_memory) );
+     res := vkAllocateMemory(Vulkan_.Instance.Devices[0].Handle, @mem_alloc, nil, @( texObj_.buffer_memory) );
      Assert( res = VK_SUCCESS );
 
      (* bind memory *)
-     res := vkBindBufferMemory( Vulkan_.Instance.Devices.Devices[0].Handle, texObj_.buffer, texObj_.buffer_memory, 0 );
+     res := vkBindBufferMemory( Vulkan_.Instance.Devices[0].Handle, texObj_.buffer, texObj_.buffer_memory, 0 );
      Assert( res = VK_SUCCESS );
 end;
 
@@ -1212,7 +1212,7 @@ begin
           end;
      end;
 
-     vkGetPhysicalDeviceFormatProperties( Vulkan_.Instance.Devices.Devices[ 0 ].PhysHandle, VK_FORMAT_R8G8B8A8_UNORM, @formatProps );
+     vkGetPhysicalDeviceFormatProperties( Vulkan_.Instance.Devices[0].PhysHandle, VK_FORMAT_R8G8B8A8_UNORM, @formatProps );
 
      (* See if we can use a linear tiled image for a texture, if not, we will
       * need a staging buffer for the texture data *)
@@ -1260,10 +1260,10 @@ begin
      mem_alloc.allocationSize  := 0;
      mem_alloc.memoryTypeIndex := 0;
 
-     res := vkCreateImage( Vulkan_.Instance.Devices.Devices[0].Handle, @image_create_info, nil, @texObj_.image );
+     res := vkCreateImage( Vulkan_.Instance.Devices[0].Handle, @image_create_info, nil, @texObj_.image );
      Assert( res = VK_SUCCESS );
 
-     vkGetImageMemoryRequirements( Vulkan_.Instance.Devices.Devices[0].Handle, texObj_.image, @mem_reqs );
+     vkGetImageMemoryRequirements( Vulkan_.Instance.Devices[0].Handle, texObj_.image, @mem_reqs );
 
      mem_alloc.allocationSize := mem_reqs.size;
 
@@ -1274,11 +1274,11 @@ begin
      Assert( pass );
 
      (* allocate memory *)
-     res := vkAllocateMemory(Vulkan_.Instance.Devices.Devices[0].Handle, @mem_alloc, nil, @( texObj_.image_memory) );
+     res := vkAllocateMemory(Vulkan_.Instance.Devices[0].Handle, @mem_alloc, nil, @( texObj_.image_memory) );
      Assert( res = VK_SUCCESS );
 
      (* bind memory *)
-     res := vkBindImageMemory( Vulkan_.Instance.Devices.Devices[0].Handle, texObj_.image, texObj_.image_memory, 0 );
+     res := vkBindImageMemory( Vulkan_.Instance.Devices[0].Handle, texObj_.image, texObj_.image_memory, 0 );
      Assert( res = VK_SUCCESS );
 
      res := vkEndCommandBuffer( Vulkan_.Info.cmd );
@@ -1287,7 +1287,7 @@ begin
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
-     vkCreateFence( Vulkan_.Instance.Devices.Devices[0].Handle, @fenceInfo, nil, @cmdFence );
+     vkCreateFence( Vulkan_.Instance.Devices[0].Handle, @fenceInfo, nil, @cmdFence );
 
      submit_info[0]                      := Default( VkSubmitInfo );
      submit_info[0].pNext                := nil;
@@ -1313,21 +1313,21 @@ begin
      if not texObj_.needs_staging then
      begin
           (* Get the subresource layout so we know what the row pitch is *)
-          vkGetImageSubresourceLayout( Vulkan_.Instance.Devices.Devices[0].Handle, texObj_.image, @subres, @layout );
+          vkGetImageSubresourceLayout( Vulkan_.Instance.Devices[0].Handle, texObj_.image, @subres, @layout );
      end;
 
      (* Make sure command buffer is finished before mapping *)
      repeat
-           res := vkWaitForFences( Vulkan_.Instance.Devices.Devices[0].Handle, 1, @cmdFence, VK_TRUE, FENCE_TIMEOUT );
+           res := vkWaitForFences( Vulkan_.Instance.Devices[0].Handle, 1, @cmdFence, VK_TRUE, FENCE_TIMEOUT );
 
      until res <> VK_TIMEOUT;
      Assert( res = VK_SUCCESS );
 
-     vkDestroyFence( Vulkan_.Instance.Devices.Devices[0].Handle, cmdFence, nil );
+     vkDestroyFence( Vulkan_.Instance.Devices[0].Handle, cmdFence, nil );
 
      if texObj_.needs_staging
-     then res := vkMapMemory( Vulkan_.Instance.Devices.Devices[0].Handle, texObj_.buffer_memory, 0, texObj_.buffer_size, 0, @data )
-     else res := vkMapMemory( Vulkan_.Instance.Devices.Devices[0].Handle, texObj_.image_memory , 0, mem_reqs.size     , 0, @data );
+     then res := vkMapMemory( Vulkan_.Instance.Devices[0].Handle, texObj_.buffer_memory, 0, texObj_.buffer_size, 0, @data )
+     else res := vkMapMemory( Vulkan_.Instance.Devices[0].Handle, texObj_.image_memory , 0, mem_reqs.size     , 0, @data );
      Assert( res = VK_SUCCESS );
 
      (* Read the ppm file into the mappable image's memory *)
@@ -1340,8 +1340,8 @@ begin
      end;
 
      if texObj_.needs_staging
-     then vkUnmapMemory( Vulkan_.Instance.Devices.Devices[0].Handle, texObj_.buffer_memory )
-     else vkUnmapMemory( Vulkan_.Instance.Devices.Devices[0].Handle, texObj_.image_memory  );
+     then vkUnmapMemory( Vulkan_.Instance.Devices[0].Handle, texObj_.buffer_memory )
+     else vkUnmapMemory( Vulkan_.Instance.Devices[0].Handle, texObj_.image_memory  );
 
      cmd_buf_info                  := Default( VkCommandBufferBeginInfo );
      cmd_buf_info.sType            := VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -1410,7 +1410,7 @@ begin
 
      (* create image view *)
      view_info.image := texObj_.image;
-     res := vkCreateImageView( Vulkan_.Instance.Devices.Devices[0].Handle, @view_info, nil, @texObj_.view );
+     res := vkCreateImageView( Vulkan_.Instance.Devices[0].Handle, @view_info, nil, @texObj_.view );
      Assert( res = VK_SUCCESS );
 end;
 
@@ -1437,7 +1437,7 @@ begin
      samplerCreateInfo.borderColor      := VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE;
 
      (* create sampler *)
-     res := vkCreateSampler( Vulkan_.Instance.Devices.Devices[0].Handle, @samplerCreateInfo, nil, @sampler_ );
+     res := vkCreateSampler( Vulkan_.Instance.Devices[0].Handle, @samplerCreateInfo, nil, @sampler_ );
      Assert( res = VK_SUCCESS );
 end;
 
@@ -1465,12 +1465,12 @@ var
 begin
      for i := 0 to Length( Vulkan_.Info.textures )-1 do
      begin
-          vkDestroySampler  ( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.textures[i].sampler      , nil );
-          vkDestroyImageView( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.textures[i].view         , nil );
-          vkDestroyImage    ( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.textures[i].image        , nil );
-          vkFreeMemory      ( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.textures[i].image_memory , nil );
-          vkDestroyBuffer   ( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.textures[i].buffer       , nil );
-          vkFreeMemory      ( Vulkan_.Instance.Devices.Devices[0].Handle, Vulkan_.Info.textures[i].buffer_memory, nil );
+          vkDestroySampler  ( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.textures[i].sampler      , nil );
+          vkDestroyImageView( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.textures[i].view         , nil );
+          vkDestroyImage    ( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.textures[i].image        , nil );
+          vkFreeMemory      ( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.textures[i].image_memory , nil );
+          vkDestroyBuffer   ( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.textures[i].buffer       , nil );
+          vkFreeMemory      ( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.textures[i].buffer_memory, nil );
      end;
 end;
 
