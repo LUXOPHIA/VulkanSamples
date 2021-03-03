@@ -12,7 +12,8 @@ uses System.Classes,
          LUX.GPU.Vulkan.Pipeline,
            LUX.GPU.Vulkan.Shader,
            LUX.GPU.Vulkan.Buffer,
-         LUX.GPU.Vulkan.Window;
+         LUX.GPU.Vulkan.Window,
+           LUX.GPU.Vulkan.Surface;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -26,6 +27,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                TVkShaderVert = TVkShaderVert<TVkPipeline>;
                TVkShaderFrag = TVkShaderFrag<TVkPipeline>;
              TVkWindow       = TVkWindow<TVkDevice>;
+               TVkSurface    = TVkSurface<TVkWindow>;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
