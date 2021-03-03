@@ -388,7 +388,7 @@ begin
      swapchain_ci.pNext                 := nil;
      swapchain_ci.surface               := Vulkan_.Instance.Devices[0].Window.Surface.Handle;
      swapchain_ci.minImageCount         := desiredNumberOfSwapChainImages;
-     swapchain_ci.imageFormat           := Vulkan_.Info.format;
+     swapchain_ci.imageFormat           := Vulkan_.Instance.Devices[0].Window.Surface.Format;
      swapchain_ci.imageExtent.width     := swapchainExtent.width;
      swapchain_ci.imageExtent.height    := swapchainExtent.height;
      swapchain_ci.preTransform          := preTransform;
@@ -431,7 +431,7 @@ begin
           color_image_view                                 := Default( VkImageViewCreateInfo );
           color_image_view.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
           color_image_view.pNext                           := nil;
-          color_image_view.format                          := Vulkan_.Info.format;
+          color_image_view.format                          := Vulkan_.Instance.Devices[0].Window.Surface.Format;
           color_image_view.components.r                    := VK_COMPONENT_SWIZZLE_R;
           color_image_view.components.g                    := VK_COMPONENT_SWIZZLE_G;
           color_image_view.components.b                    := VK_COMPONENT_SWIZZLE_B;
@@ -646,7 +646,7 @@ begin
      Assert( clear_ or ( initialLayout_ <> VK_IMAGE_LAYOUT_UNDEFINED ) );
 
      (* Need attachments for render target and depth buffer *)
-     attachments[0].format         := Vulkan_.Info.format;
+     attachments[0].format         := Vulkan_.Instance.Devices[0].Window.Surface.Format;
      attachments[0].samples        := NUM_SAMPLES;
      if clear_
      then attachments[0].loadOp    := VK_ATTACHMENT_LOAD_OP_CLEAR
