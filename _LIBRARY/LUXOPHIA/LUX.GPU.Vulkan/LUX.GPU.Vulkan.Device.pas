@@ -11,7 +11,7 @@ uses System.Generics.Collections,
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
      TVkDevices<TVkInstance_:class> = class;
-     TVkDevice<TVkDevices_:class>  = class;
+     TVkDevice<TVkDevices_:class>   = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -44,12 +44,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        type TVkDevice_  = TVkDevice<TVkDevices_>;
             TVkWindow_  = TVkWindow<TVkDevice_>;
      protected
-       _Devices    :TVkDevices_;
-       _PhysHandle :VkPhysicalDevice;
-       _Props      :VkPhysicalDeviceProperties;
-       _Handle     :VkDevice;
-       _Extensions :TArray<PAnsiChar>;
-       _Window     :TVkWindow_;
+       _Devices       :TVkDevices_;
+       _PhysHandle    :VkPhysicalDevice;
+       _Props         :VkPhysicalDeviceProperties;
+       _Handle        :VkDevice;
+       _Extensions    :TArray<PAnsiChar>;
+       _Window        :TVkWindow_;
+       _QueueFamilysN :UInt32;
        /////
        ///// メソッド
        function init_device_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
@@ -61,12 +62,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Devices    :TVkDevices_                read _Devices   ;
-       property PhysHandle :VkPhysicalDevice           read _PhysHandle;
-       property Props      :VkPhysicalDeviceProperties read _Props     ;
-       property Handle     :VkDevice                   read _Handle    ;
-       property Extensions :TArray<PAnsiChar>          read _Extensions;
-       property Window     :TVkWindow_                 read _Window     write _Window;
+       property Devices       :TVkDevices_                read _Devices      ;
+       property PhysHandle    :VkPhysicalDevice           read _PhysHandle   ;
+       property Props         :VkPhysicalDeviceProperties read _Props        ;
+       property Handle        :VkDevice                   read _Handle       ;
+       property Extensions    :TArray<PAnsiChar>          read _Extensions   ;
+       property Window        :TVkWindow_                 read _Window        write _Window;
+       property QueueFamilysN :UInt32                     read _QueueFamilysN;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -162,12 +164,12 @@ procedure TVkDevice<TVkDevices_>.GetQueueFamilys;
 var
    I :Integer;
 begin
-     vkGetPhysicalDeviceQueueFamilyProperties( PhysHandle, @TVkDevices( Devices ).Instance.Vulkan.Info.queue_family_count, nil );
-     Assert( TVkDevices( Devices ).Instance.Vulkan.Info.queue_family_count > 1 );
+     vkGetPhysicalDeviceQueueFamilyProperties( PhysHandle, @QueueFamilysN, nil );
+     Assert( QueueFamilysN > 1 );
 
-     SetLength( TVkDevices( Devices ).Instance.Vulkan.Info.queue_props, TVkDevices( Devices ).Instance.Vulkan.Info.queue_family_count );
-     vkGetPhysicalDeviceQueueFamilyProperties( PhysHandle, @TVkDevices( Devices ).Instance.Vulkan.Info.queue_family_count, @TVkDevices( Devices ).Instance.Vulkan.Info.queue_props[0] );
-     Assert( TVkDevices( Devices ).Instance.Vulkan.Info.queue_family_count > 1 );
+     SetLength( TVkDevices( Devices ).Instance.Vulkan.Info.queue_props, QueueFamilysN );
+     vkGetPhysicalDeviceQueueFamilyProperties( PhysHandle, @QueueFamilysN, @TVkDevices( Devices ).Instance.Vulkan.Info.queue_props[0] );
+     Assert( QueueFamilysN > 1 );
 
      (* This is as good a place as any to do this *)
      vkGetPhysicalDeviceMemoryProperties( PhysHandle, @TVkDevices( Devices ).Instance.Vulkan.Info.memory_properties );
