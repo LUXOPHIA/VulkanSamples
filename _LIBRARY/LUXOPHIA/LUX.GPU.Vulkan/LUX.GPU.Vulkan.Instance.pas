@@ -50,7 +50,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
-uses System.AnsiStrings;
+uses System.AnsiStrings,
+     LUX.GPU.Vulkan;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -111,6 +112,8 @@ begin
 
      _Layers     := TStringList.Create;
      _Extensions := TStringList.Create;
+
+     TVulkan( Vulkan_ ).Instance := TVkInstance( Self );
 
      _Extensions.Add( VK_KHR_SURFACE_EXTENSION_NAME       );
      _Extensions.Add( VK_KHR_WIN32_SURFACE_EXTENSION_NAME );
