@@ -19,8 +19,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Height :Integer;
        _Proc   :TFNWndProc;
        ///// メソッド
-       procedure init_window;
-       procedure destroy_window;
+       procedure CreateHandle;
+       procedure DestroHandle;
      public
        connection :HINST;   // hInstance - Windows Instance
        name       :String;  // Name to put on the window/icon
@@ -58,7 +58,7 @@ uses FMX.Types,
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-procedure TVkWindow<TVkDevice_>.init_window;
+procedure TVkWindow<TVkDevice_>.CreateHandle;
 var
    win_class :WNDCLASSEX;
    wr        :TRect;
@@ -112,7 +112,7 @@ begin
      SetWindowLongPtr( window, GWLP_USERDATA, LONG_PTR( @TVkDevice( _Device ).Devices.Instance.Vulkan.Info ) );
 end;
 
-procedure TVkWindow<TVkDevice_>.destroy_window;
+procedure TVkWindow<TVkDevice_>.DestroHandle;
 begin
      vkDestroySurfaceKHR( TVkDevice( Device ).Devices.Instance.Handle, TVkDevice( Device ).Devices.Instance.Vulkan.Info.surface, nil );
      DestroyWindow( window );
@@ -131,7 +131,7 @@ begin
 
      TVkDevice( _Device ).Window := TVkWindow( Self );
 
-     init_window;
+     CreateHandle;
 end;
 
 procedure TVkWindow<TVkDevice_>.AfterConstruction;
@@ -142,7 +142,7 @@ end;
 
 destructor TVkWindow<TVkDevice_>.Destroy;
 begin
-     destroy_window;
+     DestroHandle;
 
      inherited;
 end;
