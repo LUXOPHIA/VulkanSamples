@@ -5,12 +5,13 @@ interface //####################################################################
 uses System.Generics.Collections,
      vulkan_core, vulkan_win32,
      vulkan.util,
-     LUX.GPU.Vulkan.Pipeline;
+     LUX.GPU.Vulkan.Pipeline,
+     LUX.GPU.Vulkan.Window;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
      TVkDevices<TVkInstance_:class> = class;
-     TVkDevice<TVkInstance_:class>  = class;
+     TVkDevice<TVkDevices_:class>  = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -20,7 +21,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TVkDevices<TVkInstance_:class> = class
      private
-       type TVkDevice_ = TVkDevice<TVkInstance_>;
+       type TVkDevices_ = TVkDevices<TVkInstance_>;
+            TVkDevice_  = TVkDevice<TVkDevices_>;
      protected
        _Instance :TVkInstance_;
        _Devices  :TObjectList<TVkDevice_>;
@@ -39,15 +41,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevice
 
-     TVkDevice<TVkInstance_:class> = class
+     TVkDevice<TVkDevices_:class> = class
      private
-       type TVkDevices_ = TVkDevices<TVkInstance_>;
+       type TVkDevice_  = TVkDevice<TVkDevices_>;
+            TVkWindow_  = TVkWindow<TVkDevice_>;
      protected
        _Devices    :TVkDevices_;
        _PhysHandle :VkPhysicalDevice;
        _Props      :VkPhysicalDeviceProperties;
        _Handle     :VkDevice;
        _Extensions :TArray<PAnsiChar>;
+       _Window     :TVkWindow_;
        /////
        ///// メソッド
        function init_device_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
@@ -63,6 +67,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property PhysHandle :VkPhysicalDevice           read _PhysHandle;
        property Props      :VkPhysicalDeviceProperties read _Props     ;
        property Handle     :VkDevice                   read _Handle    ;
+       property Extensions :TArray<PAnsiChar>          read _Extensions;
+       property Window     :TVkWindow_                 read _Window     write _Window;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -138,7 +144,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-function TVkDevice<TVkInstance_>.init_device_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
+function TVkDevice<TVkDevices_>.init_device_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
 var
    device_extension_count :UInt32;
    layer_name             :PAnsiChar;
@@ -157,7 +163,7 @@ begin
      until Result <> VK_INCOMPLETE;
 end;
 
-procedure TVkDevice<TVkInstance_>.GetQueueFamilys;
+procedure TVkDevice<TVkDevices_>.GetQueueFamilys;
 var
    I :Integer;
 begin
@@ -176,7 +182,7 @@ begin
      do init_device_extension_properties( TVkDevices( Devices ).Instance.Vulkan.Layers[I] );
 end;
 
-procedure TVkDevice<TVkInstance_>.CreateHandle;
+procedure TVkDevice<TVkDevices_>.CreateHandle;
 var
    queue_info       :VkDeviceQueueCreateInfo;
    queue_priorities :array [ 0..1-1 ] of Single;
@@ -202,7 +208,7 @@ begin
      Assert( vkCreateDevice( PhysHandle, @device_info, nil, @_Handle ) = VK_SUCCESS );
 end;
 
-procedure TVkDevice<TVkInstance_>.DestroHandle;
+procedure TVkDevice<TVkDevices_>.DestroHandle;
 begin
      vkDeviceWaitIdle( _Handle );
      vkDestroyDevice( _Handle, nil );
@@ -210,7 +216,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkDevice<TVkInstance_>.Create( const Devices_:TVkDevices_; const Handle_:VkPhysicalDevice );
+constructor TVkDevice<TVkDevices_>.Create( const Devices_:TVkDevices_; const Handle_:VkPhysicalDevice );
 begin
      inherited Create;
 
@@ -218,7 +224,7 @@ begin
      _PhysHandle  := Handle_;
 end;
 
-procedure TVkDevice<TVkInstance_>.AfterConstruction;
+procedure TVkDevice<TVkDevices_>.AfterConstruction;
 begin
      inherited;
 
@@ -229,7 +235,7 @@ begin
      CreateHandle;
 end;
 
-destructor TVkDevice<TVkInstance_>.Destroy;
+destructor TVkDevice<TVkDevices_>.Destroy;
 begin
      DestroHandle;
 
