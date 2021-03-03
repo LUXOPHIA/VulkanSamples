@@ -8,20 +8,22 @@ uses WinApi.Windows,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
+     TVkWindow<TVkInstance_:class> = class;
+
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkWindow
 
-     TVkWindow<TVkDevice_:class> = class
+     TVkWindow<TVkInstance_:class> = class
      private
-       type TVkWindow_  = TVkWindow<TVkDevice_>;
+       type TVkWindow_  = TVkWindow<TVkInstance_>;
             TVkSurface_ = TVkSurface<TVkWindow_>;
      protected
-       _Device  :TVkDevice_;
-       _Width   :Integer;
-       _Height  :Integer;
-       _Proc    :TFNWndProc;
-       _Surface :TVkSurface_;
+       _Instance :TVkInstance_;
+       _Width    :Integer;
+       _Height   :Integer;
+       _Proc     :TFNWndProc;
+       _Surface  :TVkSurface_;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -30,15 +32,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        name       :String;  // Name to put on the window/icon
        window     :HWND;    // hWnd - window handle
 
-       constructor Create( const Device_:TVkDevice_; const Width_,Height_:Integer; const Proc_:TFNWndProc );
+       constructor Create( const Instance_:TVkInstance_; const Width_,Height_:Integer; const Proc_:TFNWndProc );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Device  :TVkDevice_  read _Device                ;
-       property Width   :Integer     read _Width   write _Width  ;
-       property Height  :Integer     read _Height  write _Height ;
-       property Proc    :TFNWndProc  read _Proc    write _Proc   ;
-       property Surface :TVkSurface_ read _Surface write _Surface;
+       property Instance :TVkInstance_ read _Instance               ;
+       property Width    :Integer      read _Width    write _Width  ;
+       property Height   :Integer      read _Height   write _Height ;
+       property Proc     :TFNWndProc   read _Proc     write _Proc   ;
+       property Surface  :TVkSurface_  read _Surface  write _Surface;
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -64,7 +66,7 @@ uses FMX.Types,
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-procedure TVkWindow<TVkDevice_>.CreateHandle;
+procedure TVkWindow<TVkInstance_>.CreateHandle;
 var
    win_class :WNDCLASSEX;
    wr        :TRect;
@@ -115,37 +117,37 @@ begin
           Log.d( 'Cannot create a window in which to draw!' );
           RunError( 1 );
      end;
-     SetWindowLongPtr( window, GWLP_USERDATA, LONG_PTR( @TVkDevice( _Device ).Devices.Instance.Vulkan.Info ) );
+     SetWindowLongPtr( window, GWLP_USERDATA, LONG_PTR( @TVkInstance( _Instance ).Vulkan.Info ) );
 end;
 
-procedure TVkWindow<TVkDevice_>.DestroHandle;
+procedure TVkWindow<TVkInstance_>.DestroHandle;
 begin
      DestroyWindow( window );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkWindow<TVkDevice_>.Create( const Device_:TVkDevice_; const Width_,Height_:Integer; const Proc_:TFNWndProc );
+constructor TVkWindow<TVkInstance_>.Create( const Instance_:TVkInstance_; const Width_,Height_:Integer; const Proc_:TFNWndProc );
 begin
      inherited Create;
 
-     _Device := Device_;
-     _Width  := Width_ ;
-     _Height := Height_;
-     _Proc   := Proc_;
+     _Instance := Instance_;
+     _Width    := Width_ ;
+     _Height   := Height_;
+     _Proc     := Proc_;
 
-     TVkDevice( _Device ).Window := TVkWindow( Self );
+     TVkInstance( _Instance ).Window := TVkWindow( Self );
 
      CreateHandle;
 end;
 
-procedure TVkWindow<TVkDevice_>.AfterConstruction;
+procedure TVkWindow<TVkInstance_>.AfterConstruction;
 begin
      inherited;
 
 end;
 
-destructor TVkWindow<TVkDevice_>.Destroy;
+destructor TVkWindow<TVkInstance_>.Destroy;
 begin
      DestroHandle;
 
