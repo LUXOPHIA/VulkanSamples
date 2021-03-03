@@ -42,23 +42,23 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        type TVkDevice_ = TVkDevice<TVkDevices_>;
      protected
-       _Devices       :TVkDevices_;
-       _PhysHandle    :VkPhysicalDevice;
-       _Props         :VkPhysicalDeviceProperties;
-       _Handle        :VkDevice;
-       _Extensions    :TArray<PAnsiChar>;
-       _QueueFamilysN :UInt32;
-       _QueueFamilys  :TArray<VkQueueFamilyProperties>;
+       _Devices              :TVkDevices_;
+       _PhysHandle           :VkPhysicalDevice;
+       _Props                :VkPhysicalDeviceProperties;
+       _Memorys              :VkPhysicalDeviceMemoryProperties;
+       _Handle               :VkDevice;
+       _Extensions           :TArray<PAnsiChar>;
+       _QueueFamilysN        :UInt32;
+       _QueueFamilys         :TArray<VkQueueFamilyProperties>;
        _GraphicsQueueFamilyI :UInt32;
-       _PresentQueueFamilyI :UInt32;
-       _Format :VkFormat;
-       _Memorys       :VkPhysicalDeviceMemoryProperties;
+       _PresentQueueFamilyI  :UInt32;
+       _Format               :VkFormat;
        ///// アクセス
        function GetQueueFamilys( const I_:Integer ) :VkQueueFamilyProperties;
        ///// メソッド
-       function init_device_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
-       procedure FindQueueFamilys;
+       function init_device_extension_properties( var L_:T_layer_properties ) :VkResult;
        procedure InitLayers;
+       procedure FindQueueFamilys;
        procedure CreateHandle;
        procedure DestroHandle;
      public
@@ -66,17 +66,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Devices                          :TVkDevices_                      read   _Devices      ;
-       property PhysHandle                       :VkPhysicalDevice                 read   _PhysHandle   ;
-       property Props                            :VkPhysicalDeviceProperties       read   _Props        ;
-       property Handle                           :VkDevice                         read   _Handle       ;
-       property Extensions                       :TArray<PAnsiChar>                read   _Extensions   ;
-       property QueueFamilysN                    :UInt32                           read   _QueueFamilysN;
-       property QueueFamilys[ const I_:Integer ] :VkQueueFamilyProperties          read GetQueueFamilys ;
-       property GraphicsQueueFamilyI :UInt32       read _GraphicsQueueFamilyI;
-       property PresentQueueFamilyI :UInt32       read _PresentQueueFamilyI;
-       property Format              :VkFormat     read _Format;
-       property Memorys                          :VkPhysicalDeviceMemoryProperties read   _Memorys      ;
+       property Devices                          :TVkDevices_                      read   _Devices             ;
+       property PhysHandle                       :VkPhysicalDevice                 read   _PhysHandle          ;
+       property Props                            :VkPhysicalDeviceProperties       read   _Props               ;
+       property Handle                           :VkDevice                         read   _Handle              ;
+       property Extensions                       :TArray<PAnsiChar>                read   _Extensions          ;
+       property QueueFamilysN                    :UInt32                           read   _QueueFamilysN       ;
+       property QueueFamilys[ const I_:Integer ] :VkQueueFamilyProperties          read GetQueueFamilys        ;
+       property GraphicsQueueFamilyI             :UInt32                           read   _GraphicsQueueFamilyI;
+       property PresentQueueFamilyI              :UInt32                           read   _PresentQueueFamilyI ;
+       property Format                           :VkFormat                         read   _Format              ;
+       property Memorys                          :VkPhysicalDeviceMemoryProperties read   _Memorys             ;
        ///// メソッド
        function memory_type_from_properties( typeBits:UInt32; requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
      end;
@@ -163,23 +163,32 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-function TVkDevice<TVkDevices_>.init_device_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
+function TVkDevice<TVkDevices_>.init_device_extension_properties( var L_:T_layer_properties ) :VkResult;
 var
-   device_extension_count :UInt32;
-   layer_name             :PAnsiChar;
+   EsN   :UInt32;
+   Lname :PAnsiChar;
 begin
-     layer_name := layer_props_.properties.layerName;
+     Lname := L_.properties.layerName;
 
      repeat
-           Result := vkEnumerateDeviceExtensionProperties( PhysHandle, layer_name, @device_extension_count, nil );
+           Result := vkEnumerateDeviceExtensionProperties( PhysHandle, Lname, @EsN, nil );
            if Result <> VK_SUCCESS then Exit;
 
-           if device_extension_count = 0 then Exit( VK_SUCCESS );
+           if EsN = 0 then Exit( VK_SUCCESS );
 
-           SetLength( layer_props_.device_extensions, device_extension_count );
-           Result := vkEnumerateDeviceExtensionProperties( PhysHandle, layer_name, @device_extension_count, @layer_props_.device_extensions[0] );
+           SetLength( L_.device_extensions, EsN );
+           Result := vkEnumerateDeviceExtensionProperties( PhysHandle, Lname, @EsN, @L_.device_extensions[0] );
 
      until Result <> VK_INCOMPLETE;
+end;
+
+procedure TVkDevice<TVkDevices_>.InitLayers;
+var
+   I :Integer;
+begin
+     (* query device extensions for enabled layers *)
+     for I := 0 to Length( TVkDevices( Devices ).Instance.Vulkan.Layers )-1
+     do init_device_extension_properties( TVkDevices( Devices ).Instance.Vulkan.Layers[I] );
 end;
 
 procedure TVkDevice<TVkDevices_>.FindQueueFamilys;
@@ -270,22 +279,10 @@ begin
      end;
 end;
 
-procedure TVkDevice<TVkDevices_>.InitLayers;
-var
-   I :Integer;
-begin
-     (* This is as good a place as any to do this *)
-     vkGetPhysicalDeviceMemoryProperties( PhysHandle, @Memorys );
-     vkGetPhysicalDeviceProperties( PhysHandle, @_Props );
-     (* query device extensions for enabled layers *)
-     for I := 0 to Length( TVkDevices( Devices ).Instance.Vulkan.Layers )-1
-     do init_device_extension_properties( TVkDevices( Devices ).Instance.Vulkan.Layers[I] );
-end;
-
 procedure TVkDevice<TVkDevices_>.CreateHandle;
 var
-   queue_info       :VkDeviceQueueCreateInfo;
    queue_priorities :array [ 0..1-1 ] of Single;
+   queue_info       :VkDeviceQueueCreateInfo;
    device_info      :VkDeviceCreateInfo;
 begin
      queue_priorities[0]         := 0;
@@ -320,21 +317,26 @@ constructor TVkDevice<TVkDevices_>.Create( const Devices_:TVkDevices_; const Han
 begin
      inherited Create;
 
-     _Devices     := Devices_;
-     _PhysHandle  := Handle_;
+     _Devices    := Devices_;
+     _PhysHandle := Handle_;
+
+     vkGetPhysicalDeviceProperties( PhysHandle, @_Props );
+
+     vkGetPhysicalDeviceMemoryProperties( PhysHandle, @Memorys );
+
+     InitLayers;
+
+     FindQueueFamilys;
+
+     _Extensions := _Extensions + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
+
+     CreateHandle;
 end;
 
 procedure TVkDevice<TVkDevices_>.AfterConstruction;
 begin
      inherited;
 
-     FindQueueFamilys;
-
-     InitLayers;
-
-     _Extensions := _Extensions + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
-
-     CreateHandle;
 end;
 
 destructor TVkDevice<TVkDevices_>.Destroy;
