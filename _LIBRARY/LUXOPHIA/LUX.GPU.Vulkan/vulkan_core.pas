@@ -6020,138 +6020,138 @@ type PFN_vkGetDeviceMemoryOpaqueCaptureAddress = function( device_:VkDevice; con
 
 {$IFNDEF VK_NO_PROTOTYPES }
 procedure vkCmdDrawIndirectCount(
-    commandBuffer_:VkCommandBuffer;
-    buffer_:VkBuffer;
-    offset_:VkDeviceSize;
-    countBuffer_:VkBuffer;
-    countBufferOffset_:VkDeviceSize;
-    maxDrawCount_:T_uint32_t;
-    stride_:T_uint32_t ); stdcall; external DLLNAME;
+    commandBuffer_     :VkCommandBuffer;
+    buffer_            :VkBuffer;
+    offset_            :VkDeviceSize;
+    countBuffer_       :VkBuffer;
+    countBufferOffset_ :VkDeviceSize;
+    maxDrawCount_      :T_uint32_t;
+    stride_            :T_uint32_t ); stdcall; external DLLNAME;
 
 procedure vkCmdDrawIndexedIndirectCount(
-    commandBuffer_:VkCommandBuffer;
-    buffer_:VkBuffer;
-    offset_:VkDeviceSize;
-    countBuffer_:VkBuffer;
-    countBufferOffset_:VkDeviceSize;
-    maxDrawCount_:T_uint32_t;
-    stride_:T_uint32_t ); stdcall; external DLLNAME;
+    commandBuffer_     :VkCommandBuffer;
+    buffer_            :VkBuffer;
+    offset_            :VkDeviceSize;
+    countBuffer_       :VkBuffer;
+    countBufferOffset_ :VkDeviceSize;
+    maxDrawCount_      :T_uint32_t;
+    stride_            :T_uint32_t ); stdcall; external DLLNAME;
 
 function vkCreateRenderPass2(
-    device_:VkDevice;
-    pCreateInfo_:P_VkRenderPassCreateInfo2;
-    pAllocator_:P_VkAllocationCallbacks;
-    pRenderPass_:P_VkRenderPass ) :VkResult; stdcall; external DLLNAME;
+    device_      :VkDevice;
+    pCreateInfo_ :P_VkRenderPassCreateInfo2;
+    pAllocator_  :P_VkAllocationCallbacks;
+    pRenderPass_ :P_VkRenderPass ) :VkResult; stdcall; external DLLNAME;
 
 procedure vkCmdBeginRenderPass2(
-    commandBuffer_:VkCommandBuffer;
-    pRenderPassBegin_:P_VkRenderPassBeginInfo;
-    pSubpassBeginInfo_:P_VkSubpassBeginInfo ); stdcall; external DLLNAME;
+    commandBuffer_     :VkCommandBuffer;
+    pRenderPassBegin_  :P_VkRenderPassBeginInfo;
+    pSubpassBeginInfo_ :P_VkSubpassBeginInfo ); stdcall; external DLLNAME;
 
 procedure vkCmdNextSubpass2(
-    commandBuffer_:VkCommandBuffer;
-    pSubpassBeginInfo_:P_VkSubpassBeginInfo;
-    pSubpassEndInfo_:P_VkSubpassEndInfo ); stdcall; external DLLNAME;
+    commandBuffer_     :VkCommandBuffer;
+    pSubpassBeginInfo_ :P_VkSubpassBeginInfo;
+    pSubpassEndInfo_   :P_VkSubpassEndInfo ); stdcall; external DLLNAME;
 
 procedure vkCmdEndRenderPass2(
-    commandBuffer_:VkCommandBuffer;
-    pSubpassEndInfo_:P_VkSubpassEndInfo ); stdcall; external DLLNAME;
+    commandBuffer_   :VkCommandBuffer;
+    pSubpassEndInfo_ :P_VkSubpassEndInfo ); stdcall; external DLLNAME;
 
 procedure vkResetQueryPool(
-    device_:VkDevice;
-    queryPool_:VkQueryPool;
-    firstQuery_:T_uint32_t;
-    queryCount_:T_uint32_t ); stdcall; external DLLNAME;
+    device_     :VkDevice;
+    queryPool_  :VkQueryPool;
+    firstQuery_ :T_uint32_t;
+    queryCount_ :T_uint32_t ); stdcall; external DLLNAME;
 
 function vkGetSemaphoreCounterValue(
-    device_:VkDevice;
-    semaphore_:VkSemaphore;
-    pValue_:P_uint64_t ) :VkResult; stdcall; external DLLNAME;
+    device_    :VkDevice;
+    semaphore_ :VkSemaphore;
+    pValue_    :P_uint64_t ) :VkResult; stdcall; external DLLNAME;
 
 function vkWaitSemaphores(
-    device_:VkDevice;
-    pWaitInfo_:P_VkSemaphoreWaitInfo;
-    timeout_:T_uint64_t ) :VkResult; stdcall; external DLLNAME;
+    device_    :VkDevice;
+    pWaitInfo_ :P_VkSemaphoreWaitInfo;
+    timeout_   :T_uint64_t ) :VkResult; stdcall; external DLLNAME;
 
 function vkSignalSemaphore(
-    device_:VkDevice;
-    pSignalInfo_:P_VkSemaphoreSignalInfo ) :VkResult; stdcall; external DLLNAME;
+    device_      :VkDevice;
+    pSignalInfo_ :P_VkSemaphoreSignalInfo ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetBufferDeviceAddress(
-    device_:VkDevice;
-    pInfo_:P_VkBufferDeviceAddressInfo ) :VkDeviceAddress; stdcall; external DLLNAME;
+    device_ :VkDevice;
+    pInfo_  :P_VkBufferDeviceAddressInfo ) :VkDeviceAddress; stdcall; external DLLNAME;
 
 function vkGetBufferOpaqueCaptureAddress(
-    device_:VkDevice;
-    pInfo_:P_VkBufferDeviceAddressInfo ) :T_uint64_t; stdcall; external DLLNAME;
+    device_ :VkDevice;
+    pInfo_  :P_VkBufferDeviceAddressInfo ) :T_uint64_t; stdcall; external DLLNAME;
 
 function vkGetDeviceMemoryOpaqueCaptureAddress(
-    device_:VkDevice;
-    pInfo_:P_VkDeviceMemoryOpaqueCaptureAddressInfo ) :T_uint64_t; stdcall; external DLLNAME;
+    device_ :VkDevice;
+    pInfo_  :P_VkDeviceMemoryOpaqueCaptureAddressInfo ) :T_uint64_t; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_surface = 1;
+const VK_KHR_surface                = 1;
 type P_VkSurfaceKHR = ^VkSurfaceKHR;
      VkSurfaceKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-const VK_KHR_SURFACE_SPEC_VERSION       = 25;
+const VK_KHR_SURFACE_SPEC_VERSION   = 25;
 const VK_KHR_SURFACE_EXTENSION_NAME = 'VK_KHR_surface';
 
 type P_VkPresentModeKHR = ^VkPresentModeKHR;
      VkPresentModeKHR = (
-       VK_PRESENT_MODE_IMMEDIATE_KHR = 0,
-       VK_PRESENT_MODE_MAILBOX_KHR = 1,
-       VK_PRESENT_MODE_FIFO_KHR = 2,
-       VK_PRESENT_MODE_FIFO_RELAXED_KHR = 3,
-       VK_PRESENT_MODE_SHARED_DEMAND_REFRESH_KHR = 1000111000,
+       VK_PRESENT_MODE_IMMEDIATE_KHR                 = 0,
+       VK_PRESENT_MODE_MAILBOX_KHR                   = 1,
+       VK_PRESENT_MODE_FIFO_KHR                      = 2,
+       VK_PRESENT_MODE_FIFO_RELAXED_KHR              = 3,
+       VK_PRESENT_MODE_SHARED_DEMAND_REFRESH_KHR     = 1000111000,
        VK_PRESENT_MODE_SHARED_CONTINUOUS_REFRESH_KHR = 1000111001,
-       VK_PRESENT_MODE_MAX_ENUM_KHR = $7FFFFFFF
+       VK_PRESENT_MODE_MAX_ENUM_KHR                  = $7FFFFFFF
      );
 
 type P_VkColorSpaceKHR = ^VkColorSpaceKHR;
      VkColorSpaceKHR = (
-       VK_COLOR_SPACE_SRGB_NONLINEAR_KHR = 0,
-       VK_COLOR_SPACE_DISPLAY_P3_NONLINEAR_EXT = 1000104001,
-       VK_COLOR_SPACE_EXTENDED_SRGB_LINEAR_EXT = 1000104002,
-       VK_COLOR_SPACE_DISPLAY_P3_LINEAR_EXT = 1000104003,
-       VK_COLOR_SPACE_DCI_P3_NONLINEAR_EXT = 1000104004,
-       VK_COLOR_SPACE_BT709_LINEAR_EXT = 1000104005,
-       VK_COLOR_SPACE_BT709_NONLINEAR_EXT = 1000104006,
-       VK_COLOR_SPACE_BT2020_LINEAR_EXT = 1000104007,
-       VK_COLOR_SPACE_HDR10_ST2084_EXT = 1000104008,
-       VK_COLOR_SPACE_DOLBYVISION_EXT = 1000104009,
-       VK_COLOR_SPACE_HDR10_HLG_EXT = 1000104010,
-       VK_COLOR_SPACE_ADOBERGB_LINEAR_EXT = 1000104011,
-       VK_COLOR_SPACE_ADOBERGB_NONLINEAR_EXT = 1000104012,
-       VK_COLOR_SPACE_PASS_THROUGH_EXT = 1000104013,
+       VK_COLOR_SPACE_SRGB_NONLINEAR_KHR          = 0,
+       VK_COLOR_SPACE_DISPLAY_P3_NONLINEAR_EXT    = 1000104001,
+       VK_COLOR_SPACE_EXTENDED_SRGB_LINEAR_EXT    = 1000104002,
+       VK_COLOR_SPACE_DISPLAY_P3_LINEAR_EXT       = 1000104003,
+       VK_COLOR_SPACE_DCI_P3_NONLINEAR_EXT        = 1000104004,
+       VK_COLOR_SPACE_BT709_LINEAR_EXT            = 1000104005,
+       VK_COLOR_SPACE_BT709_NONLINEAR_EXT         = 1000104006,
+       VK_COLOR_SPACE_BT2020_LINEAR_EXT           = 1000104007,
+       VK_COLOR_SPACE_HDR10_ST2084_EXT            = 1000104008,
+       VK_COLOR_SPACE_DOLBYVISION_EXT             = 1000104009,
+       VK_COLOR_SPACE_HDR10_HLG_EXT               = 1000104010,
+       VK_COLOR_SPACE_ADOBERGB_LINEAR_EXT         = 1000104011,
+       VK_COLOR_SPACE_ADOBERGB_NONLINEAR_EXT      = 1000104012,
+       VK_COLOR_SPACE_PASS_THROUGH_EXT            = 1000104013,
        VK_COLOR_SPACE_EXTENDED_SRGB_NONLINEAR_EXT = 1000104014,
-       VK_COLOR_SPACE_DISPLAY_NATIVE_AMD = 1000213000,
-       VK_COLORSPACE_SRGB_NONLINEAR_KHR = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR,
-       VK_COLOR_SPACE_DCI_P3_LINEAR_EXT = VK_COLOR_SPACE_DISPLAY_P3_LINEAR_EXT,
-       VK_COLOR_SPACE_MAX_ENUM_KHR = $7FFFFFFF
+       VK_COLOR_SPACE_DISPLAY_NATIVE_AMD          = 1000213000,
+       VK_COLORSPACE_SRGB_NONLINEAR_KHR           = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR,
+       VK_COLOR_SPACE_DCI_P3_LINEAR_EXT           = VK_COLOR_SPACE_DISPLAY_P3_LINEAR_EXT,
+       VK_COLOR_SPACE_MAX_ENUM_KHR                = $7FFFFFFF
      );
 
 type P_VkSurfaceTransformFlagBitsKHR = ^VkSurfaceTransformFlagBitsKHR;
      VkSurfaceTransformFlagBitsKHR = (
-       VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR = $00000001,
-       VK_SURFACE_TRANSFORM_ROTATE_90_BIT_KHR = $00000002,
-       VK_SURFACE_TRANSFORM_ROTATE_180_BIT_KHR = $00000004,
-       VK_SURFACE_TRANSFORM_ROTATE_270_BIT_KHR = $00000008,
-       VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_BIT_KHR = $00000010,
-       VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_ROTATE_90_BIT_KHR = $00000020,
+       VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR                     = $00000001,
+       VK_SURFACE_TRANSFORM_ROTATE_90_BIT_KHR                    = $00000002,
+       VK_SURFACE_TRANSFORM_ROTATE_180_BIT_KHR                   = $00000004,
+       VK_SURFACE_TRANSFORM_ROTATE_270_BIT_KHR                   = $00000008,
+       VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_BIT_KHR            = $00000010,
+       VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_ROTATE_90_BIT_KHR  = $00000020,
        VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_ROTATE_180_BIT_KHR = $00000040,
        VK_SURFACE_TRANSFORM_HORIZONTAL_MIRROR_ROTATE_270_BIT_KHR = $00000080,
-       VK_SURFACE_TRANSFORM_INHERIT_BIT_KHR = $00000100,
-       VK_SURFACE_TRANSFORM_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
+       VK_SURFACE_TRANSFORM_INHERIT_BIT_KHR                      = $00000100,
+       VK_SURFACE_TRANSFORM_FLAG_BITS_MAX_ENUM_KHR               = $7FFFFFFF
      );
 
 type P_VkCompositeAlphaFlagBitsKHR = ^VkCompositeAlphaFlagBitsKHR;
      VkCompositeAlphaFlagBitsKHR = (
-       VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR = $00000001,
-       VK_COMPOSITE_ALPHA_PRE_MULTIPLIED_BIT_KHR = $00000002,
+       VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR          = $00000001,
+       VK_COMPOSITE_ALPHA_PRE_MULTIPLIED_BIT_KHR  = $00000002,
        VK_COMPOSITE_ALPHA_POST_MULTIPLIED_BIT_KHR = $00000004,
-       VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR = $00000008,
-       VK_COMPOSITE_ALPHA_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
+       VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR         = $00000008,
+       VK_COMPOSITE_ALPHA_FLAG_BITS_MAX_ENUM_KHR  = $7FFFFFFF
      );
 type P_VkCompositeAlphaFlagsKHR = ^VkCompositeAlphaFlagsKHR;
      VkCompositeAlphaFlagsKHR = VkFlags;
@@ -6159,162 +6159,162 @@ type P_VkSurfaceTransformFlagsKHR = ^VkSurfaceTransformFlagsKHR;
      VkSurfaceTransformFlagsKHR = VkFlags;
 type P_VkSurfaceCapabilitiesKHR = ^VkSurfaceCapabilitiesKHR;
      VkSurfaceCapabilitiesKHR = record
-       minImageCount :T_uint32_t;
-       maxImageCount :T_uint32_t;
-       currentExtent :VkExtent2D;
-       minImageExtent :VkExtent2D;
-       maxImageExtent :VkExtent2D;
-       maxImageArrayLayers :T_uint32_t;
-       supportedTransforms :VkSurfaceTransformFlagsKHR;
-       currentTransform :VkSurfaceTransformFlagBitsKHR;
+       minImageCount           :T_uint32_t;
+       maxImageCount           :T_uint32_t;
+       currentExtent           :VkExtent2D;
+       minImageExtent          :VkExtent2D;
+       maxImageExtent          :VkExtent2D;
+       maxImageArrayLayers     :T_uint32_t;
+       supportedTransforms     :VkSurfaceTransformFlagsKHR;
+       currentTransform        :VkSurfaceTransformFlagBitsKHR;
        supportedCompositeAlpha :VkCompositeAlphaFlagsKHR;
-       supportedUsageFlags :VkImageUsageFlags;
+       supportedUsageFlags     :VkImageUsageFlags;
      end;
 
 type P_VkSurfaceFormatKHR = ^VkSurfaceFormatKHR;
      VkSurfaceFormatKHR = record
-       format :VkFormat;
+       format     :VkFormat;
        colorSpace :VkColorSpaceKHR;
      end;
 
-type PFN_vkDestroySurfaceKHR = procedure( instance_:VkInstance; surface_:VkSurfaceKHR; const pAllocator_:P_VkAllocationCallbacks );
-type PFN_vkGetPhysicalDeviceSurfaceSupportKHR = function( physicalDevice_:VkPhysicalDevice; queueFamilyIndex_:T_uint32_t; surface_:VkSurfaceKHR; pSupported_:P_VkBool32 ) :VkResult;
+type PFN_vkDestroySurfaceKHR                       = procedure( instance_:VkInstance; surface_:VkSurfaceKHR; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkGetPhysicalDeviceSurfaceSupportKHR      = function( physicalDevice_:VkPhysicalDevice; queueFamilyIndex_:T_uint32_t; surface_:VkSurfaceKHR; pSupported_:P_VkBool32 ) :VkResult;
 type PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR = function( physicalDevice_:VkPhysicalDevice; surface_:VkSurfaceKHR; pSurfaceCapabilities_:P_VkSurfaceCapabilitiesKHR ) :VkResult;
-type PFN_vkGetPhysicalDeviceSurfaceFormatsKHR = function( physicalDevice_:VkPhysicalDevice; surface_:VkSurfaceKHR; pSurfaceFormatCount_:P_uint32_t; pSurfaceFormats_:P_VkSurfaceFormatKHR ) :VkResult;
+type PFN_vkGetPhysicalDeviceSurfaceFormatsKHR      = function( physicalDevice_:VkPhysicalDevice; surface_:VkSurfaceKHR; pSurfaceFormatCount_:P_uint32_t; pSurfaceFormats_:P_VkSurfaceFormatKHR ) :VkResult;
 type PFN_vkGetPhysicalDeviceSurfacePresentModesKHR = function( physicalDevice_:VkPhysicalDevice; surface_:VkSurfaceKHR; pPresentModeCount_:P_uint32_t; pPresentModes_:P_VkPresentModeKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 procedure vkDestroySurfaceKHR(
-    instance_:VkInstance;
-    surface_:VkSurfaceKHR;
-    pAllocator_:P_VkAllocationCallbacks ); stdcall; external DLLNAME;
+    instance_   :VkInstance;
+    surface_    :VkSurfaceKHR;
+    pAllocator_ :P_VkAllocationCallbacks ); stdcall; external DLLNAME;
 
 function vkGetPhysicalDeviceSurfaceSupportKHR(
-    physicalDevice_:VkPhysicalDevice;
-    queueFamilyIndex_:T_uint32_t;
-    surface_:VkSurfaceKHR;
-    pSupported_:P_VkBool32 ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_   :VkPhysicalDevice;
+    queueFamilyIndex_ :T_uint32_t;
+    surface_          :VkSurfaceKHR;
+    pSupported_       :P_VkBool32 ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetPhysicalDeviceSurfaceCapabilitiesKHR(
-    physicalDevice_:VkPhysicalDevice;
-    surface_:VkSurfaceKHR;
-    pSurfaceCapabilities_:P_VkSurfaceCapabilitiesKHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_       :VkPhysicalDevice;
+    surface_              :VkSurfaceKHR;
+    pSurfaceCapabilities_ :P_VkSurfaceCapabilitiesKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetPhysicalDeviceSurfaceFormatsKHR(
-    physicalDevice_:VkPhysicalDevice;
-    surface_:VkSurfaceKHR;
-    pSurfaceFormatCount_:P_uint32_t;
-    pSurfaceFormats_:P_VkSurfaceFormatKHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_      :VkPhysicalDevice;
+    surface_             :VkSurfaceKHR;
+    pSurfaceFormatCount_ :P_uint32_t;
+    pSurfaceFormats_     :P_VkSurfaceFormatKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetPhysicalDeviceSurfacePresentModesKHR(
-    physicalDevice_:VkPhysicalDevice;
-    surface_:VkSurfaceKHR;
-    pPresentModeCount_:P_uint32_t;
-    pPresentModes_:P_VkPresentModeKHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_    :VkPhysicalDevice;
+    surface_           :VkSurfaceKHR;
+    pPresentModeCount_ :P_uint32_t;
+    pPresentModes_     :P_VkPresentModeKHR ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_swapchain = 1;
+const VK_KHR_swapchain                = 1;
 type P_VkSwapchainKHR = ^VkSwapchainKHR;
      VkSwapchainKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-const VK_KHR_SWAPCHAIN_SPEC_VERSION     = 70;
+const VK_KHR_SWAPCHAIN_SPEC_VERSION   = 70;
 const VK_KHR_SWAPCHAIN_EXTENSION_NAME = 'VK_KHR_swapchain';
 
 type P_VkSwapchainCreateFlagBitsKHR = ^VkSwapchainCreateFlagBitsKHR;
      VkSwapchainCreateFlagBitsKHR = (
        VK_SWAPCHAIN_CREATE_SPLIT_INSTANCE_BIND_REGIONS_BIT_KHR = $00000001,
-       VK_SWAPCHAIN_CREATE_PROTECTED_BIT_KHR = $00000002,
-       VK_SWAPCHAIN_CREATE_MUTABLE_FORMAT_BIT_KHR = $00000004,
-       VK_SWAPCHAIN_CREATE_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
+       VK_SWAPCHAIN_CREATE_PROTECTED_BIT_KHR                   = $00000002,
+       VK_SWAPCHAIN_CREATE_MUTABLE_FORMAT_BIT_KHR              = $00000004,
+       VK_SWAPCHAIN_CREATE_FLAG_BITS_MAX_ENUM_KHR              = $7FFFFFFF
      );
 type P_VkSwapchainCreateFlagsKHR = ^VkSwapchainCreateFlagsKHR;
      VkSwapchainCreateFlagsKHR = VkFlags;
 
 type P_VkDeviceGroupPresentModeFlagBitsKHR = ^VkDeviceGroupPresentModeFlagBitsKHR;
      VkDeviceGroupPresentModeFlagBitsKHR = (
-       VK_DEVICE_GROUP_PRESENT_MODE_LOCAL_BIT_KHR = $00000001,
-       VK_DEVICE_GROUP_PRESENT_MODE_REMOTE_BIT_KHR = $00000002,
-       VK_DEVICE_GROUP_PRESENT_MODE_SUM_BIT_KHR = $00000004,
+       VK_DEVICE_GROUP_PRESENT_MODE_LOCAL_BIT_KHR              = $00000001,
+       VK_DEVICE_GROUP_PRESENT_MODE_REMOTE_BIT_KHR             = $00000002,
+       VK_DEVICE_GROUP_PRESENT_MODE_SUM_BIT_KHR                = $00000004,
        VK_DEVICE_GROUP_PRESENT_MODE_LOCAL_MULTI_DEVICE_BIT_KHR = $00000008,
-       VK_DEVICE_GROUP_PRESENT_MODE_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
+       VK_DEVICE_GROUP_PRESENT_MODE_FLAG_BITS_MAX_ENUM_KHR     = $7FFFFFFF
      );
 type P_VkDeviceGroupPresentModeFlagsKHR = ^VkDeviceGroupPresentModeFlagsKHR;
      VkDeviceGroupPresentModeFlagsKHR = VkFlags;
 type P_VkSwapchainCreateInfoKHR = ^VkSwapchainCreateInfoKHR;
      VkSwapchainCreateInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       flags :VkSwapchainCreateFlagsKHR;
-       surface :VkSurfaceKHR;
-       minImageCount :T_uint32_t;
-       imageFormat :VkFormat;
-       imageColorSpace :VkColorSpaceKHR;
-       imageExtent :VkExtent2D;
-       imageArrayLayers :T_uint32_t;
-       imageUsage :VkImageUsageFlags;
-       imageSharingMode :VkSharingMode;
+       sType                 :VkStructureType;
+       pNext                 :P_void;
+       flags                 :VkSwapchainCreateFlagsKHR;
+       surface               :VkSurfaceKHR;
+       minImageCount         :T_uint32_t;
+       imageFormat           :VkFormat;
+       imageColorSpace       :VkColorSpaceKHR;
+       imageExtent           :VkExtent2D;
+       imageArrayLayers      :T_uint32_t;
+       imageUsage            :VkImageUsageFlags;
+       imageSharingMode      :VkSharingMode;
        queueFamilyIndexCount :T_uint32_t;
-       pQueueFamilyIndices :P_uint32_t;
-       preTransform :VkSurfaceTransformFlagBitsKHR;
-       compositeAlpha :VkCompositeAlphaFlagBitsKHR;
-       presentMode :VkPresentModeKHR;
-       clipped :VkBool32;
-       oldSwapchain :VkSwapchainKHR;
+       pQueueFamilyIndices   :P_uint32_t;
+       preTransform          :VkSurfaceTransformFlagBitsKHR;
+       compositeAlpha        :VkCompositeAlphaFlagBitsKHR;
+       presentMode           :VkPresentModeKHR;
+       clipped               :VkBool32;
+       oldSwapchain          :VkSwapchainKHR;
      end;
 
 type P_VkPresentInfoKHR = ^VkPresentInfoKHR;
      VkPresentInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType              :VkStructureType;
+       pNext              :P_void;
        waitSemaphoreCount :T_uint32_t;
-       pWaitSemaphores :P_VkSemaphore;
-       swapchainCount :T_uint32_t;
-       pSwapchains :P_VkSwapchainKHR;
-       pImageIndices :P_uint32_t;
-       pResults :P_VkResult;
+       pWaitSemaphores    :P_VkSemaphore;
+       swapchainCount     :T_uint32_t;
+       pSwapchains        :P_VkSwapchainKHR;
+       pImageIndices      :P_uint32_t;
+       pResults           :P_VkResult;
      end;
 
 type P_VkImageSwapchainCreateInfoKHR = ^VkImageSwapchainCreateInfoKHR;
      VkImageSwapchainCreateInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType     :VkStructureType;
+       pNext     :P_void;
        swapchain :VkSwapchainKHR;
      end;
 
 type P_VkBindImageMemorySwapchainInfoKHR = ^VkBindImageMemorySwapchainInfoKHR;
      VkBindImageMemorySwapchainInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       swapchain :VkSwapchainKHR;
+       sType      :VkStructureType;
+       pNext      :P_void;
+       swapchain  :VkSwapchainKHR;
        imageIndex :T_uint32_t;
      end;
 
 type P_VkAcquireNextImageInfoKHR = ^VkAcquireNextImageInfoKHR;
      VkAcquireNextImageInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       swapchain :VkSwapchainKHR;
-       timeout :T_uint64_t;
-       semaphore :VkSemaphore;
-       fence :VkFence;
+       sType      :VkStructureType;
+       pNext      :P_void;
+       swapchain  :VkSwapchainKHR;
+       timeout    :T_uint64_t;
+       semaphore  :VkSemaphore;
+       fence      :VkFence;
        deviceMask :T_uint32_t;
      end;
 
 type P_VkDeviceGroupPresentCapabilitiesKHR = ^VkDeviceGroupPresentCapabilitiesKHR;
      VkDeviceGroupPresentCapabilitiesKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType       :VkStructureType;
+       pNext       :P_void;
        presentMask :array [ 0..VK_MAX_DEVICE_GROUP_SIZE-1 ] of T_uint32_t;
-       modes :VkDeviceGroupPresentModeFlagsKHR;
+       modes       :VkDeviceGroupPresentModeFlagsKHR;
      end;
 
 type P_VkDeviceGroupPresentInfoKHR = ^VkDeviceGroupPresentInfoKHR;
      VkDeviceGroupPresentInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType          :VkStructureType;
+       pNext          :P_void;
        swapchainCount :T_uint32_t;
-       pDeviceMasks :P_uint32_t;
-       mode :VkDeviceGroupPresentModeFlagBitsKHR;
+       pDeviceMasks   :P_uint32_t;
+       mode           :VkDeviceGroupPresentModeFlagBitsKHR;
      end;
 
 type P_VkDeviceGroupSwapchainCreateInfoKHR = ^VkDeviceGroupSwapchainCreateInfoKHR;
@@ -6324,85 +6324,85 @@ type P_VkDeviceGroupSwapchainCreateInfoKHR = ^VkDeviceGroupSwapchainCreateInfoKH
        modes :VkDeviceGroupPresentModeFlagsKHR;
      end;
 
-type PFN_vkCreateSwapchainKHR = function( device_:VkDevice; const pCreateInfo_:P_VkSwapchainCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pSwapchain_:P_VkSwapchainKHR ) :VkResult;
-type PFN_vkDestroySwapchainKHR = procedure( device_:VkDevice; swapchain_:VkSwapchainKHR; const pAllocator_:P_VkAllocationCallbacks );
-type PFN_vkGetSwapchainImagesKHR = function( device_:VkDevice; swapchain_:VkSwapchainKHR; pSwapchainImageCount_:P_uint32_t; pSwapchainImages_:P_VkImage ) :VkResult;
-type PFN_vkAcquireNextImageKHR = function( device_:VkDevice; swapchain_:VkSwapchainKHR; timeout_:T_uint64_t; semaphore_:VkSemaphore; fence_:VkFence; pImageIndex_:P_uint32_t ) :VkResult;
-type PFN_vkQueuePresentKHR = function( queue_:VkQueue; const pPresentInfo_:P_VkPresentInfoKHR ) :VkResult;
-type PFN_vkGetDeviceGroupPresentCapabilitiesKHR = function( device_:VkDevice; pDeviceGroupPresentCapabilities_:P_VkDeviceGroupPresentCapabilitiesKHR ) :VkResult;
-type PFN_vkGetDeviceGroupSurfacePresentModesKHR = function( device_:VkDevice; surface_:VkSurfaceKHR; pModes_:P_VkDeviceGroupPresentModeFlagsKHR ) :VkResult;
+type PFN_vkCreateSwapchainKHR                    = function( device_:VkDevice; const pCreateInfo_:P_VkSwapchainCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pSwapchain_:P_VkSwapchainKHR ) :VkResult;
+type PFN_vkDestroySwapchainKHR                   = procedure( device_:VkDevice; swapchain_:VkSwapchainKHR; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkGetSwapchainImagesKHR                 = function( device_:VkDevice; swapchain_:VkSwapchainKHR; pSwapchainImageCount_:P_uint32_t; pSwapchainImages_:P_VkImage ) :VkResult;
+type PFN_vkAcquireNextImageKHR                   = function( device_:VkDevice; swapchain_:VkSwapchainKHR; timeout_:T_uint64_t; semaphore_:VkSemaphore; fence_:VkFence; pImageIndex_:P_uint32_t ) :VkResult;
+type PFN_vkQueuePresentKHR                       = function( queue_:VkQueue; const pPresentInfo_:P_VkPresentInfoKHR ) :VkResult;
+type PFN_vkGetDeviceGroupPresentCapabilitiesKHR  = function( device_:VkDevice; pDeviceGroupPresentCapabilities_:P_VkDeviceGroupPresentCapabilitiesKHR ) :VkResult;
+type PFN_vkGetDeviceGroupSurfacePresentModesKHR  = function( device_:VkDevice; surface_:VkSurfaceKHR; pModes_:P_VkDeviceGroupPresentModeFlagsKHR ) :VkResult;
 type PFN_vkGetPhysicalDevicePresentRectanglesKHR = function( physicalDevice_:VkPhysicalDevice; surface_:VkSurfaceKHR; pRectCount_:P_uint32_t; pRects_:P_VkRect2D ) :VkResult;
-type PFN_vkAcquireNextImage2KHR = function( device_:VkDevice; const pAcquireInfo_:P_VkAcquireNextImageInfoKHR; pImageIndex_:P_uint32_t ) :VkResult;
+type PFN_vkAcquireNextImage2KHR                  = function( device_:VkDevice; const pAcquireInfo_:P_VkAcquireNextImageInfoKHR; pImageIndex_:P_uint32_t ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkCreateSwapchainKHR(
-    device_:VkDevice;
-    pCreateInfo_:P_VkSwapchainCreateInfoKHR;
-    pAllocator_:P_VkAllocationCallbacks;
-    pSwapchain_:P_VkSwapchainKHR ) :VkResult; stdcall; external DLLNAME;
+    device_      :VkDevice;
+    pCreateInfo_ :P_VkSwapchainCreateInfoKHR;
+    pAllocator_  :P_VkAllocationCallbacks;
+    pSwapchain_  :P_VkSwapchainKHR ) :VkResult; stdcall; external DLLNAME;
 
 procedure vkDestroySwapchainKHR(
-    device_:VkDevice;
-    swapchain_:VkSwapchainKHR;
-    pAllocator_:P_VkAllocationCallbacks ); stdcall; external DLLNAME;
+    device_     :VkDevice;
+    swapchain_  :VkSwapchainKHR;
+    pAllocator_ :P_VkAllocationCallbacks ); stdcall; external DLLNAME;
 
 function vkGetSwapchainImagesKHR(
-    device_:VkDevice;
-    swapchain_:VkSwapchainKHR;
-    pSwapchainImageCount_:P_uint32_t;
-    pSwapchainImages_:P_VkImage ) :VkResult; stdcall; external DLLNAME;
+    device_               :VkDevice;
+    swapchain_            :VkSwapchainKHR;
+    pSwapchainImageCount_ :P_uint32_t;
+    pSwapchainImages_     :P_VkImage ) :VkResult; stdcall; external DLLNAME;
 
 function vkAcquireNextImageKHR(
-    device_:VkDevice;
-    swapchain_:VkSwapchainKHR;
-    timeout_:T_uint64_t;
-    semaphore_:VkSemaphore;
-    fence_:VkFence;
-    pImageIndex_:P_uint32_t ) :VkResult; stdcall; external DLLNAME;
+    device_      :VkDevice;
+    swapchain_   :VkSwapchainKHR;
+    timeout_     :T_uint64_t;
+    semaphore_   :VkSemaphore;
+    fence_       :VkFence;
+    pImageIndex_ :P_uint32_t ) :VkResult; stdcall; external DLLNAME;
 
 function vkQueuePresentKHR(
-    queue_:VkQueue;
-    pPresentInfo_:P_VkPresentInfoKHR ) :VkResult; stdcall; external DLLNAME;
+    queue_        :VkQueue;
+    pPresentInfo_ :P_VkPresentInfoKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetDeviceGroupPresentCapabilitiesKHR(
-    device_:VkDevice;
-    pDeviceGroupPresentCapabilities_:P_VkDeviceGroupPresentCapabilitiesKHR ) :VkResult; stdcall; external DLLNAME;
+    device_                          :VkDevice;
+    pDeviceGroupPresentCapabilities_ :P_VkDeviceGroupPresentCapabilitiesKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetDeviceGroupSurfacePresentModesKHR(
-    device_:VkDevice;
-    surface_:VkSurfaceKHR;
-    pModes_:P_VkDeviceGroupPresentModeFlagsKHR ) :VkResult; stdcall; external DLLNAME;
+    device_  :VkDevice;
+    surface_ :VkSurfaceKHR;
+    pModes_  :P_VkDeviceGroupPresentModeFlagsKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetPhysicalDevicePresentRectanglesKHR(
-    physicalDevice_:VkPhysicalDevice;
-    surface_:VkSurfaceKHR;
-    pRectCount_:P_uint32_t;
-    pRects_:P_VkRect2D ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_ :VkPhysicalDevice;
+    surface_        :VkSurfaceKHR;
+    pRectCount_     :P_uint32_t;
+    pRects_         :P_VkRect2D ) :VkResult; stdcall; external DLLNAME;
 
 function vkAcquireNextImage2KHR(
-    device_:VkDevice;
-    pAcquireInfo_:P_VkAcquireNextImageInfoKHR;
-    pImageIndex_:P_uint32_t ) :VkResult; stdcall; external DLLNAME;
+    device_       :VkDevice;
+    pAcquireInfo_ :P_VkAcquireNextImageInfoKHR;
+    pImageIndex_  :P_uint32_t ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_display = 1;
+const VK_KHR_display                = 1;
 type P_VkDisplayKHR = ^VkDisplayKHR;
      VkDisplayKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
 type P_VkDisplayModeKHR = ^VkDisplayModeKHR;
      VkDisplayModeKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-const VK_KHR_DISPLAY_SPEC_VERSION       = 23;
+const VK_KHR_DISPLAY_SPEC_VERSION   = 23;
 const VK_KHR_DISPLAY_EXTENSION_NAME = 'VK_KHR_display';
 type P_VkDisplayModeCreateFlagsKHR = ^VkDisplayModeCreateFlagsKHR;
      VkDisplayModeCreateFlagsKHR = VkFlags;
 
 type P_VkDisplayPlaneAlphaFlagBitsKHR = ^VkDisplayPlaneAlphaFlagBitsKHR;
      VkDisplayPlaneAlphaFlagBitsKHR = (
-       VK_DISPLAY_PLANE_ALPHA_OPAQUE_BIT_KHR = $00000001,
-       VK_DISPLAY_PLANE_ALPHA_GLOBAL_BIT_KHR = $00000002,
-       VK_DISPLAY_PLANE_ALPHA_PER_PIXEL_BIT_KHR = $00000004,
+       VK_DISPLAY_PLANE_ALPHA_OPAQUE_BIT_KHR                  = $00000001,
+       VK_DISPLAY_PLANE_ALPHA_GLOBAL_BIT_KHR                  = $00000002,
+       VK_DISPLAY_PLANE_ALPHA_PER_PIXEL_BIT_KHR               = $00000004,
        VK_DISPLAY_PLANE_ALPHA_PER_PIXEL_PREMULTIPLIED_BIT_KHR = $00000008,
-       VK_DISPLAY_PLANE_ALPHA_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
+       VK_DISPLAY_PLANE_ALPHA_FLAG_BITS_MAX_ENUM_KHR          = $7FFFFFFF
      );
 type P_VkDisplayPlaneAlphaFlagsKHR = ^VkDisplayPlaneAlphaFlagsKHR;
      VkDisplayPlaneAlphaFlagsKHR = VkFlags;
@@ -6411,21 +6411,21 @@ type P_VkDisplaySurfaceCreateFlagsKHR = ^VkDisplaySurfaceCreateFlagsKHR;
 type P_VkDisplayModeParametersKHR = ^VkDisplayModeParametersKHR;
      VkDisplayModeParametersKHR = record
        visibleRegion :VkExtent2D;
-       refreshRate :T_uint32_t;
+       refreshRate   :T_uint32_t;
      end;
 
 type P_VkDisplayModeCreateInfoKHR = ^VkDisplayModeCreateInfoKHR;
      VkDisplayModeCreateInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       flags :VkDisplayModeCreateFlagsKHR;
+       sType      :VkStructureType;
+       pNext      :P_void;
+       flags      :VkDisplayModeCreateFlagsKHR;
        parameters :VkDisplayModeParametersKHR;
      end;
 
 type P_VkDisplayModePropertiesKHR = ^VkDisplayModePropertiesKHR;
      VkDisplayModePropertiesKHR = record
        displayMode :VkDisplayModeKHR;
-       parameters :VkDisplayModeParametersKHR;
+       parameters  :VkDisplayModeParametersKHR;
      end;
 
 type P_VkDisplayPlaneCapabilitiesKHR = ^VkDisplayPlaneCapabilitiesKHR;
@@ -6433,52 +6433,52 @@ type P_VkDisplayPlaneCapabilitiesKHR = ^VkDisplayPlaneCapabilitiesKHR;
        supportedAlpha :VkDisplayPlaneAlphaFlagsKHR;
        minSrcPosition :VkOffset2D;
        maxSrcPosition :VkOffset2D;
-       minSrcExtent :VkExtent2D;
-       maxSrcExtent :VkExtent2D;
+       minSrcExtent   :VkExtent2D;
+       maxSrcExtent   :VkExtent2D;
        minDstPosition :VkOffset2D;
        maxDstPosition :VkOffset2D;
-       minDstExtent :VkExtent2D;
-       maxDstExtent :VkExtent2D;
+       minDstExtent   :VkExtent2D;
+       maxDstExtent   :VkExtent2D;
      end;
 
 type P_VkDisplayPlanePropertiesKHR = ^VkDisplayPlanePropertiesKHR;
      VkDisplayPlanePropertiesKHR = record
-       currentDisplay :VkDisplayKHR;
+       currentDisplay    :VkDisplayKHR;
        currentStackIndex :T_uint32_t;
      end;
 
 type P_VkDisplayPropertiesKHR = ^VkDisplayPropertiesKHR;
      VkDisplayPropertiesKHR = record
-       display :VkDisplayKHR;
-       displayName :P_char;
-       physicalDimensions :VkExtent2D;
-       physicalResolution :VkExtent2D;
-       supportedTransforms :VkSurfaceTransformFlagsKHR;
+       display              :VkDisplayKHR;
+       displayName          :P_char;
+       physicalDimensions   :VkExtent2D;
+       physicalResolution   :VkExtent2D;
+       supportedTransforms  :VkSurfaceTransformFlagsKHR;
        planeReorderPossible :VkBool32;
-       persistentContent :VkBool32;
+       persistentContent    :VkBool32;
      end;
 
 type P_VkDisplaySurfaceCreateInfoKHR = ^VkDisplaySurfaceCreateInfoKHR;
      VkDisplaySurfaceCreateInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       flags :VkDisplaySurfaceCreateFlagsKHR;
-       displayMode :VkDisplayModeKHR;
-       planeIndex :T_uint32_t;
+       sType           :VkStructureType;
+       pNext           :P_void;
+       flags           :VkDisplaySurfaceCreateFlagsKHR;
+       displayMode     :VkDisplayModeKHR;
+       planeIndex      :T_uint32_t;
        planeStackIndex :T_uint32_t;
-       transform :VkSurfaceTransformFlagBitsKHR;
-       globalAlpha :T_float;
-       alphaMode :VkDisplayPlaneAlphaFlagBitsKHR;
-       imageExtent :VkExtent2D;
+       transform       :VkSurfaceTransformFlagBitsKHR;
+       globalAlpha     :T_float;
+       alphaMode       :VkDisplayPlaneAlphaFlagBitsKHR;
+       imageExtent     :VkExtent2D;
      end;
 
-type PFN_vkGetPhysicalDeviceDisplayPropertiesKHR = function( physicalDevice_:VkPhysicalDevice; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayPropertiesKHR ) :VkResult;
+type PFN_vkGetPhysicalDeviceDisplayPropertiesKHR      = function( physicalDevice_:VkPhysicalDevice; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayPropertiesKHR ) :VkResult;
 type PFN_vkGetPhysicalDeviceDisplayPlanePropertiesKHR = function( physicalDevice_:VkPhysicalDevice; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayPlanePropertiesKHR ) :VkResult;
-type PFN_vkGetDisplayPlaneSupportedDisplaysKHR = function( physicalDevice_:VkPhysicalDevice; planeIndex_:T_uint32_t; pDisplayCount_:P_uint32_t; pDisplays_:P_VkDisplayKHR ) :VkResult;
-type PFN_vkGetDisplayModePropertiesKHR = function( physicalDevice_:VkPhysicalDevice; display_:VkDisplayKHR; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayModePropertiesKHR ) :VkResult;
-type PFN_vkCreateDisplayModeKHR = function( physicalDevice_:VkPhysicalDevice; display_:VkDisplayKHR; const pCreateInfo_:P_VkDisplayModeCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pMode_:P_VkDisplayModeKHR ) :VkResult;
-type PFN_vkGetDisplayPlaneCapabilitiesKHR = function( physicalDevice_:VkPhysicalDevice; mode_:VkDisplayModeKHR; planeIndex_:T_uint32_t; pCapabilities_:P_VkDisplayPlaneCapabilitiesKHR ) :VkResult;
-type PFN_vkCreateDisplayPlaneSurfaceKHR = function( instance_:VkInstance; const pCreateInfo_:P_VkDisplaySurfaceCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pSurface_:P_VkSurfaceKHR ) :VkResult;
+type PFN_vkGetDisplayPlaneSupportedDisplaysKHR        = function( physicalDevice_:VkPhysicalDevice; planeIndex_:T_uint32_t; pDisplayCount_:P_uint32_t; pDisplays_:P_VkDisplayKHR ) :VkResult;
+type PFN_vkGetDisplayModePropertiesKHR                = function( physicalDevice_:VkPhysicalDevice; display_:VkDisplayKHR; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayModePropertiesKHR ) :VkResult;
+type PFN_vkCreateDisplayModeKHR                       = function( physicalDevice_:VkPhysicalDevice; display_:VkDisplayKHR; const pCreateInfo_:P_VkDisplayModeCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pMode_:P_VkDisplayModeKHR ) :VkResult;
+type PFN_vkGetDisplayPlaneCapabilitiesKHR             = function( physicalDevice_:VkPhysicalDevice; mode_:VkDisplayModeKHR; planeIndex_:T_uint32_t; pCapabilities_:P_VkDisplayPlaneCapabilitiesKHR ) :VkResult;
+type PFN_vkCreateDisplayPlaneSurfaceKHR               = function( instance_:VkInstance; const pCreateInfo_:P_VkDisplaySurfaceCreateInfoKHR; const pAllocator_:P_VkAllocationCallbacks; pSurface_:P_VkSurfaceKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkGetPhysicalDeviceDisplayPropertiesKHR(
