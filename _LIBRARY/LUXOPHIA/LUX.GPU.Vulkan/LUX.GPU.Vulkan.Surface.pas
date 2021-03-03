@@ -81,15 +81,15 @@ begin
      Assert( res = VK_SUCCESS );
 
      // Iterate over each queue to learn whether it supports presenting:
-     SetLength( pSupportsPresent, TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.queue_family_count );
-     for i := 0 to TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.queue_family_count-1
-     do vkGetPhysicalDeviceSurfaceSupportKHR( TVkWindow( _Window ).Device.Devices.Instance.Devices[0].PhysHandle, i, _Handle, @pSupportsPresent[i] );
+     SetLength( pSupportsPresent, TVkWindow( _Window ).Device.QueueFamilysN );
+     for i := 0 to TVkWindow( _Window ).Device.QueueFamilysN-1
+     do vkGetPhysicalDeviceSurfaceSupportKHR( TVkWindow( _Window ).Device.PhysHandle, i, _Handle, @pSupportsPresent[i] );
 
      // Search for a graphics and a present queue in the array of queue
      // families, try to find one that supports both
      TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.graphics_queue_family_index := UINT32.MaxValue;
      TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.present_queue_family_index  := UINT32.MaxValue;
-     for i := 0 to TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.queue_family_count-1 do
+     for i := 0 to TVkWindow( _Window ).Device.QueueFamilysN-1 do
      begin
           if ( TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.queue_props[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
           begin
@@ -108,7 +108,7 @@ begin
      begin
           // If didn't find a queue that supports both graphics and present, then
           // find a separate present queue.
-          for i := 0 to TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.queue_family_count-1 do
+          for i := 0 to TVkWindow( _Window ).Device.QueueFamilysN-1 do
           begin
                if pSupportsPresent[i] = VK_TRUE then
                begin
