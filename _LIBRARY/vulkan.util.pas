@@ -82,10 +82,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        const APP_NAME_STR_LEN = 80;
      public
-       //connection :T_HINSTANCE;                                // hInstance - Windows Instance
-       //name       :array [ 0..APP_NAME_STR_LEN-1 ] of T_char;  // Name to put on the window/icon
-       //window     :T_HWND;                                     // hWnd - window handle
-       surface            :VkSurfaceKHR;
        prepared           :T_bool;
        use_staging_buffer :T_bool;
        save_images        :T_bool;
@@ -99,8 +95,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        memory_properties           :VkPhysicalDeviceMemoryProperties;
 
        framebuffers  :TArray<VkFramebuffer>;
-       //width         :T_int;
-       //height        :T_int;
        format        :VkFormat;
 
        swapchainImageCount    :T_uint32_t;
