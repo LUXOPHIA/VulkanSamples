@@ -51,10 +51,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Extensions    :TArray<PAnsiChar>;
        _Window        :TVkWindow_;
        _QueueFamilysN :UInt32;
-       /////
+       _QueueFamilys  :TArray<VkQueueFamilyProperties>;
+       ///// アクセス
+       function GetQueueFamilys( const I_:Integer ) :VkQueueFamilyProperties;
        ///// メソッド
        function init_device_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
-       procedure GetQueueFamilys;
+       procedure FindQueueFamilys;
        procedure CreateHandle;
        procedure DestroHandle;
      public
@@ -62,13 +64,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Devices       :TVkDevices_                read _Devices      ;
-       property PhysHandle    :VkPhysicalDevice           read _PhysHandle   ;
-       property Props         :VkPhysicalDeviceProperties read _Props        ;
-       property Handle        :VkDevice                   read _Handle       ;
-       property Extensions    :TArray<PAnsiChar>          read _Extensions   ;
-       property Window        :TVkWindow_                 read _Window        write _Window;
-       property QueueFamilysN :UInt32                     read _QueueFamilysN;
+       property Devices                          :TVkDevices_                read   _Devices      ;
+       property PhysHandle                       :VkPhysicalDevice           read   _PhysHandle   ;
+       property Props                            :VkPhysicalDeviceProperties read   _Props        ;
+       property Handle                           :VkDevice                   read   _Handle       ;
+       property Extensions                       :TArray<PAnsiChar>          read   _Extensions   ;
+       property Window                           :TVkWindow_                 read   _Window        write _Window;
+       property QueueFamilysN                    :UInt32                     read   _QueueFamilysN;
+       property QueueFamilys[ const I_:Integer ] :VkQueueFamilyProperties    read GetQueueFamilys ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -141,6 +144,15 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkDevice<TVkDevices_>.GetQueueFamilys( const I_:Integer ) :VkQueueFamilyProperties;
+begin
+     Result := _QueueFamilys[ I_ ];
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
 function TVkDevice<TVkDevices_>.init_device_extension_properties( var layer_props_:T_layer_properties ) :VkResult;
 var
    device_extension_count :UInt32;
@@ -160,16 +172,16 @@ begin
      until Result <> VK_INCOMPLETE;
 end;
 
-procedure TVkDevice<TVkDevices_>.GetQueueFamilys;
+procedure TVkDevice<TVkDevices_>.FindQueueFamilys;
 var
    I :Integer;
 begin
-     vkGetPhysicalDeviceQueueFamilyProperties( PhysHandle, @QueueFamilysN, nil );
-     Assert( QueueFamilysN > 1 );
+     vkGetPhysicalDeviceQueueFamilyProperties( PhysHandle, @_QueueFamilysN, nil );
+     Assert( _QueueFamilysN > 1 );
 
-     SetLength( TVkDevices( Devices ).Instance.Vulkan.Info.queue_props, QueueFamilysN );
-     vkGetPhysicalDeviceQueueFamilyProperties( PhysHandle, @QueueFamilysN, @TVkDevices( Devices ).Instance.Vulkan.Info.queue_props[0] );
-     Assert( QueueFamilysN > 1 );
+     SetLength( _QueueFamilys, _QueueFamilysN );
+     vkGetPhysicalDeviceQueueFamilyProperties( PhysHandle, @_QueueFamilysN, @_QueueFamilys[0] );
+     Assert( _QueueFamilysN > 1 );
 
      (* This is as good a place as any to do this *)
      vkGetPhysicalDeviceMemoryProperties( PhysHandle, @TVkDevices( Devices ).Instance.Vulkan.Info.memory_properties );
@@ -225,7 +237,7 @@ procedure TVkDevice<TVkDevices_>.AfterConstruction;
 begin
      inherited;
 
-     GetQueueFamilys;
+     FindQueueFamilys;
 
      _Extensions := _Extensions + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
 
