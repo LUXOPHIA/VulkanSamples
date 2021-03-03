@@ -197,7 +197,7 @@ begin
      alloc_info.memoryTypeIndex := 0;
 
      alloc_info.allocationSize := mem_reqs.size;
-     pass := memory_type_from_properties( Vulkan_.Info, mem_reqs.memoryTypeBits,
+     pass := Vulkan_.Instance.Devices[0].memory_type_from_properties( mem_reqs.memoryTypeBits,
                                           Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
                                           alloc_info.memoryTypeIndex );
      Assert( pass, 'No mappable, coherent memory' );
@@ -539,7 +539,7 @@ begin
 
      mem_alloc.allocationSize := mem_reqs.size;
      (* Use the memory properties to determine the type of memory required *)
-     pass := memory_type_from_properties( Vulkan_.Info, mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex );
+     pass := Vulkan_.Instance.Devices[0].memory_type_from_properties( mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex );
      Assert( pass );
 
      (* Allocate memory *)
@@ -864,7 +864,7 @@ begin
      alloc_info.memoryTypeIndex := 0;
 
      alloc_info.allocationSize := mem_reqs.size;
-     pass := memory_type_from_properties( Vulkan_.Info, mem_reqs.memoryTypeBits,
+     pass := Vulkan_.Instance.Devices[0].memory_type_from_properties( mem_reqs.memoryTypeBits,
                                           Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
                                           alloc_info.memoryTypeIndex );
      Assert( pass, 'No mappable, coherent memory' );
@@ -1061,7 +1061,7 @@ begin
      texObj_.buffer_size := mem_reqs.size;
 
      requirements := Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
-     pass := memory_type_from_properties( Vulkan_.Info, mem_reqs.memoryTypeBits, requirements, mem_alloc.memoryTypeIndex );
+     pass := Vulkan_.Instance.Devices[0].memory_type_from_properties( mem_reqs.memoryTypeBits, requirements, mem_alloc.memoryTypeIndex );
      Assert( pass, '"No mappable, coherent memory' );
 
      (* allocate memory *)
@@ -1172,7 +1172,7 @@ begin
      if texObj_.needs_staging
      then requirements := 0
      else requirements := Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
-     pass := memory_type_from_properties( Vulkan_.Info, mem_reqs.memoryTypeBits, requirements, mem_alloc.memoryTypeIndex );
+     pass := Vulkan_.Instance.Devices[0].memory_type_from_properties( mem_reqs.memoryTypeBits, requirements, mem_alloc.memoryTypeIndex );
      Assert( pass );
 
      (* allocate memory *)
