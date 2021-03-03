@@ -9,11 +9,7 @@ uses
   vulkan_core,
   vulkan.util, vulkan.util_init,
   LUX, LUX.Code.C,
-  LUX.GPU.Vulkan,
-  LUX.GPU.Vulkan.Device,
-  LUX.GPU.Vulkan.Buffer,
-  LUX.GPU.Vulkan.Shader,
-  LUX.GPU.Vulkan.Pipeline;
+  LUX.GPU.Vulkan;
 
 type
   TForm1 = class(TForm)
@@ -26,6 +22,8 @@ type
   public
     { public 宣言 }
     _Vulkan     :TVulkan;
+    _Device     :TVkDevice;
+    _Window     :TVkWindow;
     _ShaderVert :TVkShaderVert;
     _ShaderFrag :TVkShaderFrag;
     _Pipeline   :TVkPipeline;
@@ -41,7 +39,32 @@ implementation //###############################################################
 
 {$R *.fmx}
 
-uses cube_data;
+uses WinApi.Windows, WinApi.Messages,
+     cube_data;
+
+procedure run( var info:T_sample_info );
+begin
+     (* Placeholder for samples that want to show dynamic content *)
+end;
+
+function WndProc( hwnd:HWND; uMsg:UINT; wParam:WPARAM; lParam:LPARAM ) :LRESULT; stdcall;
+var
+   info :P_sample_info;
+begin
+     info := P_sample_info( GetWindowLongPtr( hWnd, GWLP_USERDATA ) );
+
+     case uMsg of
+       WM_CLOSE:
+          PostQuitMessage( 0 );
+       WM_PAINT:
+          begin
+               run( info^ );
+               Exit( 0 );
+          end;
+     else
+     end;
+     Result := DefWindowProc( hWnd, uMsg, wParam, lParam );
+end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 const
@@ -61,8 +84,7 @@ begin
      _Vulkan := TVulkan.Create;
 
      _Vulkan.Instance := TVkInstance.Create( _Vulkan );
-     init_window_size( _Vulkan, 500, 500 );
-     init_window( _Vulkan );
+     _Window := TVkWindow.Create( _Vulkan.Instance.Devices.Devices[0], 500, 500, @WndProc );
      init_swapchain_extension( _Vulkan );
      init_command_pool( _Vulkan );
      init_command_buffer( _Vulkan );
@@ -115,8 +137,8 @@ begin
      rp_begin.framebuffer              := _Vulkan.Info.framebuffers[_Vulkan.Info.current_buffer];
      rp_begin.renderArea.offset.x      := 0;
      rp_begin.renderArea.offset.y      := 0;
-     rp_begin.renderArea.extent.width  := _Vulkan.Info.width;
-     rp_begin.renderArea.extent.height := _Vulkan.Info.height;
+     rp_begin.renderArea.extent.width  := _Vulkan.Instance.Devices.Devices[0].Window.width;
+     rp_begin.renderArea.extent.height := _Vulkan.Instance.Devices.Devices[0].Window.height;
      rp_begin.clearValueCount          := 2;
      rp_begin.pClearValues             := @clear_values[0];
 
@@ -200,7 +222,8 @@ begin
      destroy_swap_chain( _Vulkan );
      destroy_command_buffer( _Vulkan );
      destroy_command_pool( _Vulkan );
-     destroy_window( _Vulkan );
+     //destroy_window( _Vulkan );
+     _Window.Free;
      _Vulkan.Instance.Free;
 
      _Vulkan.Free;
