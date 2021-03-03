@@ -281,7 +281,7 @@ begin
      image_create_info.sType                 := VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
      image_create_info.pNext                 := nil;
      image_create_info.imageType             := VK_IMAGE_TYPE_2D;
-     image_create_info.format                := Vulkan_.Info.format;
+     image_create_info.format                := Vulkan_.Instance.Devices[0].Window.Surface.Format;
      image_create_info.extent.width          := Vulkan_.Instance.Devices[0].Window.width;
      image_create_info.extent.height         := Vulkan_.Instance.Devices[0].Window.height;
      image_create_info.extent.depth          := 1;
@@ -413,7 +413,7 @@ begin
      begin
           row := P_uint32_t( ptr );
 
-          if ( Vulkan_.Info.format = VK_FORMAT_B8G8R8A8_UNORM ) or ( Vulkan_.Info.format = VK_FORMAT_B8G8R8A8_SRGB ) then
+          if ( Vulkan_.Instance.Devices[0].Window.Surface.Format = VK_FORMAT_B8G8R8A8_UNORM ) or ( Vulkan_.Instance.Devices[0].Window.Surface.Format = VK_FORMAT_B8G8R8A8_SRGB ) then
           begin
                for x := 0 to Vulkan_.Instance.Devices[0].Window.width-1 do
                begin
@@ -423,7 +423,7 @@ begin
                end;
           end
           else
-          if Vulkan_.Info.format = VK_FORMAT_R8G8B8A8_UNORM then
+          if Vulkan_.Instance.Devices[0].Window.Surface.Format = VK_FORMAT_R8G8B8A8_UNORM then
           begin
                for x := 0 to Vulkan_.Instance.Devices[0].Window.width-1 do
                begin
