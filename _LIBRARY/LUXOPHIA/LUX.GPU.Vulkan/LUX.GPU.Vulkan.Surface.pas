@@ -18,6 +18,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Window :TVkWindow_;
        _Handle :VkSurfaceKHR;
        _Format :VkFormat;
+       _PresentQueueFamilyI :UInt32;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -26,9 +27,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Window :TVkWindow_   read _Window;
-       property Handle :VkSurfaceKHR read _Handle;
-       property Format :VkFormat     read _Format;
+       property Window              :TVkWindow_   read _Window;
+       property Handle              :VkSurfaceKHR read _Handle;
+       property Format              :VkFormat     read _Format;
+       property PresentQueueFamilyI :UInt32       read _PresentQueueFamilyI;
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -88,7 +90,7 @@ begin
      // Search for a graphics and a present queue in the array of queue
      // families, try to find one that supports both
      TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.graphics_queue_family_index := UINT32.MaxValue;
-     TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.present_queue_family_index  := UINT32.MaxValue;
+     _PresentQueueFamilyI  := UINT32.MaxValue;
      for i := 0 to TVkWindow( _Window ).Device.QueueFamilysN-1 do
      begin
           if ( TVkWindow( _Window ).Device.QueueFamilys[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
@@ -98,13 +100,13 @@ begin
                if pSupportsPresent[i] = VK_TRUE then
                begin
                     TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.graphics_queue_family_index := i;
-                    TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.present_queue_family_index  := i;
+                    _PresentQueueFamilyI  := i;
                     Break;
                end;
           end;
      end;
 
-     if TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.present_queue_family_index = UINT32.MaxValue then
+     if _PresentQueueFamilyI = UINT32.MaxValue then
      begin
           // If didn't find a queue that supports both graphics and present, then
           // find a separate present queue.
@@ -112,7 +114,7 @@ begin
           begin
                if pSupportsPresent[i] = VK_TRUE then
                begin
-                    TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.present_queue_family_index := i;
+                    _PresentQueueFamilyI := i;
                     Break;
                end;
           end;
@@ -121,7 +123,7 @@ begin
 
      // Generate error if could not find queues that support graphics
      // and present
-     if ( TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.graphics_queue_family_index = UINT32.MaxValue ) or ( TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.present_queue_family_index = UINT32.MaxValue ) then
+     if ( TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.graphics_queue_family_index = UINT32.MaxValue ) or ( _PresentQueueFamilyI = UINT32.MaxValue ) then
      begin
           Log.d( 'Could not find a queues for both graphics and present' );
           RunError( 256-1 );
