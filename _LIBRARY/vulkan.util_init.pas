@@ -49,11 +49,6 @@ uses vulkan_core, vulkan_win32,
 
 //////////////////////////////////////////////////////////////////////////////// 05-init_swapchain
 
-procedure init_window_size( const Vulkan_:TVulkan; default_width_,default_height_:UInt32 );
-procedure init_connection( const Vulkan_:TVulkan );
-procedure init_window( const Vulkan_:TVulkan );
-procedure destroy_window( const Vulkan_:TVulkan );
-
 //////////////////////////////////////////////////////////////////////////////// 06-init_depth_buffer
 
 procedure init_swapchain_extension( const Vulkan_:TVulkan );
@@ -146,101 +141,6 @@ uses System.Types, System.Math, System.SysUtils,
 
 //////////////////////////////////////////////////////////////////////////////// 05-init_swapchain
 
-procedure init_window_size( const Vulkan_:TVulkan; default_width_,default_height_:UInt32 );
-begin
-     Vulkan_.Info.width  := default_width_;
-     Vulkan_.Info.height := default_height_;
-end;
-
-procedure init_connection( const Vulkan_:TVulkan );
-begin
-
-end;
-
-procedure run( var info:T_sample_info );
-begin
-     (* Placeholder for samples that want to show dynamic content *)
-end;
-
-function WndProc( hwnd:HWND; uMsg:UINT; wParam:WPARAM; lParam:LPARAM ) :LRESULT; stdcall;
-var
-   info :P_sample_info;
-begin
-     info := P_sample_info( GetWindowLongPtr( hWnd, GWLP_USERDATA ) );
-
-     case uMsg of
-       WM_CLOSE:
-          PostQuitMessage( 0 );
-       WM_PAINT:
-          begin
-               run( info^ );
-               Exit( 0 );
-          end;
-     else
-     end;
-     Result := DefWindowProc( hWnd, uMsg, wParam, lParam );
-end;
-
-procedure init_window( const Vulkan_:TVulkan );
-var
-   win_class :WNDCLASSEX;
-   wr        :TRect;
-begin
-     Assert( Vulkan_.Info.width  > 0 );
-     Assert( Vulkan_.Info.height > 0 );
-
-     Vulkan_.Info.connection := GetModuleHandle( nil );
-     Vulkan_.Info.name       := 'Sample';
-
-     // Initialize the window class structure:
-     win_class.cbSize        := SizeOf( WNDCLASSEX );
-     win_class.style         := CS_HREDRAW or CS_VREDRAW;
-     win_class.lpfnWndProc   := @WndProc;
-     win_class.cbClsExtra    := 0;
-     win_class.cbWndExtra    := 0;
-     win_class.hInstance     := Vulkan_.Info.connection;  // hInstance
-     win_class.hIcon         := LoadIcon( 0, IDI_APPLICATION );
-     win_class.hCursor       := LoadCursor( 0, IDC_ARROW );
-     win_class.hbrBackground := HBRUSH( GetStockObject( WHITE_BRUSH ) );
-     win_class.lpszMenuName  := nil;
-     win_class.lpszClassName := LPCWSTR( WideString( Vulkan_.Info.name ) );
-     win_class.hIconSm       := LoadIcon( 0, IDI_WINLOGO );
-     // Register window class:
-     if RegisterClassEx( win_class ) = 0 then
-     begin
-          // It didn't work, so try to give a useful error:
-          Log.d( 'Unexpected error trying to start the application!' );
-          RunError( 1 );
-     end;
-     // Create window with the registered class:
-     wr := TRect.Create( 0, 0, Vulkan_.Info.width, Vulkan_.Info.height );
-     AdjustWindowRect( wr, WS_OVERLAPPEDWINDOW, False );
-     Vulkan_.Info.window := CreateWindowEx( 0,
-                                    LPCWSTR( WideString( Vulkan_.Info.name ) ),              // class name
-                                    LPCWSTR( WideString( Vulkan_.Info.name ) ),              // app name
-                                    WS_OVERLAPPEDWINDOW or WS_VISIBLE or WS_SYSMENU,  // window style
-                                    100, 100,                                         // x/y coords
-                                    wr.right - wr.left,                               // width
-                                    wr.bottom - wr.top,                               // height
-                                    0,                                                // handle to parent
-                                    0,                                                // handle to menu
-                                    Vulkan_.Info.connection,                                 // hInstance
-                                    nil );                                            // no extra parameters
-     if Vulkan_.Info.window = 0 then
-     begin
-          // It didn't work, so try to give a useful error:
-          Log.d( 'Cannot create a window in which to draw!' );
-          RunError( 1 );
-     end;
-     SetWindowLongPtr( Vulkan_.Info.window, GWLP_USERDATA, LONG_PTR( @Vulkan_.Info ) );
-end;
-
-procedure destroy_window( const Vulkan_:TVulkan );
-begin
-     vkDestroySurfaceKHR( Vulkan_.Instance.Handle, Vulkan_.Info.surface, nil );
-     DestroyWindow( Vulkan_.Info.window );
-end;
-
 //////////////////////////////////////////////////////////////////////////////// 06-init_depth_buffer
 
 (* Use this surface format if it's available.  This ensures that generated
@@ -263,8 +163,8 @@ begin
      createInfo           := Default( VkWin32SurfaceCreateInfoKHR );
      createInfo.sType     := VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
      createInfo.pNext     := nil;
-     createInfo.hinstance := Vulkan_.Info.connection;
-     createInfo.hwnd      := Vulkan_.Info.window;
+     createInfo.hinstance := Vulkan_.Instance.Devices.Devices[0].Window.connection;
+     createInfo.hwnd      := Vulkan_.Instance.Devices.Devices[0].Window.window;
      res := vkCreateWin32SurfaceKHR( Vulkan_.Instance.Handle, @createInfo, nil, @Vulkan_.Info.surface );
      Assert( res = VK_SUCCESS );
 
@@ -356,11 +256,11 @@ var
    pData      :P_uint8_t;
 begin
      fov := DegToRad( 45 );
-     if Vulkan_.Info.width > Vulkan_.Info.height then
+     if Vulkan_.Instance.Devices.Devices[0].Window.width > Vulkan_.Instance.Devices.Devices[0].Window.height then
      begin
-          fov := fov * Vulkan_.Info.height / Vulkan_.Info.width;
+          fov := fov * Vulkan_.Instance.Devices.Devices[0].Window.height / Vulkan_.Instance.Devices.Devices[0].Window.width;
      end;
-     Vulkan_.Info.Projection := TSingleM4.ProjPersH( fov, Vulkan_.Info.width / Vulkan_.Info.height, 0.1, 100 );
+     Vulkan_.Info.Projection := TSingleM4.ProjPersH( fov, Vulkan_.Instance.Devices.Devices[0].Window.width / Vulkan_.Instance.Devices.Devices[0].Window.height, 0.1, 100 );
      Vulkan_.Info.View := TSingleM4.LookAt( TSingle3D.Create( -5, +3, -10 ),    // Camera is at (-5,3,-10), in World Space
                                      TSingle3D.Create(  0,  0,   0 ),    // and looks at the origin
                                      TSingle3D.Create(  0, -1,   0 ) );  // Head is up (set to 0,-1,0 to look upside-down)
@@ -530,8 +430,8 @@ begin
      begin
           // If the surface size is undefined, the size is set to
           // the size of the images requested.
-          swapchainExtent.width  := Vulkan_.Info.width;
-          swapchainExtent.height := Vulkan_.Info.height;
+          swapchainExtent.width  := Vulkan_.Instance.Devices.Devices[0].Window.width;
+          swapchainExtent.height := Vulkan_.Instance.Devices.Devices[0].Window.height;
           if swapchainExtent.width < surfCapabilities.minImageExtent.width
           then swapchainExtent.width := surfCapabilities.minImageExtent.width
           else
@@ -689,8 +589,8 @@ begin
      image_info.pNext                 := nil;
      image_info.imageType             := VK_IMAGE_TYPE_2D;
      image_info.format                := depth_format;
-     image_info.extent.width          := Vulkan_.Info.width;
-     image_info.extent.height         := Vulkan_.Info.height;
+     image_info.extent.width          := Vulkan_.Instance.Devices.Devices[0].Window.width;
+     image_info.extent.height         := Vulkan_.Instance.Devices.Devices[0].Window.height;
      image_info.extent.depth          := 1;
      image_info.mipLevels             := 1;
      image_info.arrayLayers           := 1;
@@ -1009,8 +909,8 @@ begin
      then fb_info.attachmentCount := 2
      else fb_info.attachmentCount := 1;
      fb_info.pAttachments         := @attachments[0];
-     fb_info.width                := Vulkan_.Info.width;
-     fb_info.height               := Vulkan_.Info.height;
+     fb_info.width                := Vulkan_.Instance.Devices.Devices[0].Window.width;
+     fb_info.height               := Vulkan_.Instance.Devices.Devices[0].Window.height;
      fb_info.layers               := 1;
 
      SetLength( Vulkan_.Info.framebuffers, Vulkan_.Info.swapchainImageCount );
@@ -1188,8 +1088,8 @@ end;
 
 procedure init_viewports( const Vulkan_:TVulkan );
 begin
-     Vulkan_.Info.viewport.height   := Vulkan_.Info.height;
-     Vulkan_.Info.viewport.width    := Vulkan_.Info.width;
+     Vulkan_.Info.viewport.height   := Vulkan_.Instance.Devices.Devices[0].Window.height;
+     Vulkan_.Info.viewport.width    := Vulkan_.Instance.Devices.Devices[0].Window.width;
      Vulkan_.Info.viewport.minDepth := 0.0;
      Vulkan_.Info.viewport.maxDepth := 1.0;
      Vulkan_.Info.viewport.x        := 0;
@@ -1199,8 +1099,8 @@ end;
 
 procedure init_scissors( const Vulkan_:TVulkan );
 begin
-     Vulkan_.Info.scissor.extent.width  := Vulkan_.Info.width;
-     Vulkan_.Info.scissor.extent.height := Vulkan_.Info.height;
+     Vulkan_.Info.scissor.extent.width  := Vulkan_.Instance.Devices.Devices[0].Window.width;
+     Vulkan_.Info.scissor.extent.height := Vulkan_.Instance.Devices.Devices[0].Window.height;
      Vulkan_.Info.scissor.offset.x      := 0;
      Vulkan_.Info.scissor.offset.y      := 0;
      vkCmdSetScissor( Vulkan_.Info.cmd, 0, NUM_SCISSORS, @Vulkan_.Info.scissor );
