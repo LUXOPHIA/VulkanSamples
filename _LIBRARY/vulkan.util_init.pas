@@ -51,7 +51,7 @@ uses vulkan_core, vulkan_win32,
 
 //////////////////////////////////////////////////////////////////////////////// 06-init_depth_buffer
 
-procedure init_swapchain_extension( const Vulkan_:TVulkan );
+//procedure init_swapchain_extension( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 07-init_uniform_buffer
 
@@ -142,102 +142,97 @@ uses System.Types, System.Math, System.SysUtils,
 //////////////////////////////////////////////////////////////////////////////// 05-init_swapchain
 
 //////////////////////////////////////////////////////////////////////////////// 06-init_depth_buffer
-
-(* Use this surface format if it's available.  This ensures that generated
-* images are similar on different devices and with different drivers.
-*)
-const PREFERRED_SURFACE_FORMAT = VK_FORMAT_B8G8R8A8_UNORM;
-
-procedure init_swapchain_extension( const Vulkan_:TVulkan );
-var
-   res              :VkResult;
-   createInfo       :VkWin32SurfaceCreateInfoKHR;
-   pSupportsPresent :TArray<VkBool32>;
-   i                :T_uint32_t;
-   formatCount      :T_uint32_t;
-   surfFormats      :TArray<VkSurfaceFormatKHR>;
-begin
-     (* DEPENDS on init_connection() and init_window() *)
-
-     // Construct the surface description:
-     createInfo           := Default( VkWin32SurfaceCreateInfoKHR );
-     createInfo.sType     := VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-     createInfo.pNext     := nil;
-     createInfo.hinstance := Vulkan_.Instance.Devices[0].Window.connection;
-     createInfo.hwnd      := Vulkan_.Instance.Devices[0].Window.window;
-     res := vkCreateWin32SurfaceKHR( Vulkan_.Instance.Handle, @createInfo, nil, @Vulkan_.Info.surface );
-     Assert( res = VK_SUCCESS );
-
-     // Iterate over each queue to learn whether it supports presenting:
-     SetLength( pSupportsPresent, Vulkan_.Info.queue_family_count );
-     for i := 0 to Vulkan_.Info.queue_family_count-1
-     do vkGetPhysicalDeviceSurfaceSupportKHR( Vulkan_.Instance.Devices[0].PhysHandle, i, Vulkan_.Info.surface, @pSupportsPresent[i] );
-
-     // Search for a graphics and a present queue in the array of queue
-     // families, try to find one that supports both
-     Vulkan_.Info.graphics_queue_family_index := UINT32_MAX;
-     Vulkan_.Info.present_queue_family_index  := UINT32_MAX;
-     for i := 0 to Vulkan_.Info.queue_family_count-1 do
-     begin
-          if ( Vulkan_.Info.queue_props[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
-          begin
-               if Vulkan_.Info.graphics_queue_family_index = UINT32_MAX then Vulkan_.Info.graphics_queue_family_index := i;
-
-               if pSupportsPresent[i] = VK_TRUE then
-               begin
-                    Vulkan_.Info.graphics_queue_family_index := i;
-                    Vulkan_.Info.present_queue_family_index  := i;
-                    Break;
-               end;
-          end;
-     end;
-
-     if Vulkan_.Info.present_queue_family_index = UINT32_MAX then
-     begin
-          // If didn't find a queue that supports both graphics and present, then
-          // find a separate present queue.
-          for i := 0 to Vulkan_.Info.queue_family_count-1 do
-          begin
-               if pSupportsPresent[i] = VK_TRUE then
-               begin
-                    Vulkan_.Info.present_queue_family_index := i;
-                    Break;
-               end;
-          end;
-     end;
-     pSupportsPresent := nil;
-
-     // Generate error if could not find queues that support graphics
-     // and present
-     if ( Vulkan_.Info.graphics_queue_family_index = UINT32_MAX ) or ( Vulkan_.Info.present_queue_family_index = UINT32_MAX ) then
-     begin
-          Log.d( 'Could not find a queues for both graphics and present' );
-          RunError( 256-1 );
-     end;
-
-     // Get the list of VkFormats that are supported:
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Info.surface, @formatCount, nil );
-     Assert( res = VK_SUCCESS );
-     SetLength( surfFormats, formatCount );
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Info.surface, @formatCount, @surfFormats[0] );
-     Assert( res = VK_SUCCESS );
-
-     // If the device supports our preferred surface format, use it.
-     // Otherwise, use whatever the device's first reported surface
-     // format is.
-     Assert( formatCount >= 1 );
-     Vulkan_.Info.format := surfFormats[0].format;
-     for i := 0 to formatCount-1 do
-     begin
-          if surfFormats[i].format = PREFERRED_SURFACE_FORMAT then
-          begin
-               Vulkan_.Info.format := PREFERRED_SURFACE_FORMAT;
-               break;
-          end;
-     end;
-
-     surfFormats := nil;
-end;
+//
+//procedure init_swapchain_extension( const Vulkan_:TVulkan );
+//var
+//   res              :VkResult;
+//   createInfo       :VkWin32SurfaceCreateInfoKHR;
+//   pSupportsPresent :TArray<VkBool32>;
+//   i                :T_uint32_t;
+//   formatCount      :T_uint32_t;
+//   surfFormats      :TArray<VkSurfaceFormatKHR>;
+//begin
+//     (* DEPENDS on init_connection() and init_window() *)
+//
+//     // Construct the surface description:
+//     createInfo           := Default( VkWin32SurfaceCreateInfoKHR );
+//     createInfo.sType     := VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+//     createInfo.pNext     := nil;
+//     createInfo.hinstance := Vulkan_.Instance.Devices[0].Window.connection;
+//     createInfo.hwnd      := Vulkan_.Instance.Devices[0].Window.window;
+//     res := vkCreateWin32SurfaceKHR( Vulkan_.Instance.Handle, @createInfo, nil, @Vulkan_.Info.surface );
+//     Assert( res = VK_SUCCESS );
+//
+//     // Iterate over each queue to learn whether it supports presenting:
+//     SetLength( pSupportsPresent, Vulkan_.Info.queue_family_count );
+//     for i := 0 to Vulkan_.Info.queue_family_count-1
+//     do vkGetPhysicalDeviceSurfaceSupportKHR( Vulkan_.Instance.Devices[0].PhysHandle, i, Vulkan_.Info.surface, @pSupportsPresent[i] );
+//
+//     // Search for a graphics and a present queue in the array of queue
+//     // families, try to find one that supports both
+//     Vulkan_.Info.graphics_queue_family_index := UINT32_MAX;
+//     Vulkan_.Info.present_queue_family_index  := UINT32_MAX;
+//     for i := 0 to Vulkan_.Info.queue_family_count-1 do
+//     begin
+//          if ( Vulkan_.Info.queue_props[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
+//          begin
+//               if Vulkan_.Info.graphics_queue_family_index = UINT32_MAX then Vulkan_.Info.graphics_queue_family_index := i;
+//
+//               if pSupportsPresent[i] = VK_TRUE then
+//               begin
+//                    Vulkan_.Info.graphics_queue_family_index := i;
+//                    Vulkan_.Info.present_queue_family_index  := i;
+//                    Break;
+//               end;
+//          end;
+//     end;
+//
+//     if Vulkan_.Info.present_queue_family_index = UINT32_MAX then
+//     begin
+//          // If didn't find a queue that supports both graphics and present, then
+//          // find a separate present queue.
+//          for i := 0 to Vulkan_.Info.queue_family_count-1 do
+//          begin
+//               if pSupportsPresent[i] = VK_TRUE then
+//               begin
+//                    Vulkan_.Info.present_queue_family_index := i;
+//                    Break;
+//               end;
+//          end;
+//     end;
+//     pSupportsPresent := nil;
+//
+//     // Generate error if could not find queues that support graphics
+//     // and present
+//     if ( Vulkan_.Info.graphics_queue_family_index = UINT32_MAX ) or ( Vulkan_.Info.present_queue_family_index = UINT32_MAX ) then
+//     begin
+//          Log.d( 'Could not find a queues for both graphics and present' );
+//          RunError( 256-1 );
+//     end;
+//
+//     // Get the list of VkFormats that are supported:
+//     res := vkGetPhysicalDeviceSurfaceFormatsKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Info.surface, @formatCount, nil );
+//     Assert( res = VK_SUCCESS );
+//     SetLength( surfFormats, formatCount );
+//     res := vkGetPhysicalDeviceSurfaceFormatsKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Info.surface, @formatCount, @surfFormats[0] );
+//     Assert( res = VK_SUCCESS );
+//
+//     // If the device supports our preferred surface format, use it.
+//     // Otherwise, use whatever the device's first reported surface
+//     // format is.
+//     Assert( formatCount >= 1 );
+//     Vulkan_.Info.format := surfFormats[0].format;
+//     for i := 0 to formatCount-1 do
+//     begin
+//          if surfFormats[i].format = PREFERRED_SURFACE_FORMAT then
+//          begin
+//               Vulkan_.Info.format := PREFERRED_SURFACE_FORMAT;
+//               break;
+//          end;
+//     end;
+//
+//     surfFormats := nil;
+//end;
 
 //////////////////////////////////////////////////////////////////////////////// 07-init_uniform_buffer
 
