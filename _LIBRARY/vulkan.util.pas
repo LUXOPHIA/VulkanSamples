@@ -91,7 +91,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        present_queue               :VkQueue;
        graphics_queue_family_index :T_uint32_t;
        present_queue_family_index  :T_uint32_t;
-       memory_properties           :VkPhysicalDeviceMemoryProperties;
 
        framebuffers  :TArray<VkFramebuffer>;
 
