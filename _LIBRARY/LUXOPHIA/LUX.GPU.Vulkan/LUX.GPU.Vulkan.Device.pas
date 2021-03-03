@@ -5,7 +5,8 @@ interface //####################################################################
 uses System.Generics.Collections,
      vulkan_core, vulkan_win32,
      vulkan.util,
-     LUX.GPU.Vulkan.Pipeline;
+     LUX.GPU.Vulkan.Pipeline,
+     LUX.GPU.Vulkan.Surface;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -59,6 +60,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function init_device_extension_properties( var L_:T_layer_properties ) :VkResult;
        procedure InitLayers;
        procedure FindQueueFamilys;
+       procedure FindQueueFamilyI; overload;
+       procedure FindQueueFamilyI( const Surface_:VkSurfaceKHR ); overload;
+       procedure FindFormat( const Surface_:VkSurfaceKHR );
        procedure CreateHandle;
        procedure DestroHandle;
      public
@@ -192,18 +196,6 @@ begin
 end;
 
 procedure TVkDevice<TVkDevices_>.FindQueueFamilys;
-const
-     (* Use this surface format if it's available.  This ensures that generated
-      * images are similar on different devices and with different drivers.
-      *)
-     PREFERRED_SURFACE_FORMAT = VK_FORMAT_B8G8R8A8_UNORM;
-var
-   res              :VkResult;
-   createInfo       :VkWin32SurfaceCreateInfoKHR;
-   pSupportsPresent :TArray<VkBool32>;
-   I                :UInt32;
-   formatCount      :UInt32;
-   surfFormats      :TArray<VkSurfaceFormatKHR>;
 begin
      vkGetPhysicalDeviceQueueFamilyProperties( PhysHandle, @_QueueFamilysN, nil );
      Assert( _QueueFamilysN > 1 );
@@ -211,22 +203,44 @@ begin
      SetLength( _QueueFamilys, _QueueFamilysN );
      vkGetPhysicalDeviceQueueFamilyProperties( PhysHandle, @_QueueFamilysN, @_QueueFamilys[0] );
      Assert( _QueueFamilysN > 1 );
+end;
 
+procedure TVkDevice<TVkDevices_>.FindQueueFamilyI;
+var
+   I :UInt32;
+begin
+     for i := 0 to _QueueFamilysN-1 do
+     begin
+          if ( _QueueFamilys[I].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
+          begin
+               _GraphicsQueueFamilyI := I;
+               _PresentQueueFamilyI  := I;
+
+               Break;
+          end;
+     end;
+end;
+
+procedure TVkDevice<TVkDevices_>.FindQueueFamilyI( const Surface_:VkSurfaceKHR );
+var
+   Fs :TArray<VkBool32>;
+   I  :UInt32;
+begin
      // Iterate over each queue to learn whether it supports presenting:
-     SetLength( pSupportsPresent, _QueueFamilysN );
-     for I := 0 to _QueueFamilysN-1 do vkGetPhysicalDeviceSurfaceSupportKHR( _PhysHandle, I, TVkDevices( _Devices ).Instance.Window.Surface.Handle, @pSupportsPresent[i] );
+     SetLength( Fs, _QueueFamilysN );
+     for I := 0 to _QueueFamilysN-1 do vkGetPhysicalDeviceSurfaceSupportKHR( _PhysHandle, I, Surface_, @Fs[I] );
 
      // Search for a graphics and a present queue in the array of queue
      // families, try to find one that supports both
      _GraphicsQueueFamilyI := UINT32.MaxValue;
      _PresentQueueFamilyI  := UINT32.MaxValue;
-     for i := 0 to _QueueFamilysN-1 do
+     for I := 0 to _QueueFamilysN-1 do
      begin
-          if ( _QueueFamilys[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
+          if ( _QueueFamilys[I].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
           begin
                if _GraphicsQueueFamilyI = UINT32.MaxValue then _GraphicsQueueFamilyI := i;
 
-               if pSupportsPresent[i] = VK_TRUE then
+               if Fs[I] = VK_TRUE then
                begin
                     _GraphicsQueueFamilyI := i;
                     _PresentQueueFamilyI  := i;
@@ -239,9 +253,9 @@ begin
      begin
           // If didn't find a queue that supports both graphics and present, then
           // find a separate present queue.
-          for i := 0 to _QueueFamilysN-1 do
+          for I := 0 to _QueueFamilysN-1 do
           begin
-               if pSupportsPresent[i] = VK_TRUE then
+               if Fs[I] = VK_TRUE then
                begin
                     _PresentQueueFamilyI := i;
                     Break;
@@ -256,25 +270,35 @@ begin
           Log.d( 'Could not find a queues for both graphics and present' );
           RunError( 256-1 );
      end;
+end;
 
+procedure TVkDevice<TVkDevices_>.FindFormat( const Surface_:VkSurfaceKHR );
+const
+     (* Use this surface format if it's available.  This ensures that generated
+      * images are similar on different devices and with different drivers.
+      *)
+     PREFERRED_SURFACE_FORMAT = VK_FORMAT_B8G8R8A8_UNORM;
+var
+   FsN :UInt32;
+   Fs  :TArray<VkSurfaceFormatKHR>;
+   I   :UInt32;
+begin
      // Get the list of VkFormats that are supported:
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( _PhysHandle, TVkDevices( _Devices ).Instance.Window.Surface.Handle, @formatCount, nil );
-     Assert( res = VK_SUCCESS );
-     SetLength( surfFormats, formatCount );
-     res := vkGetPhysicalDeviceSurfaceFormatsKHR( _PhysHandle, TVkDevices( _Devices ).Instance.Window.Surface.Handle, @formatCount, @surfFormats[0] );
-     Assert( res = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfaceFormatsKHR( _PhysHandle, Surface_, @FsN, nil ) = VK_SUCCESS );
+     Assert( FsN > 1 );
+     SetLength( Fs, FsN );
+     Assert( vkGetPhysicalDeviceSurfaceFormatsKHR( _PhysHandle, Surface_, @FsN, @Fs[0] ) = VK_SUCCESS );
+     Assert( FsN > 1 );
 
      // If the device supports our preferred surface format, use it.
      // Otherwise, use whatever the device's first reported surface
      // format is.
-     Assert( formatCount >= 1 );
-     _Format := surfFormats[0].format;
-     for i := 0 to formatCount-1 do
+     _Format := Fs[0].format;
+     for I := 0 to FsN-1 do
      begin
-          if surfFormats[i].format = PREFERRED_SURFACE_FORMAT then
+          if Fs[I].format = PREFERRED_SURFACE_FORMAT then
           begin
-               _Format := PREFERRED_SURFACE_FORMAT;
-               break;
+               _Format := PREFERRED_SURFACE_FORMAT;  Break;
           end;
      end;
 end;
@@ -327,6 +351,9 @@ begin
      InitLayers;
 
      FindQueueFamilys;
+     FindQueueFamilyI( TVkDevices( _Devices ).Instance.Window.Surface.Handle );
+
+     FindFormat( TVkDevices( _Devices ).Instance.Window.Surface.Handle );
 
      _Extensions := _Extensions + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
 
@@ -350,15 +377,15 @@ end;
 
 function TVkDevice<TVkDevices_>.memory_type_from_properties( typeBits:UInt32; requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
 var
-   i :UInt32;
+   I :UInt32;
 begin
      // Search memtypes to find first index with those properties
-     for i := 0 to Memorys.memoryTypeCount-1 do
+     for I := 0 to Memorys.memoryTypeCount-1 do
      begin
           if ( typeBits and 1 ) = 1 then
           begin
                // Type is available, does it match user properties?
-               if Memorys.memoryTypes[i].propertyFlags and requirements_mask = requirements_mask then
+               if Memorys.memoryTypes[I].propertyFlags and requirements_mask = requirements_mask then
                begin
                     typeIndex := i;
                     Exit( True );
