@@ -86,10 +86,10 @@ var
 begin
      _Vulkan   := TVulkan.Create;
      _Instance := TVkInstance.Create( _Vulkan );
-     _Devices  := _Instance.Devices;
-     _Device   := _Devices[0];
-     _Window   := TVkWindow.Create( _Device, 500, 500, @WndProc );
+     _Window   := TVkWindow.Create( _Instance, 500, 500, @WndProc );
      _Surface  := TVkSurface.Create( _Window );
+     _Devices  := TVkDevices.Create( _Instance );
+     _Device   := _Devices[0];
      //init_swapchain_extension( _Vulkan );
      init_command_pool( _Vulkan );
      init_command_buffer( _Vulkan );
@@ -142,8 +142,8 @@ begin
      rp_begin.framebuffer              := _Vulkan.Info.framebuffers[_Vulkan.Info.current_buffer];
      rp_begin.renderArea.offset.x      := 0;
      rp_begin.renderArea.offset.y      := 0;
-     rp_begin.renderArea.extent.width  := _Device.Window.width;
-     rp_begin.renderArea.extent.height := _Device.Window.height;
+     rp_begin.renderArea.extent.width  := _Window.width;
+     rp_begin.renderArea.extent.height := _Window.height;
      rp_begin.clearValueCount          := 2;
      rp_begin.pClearValues             := @clear_values[0];
 
