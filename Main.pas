@@ -26,6 +26,7 @@ type
     _Devices    :TVkDevices;
     _Device     :TVkDevice;
     _Window     :TVkWindow;
+    _Surface    :TVkSurface;
     _ShaderVert :TVkShaderVert;
     _ShaderFrag :TVkShaderFrag;
     _Pipeline   :TVkPipeline;
@@ -88,8 +89,8 @@ begin
      _Devices  := _Instance.Devices;
      _Device   := _Devices[0];
      _Window   := TVkWindow.Create( _Device, 500, 500, @WndProc );
-
-     init_swapchain_extension( _Vulkan );
+     _Surface  := TVkSurface.Create( _Window );
+     //init_swapchain_extension( _Vulkan );
      init_command_pool( _Vulkan );
      init_command_buffer( _Vulkan );
      execute_begin_command_buffer( _Vulkan );
@@ -227,9 +228,10 @@ begin
      destroy_command_buffer( _Vulkan );
      destroy_command_pool( _Vulkan );
 
-     _Window.Free;
+     _Surface .Free;
+     _Window  .Free;
      _Instance.Free;
-     _Vulkan.Free;
+     _Vulkan  .Free;
 end;
 
 end. //######################################################################### ■
