@@ -291,9 +291,9 @@ begin
      (* DEPENDS on init_swapchain_extension() *)
 
      vkGetDeviceQueue( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.graphics_queue_family_index, 0, @Vulkan_.Info.graphics_queue );
-     if Vulkan_.Info.graphics_queue_family_index = Vulkan_.Info.present_queue_family_index
+     if Vulkan_.Info.graphics_queue_family_index = Vulkan_.Instance.Devices[0].Window.Surface.PresentQueueFamilyI
      then Vulkan_.Info.present_queue := Vulkan_.Info.graphics_queue
-     else vkGetDeviceQueue( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.present_queue_family_index, 0, @Vulkan_.Info.present_queue );
+     else vkGetDeviceQueue( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Instance.Devices[0].Window.Surface.PresentQueueFamilyI, 0, @Vulkan_.Info.present_queue );
 end;
 
 procedure init_swap_chain( const Vulkan_:TVulkan; usageFlags_:VkImageUsageFlags = Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
@@ -403,8 +403,8 @@ begin
      swapchain_ci.queueFamilyIndexCount := 0;
      swapchain_ci.pQueueFamilyIndices   := nil;
      queueFamilyIndices[0] := Vulkan_.Info.graphics_queue_family_index;
-     queueFamilyIndices[1] := Vulkan_.Info.present_queue_family_index;
-     if Vulkan_.Info.graphics_queue_family_index <> Vulkan_.Info.present_queue_family_index then
+     queueFamilyIndices[1] := Vulkan_.Instance.Devices[0].Window.Surface.PresentQueueFamilyI;
+     if Vulkan_.Info.graphics_queue_family_index <> Vulkan_.Instance.Devices[0].Window.Surface.PresentQueueFamilyI then
      begin
           // If the graphics and present queues are from different queue families,
           // we either have to explicitly transfer ownership of images between the
