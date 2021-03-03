@@ -19,13 +19,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevices
 
-     TVkDevices<TVkInstance_:class> = class
+     TVkDevices<TVkInstance_:class> = class( TObjectList<TVkDevice<TVkDevices<TVkInstance_>>> )
      private
        type TVkDevices_ = TVkDevices<TVkInstance_>;
             TVkDevice_  = TVkDevice<TVkDevices_>;
      protected
        _Instance :TVkInstance_;
-       _Devices  :TObjectList<TVkDevice_>;
        ///// アクセス
        ///// メソッド
        procedure GetDevices;
@@ -34,8 +33,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Instance :TVkInstance_            read _Instance;
-       property Devices  :TObjectList<TVkDevice_> read _Devices ;
+       property Instance :TVkInstance_ read _Instance;
        ///// メソッド
      end;
 
@@ -108,7 +106,7 @@ begin
 
      Assert( ( vkEnumeratePhysicalDevices( TVkInstance( _Instance ).Handle, @DsN, @Ds[0] ) = VK_SUCCESS ) and ( DsN > 0 ) );
 
-     for D in Ds do _Devices.Add( TVkDevice_.Create( Self, D ) );
+     for D in Ds do Add( TVkDevice_.Create( Self, D ) );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -118,8 +116,6 @@ begin
      inherited Create;
 
      _Instance := Instance_;
-
-     _Devices := TObjectList<TVkDevice_>.Create;
 end;
 
 procedure TVkDevices<TVkInstance_>.AfterConstruction;
@@ -131,7 +127,6 @@ end;
 
 destructor TVkDevices<TVkInstance_>.Destroy;
 begin
-     _Devices.Free;
 
      inherited;
 end;

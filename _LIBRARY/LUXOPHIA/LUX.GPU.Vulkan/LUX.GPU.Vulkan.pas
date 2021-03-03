@@ -280,8 +280,8 @@ begin
      image_create_info.pNext                 := nil;
      image_create_info.imageType             := VK_IMAGE_TYPE_2D;
      image_create_info.format                := Vulkan_.Info.format;
-     image_create_info.extent.width          := Vulkan_.Instance.Devices.Devices[0].Window.width;
-     image_create_info.extent.height         := Vulkan_.Instance.Devices.Devices[0].Window.height;
+     image_create_info.extent.width          := Vulkan_.Instance.Devices[0].Window.width;
+     image_create_info.extent.height         := Vulkan_.Instance.Devices[0].Window.height;
      image_create_info.extent.depth          := 1;
      image_create_info.mipLevels             := 1;
      image_create_info.arrayLayers           := 1;
@@ -300,10 +300,10 @@ begin
      mem_alloc.memoryTypeIndex := 0;
 
      (* Create a mappable image *)
-     res := vkCreateImage( Vulkan_.Instance.Devices.Devices[ 0 ].Handle, @image_create_info, nil, @mappableImage );
+     res := vkCreateImage( Vulkan_.Instance.Devices[0].Handle, @image_create_info, nil, @mappableImage );
      Assert( res = VK_SUCCESS );
 
-     vkGetImageMemoryRequirements( Vulkan_.Instance.Devices.Devices[ 0 ].Handle, mappableImage, @mem_reqs );
+     vkGetImageMemoryRequirements( Vulkan_.Instance.Devices[0].Handle, mappableImage, @mem_reqs );
 
      mem_alloc.allocationSize := mem_reqs.size;
 
@@ -314,11 +314,11 @@ begin
      Assert( pass, 'No mappable, coherent memory' );
 
      (* allocate memory *)
-     res := vkAllocateMemory( Vulkan_.Instance.Devices.Devices[ 0 ].Handle, @mem_alloc, nil, @mappableMemory );
+     res := vkAllocateMemory( Vulkan_.Instance.Devices[0].Handle, @mem_alloc, nil, @mappableMemory );
      Assert( res = VK_SUCCESS );
 
      (* bind memory *)
-     res := vkBindImageMemory( Vulkan_.Instance.Devices.Devices[ 0 ].Handle, mappableImage, mappableMemory, 0 );
+     res := vkBindImageMemory( Vulkan_.Instance.Devices[0].Handle, mappableImage, mappableMemory, 0 );
      Assert( res = VK_SUCCESS );
 
      cmd_buf_info.sType            := VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -348,8 +348,8 @@ begin
      copy_region.dstOffset.x                   := 0;
      copy_region.dstOffset.y                   := 0;
      copy_region.dstOffset.z                   := 0;
-     copy_region.extent.width                  := Vulkan_.Instance.Devices.Devices[0].Window.width;
-     copy_region.extent.height                 := Vulkan_.Instance.Devices.Devices[0].Window.height;
+     copy_region.extent.width                  := Vulkan_.Instance.Devices[0].Window.width;
+     copy_region.extent.height                 := Vulkan_.Instance.Devices[0].Window.height;
      copy_region.extent.depth                  := 1;
 
      (* Put the copy command into the command buffer *)
@@ -365,7 +365,7 @@ begin
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
-     vkCreateFence( Vulkan_.Instance.Devices.Devices[ 0 ].Handle, @fenceInfo, nil, @cmdFence );
+     vkCreateFence( Vulkan_.Instance.Devices[0].Handle, @fenceInfo, nil, @cmdFence );
 
      submit_info[0].pNext                := nil;
      submit_info[0].sType                := VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -383,37 +383,37 @@ begin
 
      (* Make sure command buffer is finished before mapping *)
      repeat
-           res := vkWaitForFences( Vulkan_.Instance.Devices.Devices[ 0 ].Handle, 1, @cmdFence, VK_TRUE, FENCE_TIMEOUT );
+           res := vkWaitForFences( Vulkan_.Instance.Devices[0].Handle, 1, @cmdFence, VK_TRUE, FENCE_TIMEOUT );
 
      until res <> VK_TIMEOUT;
      Assert( res = VK_SUCCESS );
 
-     vkDestroyFence( Vulkan_.Instance.Devices.Devices[ 0 ].Handle, cmdFence, nil );
+     vkDestroyFence( Vulkan_.Instance.Devices[0].Handle, cmdFence, nil );
 
      filename := basename_ + '.ppm';
 
      subres.aspectMask := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
      subres.mipLevel   := 0;
      subres.arrayLayer := 0;
-     vkGetImageSubresourceLayout( Vulkan_.Instance.Devices.Devices[ 0 ].Handle, mappableImage, @subres, @sr_layout );
+     vkGetImageSubresourceLayout( Vulkan_.Instance.Devices[0].Handle, mappableImage, @subres, @sr_layout );
 
-     res := vkMapMemory( Vulkan_.Instance.Devices.Devices[ 0 ].Handle, mappableMemory, 0, mem_reqs.size, 0, @ptr );
+     res := vkMapMemory( Vulkan_.Instance.Devices[0].Handle, mappableMemory, 0, mem_reqs.size, 0, @ptr );
      Assert( res = VK_SUCCESS );
 
      Inc( ptr, sr_layout.offset );
      F := TFileStream.Create( filename, fmCreate );
 
      S := 'P6'                                               + #13#10;  F.Write( BytesOf( S ), Length( S ) );
-     S := Vulkan_.Instance.Devices.Devices[0].Window.width.ToString + ' ' + Vulkan_.Instance.Devices.Devices[0].Window.height.ToString + #13#10;  F.Write( BytesOf( S ), Length( S ) );
+     S := Vulkan_.Instance.Devices[0].Window.width.ToString + ' ' + Vulkan_.Instance.Devices[0].Window.height.ToString + #13#10;  F.Write( BytesOf( S ), Length( S ) );
      S := '255'                                              + #13#10;  F.Write( BytesOf( S ), Length( S ) );
 
-     for y := 0 to Vulkan_.Instance.Devices.Devices[0].Window.height-1 do
+     for y := 0 to Vulkan_.Instance.Devices[0].Window.height-1 do
      begin
           row := P_uint32_t( ptr );
 
           if ( Vulkan_.Info.format = VK_FORMAT_B8G8R8A8_UNORM ) or ( Vulkan_.Info.format = VK_FORMAT_B8G8R8A8_SRGB ) then
           begin
-               for x := 0 to Vulkan_.Instance.Devices.Devices[0].Window.width-1 do
+               for x := 0 to Vulkan_.Instance.Devices[0].Window.width-1 do
                begin
                     swapped := ( row^ and $ff00ff00 ) or ( row^ and $000000ff ) shl 16 or ( row^ and $00ff0000 ) shr 16;
                     F.Write( swapped, 3 );
@@ -423,7 +423,7 @@ begin
           else
           if Vulkan_.Info.format = VK_FORMAT_R8G8B8A8_UNORM then
           begin
-               for x := 0 to Vulkan_.Instance.Devices.Devices[0].Window.width-1 do
+               for x := 0 to Vulkan_.Instance.Devices[0].Window.width-1 do
                begin
                     F.Write( row^, 3 );
                     Inc( row );
@@ -439,9 +439,9 @@ begin
      end;
 
      F.Free;
-     vkUnmapMemory( Vulkan_.Instance.Devices.Devices[ 0 ].Handle, mappableMemory );
-     vkDestroyImage( Vulkan_.Instance.Devices.Devices[ 0 ].Handle, mappableImage, nil );
-     vkFreeMemory( Vulkan_.Instance.Devices.Devices[ 0 ].Handle, mappableMemory, nil );
+     vkUnmapMemory( Vulkan_.Instance.Devices[0].Handle, mappableMemory );
+     vkDestroyImage( Vulkan_.Instance.Devices[0].Handle, mappableImage, nil );
+     vkFreeMemory( Vulkan_.Instance.Devices[0].Handle, mappableMemory, nil );
 end;
 
 //////////////////////////////////////////////////////////////////////////////// draw_textured_cube
