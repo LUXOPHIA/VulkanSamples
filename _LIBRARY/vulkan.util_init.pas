@@ -290,8 +290,8 @@ procedure init_device_queue( const Vulkan_:TVulkan );
 begin
      (* DEPENDS on init_swapchain_extension() *)
 
-     vkGetDeviceQueue( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.graphics_queue_family_index, 0, @Vulkan_.Info.graphics_queue );
-     if Vulkan_.Info.graphics_queue_family_index = Vulkan_.Instance.Devices[0].PresentQueueFamilyI
+     vkGetDeviceQueue( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Instance.Devices[0].GraphicsQueueFamilyI, 0, @Vulkan_.Info.graphics_queue );
+     if Vulkan_.Instance.Devices[0].GraphicsQueueFamilyI = Vulkan_.Instance.Devices[0].PresentQueueFamilyI
      then Vulkan_.Info.present_queue := Vulkan_.Info.graphics_queue
      else vkGetDeviceQueue( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Instance.Devices[0].PresentQueueFamilyI, 0, @Vulkan_.Info.present_queue );
 end;
@@ -402,9 +402,9 @@ begin
      swapchain_ci.imageSharingMode      := VK_SHARING_MODE_EXCLUSIVE;
      swapchain_ci.queueFamilyIndexCount := 0;
      swapchain_ci.pQueueFamilyIndices   := nil;
-     queueFamilyIndices[0] := Vulkan_.Info.graphics_queue_family_index;
+     queueFamilyIndices[0] := Vulkan_.Instance.Devices[0].GraphicsQueueFamilyI;
      queueFamilyIndices[1] := Vulkan_.Instance.Devices[0].PresentQueueFamilyI;
-     if Vulkan_.Info.graphics_queue_family_index <> Vulkan_.Instance.Devices[0].PresentQueueFamilyI then
+     if Vulkan_.Instance.Devices[0].GraphicsQueueFamilyI <> Vulkan_.Instance.Devices[0].PresentQueueFamilyI then
      begin
           // If the graphics and present queues are from different queue families,
           // we either have to explicitly transfer ownership of images between the
@@ -585,7 +585,7 @@ begin
      cmd_pool_info                  := Default( VkCommandPoolCreateInfo );
      cmd_pool_info.sType            := VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
      cmd_pool_info.pNext            := nil;
-     cmd_pool_info.queueFamilyIndex := Vulkan_.Info.graphics_queue_family_index;
+     cmd_pool_info.queueFamilyIndex := Vulkan_.Instance.Devices[0].GraphicsQueueFamilyI;
      cmd_pool_info.flags            := Ord( VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
 
      res := vkCreateCommandPool( Vulkan_.Instance.Devices[0].Handle, @cmd_pool_info, nil, @Vulkan_.Info.cmd_pool );

@@ -89,8 +89,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        device_extension_properties :TArray<VkExtensionProperties>;
        graphics_queue              :VkQueue;
        present_queue               :VkQueue;
-       graphics_queue_family_index :T_uint32_t;
-
 
        framebuffers  :TArray<VkFramebuffer>;
 
