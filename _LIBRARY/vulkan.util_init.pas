@@ -158,11 +158,11 @@ var
    pData      :P_uint8_t;
 begin
      fov := DegToRad( 45 );
-     if Vulkan_.Instance.Devices[0].Window.width > Vulkan_.Instance.Devices[0].Window.height then
+     if Vulkan_.Instance.Window.width > Vulkan_.Instance.Window.height then
      begin
-          fov := fov * Vulkan_.Instance.Devices[0].Window.height / Vulkan_.Instance.Devices[0].Window.width;
+          fov := fov * Vulkan_.Instance.Window.height / Vulkan_.Instance.Window.width;
      end;
-     Vulkan_.Info.Projection := TSingleM4.ProjPersH( fov, Vulkan_.Instance.Devices[0].Window.width / Vulkan_.Instance.Devices[0].Window.height, 0.1, 100 );
+     Vulkan_.Info.Projection := TSingleM4.ProjPersH( fov, Vulkan_.Instance.Window.width / Vulkan_.Instance.Window.height, 0.1, 100 );
      Vulkan_.Info.View := TSingleM4.LookAt( TSingle3D.Create( -5, +3, -10 ),    // Camera is at (-5,3,-10), in World Space
                                      TSingle3D.Create(  0,  0,   0 ),    // and looks at the origin
                                      TSingle3D.Create(  0, -1,   0 ) );  // Head is up (set to 0,-1,0 to look upside-down)
@@ -291,9 +291,9 @@ begin
      (* DEPENDS on init_swapchain_extension() *)
 
      vkGetDeviceQueue( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.graphics_queue_family_index, 0, @Vulkan_.Info.graphics_queue );
-     if Vulkan_.Info.graphics_queue_family_index = Vulkan_.Instance.Devices[0].Window.Surface.PresentQueueFamilyI
+     if Vulkan_.Info.graphics_queue_family_index = Vulkan_.Instance.Devices[0].PresentQueueFamilyI
      then Vulkan_.Info.present_queue := Vulkan_.Info.graphics_queue
-     else vkGetDeviceQueue( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Instance.Devices[0].Window.Surface.PresentQueueFamilyI, 0, @Vulkan_.Info.present_queue );
+     else vkGetDeviceQueue( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Instance.Devices[0].PresentQueueFamilyI, 0, @Vulkan_.Info.present_queue );
 end;
 
 procedure init_swap_chain( const Vulkan_:TVulkan; usageFlags_:VkImageUsageFlags = Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
@@ -317,14 +317,14 @@ var
 begin
      (* DEPENDS on info.cmd and info.queue initialized *)
 
-     res := vkGetPhysicalDeviceSurfaceCapabilitiesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Instance.Devices[0].Window.Surface.Handle, @surfCapabilities );
+     res := vkGetPhysicalDeviceSurfaceCapabilitiesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Instance.Window.Surface.Handle, @surfCapabilities );
      Assert( res = VK_SUCCESS );
 
-     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Instance.Devices[0].Window.Surface.Handle, @presentModeCount, nil );
+     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Instance.Window.Surface.Handle, @presentModeCount, nil );
      Assert( res = VK_SUCCESS );
      SetLength( presentModes, presentModeCount );
      Assert( Length( presentModes ) > 0 );
-     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Instance.Devices[0].Window.Surface.Handle, @presentModeCount, @presentModes[0] );
+     res := vkGetPhysicalDeviceSurfacePresentModesKHR( Vulkan_.Instance.Devices[0].PhysHandle, Vulkan_.Instance.Window.Surface.Handle, @presentModeCount, @presentModes[0] );
      Assert( res = VK_SUCCESS );
 
      // width and height are either both 0xFFFFFFFF, or both not 0xFFFFFFFF.
@@ -332,8 +332,8 @@ begin
      begin
           // If the surface size is undefined, the size is set to
           // the size of the images requested.
-          swapchainExtent.width  := Vulkan_.Instance.Devices[0].Window.width;
-          swapchainExtent.height := Vulkan_.Instance.Devices[0].Window.height;
+          swapchainExtent.width  := Vulkan_.Instance.Window.width;
+          swapchainExtent.height := Vulkan_.Instance.Window.height;
           if swapchainExtent.width < surfCapabilities.minImageExtent.width
           then swapchainExtent.width := surfCapabilities.minImageExtent.width
           else
@@ -386,9 +386,9 @@ begin
      swapchain_ci                       := Default( VkSwapchainCreateInfoKHR );
      swapchain_ci.sType                 := VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
      swapchain_ci.pNext                 := nil;
-     swapchain_ci.surface               := Vulkan_.Instance.Devices[0].Window.Surface.Handle;
+     swapchain_ci.surface               := Vulkan_.Instance.Window.Surface.Handle;
      swapchain_ci.minImageCount         := desiredNumberOfSwapChainImages;
-     swapchain_ci.imageFormat           := Vulkan_.Instance.Devices[0].Window.Surface.Format;
+     swapchain_ci.imageFormat           := Vulkan_.Instance.Devices[0].Format;
      swapchain_ci.imageExtent.width     := swapchainExtent.width;
      swapchain_ci.imageExtent.height    := swapchainExtent.height;
      swapchain_ci.preTransform          := preTransform;
@@ -403,8 +403,8 @@ begin
      swapchain_ci.queueFamilyIndexCount := 0;
      swapchain_ci.pQueueFamilyIndices   := nil;
      queueFamilyIndices[0] := Vulkan_.Info.graphics_queue_family_index;
-     queueFamilyIndices[1] := Vulkan_.Instance.Devices[0].Window.Surface.PresentQueueFamilyI;
-     if Vulkan_.Info.graphics_queue_family_index <> Vulkan_.Instance.Devices[0].Window.Surface.PresentQueueFamilyI then
+     queueFamilyIndices[1] := Vulkan_.Instance.Devices[0].PresentQueueFamilyI;
+     if Vulkan_.Info.graphics_queue_family_index <> Vulkan_.Instance.Devices[0].PresentQueueFamilyI then
      begin
           // If the graphics and present queues are from different queue families,
           // we either have to explicitly transfer ownership of images between the
@@ -431,7 +431,7 @@ begin
           color_image_view                                 := Default( VkImageViewCreateInfo );
           color_image_view.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
           color_image_view.pNext                           := nil;
-          color_image_view.format                          := Vulkan_.Instance.Devices[0].Window.Surface.Format;
+          color_image_view.format                          := Vulkan_.Instance.Devices[0].Format;
           color_image_view.components.r                    := VK_COMPONENT_SWIZZLE_R;
           color_image_view.components.g                    := VK_COMPONENT_SWIZZLE_G;
           color_image_view.components.b                    := VK_COMPONENT_SWIZZLE_B;
@@ -491,8 +491,8 @@ begin
      image_info.pNext                 := nil;
      image_info.imageType             := VK_IMAGE_TYPE_2D;
      image_info.format                := depth_format;
-     image_info.extent.width          := Vulkan_.Instance.Devices[0].Window.width;
-     image_info.extent.height         := Vulkan_.Instance.Devices[0].Window.height;
+     image_info.extent.width          := Vulkan_.Instance.Window.width;
+     image_info.extent.height         := Vulkan_.Instance.Window.height;
      image_info.extent.depth          := 1;
      image_info.mipLevels             := 1;
      image_info.arrayLayers           := 1;
@@ -646,7 +646,7 @@ begin
      Assert( clear_ or ( initialLayout_ <> VK_IMAGE_LAYOUT_UNDEFINED ) );
 
      (* Need attachments for render target and depth buffer *)
-     attachments[0].format         := Vulkan_.Instance.Devices[0].Window.Surface.Format;
+     attachments[0].format         := Vulkan_.Instance.Devices[0].Format;
      attachments[0].samples        := NUM_SAMPLES;
      if clear_
      then attachments[0].loadOp    := VK_ATTACHMENT_LOAD_OP_CLEAR
@@ -811,8 +811,8 @@ begin
      then fb_info.attachmentCount := 2
      else fb_info.attachmentCount := 1;
      fb_info.pAttachments         := @attachments[0];
-     fb_info.width                := Vulkan_.Instance.Devices[0].Window.width;
-     fb_info.height               := Vulkan_.Instance.Devices[0].Window.height;
+     fb_info.width                := Vulkan_.Instance.Window.width;
+     fb_info.height               := Vulkan_.Instance.Window.height;
      fb_info.layers               := 1;
 
      SetLength( Vulkan_.Info.framebuffers, Vulkan_.Info.swapchainImageCount );
@@ -990,8 +990,8 @@ end;
 
 procedure init_viewports( const Vulkan_:TVulkan );
 begin
-     Vulkan_.Info.viewport.height   := Vulkan_.Instance.Devices[0].Window.height;
-     Vulkan_.Info.viewport.width    := Vulkan_.Instance.Devices[0].Window.width;
+     Vulkan_.Info.viewport.height   := Vulkan_.Instance.Window.height;
+     Vulkan_.Info.viewport.width    := Vulkan_.Instance.Window.width;
      Vulkan_.Info.viewport.minDepth := 0.0;
      Vulkan_.Info.viewport.maxDepth := 1.0;
      Vulkan_.Info.viewport.x        := 0;
@@ -1001,8 +1001,8 @@ end;
 
 procedure init_scissors( const Vulkan_:TVulkan );
 begin
-     Vulkan_.Info.scissor.extent.width  := Vulkan_.Instance.Devices[0].Window.width;
-     Vulkan_.Info.scissor.extent.height := Vulkan_.Instance.Devices[0].Window.height;
+     Vulkan_.Info.scissor.extent.width  := Vulkan_.Instance.Window.width;
+     Vulkan_.Info.scissor.extent.height := Vulkan_.Instance.Window.height;
      Vulkan_.Info.scissor.offset.x      := 0;
      Vulkan_.Info.scissor.offset.y      := 0;
      vkCmdSetScissor( Vulkan_.Info.cmd, 0, NUM_SCISSORS, @Vulkan_.Info.scissor );
