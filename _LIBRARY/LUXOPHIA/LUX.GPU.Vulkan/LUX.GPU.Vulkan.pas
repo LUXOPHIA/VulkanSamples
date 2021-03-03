@@ -20,14 +20,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVulkan                 = class;
        TVkLayers             = TArray<T_layer_properties>;
        TVkInstance           = TVkInstance<TVulkan>;
+         TVkWindow           = TVkWindow<TVkInstance>;
+           TVkSurface        = TVkSurface<TVkWindow>;
          TVkDevices          = TVkDevices<TVkInstance>;
            TVkDevice         = TVkDevice<TVkDevices>;
              TVkPipeline     = TVkPipeline<TVkDevice>;
                TVkShader     = TVkShader<TVkPipeline>;
                TVkShaderVert = TVkShaderVert<TVkPipeline>;
                TVkShaderFrag = TVkShaderFrag<TVkPipeline>;
-             TVkWindow       = TVkWindow<TVkDevice>;
-               TVkSurface    = TVkSurface<TVkWindow>;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -257,9 +257,9 @@ begin
      image_create_info.sType                 := VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
      image_create_info.pNext                 := nil;
      image_create_info.imageType             := VK_IMAGE_TYPE_2D;
-     image_create_info.format                := Vulkan_.Instance.Devices[0].Window.Surface.Format;
-     image_create_info.extent.width          := Vulkan_.Instance.Devices[0].Window.width;
-     image_create_info.extent.height         := Vulkan_.Instance.Devices[0].Window.height;
+     image_create_info.format                := Vulkan_.Instance.Devices[0].Format;
+     image_create_info.extent.width          := Vulkan_.Instance.Window.width;
+     image_create_info.extent.height         := Vulkan_.Instance.Window.height;
      image_create_info.extent.depth          := 1;
      image_create_info.mipLevels             := 1;
      image_create_info.arrayLayers           := 1;
@@ -326,8 +326,8 @@ begin
      copy_region.dstOffset.x                   := 0;
      copy_region.dstOffset.y                   := 0;
      copy_region.dstOffset.z                   := 0;
-     copy_region.extent.width                  := Vulkan_.Instance.Devices[0].Window.width;
-     copy_region.extent.height                 := Vulkan_.Instance.Devices[0].Window.height;
+     copy_region.extent.width                  := Vulkan_.Instance.Window.width;
+     copy_region.extent.height                 := Vulkan_.Instance.Window.height;
      copy_region.extent.depth                  := 1;
 
      (* Put the copy command into the command buffer *)
@@ -382,16 +382,16 @@ begin
      F := TFileStream.Create( filename, fmCreate );
 
      S := 'P6'                                               + #13#10;  F.Write( BytesOf( S ), Length( S ) );
-     S := Vulkan_.Instance.Devices[0].Window.width.ToString + ' ' + Vulkan_.Instance.Devices[0].Window.height.ToString + #13#10;  F.Write( BytesOf( S ), Length( S ) );
+     S := Vulkan_.Instance.Window.width.ToString + ' ' + Vulkan_.Instance.Window.height.ToString + #13#10;  F.Write( BytesOf( S ), Length( S ) );
      S := '255'                                              + #13#10;  F.Write( BytesOf( S ), Length( S ) );
 
-     for y := 0 to Vulkan_.Instance.Devices[0].Window.height-1 do
+     for y := 0 to Vulkan_.Instance.Window.height-1 do
      begin
           row := P_uint32_t( ptr );
 
-          if ( Vulkan_.Instance.Devices[0].Window.Surface.Format = VK_FORMAT_B8G8R8A8_UNORM ) or ( Vulkan_.Instance.Devices[0].Window.Surface.Format = VK_FORMAT_B8G8R8A8_SRGB ) then
+          if ( Vulkan_.Instance.Devices[0].Format = VK_FORMAT_B8G8R8A8_UNORM ) or ( Vulkan_.Instance.Devices[0].Format = VK_FORMAT_B8G8R8A8_SRGB ) then
           begin
-               for x := 0 to Vulkan_.Instance.Devices[0].Window.width-1 do
+               for x := 0 to Vulkan_.Instance.Window.width-1 do
                begin
                     swapped := ( row^ and $ff00ff00 ) or ( row^ and $000000ff ) shl 16 or ( row^ and $00ff0000 ) shr 16;
                     F.Write( swapped, 3 );
@@ -399,9 +399,9 @@ begin
                end;
           end
           else
-          if Vulkan_.Instance.Devices[0].Window.Surface.Format = VK_FORMAT_R8G8B8A8_UNORM then
+          if Vulkan_.Instance.Devices[0].Format = VK_FORMAT_R8G8B8A8_UNORM then
           begin
-               for x := 0 to Vulkan_.Instance.Devices[0].Window.width-1 do
+               for x := 0 to Vulkan_.Instance.Window.width-1 do
                begin
                     F.Write( row^, 3 );
                     Inc( row );
