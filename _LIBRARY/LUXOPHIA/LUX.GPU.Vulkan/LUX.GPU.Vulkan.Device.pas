@@ -52,6 +52,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Window        :TVkWindow_;
        _QueueFamilysN :UInt32;
        _QueueFamilys  :TArray<VkQueueFamilyProperties>;
+       _Memorys       :VkPhysicalDeviceMemoryProperties;
        ///// アクセス
        function GetQueueFamilys( const I_:Integer ) :VkQueueFamilyProperties;
        ///// メソッド
@@ -64,14 +65,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Devices                          :TVkDevices_                read   _Devices      ;
-       property PhysHandle                       :VkPhysicalDevice           read   _PhysHandle   ;
-       property Props                            :VkPhysicalDeviceProperties read   _Props        ;
-       property Handle                           :VkDevice                   read   _Handle       ;
-       property Extensions                       :TArray<PAnsiChar>          read   _Extensions   ;
-       property Window                           :TVkWindow_                 read   _Window        write _Window;
-       property QueueFamilysN                    :UInt32                     read   _QueueFamilysN;
-       property QueueFamilys[ const I_:Integer ] :VkQueueFamilyProperties    read GetQueueFamilys ;
+       property Devices                          :TVkDevices_                      read   _Devices      ;
+       property PhysHandle                       :VkPhysicalDevice                 read   _PhysHandle   ;
+       property Props                            :VkPhysicalDeviceProperties       read   _Props        ;
+       property Handle                           :VkDevice                         read   _Handle       ;
+       property Extensions                       :TArray<PAnsiChar>                read   _Extensions   ;
+       property Window                           :TVkWindow_                       read   _Window        write _Window;
+       property QueueFamilysN                    :UInt32                           read   _QueueFamilysN;
+       property QueueFamilys[ const I_:Integer ] :VkQueueFamilyProperties          read GetQueueFamilys ;
+       property Memorys                          :VkPhysicalDeviceMemoryProperties read   _Memorys      ;
+       ///// メソッド
+       function memory_type_from_properties( typeBits:UInt32; requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -184,7 +188,7 @@ begin
      Assert( _QueueFamilysN > 1 );
 
      (* This is as good a place as any to do this *)
-     vkGetPhysicalDeviceMemoryProperties( PhysHandle, @TVkDevices( Devices ).Instance.Vulkan.Info.memory_properties );
+     vkGetPhysicalDeviceMemoryProperties( PhysHandle, @Memorys );
      vkGetPhysicalDeviceProperties( PhysHandle, @_Props );
      (* query device extensions for enabled layers *)
      for I := 0 to Length( TVkDevices( Devices ).Instance.Vulkan.Layers )-1
@@ -249,6 +253,30 @@ begin
      DestroHandle;
 
      inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+function TVkDevice<TVkDevices_>.memory_type_from_properties( typeBits:UInt32; requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
+var
+   i :UInt32;
+begin
+     // Search memtypes to find first index with those properties
+     for i := 0 to Memorys.memoryTypeCount-1 do
+     begin
+          if ( typeBits and 1 ) = 1 then
+          begin
+               // Type is available, does it match user properties?
+               if Memorys.memoryTypes[i].propertyFlags and requirements_mask = requirements_mask then
+               begin
+                    typeIndex := i;
+                    Exit( True );
+               end;
+          end;
+          typeBits := typeBits shr 1;
+     end;
+     // No memory types matched, return failure
+     Result := False;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
