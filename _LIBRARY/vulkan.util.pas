@@ -152,7 +152,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        debug_report_callbacks        :TArray<VkDebugReportCallbackEXT>;
 
        current_buffer     :T_uint32_t;
-       queue_family_count :T_uint32_t;
 
        viewport :VkViewport;
        scissor  :VkRect2D;
