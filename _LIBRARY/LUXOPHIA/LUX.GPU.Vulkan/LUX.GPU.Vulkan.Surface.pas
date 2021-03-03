@@ -17,6 +17,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _Window :TVkWindow_;
        _Handle :VkSurfaceKHR;
+       _Format :VkFormat;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -27,6 +28,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// プロパティ
        property Window :TVkWindow_   read _Window;
        property Handle :VkSurfaceKHR read _Handle;
+       property Format :VkFormat     read _Format;
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -136,12 +138,12 @@ begin
      // Otherwise, use whatever the device's first reported surface
      // format is.
      Assert( formatCount >= 1 );
-     TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.format := surfFormats[0].format;
+     _Format := surfFormats[0].format;
      for i := 0 to formatCount-1 do
      begin
           if surfFormats[i].format = PREFERRED_SURFACE_FORMAT then
           begin
-               TVkWindow( _Window ).Device.Devices.Instance.Vulkan.Info.format := PREFERRED_SURFACE_FORMAT;
+               _Format := PREFERRED_SURFACE_FORMAT;
                break;
           end;
      end;
