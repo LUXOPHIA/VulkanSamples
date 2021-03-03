@@ -59,8 +59,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
-function memory_type_from_properties( var info:T_sample_info; typeBits:T_uint32_t; requirements_mask:VkFlags; var typeIndex:T_uint32_t ) :T_bool;
-
 //////////////////////////////////////////////////////////////////////////////// 15-draw_cube
 
 procedure wait_seconds( seconds_:T_int );
@@ -167,28 +165,6 @@ begin
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
-
-function memory_type_from_properties( var info:T_sample_info; typeBits:T_uint32_t; requirements_mask:VkFlags; var typeIndex:T_uint32_t ) :T_bool;
-var
-   i :T_uint32_t;
-begin
-     // Search memtypes to find first index with those properties
-     for i := 0 to info.memory_properties.memoryTypeCount-1 do
-     begin
-          if ( typeBits and 1 ) = 1 then
-          begin
-               // Type is available, does it match user properties?
-               if info.memory_properties.memoryTypes[i].propertyFlags and requirements_mask = requirements_mask then
-               begin
-                    typeIndex := i;
-                    Exit( True );
-               end;
-          end;
-          typeBits := typeBits shr 1;
-     end;
-     // No memory types matched, return failure
-     Result := False;
-end;
 
 //////////////////////////////////////////////////////////////////////////////// 15-draw_cube
 
@@ -310,8 +286,8 @@ begin
      mem_alloc.allocationSize := mem_reqs.size;
 
      (* Find the memory type that is host mappable *)
-     pass := memory_type_from_properties(
-                  Vulkan_.Info, mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
+     pass := Vulkan_.Instance.Devices[0].memory_type_from_properties(
+                  mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
                   mem_alloc.memoryTypeIndex );
      Assert( pass, 'No mappable, coherent memory' );
 
