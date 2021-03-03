@@ -3,7 +3,8 @@
 interface //#################################################################### ■
 
 uses WinApi.Windows,
-     vulkan_core, vulkan_win32;
+     vulkan_core, vulkan_win32,
+     LUX.GPU.Vulkan.Surface;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -13,11 +14,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TVkWindow<TVkDevice_:class> = class
      private
+       type TVkWindow_  = TVkWindow<TVkDevice_>;
+            TVkSurface_ = TVkSurface<TVkWindow_>;
      protected
-       _Device :TVkDevice_;
-       _Width  :Integer;
-       _Height :Integer;
-       _Proc   :TFNWndProc;
+       _Device  :TVkDevice_;
+       _Width   :Integer;
+       _Height  :Integer;
+       _Proc    :TFNWndProc;
+       _Surface :TVkSurface_;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -30,9 +34,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Device :TVkDevice_ read _Device;
-       property Width  :Integer    read _Width  write _Width ;
-       property Height :Integer    read _Height write _Height;
+       property Device  :TVkDevice_  read _Device                ;
+       property Width   :Integer     read _Width   write _Width  ;
+       property Height  :Integer     read _Height  write _Height ;
+       property Proc    :TFNWndProc  read _Proc    write _Proc   ;
+       property Surface :TVkSurface_ read _Surface write _Surface;
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -114,7 +120,6 @@ end;
 
 procedure TVkWindow<TVkDevice_>.DestroHandle;
 begin
-     vkDestroySurfaceKHR( TVkDevice( Device ).Devices.Instance.Handle, TVkDevice( Device ).Devices.Instance.Vulkan.Info.surface, nil );
      DestroyWindow( window );
 end;
 
