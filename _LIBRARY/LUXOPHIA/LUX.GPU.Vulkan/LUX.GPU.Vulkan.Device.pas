@@ -49,6 +49,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Extensions    :TArray<PAnsiChar>;
        _QueueFamilysN :UInt32;
        _QueueFamilys  :TArray<VkQueueFamilyProperties>;
+       _GraphicsQueueFamilyI :UInt32;
        _PresentQueueFamilyI :UInt32;
        _Format :VkFormat;
        _Memorys       :VkPhysicalDeviceMemoryProperties;
@@ -72,6 +73,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Extensions                       :TArray<PAnsiChar>                read   _Extensions   ;
        property QueueFamilysN                    :UInt32                           read   _QueueFamilysN;
        property QueueFamilys[ const I_:Integer ] :VkQueueFamilyProperties          read GetQueueFamilys ;
+       property GraphicsQueueFamilyI :UInt32       read _GraphicsQueueFamilyI;
        property PresentQueueFamilyI :UInt32       read _PresentQueueFamilyI;
        property Format              :VkFormat     read _Format;
        property Memorys                          :VkPhysicalDeviceMemoryProperties read   _Memorys      ;
@@ -207,18 +209,17 @@ begin
 
      // Search for a graphics and a present queue in the array of queue
      // families, try to find one that supports both
-     TVkDevices( _Devices ).Instance.Vulkan.Info.graphics_queue_family_index := UINT32.MaxValue;
+     _GraphicsQueueFamilyI := UINT32.MaxValue;
      _PresentQueueFamilyI  := UINT32.MaxValue;
      for i := 0 to _QueueFamilysN-1 do
      begin
           if ( _QueueFamilys[i].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
           begin
-               if TVkDevices( _Devices ).Instance.Vulkan.Info.graphics_queue_family_index = UINT32.MaxValue
-               then TVkDevices( _Devices ).Instance.Vulkan.Info.graphics_queue_family_index := i;
+               if _GraphicsQueueFamilyI = UINT32.MaxValue then _GraphicsQueueFamilyI := i;
 
                if pSupportsPresent[i] = VK_TRUE then
                begin
-                    TVkDevices( _Devices ).Instance.Vulkan.Info.graphics_queue_family_index := i;
+                    _GraphicsQueueFamilyI := i;
                     _PresentQueueFamilyI  := i;
                     Break;
                end;
@@ -241,7 +242,7 @@ begin
 
      // Generate error if could not find queues that support graphics
      // and present
-     if ( TVkDevices( _Devices ).Instance.Vulkan.Info.graphics_queue_family_index = UINT32.MaxValue ) or ( _PresentQueueFamilyI = UINT32.MaxValue ) then
+     if ( _GraphicsQueueFamilyI = UINT32.MaxValue ) or ( _PresentQueueFamilyI = UINT32.MaxValue ) then
      begin
           Log.d( 'Could not find a queues for both graphics and present' );
           RunError( 256-1 );
@@ -293,7 +294,7 @@ begin
      queue_info.pNext            := nil;
      queue_info.queueCount       := 1;
      queue_info.pQueuePriorities := @queue_priorities[0];
-     queue_info.queueFamilyIndex := TVkDevices( Devices ).Instance.Vulkan.Info.graphics_queue_family_index;
+     queue_info.queueFamilyIndex := _GraphicsQueueFamilyI;
      device_info                              := Default( VkDeviceCreateInfo );
      device_info.sType                        := VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
      device_info.pNext                        := nil;
