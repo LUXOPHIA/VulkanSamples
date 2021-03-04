@@ -16,16 +16,21 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        _Device :TDevice_;
+       _Handle :VkBuffer;
+       _Memory :VkDeviceMemory;
+       _Info   :VkDescriptorBufferInfo;
        /////
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       buf         :VkBuffer;
-       mem         :VkDeviceMemory;
-       buffer_info :VkDescriptorBufferInfo;
        constructor Create( const Device_:TDevice_ );
        procedure AfterConstruction; override;
        destructor Destroy; override;
+       ///// プロパティ
+       property Device :TDevice_               read _Device;
+       property Handle :VkBuffer               read _Handle;
+       property Memory :VkDeviceMemory         read _Memory;
+       property Info   :VkDescriptorBufferInfo read _Info  ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -91,44 +96,43 @@ begin
      buf_info.pQueueFamilyIndices   := nil;
      buf_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
      buf_info.flags                 := 0;
-     res := vkCreateBuffer( TVkDevice( _Device ).Handle, @buf_info, nil, @buf );
+     res := vkCreateBuffer( TVkDevice( _Device ).Handle, @buf_info, nil, @_Handle );
      Assert( res = VK_SUCCESS );
 
-     vkGetBufferMemoryRequirements( TVkDevice( _Device ).Handle, buf, @mem_reqs );
+     vkGetBufferMemoryRequirements( TVkDevice( _Device ).Handle, _Handle, @mem_reqs );
 
      alloc_info                 := Default( VkMemoryAllocateInfo );
      alloc_info.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
      alloc_info.pNext           := nil;
      alloc_info.memoryTypeIndex := 0;
-
      alloc_info.allocationSize := mem_reqs.size;
      pass := TVkDevice( _Device ).memory_type_from_properties( mem_reqs.memoryTypeBits,
                                           Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
                                           alloc_info.memoryTypeIndex );
      Assert( pass, 'No mappable, coherent memory' );
 
-     res := vkAllocateMemory( TVkDevice( _Device ).Handle, @alloc_info, nil, @mem );
+     res := vkAllocateMemory( TVkDevice( _Device ).Handle, @alloc_info, nil, @_Memory );
      Assert( res = VK_SUCCESS );
 
-     res := vkMapMemory( TVkDevice( _Device ).Handle, mem, 0, mem_reqs.size, 0, @pData );
+     res := vkMapMemory( TVkDevice( _Device ).Handle, _Memory, 0, mem_reqs.size, 0, @pData );
      Assert( res = VK_SUCCESS );
 
      Move( MVP, pData^, SizeOf( MVP ) );
 
-     vkUnmapMemory( TVkDevice( _Device ).Handle, mem );
+     vkUnmapMemory( TVkDevice( _Device ).Handle, _Memory );
 
-     res := vkBindBufferMemory( TVkDevice( _Device ).Handle, buf, mem, 0 );
+     res := vkBindBufferMemory( TVkDevice( _Device ).Handle, _Handle, _Memory, 0 );
      Assert( res = VK_SUCCESS );
 
-     buffer_info.buffer := buf;
-     buffer_info.offset := 0;
-     buffer_info.range  := SizeOf( MVP );
+     _Info.buffer := _Handle;
+     _Info.offset := 0;
+     _Info.range  := SizeOf( MVP );
 end;
 
 procedure TVkBuffer<TDevice_>.DestroHandle;
 begin
-     vkDestroyBuffer( TVkDevice( _Device ).Handle, buf, nil );
-     vkFreeMemory( TVkDevice( _Device ).Handle, mem, nil );
+     vkDestroyBuffer( TVkDevice( _Device ).Handle, _Handle, nil );
+     vkFreeMemory( TVkDevice( _Device ).Handle, _Memory, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
