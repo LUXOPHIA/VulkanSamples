@@ -97,8 +97,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        buffers                :TArray<T_swap_chain_buffer>;
        imageAcquiredSemaphore :VkSemaphore;
 
-       cmd_pool :VkCommandPool;
-
        depth :record
                 format :VkFormat;
                 image  :VkImage;
@@ -121,7 +119,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        vi_binding    :VkVertexInputBindingDescription;
        vi_attribs    :array [ 0..2-1 ] of VkVertexInputAttributeDescription;
 
-       cmd             :VkCommandBuffer; // Buffer for initialization commands
        pipeline_layout :VkPipelineLayout;
        desc_layout     :TArray<VkDescriptorSetLayout>;
        pipelineCache   :VkPipelineCache;
