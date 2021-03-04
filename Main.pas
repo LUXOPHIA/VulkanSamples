@@ -95,7 +95,8 @@ begin
      _Device   := _Devices[0];
      _ComPool  := TVkCommandPool.Create( _Device );
      _ComBuf   := TVkCommandBuffer.Create( _ComPool );
-     execute_begin_command_buffer( _Vulkan );
+     //execute_begin_command_buffer( _Vulkan );
+     _ComBuf.BeginRecord;
      init_swap_chain( _Vulkan );
      init_depth_buffer( _Vulkan );
      init_texture( _Vulkan );
@@ -162,8 +163,7 @@ begin
 
      vkCmdDraw( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle, 12 * 3, 1, 0, 0 );
      vkCmdEndRenderPass( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle );
-     res := vkEndCommandBuffer( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle );
-     Assert( res = VK_SUCCESS );
+     _ComBuf.EndRecord;
 
      cmd_bufs[0] := _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
