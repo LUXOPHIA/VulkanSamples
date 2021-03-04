@@ -23,13 +23,14 @@ type
     { public 宣言 }
     _Vulkan     :TVulkan;
     _Instance   :TVkInstance;
-    _Devices    :TVkDevices;
-    _Device     :TVkDevice;
     _Window     :TVkWindow;
     _Surface    :TVkSurface;
+    _Devices    :TVkDevices;
+    _Device     :TVkDevice;
+    _Buffer     :TVkBuffer;
+    _Pipeline   :TVkPipeline;
     _ShaderVert :TVkShaderVert;
     _ShaderFrag :TVkShaderFrag;
-    _Pipeline   :TVkPipeline;
 
     imageAcquiredSemaphore :VkSemaphore;
     drawFence              :VkFence;
@@ -90,15 +91,13 @@ begin
      _Surface  := TVkSurface.Create( _Window );
      _Devices  := TVkDevices.Create( _Instance );
      _Device   := _Devices[0];
-     //init_device_queue( _Vulkan );
-     //init_swapchain_extension( _Vulkan );
      init_command_pool( _Vulkan );
      init_command_buffer( _Vulkan );
      execute_begin_command_buffer( _Vulkan );
      init_swap_chain( _Vulkan );
      init_depth_buffer( _Vulkan );
      init_texture( _Vulkan );
-     init_uniform_buffer( _Vulkan );
+     _Buffer := TVkBuffer.Create( _Device );
      init_descriptor_and_pipeline_layouts( _Vulkan, true );
      init_renderpass( _Vulkan, depthPresent );
      init_framebuffers( _Vulkan, depthPresent );
@@ -222,7 +221,6 @@ begin
      destroy_framebuffers( _Vulkan );
      destroy_renderpass( _Vulkan );
      destroy_descriptor_and_pipeline_layouts( _Vulkan );
-     destroy_uniform_buffer( _Vulkan );
      destroy_depth_buffer( _Vulkan );
      destroy_swap_chain( _Vulkan );
      destroy_command_buffer( _Vulkan );
