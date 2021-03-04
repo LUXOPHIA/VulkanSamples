@@ -90,11 +90,11 @@ begin
      _Surface  := TVkSurface.Create( _Window );
      _Devices  := TVkDevices.Create( _Instance );
      _Device   := _Devices[0];
+     //init_device_queue( _Vulkan );
      //init_swapchain_extension( _Vulkan );
      init_command_pool( _Vulkan );
      init_command_buffer( _Vulkan );
      execute_begin_command_buffer( _Vulkan );
-     init_device_queue( _Vulkan );
      init_swap_chain( _Vulkan );
      init_depth_buffer( _Vulkan );
      init_texture( _Vulkan );
