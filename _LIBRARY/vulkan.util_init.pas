@@ -934,7 +934,6 @@ var
    layout            :VkSubresourceLayout;
    data              :P_void;
    rowPitch          :T_uint64_t;
-   cmd_buf_info      :VkCommandBufferBeginInfo;
    copy_region       :VkBufferImageCopy;
    view_info         :VkImageViewCreateInfo;
 begin
@@ -1025,8 +1024,7 @@ begin
      res := vkBindImageMemory( Vulkan_.Instance.Devices[0].Handle, texObj_.image, texObj_.image_memory, 0 );
      Assert( res = VK_SUCCESS );
 
-     res := vkEndCommandBuffer( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle );
-     Assert( res = VK_SUCCESS );
+     Vulkan_.Instance.Devices[0].ComPool.ComBufs.EndRecord;
      cmd_bufs[0] := Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
@@ -1087,16 +1085,9 @@ begin
      then vkUnmapMemory( Vulkan_.Instance.Devices[0].Handle, texObj_.buffer_memory )
      else vkUnmapMemory( Vulkan_.Instance.Devices[0].Handle, texObj_.image_memory  );
 
-     cmd_buf_info                  := Default( VkCommandBufferBeginInfo );
-     cmd_buf_info.sType            := VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-     cmd_buf_info.pNext            := nil;
-     cmd_buf_info.flags            := 0;
-     cmd_buf_info.pInheritanceInfo := nil;
-
      res := vkResetCommandBuffer( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle, 0 );
      Assert( res = VK_SUCCESS );
-     res := vkBeginCommandBuffer( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle, @cmd_buf_info );
-     Assert( res = VK_SUCCESS );
+     Vulkan_.Instance.Devices[0].ComPool.ComBufs.BeginRecord;
 
      if not texObj_.needs_staging then
      begin

@@ -95,7 +95,6 @@ begin
      _Device   := _Devices[0];
      _ComPool  := TVkCommandPool.Create( _Device );
      _ComBuf   := TVkCommandBuffer.Create( _ComPool );
-     //execute_begin_command_buffer( _Vulkan );
      _ComBuf.BeginRecord;
      init_swap_chain( _Vulkan );
      init_depth_buffer( _Vulkan );
