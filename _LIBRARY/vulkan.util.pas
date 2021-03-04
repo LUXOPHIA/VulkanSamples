@@ -108,12 +108,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
        textures :TArray<T_texture_object>;
 
-       uniform_data :record
-                      buf         :VkBuffer;
-                      mem         :VkDeviceMemory;
-                      buffer_info :VkDescriptorBufferInfo;
-                    end;
-
        texture_data :record
                        image_info :VkDescriptorImageInfo;
                      end;
@@ -126,12 +120,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
        vi_binding    :VkVertexInputBindingDescription;
        vi_attribs    :array [ 0..2-1 ] of VkVertexInputAttributeDescription;
-
-       Projection :TSingleM4;
-       View       :TSingleM4;
-       Model      :TSingleM4;
-       Clip       :TSingleM4;
-       MVP        :TSingleM4;
 
        cmd             :VkCommandBuffer; // Buffer for initialization commands
        pipeline_layout :VkPipelineLayout;
