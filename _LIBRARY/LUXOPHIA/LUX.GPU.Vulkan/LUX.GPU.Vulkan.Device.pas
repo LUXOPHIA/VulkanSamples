@@ -65,6 +65,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure FindFormat( const Surface_:VkSurfaceKHR );
        procedure CreateHandle;
        procedure DestroHandle;
+       procedure init_device_queue;
      public
        constructor Create( const Devices_:TVkDevices_; const Handle_:VkPhysicalDevice );
        procedure AfterConstruction; override;
@@ -335,6 +336,16 @@ begin
      vkDestroyDevice( _Handle, nil );
 end;
 
+procedure TVkDevice<TVkDevices_>.init_device_queue;
+begin
+     (* DEPENDS on init_swapchain_extension() *)
+
+     vkGetDeviceQueue( _Handle, _GraphicsQueueFamilyI, 0, @TVkDevices( _Devices ).Instance.Vulkan.Info.graphics_queue );
+     if _GraphicsQueueFamilyI = _PresentQueueFamilyI
+     then TVkDevices( _Devices ).Instance.Vulkan.Info.present_queue := TVkDevices( _Devices ).Instance.Vulkan.Info.graphics_queue
+     else vkGetDeviceQueue( _Handle, _PresentQueueFamilyI, 0, @TVkDevices( _Devices ).Instance.Vulkan.Info.present_queue );
+end;
+
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TVkDevice<TVkDevices_>.Create( const Devices_:TVkDevices_; const Handle_:VkPhysicalDevice );
@@ -358,6 +369,8 @@ begin
      _Extensions := _Extensions + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
 
      CreateHandle;
+
+     init_device_queue;
 end;
 
 procedure TVkDevice<TVkDevices_>.AfterConstruction;
