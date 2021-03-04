@@ -13,22 +13,25 @@ uses System.Classes,
        LUX.GPU.Vulkan.Device,
          LUX.GPU.Vulkan.Pipeline,
            LUX.GPU.Vulkan.Shader,
-         LUX.GPU.Vulkan.Buffer;
+         LUX.GPU.Vulkan.Buffer,
+         LUX.GPU.Vulkan.Command;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVulkan                 = class;
-       TVkLayers             = TArray<T_layer_properties>;
-       TVkInstance           = TVkInstance<TVulkan>;
-         TVkWindow           = TVkWindow<TVkInstance>;
-           TVkSurface        = TVkSurface<TVkWindow>;
-         TVkDevices          = TVkDevices<TVkInstance>;
-           TVkDevice         = TVkDevice<TVkDevices>;
-             TVkPipeline     = TVkPipeline<TVkDevice>;
-               TVkShader     = TVkShader<TVkPipeline>;
-               TVkShaderVert = TVkShaderVert<TVkPipeline>;
-               TVkShaderFrag = TVkShaderFrag<TVkPipeline>;
-             TVkBuffer       = TVkBuffer<TVkDevice>;
+     TVulkan                    = class;
+       TVkLayers                = TArray<T_layer_properties>;
+       TVkInstance              = TVkInstance<TVulkan>;
+         TVkWindow              = TVkWindow<TVkInstance>;
+           TVkSurface           = TVkSurface<TVkWindow>;
+         TVkDevices             = TVkDevices<TVkInstance>;
+           TVkDevice            = TVkDevice<TVkDevices>;
+             TVkPipeline        = TVkPipeline<TVkDevice>;
+               TVkShader        = TVkShader<TVkPipeline>;
+               TVkShaderVert    = TVkShaderVert<TVkPipeline>;
+               TVkShaderFrag    = TVkShaderFrag<TVkPipeline>;
+             TVkBuffer          = TVkBuffer<TVkDevice>;
+             TVkCommandPool     = TVkCommandPool<TVkDevice>;
+               TVkCommandBuffer = TVkCommandBuffer<TVkCommandPool>;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -181,7 +184,7 @@ var
 begin
      (* DEPENDS on info.cmd and info.queue initialized *)
 
-     Assert( NativeInt( Vulkan_.Info.cmd            ) <> VK_NULL_HANDLE );
+     Assert( NativeInt( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle ) <> VK_NULL_HANDLE );
      Assert( NativeInt( Vulkan_.Info.graphics_queue ) <> VK_NULL_HANDLE );
 
      image_memory_barrier.sType                           := VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -227,7 +230,7 @@ begin
           image_memory_barrier.dstAccessMask := Ord( VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT );
      end;
 
-     vkCmdPipelineBarrier( Vulkan_.Info.cmd, src_stages_, dest_stages_, 0, 0, nil, 0, nil, 1, @image_memory_barrier );
+     vkCmdPipelineBarrier( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle, src_stages_, dest_stages_, 0, 0, nil, 0, nil, 1, @image_memory_barrier );
 end;
 
 procedure write_ppm( Vulkan_:TVulkan; const basename_:String );
@@ -305,7 +308,7 @@ begin
      cmd_buf_info.flags            := 0;
      cmd_buf_info.pInheritanceInfo := nil;
 
-     res := vkBeginCommandBuffer( Vulkan_.Info.cmd, @cmd_buf_info );
+     res := vkBeginCommandBuffer( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle, @cmd_buf_info );
      Assert( res = VK_SUCCESS );
      set_image_layout( Vulkan_, mappableImage, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_UNDEFINED,
                        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, Ord( VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT ), Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ) );
@@ -332,15 +335,15 @@ begin
      copy_region.extent.depth                  := 1;
 
      (* Put the copy command into the command buffer *)
-     vkCmdCopyImage( Vulkan_.Info.cmd, Vulkan_.Info.buffers[Vulkan_.Info.current_buffer].image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, mappableImage,
+     vkCmdCopyImage( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle, Vulkan_.Info.buffers[Vulkan_.Info.current_buffer].image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, mappableImage,
                      VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region);
 
      set_image_layout( Vulkan_, mappableImage, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL,
                        Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ), Ord( VK_PIPELINE_STAGE_HOST_BIT ) );
 
-     res := vkEndCommandBuffer( Vulkan_.Info.cmd );
+     res := vkEndCommandBuffer( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle );
      Assert( res = VK_SUCCESS );
-     cmd_bufs[0] := Vulkan_.Info.cmd;
+     cmd_bufs[0] := Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
