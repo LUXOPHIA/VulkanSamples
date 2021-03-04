@@ -57,9 +57,7 @@ uses vulkan_core, vulkan_win32,
 
 //////////////////////////////////////////////////////////////////////////////// 09-init_descriptor_set
 
-procedure init_uniform_buffer( const Vulkan_:TVulkan );
 procedure init_descriptor_and_pipeline_layouts( const Vulkan_:TVulkan; use_texture_:T_bool; descSetLayoutCreateFlags_:VkDescriptorSetLayoutCreateFlags = 0 );
-procedure destroy_uniform_buffer( const Vulkan_:TVulkan );
 procedure destroy_descriptor_and_pipeline_layouts( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 10-init_render_pass
@@ -146,79 +144,6 @@ uses System.Types, System.Math, System.SysUtils,
 
 //////////////////////////////////////////////////////////////////////////////// 09-init_descriptor_set
 
-procedure init_uniform_buffer( const Vulkan_:TVulkan );
-var
-   res        :VkResult;
-   pass       :T_bool;
-   fov        :T_float;
-   buf_info   :VkBufferCreateInfo;
-   mem_reqs   :VkMemoryRequirements;
-   alloc_info :VkMemoryAllocateInfo;
-   pData      :P_uint8_t;
-begin
-     fov := DegToRad( 45 );
-     if Vulkan_.Instance.Window.width > Vulkan_.Instance.Window.height then
-     begin
-          fov := fov * Vulkan_.Instance.Window.height / Vulkan_.Instance.Window.width;
-     end;
-     Vulkan_.Info.Projection := TSingleM4.ProjPersH( fov, Vulkan_.Instance.Window.width / Vulkan_.Instance.Window.height, 0.1, 100 );
-     Vulkan_.Info.View := TSingleM4.LookAt( TSingle3D.Create( -5, +3, -10 ),    // Camera is at (-5,3,-10), in World Space
-                                     TSingle3D.Create(  0,  0,   0 ),    // and looks at the origin
-                                     TSingle3D.Create(  0, -1,   0 ) );  // Head is up (set to 0,-1,0 to look upside-down)
-
-     Vulkan_.Info.Model := TSingleM4.Identity;
-     // Vulkan clip space has inverted Y and half Z.
-     Vulkan_.Info.Clip := TSingleM4.Create( +1.0,  0.0,  0.0,  0.0,
-                                      0.0, -1.0,  0.0,  0.0,
-                                      0.0,  0.0, +0.5, +0.5,
-                                      0.0,  0.0,  0.0, +1.0 );
-
-     Vulkan_.Info.MVP := Vulkan_.Info.Clip * Vulkan_.Info.Projection * Vulkan_.Info.View * Vulkan_.Info.Model;
-
-     (* VULKAN_KEY_START *)
-     buf_info                       := Default( VkBufferCreateInfo );
-     buf_info.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-     buf_info.pNext                 := nil;
-     buf_info.usage                 := Ord( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
-     buf_info.size                  := SizeOf( Vulkan_.Info.MVP );
-     buf_info.queueFamilyIndexCount := 0;
-     buf_info.pQueueFamilyIndices   := nil;
-     buf_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
-     buf_info.flags                 := 0;
-     res := vkCreateBuffer( Vulkan_.Instance.Devices[0].Handle, @buf_info, nil, @Vulkan_.Info.uniform_data.buf );
-     Assert( res = VK_SUCCESS );
-
-     vkGetBufferMemoryRequirements( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.uniform_data.buf, @mem_reqs );
-
-     alloc_info                 := Default( VkMemoryAllocateInfo );
-     alloc_info.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-     alloc_info.pNext           := nil;
-     alloc_info.memoryTypeIndex := 0;
-
-     alloc_info.allocationSize := mem_reqs.size;
-     pass := Vulkan_.Instance.Devices[0].memory_type_from_properties( mem_reqs.memoryTypeBits,
-                                          Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
-                                          alloc_info.memoryTypeIndex );
-     Assert( pass, 'No mappable, coherent memory' );
-
-     res := vkAllocateMemory( Vulkan_.Instance.Devices[0].Handle, @alloc_info, nil, @Vulkan_.Info.uniform_data.mem );
-     Assert( res = VK_SUCCESS );
-
-     res := vkMapMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.uniform_data.mem, 0, mem_reqs.size, 0, @pData );
-     Assert( res = VK_SUCCESS );
-
-     Move( Vulkan_.Info.MVP, pData^, SizeOf( Vulkan_.Info.MVP ) );
-
-     vkUnmapMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.uniform_data.mem );
-
-     res := vkBindBufferMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.uniform_data.buf, Vulkan_.Info.uniform_data.mem, 0 );
-     Assert( res = VK_SUCCESS );
-
-     Vulkan_.Info.uniform_data.buffer_info.buffer := Vulkan_.Info.uniform_data.buf;
-     Vulkan_.Info.uniform_data.buffer_info.offset := 0;
-     Vulkan_.Info.uniform_data.buffer_info.range  := SizeOf( Vulkan_.Info.MVP );
-end;
-
 procedure init_descriptor_and_pipeline_layouts( const Vulkan_:TVulkan; use_texture_:T_bool; descSetLayoutCreateFlags_:VkDescriptorSetLayoutCreateFlags = 0 );
 var
    layout_bindings           :array [ 0..2-1 ] of VkDescriptorSetLayoutBinding;
@@ -267,12 +192,6 @@ begin
 
      res := vkCreatePipelineLayout( Vulkan_.Instance.Devices[0].Handle, @pPipelineLayoutCreateInfo, nil, @Vulkan_.Info.pipeline_layout );
      Assert( res = VK_SUCCESS );
-end;
-
-procedure destroy_uniform_buffer( const Vulkan_:TVulkan );
-begin
-     vkDestroyBuffer( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.uniform_data.buf, nil );
-     vkFreeMemory( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.uniform_data.mem, nil );
 end;
 
 procedure destroy_descriptor_and_pipeline_layouts( const Vulkan_:TVulkan );
@@ -943,7 +862,7 @@ begin
      writes[0].dstSet          := Vulkan_.Info.desc_set[0];
      writes[0].descriptorCount := 1;
      writes[0].descriptorType  := VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-     writes[0].pBufferInfo     := @Vulkan_.Info.uniform_data.buffer_info;
+     writes[0].pBufferInfo     := @Vulkan_.Instance.Devices[0].Buffers.buffer_info;
      writes[0].dstArrayElement := 0;
      writes[0].dstBinding      := 0;
 
