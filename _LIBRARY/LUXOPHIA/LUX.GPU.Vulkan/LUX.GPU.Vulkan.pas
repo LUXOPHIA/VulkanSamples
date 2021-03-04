@@ -8,12 +8,12 @@ uses System.Classes,
      LUX, LUX.Code.C,
      LUX.GPU.Vulkan.root,
      LUX.GPU.Vulkan.Instance,
+       LUX.GPU.Vulkan.Window,
+         LUX.GPU.Vulkan.Surface,
        LUX.GPU.Vulkan.Device,
          LUX.GPU.Vulkan.Pipeline,
            LUX.GPU.Vulkan.Shader,
-           LUX.GPU.Vulkan.Buffer,
-         LUX.GPU.Vulkan.Window,
-           LUX.GPU.Vulkan.Surface;
+         LUX.GPU.Vulkan.Buffer;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -28,6 +28,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                TVkShader     = TVkShader<TVkPipeline>;
                TVkShaderVert = TVkShaderVert<TVkPipeline>;
                TVkShaderFrag = TVkShaderFrag<TVkPipeline>;
+             TVkBuffer       = TVkBuffer<TVkDevice>;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
