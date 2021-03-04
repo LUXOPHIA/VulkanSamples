@@ -7,7 +7,8 @@ uses System.Generics.Collections,
      vulkan.util,
      LUX.GPU.Vulkan.Pipeline,
      LUX.GPU.Vulkan.Surface,
-     LUX.GPU.Vulkan.Buffer;
+     LUX.GPU.Vulkan.Buffer,
+     LUX.GPU.Vulkan.Command;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -42,8 +43,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TVkDevice<TVkDevices_:class> = class
      private
-       type TVkDevice_ = TVkDevice<TVkDevices_>;
-            TVkBuffer_ = TVkBuffer<TVkDevice_>;
+       type TVkDevice_      = TVkDevice<TVkDevices_>;
+            TVkBuffer_      = TVkBuffer<TVkDevice_>;
+            TVkCommandPool_ = TVkCommandPool<TVkDevice_>;
      protected
        _Devices              :TVkDevices_;
        _PhysHandle           :VkPhysicalDevice;
@@ -57,6 +59,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _PresentQueueFamilyI  :UInt32;
        _Format               :VkFormat;
        _Buffers              :TVkBuffer_;
+       _ComPool              :TVkCommandPool_;
        ///// アクセス
        function GetQueueFamilys( const I_:Integer ) :VkQueueFamilyProperties;
        ///// メソッド
@@ -86,6 +89,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property PresentQueueFamilyI              :UInt32                           read   _PresentQueueFamilyI ;
        property Format                           :VkFormat                         read   _Format              ;
        property Buffers                          :TVkBuffer_                       read   _Buffers              write _Buffers;
+       property ComPool                          :TVkCommandPool_                  read   _ComPool              write _ComPool;
        ///// メソッド
        function memory_type_from_properties( typeBits:UInt32; requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
      end;
