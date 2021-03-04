@@ -71,8 +71,8 @@ procedure destroy_swap_chain( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 12-init_frame_buffers
 
-procedure init_command_pool( const Vulkan_:TVulkan );
-procedure init_command_buffer( const Vulkan_:TVulkan );
+//procedure init_command_pool( const Vulkan_:TVulkan );
+//procedure init_command_buffer( const Vulkan_:TVulkan );
 procedure execute_begin_command_buffer( const Vulkan_:TVulkan );
 procedure init_renderpass( const Vulkan_:TVulkan;
                            include_depth_:T_bool;
@@ -82,8 +82,8 @@ procedure init_renderpass( const Vulkan_:TVulkan;
 procedure execute_end_command_buffer( const Vulkan_:TVulkan );
 procedure execute_queue_command_buffer( const Vulkan_:TVulkan );
 procedure destroy_renderpass( const Vulkan_:TVulkan );
-procedure destroy_command_buffer( const Vulkan_:TVulkan );
-procedure destroy_command_pool( const Vulkan_:TVulkan );
+//procedure destroy_command_buffer( const Vulkan_:TVulkan );
+//procedure destroy_command_pool( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 13-init_vertex_buffer
 
@@ -483,40 +483,40 @@ end;
 
 //////////////////////////////////////////////////////////////////////////////// 12-init_frame_buffers
 
-procedure init_command_pool( const Vulkan_:TVulkan );
-var
-   res           :VkResult;
-   cmd_pool_info :VkCommandPoolCreateInfo;
-begin
-     (* DEPENDS on init_swapchain_extension() *)
+//procedure init_command_pool( const Vulkan_:TVulkan );
+//var
+//   res           :VkResult;
+//   cmd_pool_info :VkCommandPoolCreateInfo;
+//begin
+//     (* DEPENDS on init_swapchain_extension() *)
+//
+//     cmd_pool_info                  := Default( VkCommandPoolCreateInfo );
+//     cmd_pool_info.sType            := VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+//     cmd_pool_info.pNext            := nil;
+//     cmd_pool_info.queueFamilyIndex := Vulkan_.Instance.Devices[0].GraphicsQueueFamilyI;
+//     cmd_pool_info.flags            := Ord( VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
+//
+//     res := vkCreateCommandPool( Vulkan_.Instance.Devices[0].Handle, @cmd_pool_info, nil, @Vulkan_.Info.cmd_pool );
+//     Assert( res = VK_SUCCESS );
+//end;
 
-     cmd_pool_info                  := Default( VkCommandPoolCreateInfo );
-     cmd_pool_info.sType            := VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-     cmd_pool_info.pNext            := nil;
-     cmd_pool_info.queueFamilyIndex := Vulkan_.Instance.Devices[0].GraphicsQueueFamilyI;
-     cmd_pool_info.flags            := Ord( VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
-
-     res := vkCreateCommandPool( Vulkan_.Instance.Devices[0].Handle, @cmd_pool_info, nil, @Vulkan_.Info.cmd_pool );
-     Assert( res = VK_SUCCESS );
-end;
-
-procedure init_command_buffer( const Vulkan_:TVulkan );
-var
-   res :VkResult;
-   cmd :VkCommandBufferAllocateInfo;
-begin
-     (* DEPENDS on init_swapchain_extension() and init_command_pool() *)
-
-     cmd                    := Default( VkCommandBufferAllocateInfo );
-     cmd.sType              := VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-     cmd.pNext              := nil;
-     cmd.commandPool        := Vulkan_.Info.cmd_pool;
-     cmd.level              := VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-     cmd.commandBufferCount := 1;
-
-     res := vkAllocateCommandBuffers( Vulkan_.Instance.Devices[0].Handle, @cmd, @Vulkan_.Info.cmd );
-     Assert( res = VK_SUCCESS );
-end;
+//procedure init_command_buffer( const Vulkan_:TVulkan );
+//var
+//   res :VkResult;
+//   cmd :VkCommandBufferAllocateInfo;
+//begin
+//     (* DEPENDS on init_swapchain_extension() and init_command_pool() *)
+//
+//     cmd                    := Default( VkCommandBufferAllocateInfo );
+//     cmd.sType              := VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+//     cmd.pNext              := nil;
+//     cmd.commandPool        := Vulkan_.Instance.Devices[0].ComPool.cmd_pool;
+//     cmd.level              := VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+//     cmd.commandBufferCount := 1;
+//
+//     res := vkAllocateCommandBuffers( Vulkan_.Instance.Devices[0].Handle, @cmd, @Vulkan_.Info.cmd );
+//     Assert( res = VK_SUCCESS );
+//end;
 
 procedure execute_begin_command_buffer( const Vulkan_:TVulkan );
 var
@@ -531,7 +531,7 @@ begin
      cmd_buf_info.flags            := 0;
      cmd_buf_info.pInheritanceInfo := nil;
 
-     res := vkBeginCommandBuffer( Vulkan_.Info.cmd, @cmd_buf_info );
+     res := vkBeginCommandBuffer( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle, @cmd_buf_info );
      Assert( res = VK_SUCCESS );
 end;
 
@@ -633,7 +633,7 @@ procedure execute_end_command_buffer( const Vulkan_:TVulkan );
 var
    res :VkResult;
 begin
-     res := vkEndCommandBuffer( Vulkan_.Info.cmd );
+     res := vkEndCommandBuffer( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle );
      Assert( res = VK_SUCCESS );
 end;
 
@@ -649,7 +649,7 @@ var
    submit_info      :T_submit_info;
 begin
      (* Queue the command buffer for execution *)
-     cmd_bufs[0] := Vulkan_.Info.cmd;
+     cmd_bufs[0] := Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
@@ -684,18 +684,18 @@ begin
      vkDestroyRenderPass( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.render_pass, nil );
 end;
 
-procedure destroy_command_buffer( const Vulkan_:TVulkan );
-var
-   cmd_bufs :array [ 0..1-1 ] of VkCommandBuffer;
-begin
-     cmd_bufs[0] := Vulkan_.Info.cmd;
-     vkFreeCommandBuffers( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.cmd_pool, 1, @cmd_bufs[0] );
-end;
+//procedure destroy_command_buffer( const Vulkan_:TVulkan );
+//var
+//   cmd_bufs :array [ 0..1-1 ] of VkCommandBuffer;
+//begin
+//     cmd_bufs[0] := Vulkan_.Instance.Devices[0].ComPool.ComBufs.cmd;
+//     vkFreeCommandBuffers( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Instance.Devices[0].ComPool.cmd_pool, 1, @cmd_bufs[0] );
+//end;
 
-procedure destroy_command_pool( const Vulkan_:TVulkan );
-begin
-     vkDestroyCommandPool( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.cmd_pool, nil );
-end;
+//procedure destroy_command_pool( const Vulkan_:TVulkan );
+//begin
+//     vkDestroyCommandPool( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Instance.Devices[0].ComPool.ComBufs.cmd_pool, nil );
+//end;
 
 //////////////////////////////////////////////////////////////////////////////// 13-init_vertex_buffer
 
@@ -904,7 +904,7 @@ begin
      Vulkan_.Info.viewport.maxDepth := 1.0;
      Vulkan_.Info.viewport.x        := 0;
      Vulkan_.Info.viewport.y        := 0;
-     vkCmdSetViewport( Vulkan_.Info.cmd, 0, NUM_VIEWPORTS, @Vulkan_.Info.viewport );
+     vkCmdSetViewport( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle, 0, NUM_VIEWPORTS, @Vulkan_.Info.viewport );
 end;
 
 procedure init_scissors( const Vulkan_:TVulkan );
@@ -913,7 +913,7 @@ begin
      Vulkan_.Info.scissor.extent.height := Vulkan_.Instance.Window.height;
      Vulkan_.Info.scissor.offset.x      := 0;
      Vulkan_.Info.scissor.offset.y      := 0;
-     vkCmdSetScissor( Vulkan_.Info.cmd, 0, NUM_SCISSORS, @Vulkan_.Info.scissor );
+     vkCmdSetScissor( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle, 0, NUM_SCISSORS, @Vulkan_.Info.scissor );
 end;
 
 procedure init_pipeline_cache( const Vulkan_:TVulkan );
@@ -1091,9 +1091,9 @@ begin
      res := vkBindImageMemory( Vulkan_.Instance.Devices[0].Handle, texObj_.image, texObj_.image_memory, 0 );
      Assert( res = VK_SUCCESS );
 
-     res := vkEndCommandBuffer( Vulkan_.Info.cmd );
+     res := vkEndCommandBuffer( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle );
      Assert( res = VK_SUCCESS );
-     cmd_bufs[0] := Vulkan_.Info.cmd;
+     cmd_bufs[0] := Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
@@ -1159,9 +1159,9 @@ begin
      cmd_buf_info.flags            := 0;
      cmd_buf_info.pInheritanceInfo := nil;
 
-     res := vkResetCommandBuffer( Vulkan_.Info.cmd, 0 );
+     res := vkResetCommandBuffer( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle, 0 );
      Assert( res = VK_SUCCESS );
-     res := vkBeginCommandBuffer( Vulkan_.Info.cmd, @cmd_buf_info );
+     res := vkBeginCommandBuffer( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle, @cmd_buf_info );
      Assert( res = VK_SUCCESS );
 
      if not texObj_.needs_staging then
@@ -1193,7 +1193,7 @@ begin
           copy_region.imageExtent.depth               := 1;
 
           (* Put the copy command into the command buffer *)
-          vkCmdCopyBufferToImage( Vulkan_.Info.cmd, texObj_.buffer, texObj_.image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
+          vkCmdCopyBufferToImage( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle, texObj_.buffer, texObj_.image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
 
           (* Set the layout for the texture image from DESTINATION_OPTIMAL to
            * SHADER_READ_ONLY *)
