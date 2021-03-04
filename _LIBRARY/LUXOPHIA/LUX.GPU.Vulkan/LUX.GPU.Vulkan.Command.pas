@@ -43,7 +43,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _ComPool :TVkCommandPool_;
        _Handle  :VkCommandBuffer;
-       /////
+       ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
      public
@@ -53,6 +53,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// プロパティ
        property Pool   :TVkCommandPool_ read _ComPool;
        property Handle :VkCommandBuffer read _Handle ;
+       ///// メソッド
+       procedure BeginRecord;
+       procedure EndRecord;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -129,6 +132,8 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
+/////////////////////////////////////////////////////////////////////// メソッド
+
 procedure TVkCommandBuffer<TVkCommandPool_>.CreateHandle;
 var
    B :VkCommandBufferAllocateInfo;
@@ -179,6 +184,28 @@ begin
      DestroHandle;
 
      inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TVkCommandBuffer<TVkCommandPool_>.BeginRecord;
+var
+   cmd_buf_info :VkCommandBufferBeginInfo;
+begin
+     (* DEPENDS on init_command_buffer() *)
+
+     cmd_buf_info                  := Default( VkCommandBufferBeginInfo );
+     cmd_buf_info.sType            := VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+     cmd_buf_info.pNext            := nil;
+     cmd_buf_info.flags            := 0;
+     cmd_buf_info.pInheritanceInfo := nil;
+
+     Assert( vkBeginCommandBuffer( _Handle, @cmd_buf_info ) = VK_SUCCESS );
+end;
+
+procedure TVkCommandBuffer<TVkCommandPool_>.EndRecord;
+begin
+     Assert( vkEndCommandBuffer( _Handle ) = VK_SUCCESS );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
