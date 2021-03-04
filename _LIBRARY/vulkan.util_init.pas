@@ -64,7 +64,6 @@ procedure destroy_descriptor_and_pipeline_layouts( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 10-init_render_pass
 
-procedure init_device_queue( const Vulkan_:TVulkan );
 procedure init_swap_chain( const Vulkan_:TVulkan; usageFlags_:VkImageUsageFlags = Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
 procedure init_depth_buffer( const Vulkan_:TVulkan );
 procedure destroy_depth_buffer( const Vulkan_:TVulkan );
@@ -285,16 +284,6 @@ begin
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 10-init_render_pass
-
-procedure init_device_queue( const Vulkan_:TVulkan );
-begin
-     (* DEPENDS on init_swapchain_extension() *)
-
-     vkGetDeviceQueue( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Instance.Devices[0].GraphicsQueueFamilyI, 0, @Vulkan_.Info.graphics_queue );
-     if Vulkan_.Instance.Devices[0].GraphicsQueueFamilyI = Vulkan_.Instance.Devices[0].PresentQueueFamilyI
-     then Vulkan_.Info.present_queue := Vulkan_.Info.graphics_queue
-     else vkGetDeviceQueue( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Instance.Devices[0].PresentQueueFamilyI, 0, @Vulkan_.Info.present_queue );
-end;
 
 procedure init_swap_chain( const Vulkan_:TVulkan; usageFlags_:VkImageUsageFlags = Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT ) );
 var
