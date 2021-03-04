@@ -6,7 +6,8 @@ uses System.Generics.Collections,
      vulkan_core, vulkan_win32,
      vulkan.util,
      LUX.GPU.Vulkan.Pipeline,
-     LUX.GPU.Vulkan.Surface;
+     LUX.GPU.Vulkan.Surface,
+     LUX.GPU.Vulkan.Buffer;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -42,6 +43,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVkDevice<TVkDevices_:class> = class
      private
        type TVkDevice_ = TVkDevice<TVkDevices_>;
+            TVkBuffer_ = TVkBuffer<TVkDevice_>;
      protected
        _Devices              :TVkDevices_;
        _PhysHandle           :VkPhysicalDevice;
@@ -54,6 +56,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _GraphicsQueueFamilyI :UInt32;
        _PresentQueueFamilyI  :UInt32;
        _Format               :VkFormat;
+       _Buffers              :TVkBuffer_;
        ///// アクセス
        function GetQueueFamilys( const I_:Integer ) :VkQueueFamilyProperties;
        ///// メソッド
@@ -74,6 +77,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Devices                          :TVkDevices_                      read   _Devices             ;
        property PhysHandle                       :VkPhysicalDevice                 read   _PhysHandle          ;
        property Props                            :VkPhysicalDeviceProperties       read   _Props               ;
+       property Memorys                          :VkPhysicalDeviceMemoryProperties read   _Memorys             ;
        property Handle                           :VkDevice                         read   _Handle              ;
        property Extensions                       :TArray<PAnsiChar>                read   _Extensions          ;
        property QueueFamilysN                    :UInt32                           read   _QueueFamilysN       ;
@@ -81,7 +85,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property GraphicsQueueFamilyI             :UInt32                           read   _GraphicsQueueFamilyI;
        property PresentQueueFamilyI              :UInt32                           read   _PresentQueueFamilyI ;
        property Format                           :VkFormat                         read   _Format              ;
-       property Memorys                          :VkPhysicalDeviceMemoryProperties read   _Memorys             ;
+       property Buffers                          :TVkBuffer_                       read   _Buffers              write _Buffers;
        ///// メソッド
        function memory_type_from_properties( typeBits:UInt32; requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
      end;
