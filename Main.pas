@@ -27,6 +27,8 @@ type
     _Surface    :TVkSurface;
     _Devices    :TVkDevices;
     _Device     :TVkDevice;
+    _ComPool    :TVkCommandPool;
+    _ComBuf     :TVkCommandBuffer;
     _Buffer     :TVkBuffer;
     _Pipeline   :TVkPipeline;
     _ShaderVert :TVkShaderVert;
@@ -91,8 +93,8 @@ begin
      _Surface  := TVkSurface.Create( _Window );
      _Devices  := TVkDevices.Create( _Instance );
      _Device   := _Devices[0];
-     init_command_pool( _Vulkan );
-     init_command_buffer( _Vulkan );
+     _ComPool  := TVkCommandPool.Create( _Device );
+     _ComBuf   := TVkCommandBuffer.Create( _ComPool );
      execute_begin_command_buffer( _Vulkan );
      init_swap_chain( _Vulkan );
      init_depth_buffer( _Vulkan );
@@ -146,24 +148,24 @@ begin
      rp_begin.clearValueCount          := 2;
      rp_begin.pClearValues             := @clear_values[0];
 
-     vkCmdBeginRenderPass( _Vulkan.Info.cmd, @rp_begin, VK_SUBPASS_CONTENTS_INLINE );
+     vkCmdBeginRenderPass( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle, @rp_begin, VK_SUBPASS_CONTENTS_INLINE );
 
-     vkCmdBindPipeline( _Vulkan.Info.cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, _Pipeline.Handle );
-     vkCmdBindDescriptorSets( _Vulkan.Info.cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, _Vulkan.Info.pipeline_layout, 0, NUM_DESCRIPTOR_SETS,
+     vkCmdBindPipeline( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Pipeline.Handle );
+     vkCmdBindDescriptorSets( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Vulkan.Info.pipeline_layout, 0, NUM_DESCRIPTOR_SETS,
                               @_Vulkan.Info.desc_set[0], 0, nil );
 
      offsets[0] := 0;
-     vkCmdBindVertexBuffers( _Vulkan.Info.cmd, 0, 1, @_Vulkan.Info.vertex_buffer.buf, @offsets[0] );
+     vkCmdBindVertexBuffers( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle, 0, 1, @_Vulkan.Info.vertex_buffer.buf, @offsets[0] );
 
      init_viewports( _Vulkan );
      init_scissors( _Vulkan );
 
-     vkCmdDraw( _Vulkan.Info.cmd, 12 * 3, 1, 0, 0 );
-     vkCmdEndRenderPass( _Vulkan.Info.cmd );
-     res := vkEndCommandBuffer( _Vulkan.Info.cmd );
+     vkCmdDraw( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle, 12 * 3, 1, 0, 0 );
+     vkCmdEndRenderPass( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle );
+     res := vkEndCommandBuffer( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle );
      Assert( res = VK_SUCCESS );
 
-     cmd_bufs[0] := _Vulkan.Info.cmd;
+     cmd_bufs[0] := _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
@@ -223,8 +225,8 @@ begin
      destroy_descriptor_and_pipeline_layouts( _Vulkan );
      destroy_depth_buffer( _Vulkan );
      destroy_swap_chain( _Vulkan );
-     destroy_command_buffer( _Vulkan );
-     destroy_command_pool( _Vulkan );
+     _ComBuf  .Free;
+     _ComPool .Free;
 
      _Surface .Free;
      _Window  .Free;
