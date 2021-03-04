@@ -862,7 +862,7 @@ begin
      writes[0].dstSet          := Vulkan_.Info.desc_set[0];
      writes[0].descriptorCount := 1;
      writes[0].descriptorType  := VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-     writes[0].pBufferInfo     := @Vulkan_.Instance.Devices[0].Buffers.buffer_info;
+     writes[0].pBufferInfo     := @Vulkan_.Instance.Devices[0].Buffers.Info;
      writes[0].dstArrayElement := 0;
      writes[0].dstBinding      := 0;
 
