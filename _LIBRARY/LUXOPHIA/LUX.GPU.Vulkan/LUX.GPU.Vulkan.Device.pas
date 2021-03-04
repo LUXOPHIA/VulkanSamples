@@ -385,6 +385,8 @@ end;
 
 destructor TVkDevice<TVkDevices_>.Destroy;
 begin
+     if Assigned( _Buffers ) then _Buffers.Free;
+
      DestroHandle;
 
      inherited;
