@@ -16,6 +16,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        type TVkSurface_ = TVkSurface<TVkWindow_>;
      protected
        _Window :TVkWindow_;
+       _Inform :VkWin32SurfaceCreateInfoKHR;
        _Handle :VkSurfaceKHR;
        ///// メソッド
        procedure CreateHandle;
@@ -25,8 +26,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Window :TVkWindow_   read _Window;
-       property Handle :VkSurfaceKHR read _Handle;
+       property Window :TVkWindow_                  read _Window;
+       property Inform :VkWin32SurfaceCreateInfoKHR read _Inform;
+       property Handle :VkSurfaceKHR                read _Handle;
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -54,18 +56,8 @@ uses System.SysUtils,
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
 procedure TVkSurface<TVkWindow_>.CreateHandle;
-var
-   createInfo :VkWin32SurfaceCreateInfoKHR;
 begin
-     (* DEPENDS on init_connection() and init_window() *)
-
-     // Construct the surface description:
-     createInfo           := Default( VkWin32SurfaceCreateInfoKHR );
-     createInfo.sType     := VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-     createInfo.pNext     := nil;
-     createInfo.hinstance := TVkWindow( _Window ).connection;
-     createInfo.hwnd      := TVkWindow( _Window ).window;
-     Assert( vkCreateWin32SurfaceKHR( TVkWindow( _Window ).Instance.Handle, @createInfo, nil, @_Handle ) = VK_SUCCESS );
+     Assert( vkCreateWin32SurfaceKHR( TVkWindow( _Window ).Instance.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkSurface<TVkWindow_>.DestroHandle;
@@ -82,6 +74,15 @@ begin
      _Window := Window_;
 
      TVkWindow( _Window ).Surface := TVkSurface( Self );
+
+     with _Inform do
+     begin
+          sType     := VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+          pNext     := nil;
+          flags     := 0;
+          hinstance := TVkWindow( _Window ).connection;
+          hwnd      := TVkWindow( _Window ).window;
+     end;
 
      CreateHandle;
 end;
