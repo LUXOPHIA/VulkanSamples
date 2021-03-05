@@ -94,7 +94,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
        swapchainImageCount    :T_uint32_t;
        swap_chain             :VkSwapchainKHR;
-       buffers                :TArray<T_swap_chain_buffer>;
        imageAcquiredSemaphore :VkSemaphore;
 
        depth :record
