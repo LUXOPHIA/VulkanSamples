@@ -132,7 +132,7 @@ begin
      Assert( res = VK_SUCCESS );
 
      // Get the index of the next available swapchain image:
-     res := vkAcquireNextImageKHR(  _Device.Handle,  _Vulkan.Info.swap_chain, UINT64_MAX, imageAcquiredSemaphore, VK_NULL_HANDLE,
+     res := vkAcquireNextImageKHR(  _Device.Handle,  _Swapchain.Handle, UINT64_MAX, imageAcquiredSemaphore, VK_NULL_HANDLE,
                                    @ _Vulkan.Info.current_buffer );
      // TODO: Deal with the VK_SUBOPTIMAL_KHR and VK_ERROR_OUT_OF_DATE_KHR
      // return codes
@@ -192,7 +192,7 @@ begin
      present.sType              := VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
      present.pNext              := nil;
      present.swapchainCount     := 1;
-     present.pSwapchains        := @_Vulkan.Info.swap_chain;
+     present.pSwapchains        := @_Swapchain.Handle;
      present.pImageIndices      := @_Vulkan.Info.current_buffer;
      present.pWaitSemaphores    := nil;
      present.waitSemaphoreCount := 0;
