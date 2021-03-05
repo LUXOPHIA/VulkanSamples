@@ -49,55 +49,55 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             TVkCommandPool_ = TVkCommandPool<TVkDevice_>;
             TVkSwapchain_   = TVkSwapchain<TVkDevice_>;
      protected
-       _Devices              :TVkDevices_;
-       _PhysHandle           :VkPhysicalDevice;
-       _Props                :VkPhysicalDeviceProperties;
-       _Memorys              :VkPhysicalDeviceMemoryProperties;
-       _Handle               :VkDevice;
-       _Extensions           :TArray<PAnsiChar>;
-       _QueueFamilysN        :UInt32;
-       _QueueFamilys         :TArray<VkQueueFamilyProperties>;
-       _GraphicsQueueFamilyI :UInt32;
-       _PresentQueueFamilyI  :UInt32;
-       _Format               :VkFormat;
-       _Buffers              :TVkBuffer_;
-       _ComPool              :TVkCommandPool_;
-       _Swapchains           :TVkSwapchain_;
-       _GraQue               :VkQueue;
-       _PreQue               :VkQueue;
+       _Devices    :TVkDevices_;
+       _Physic     :VkPhysicalDevice;
+       _Props      :VkPhysicalDeviceProperties;
+       _Memorys    :VkPhysicalDeviceMemoryProperties;
+       _Handle     :VkDevice;
+       _Extensions :TArray<PAnsiChar>;
+       _QueFamsN   :UInt32;
+       _QueFams    :TArray<VkQueueFamilyProperties>;
+       _QueFamG    :UInt32;
+       _QueFamP    :UInt32;
+       _Format     :VkFormat;
+       _Buffers    :TVkBuffer_;
+       _ComPool    :TVkCommandPool_;
+       _Swapchains :TVkSwapchain_;
+       _QueuerG    :VkQueue;
+       _QueuerP    :VkQueue;
        ///// アクセス
-       function GetQueueFamilys( const I_:Integer ) :VkQueueFamilyProperties;
+       function GetQueFams( const I_:Integer ) :VkQueueFamilyProperties;
        ///// メソッド
        function init_device_extension_properties( var L_:T_layer_properties ) :VkResult;
        procedure InitLayers;
-       procedure FindQueueFamilys;
-       procedure FindQueueFamilyI; overload;
-       procedure FindQueueFamilyI( const Surface_:VkSurfaceKHR ); overload;
+       procedure FindQueFams;
+       procedure FindQueFamI; overload;
+       procedure FindQueFamI( const Surface_:VkSurfaceKHR ); overload;
        procedure FindFormat( const Surface_:VkSurfaceKHR );
        procedure CreateHandle;
        procedure DestroHandle;
        procedure init_device_queue;
      public
-       constructor Create( const Devices_:TVkDevices_; const Handle_:VkPhysicalDevice );
+       constructor Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Devices                          :TVkDevices_                      read   _Devices             ;
-       property PhysHandle                       :VkPhysicalDevice                 read   _PhysHandle          ;
-       property Props                            :VkPhysicalDeviceProperties       read   _Props               ;
-       property Memorys                          :VkPhysicalDeviceMemoryProperties read   _Memorys             ;
-       property Handle                           :VkDevice                         read   _Handle              ;
-       property Extensions                       :TArray<PAnsiChar>                read   _Extensions          ;
-       property QueueFamilysN                    :UInt32                           read   _QueueFamilysN       ;
-       property QueueFamilys[ const I_:Integer ] :VkQueueFamilyProperties          read GetQueueFamilys        ;
-       property GraphicsQueueFamilyI             :UInt32                           read   _GraphicsQueueFamilyI;
-       property PresentQueueFamilyI              :UInt32                           read   _PresentQueueFamilyI ;
-       property Format                           :VkFormat                         read   _Format              ;
-       property Buffers                          :TVkBuffer_                       read   _Buffers              write _Buffers   ;
-       property ComPool                          :TVkCommandPool_                  read   _ComPool              write _ComPool   ;
-       property Swapchains                       :TVkSwapchain_                    read   _Swapchains           write _Swapchains;
-       property GraQue                           :VkQueue                          read   _GraQue              ;
-       property PreQue                           :VkQueue                          read   _PreQue              ;
+       property Devices                     :TVkDevices_                      read   _Devices                     ;
+       property Physic                      :VkPhysicalDevice                 read   _Physic                      ;
+       property Props                       :VkPhysicalDeviceProperties       read   _Props                       ;
+       property Memorys                     :VkPhysicalDeviceMemoryProperties read   _Memorys                     ;
+       property Handle                      :VkDevice                         read   _Handle                      ;
+       property Extensions                  :TArray<PAnsiChar>                read   _Extensions                  ;
+       property QueFamsN                    :UInt32                           read   _QueFamsN                    ;
+       property QueFams[ const I_:Integer ] :VkQueueFamilyProperties          read GetQueFams                     ;
+       property QueFamG                     :UInt32                           read   _QueFamG                     ;
+       property QueFamP                     :UInt32                           read   _QueFamP                     ;
+       property Format                      :VkFormat                         read   _Format                      ;
+       property Buffers                     :TVkBuffer_                       read   _Buffers    write _Buffers   ;
+       property ComPool                     :TVkCommandPool_                  read   _ComPool    write _ComPool   ;
+       property Swapchains                  :TVkSwapchain_                    read   _Swapchains write _Swapchains;
+       property QueuerG                     :VkQueue                          read   _QueuerG                     ;
+       property QueuerP                     :VkQueue                          read   _QueuerP                     ;
        ///// メソッド
        function memory_type_from_properties( typeBits:UInt32; requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
      end;
@@ -177,9 +177,9 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkDevice<TVkDevices_>.GetQueueFamilys( const I_:Integer ) :VkQueueFamilyProperties;
+function TVkDevice<TVkDevices_>.GetQueFams( const I_:Integer ) :VkQueueFamilyProperties;
 begin
-     Result := _QueueFamilys[ I_ ];
+     Result := _QueFams[ I_ ];
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -192,13 +192,13 @@ begin
      Lname := L_.properties.layerName;
 
      repeat
-           Result := vkEnumerateDeviceExtensionProperties( PhysHandle, Lname, @EsN, nil );
+           Result := vkEnumerateDeviceExtensionProperties( Physic, Lname, @EsN, nil );
            if Result <> VK_SUCCESS then Exit;
 
            if EsN = 0 then Exit( VK_SUCCESS );
 
            SetLength( L_.device_extensions, EsN );
-           Result := vkEnumerateDeviceExtensionProperties( PhysHandle, Lname, @EsN, @L_.device_extensions[0] );
+           Result := vkEnumerateDeviceExtensionProperties( Physic, Lname, @EsN, @L_.device_extensions[0] );
 
      until Result <> VK_INCOMPLETE;
 end;
@@ -212,69 +212,69 @@ begin
      do init_device_extension_properties( TVkDevices( Devices ).Instance.Vulkan.Layers[I] );
 end;
 
-procedure TVkDevice<TVkDevices_>.FindQueueFamilys;
+procedure TVkDevice<TVkDevices_>.FindQueFams;
 begin
-     vkGetPhysicalDeviceQueueFamilyProperties( PhysHandle, @_QueueFamilysN, nil );
-     Assert( _QueueFamilysN > 1 );
+     vkGetPhysicalDeviceQueueFamilyProperties( Physic, @_QueFamsN, nil );
+     Assert( _QueFamsN > 1 );
 
-     SetLength( _QueueFamilys, _QueueFamilysN );
-     vkGetPhysicalDeviceQueueFamilyProperties( PhysHandle, @_QueueFamilysN, @_QueueFamilys[0] );
-     Assert( _QueueFamilysN > 1 );
+     SetLength( _QueFams, _QueFamsN );
+     vkGetPhysicalDeviceQueueFamilyProperties( Physic, @_QueFamsN, @_QueFams[0] );
+     Assert( _QueFamsN > 1 );
 end;
 
-procedure TVkDevice<TVkDevices_>.FindQueueFamilyI;
+procedure TVkDevice<TVkDevices_>.FindQueFamI;
 var
    I :UInt32;
 begin
-     for i := 0 to _QueueFamilysN-1 do
+     for i := 0 to _QueFamsN-1 do
      begin
-          if ( _QueueFamilys[I].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
+          if ( _QueFams[I].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
           begin
-               _GraphicsQueueFamilyI := I;
-               _PresentQueueFamilyI  := I;
+               _QueFamG := I;
+               _QueFamP := I;
 
                Break;
           end;
      end;
 end;
 
-procedure TVkDevice<TVkDevices_>.FindQueueFamilyI( const Surface_:VkSurfaceKHR );
+procedure TVkDevice<TVkDevices_>.FindQueFamI( const Surface_:VkSurfaceKHR );
 var
    Fs :TArray<VkBool32>;
    I  :UInt32;
 begin
      // Iterate over each queue to learn whether it supports presenting:
-     SetLength( Fs, _QueueFamilysN );
-     for I := 0 to _QueueFamilysN-1 do vkGetPhysicalDeviceSurfaceSupportKHR( _PhysHandle, I, Surface_, @Fs[I] );
+     SetLength( Fs, _QueFamsN );
+     for I := 0 to _QueFamsN-1 do vkGetPhysicalDeviceSurfaceSupportKHR( _Physic, I, Surface_, @Fs[I] );
 
      // Search for a graphics and a present queue in the array of queue
      // families, try to find one that supports both
-     _GraphicsQueueFamilyI := UINT32.MaxValue;
-     _PresentQueueFamilyI  := UINT32.MaxValue;
-     for I := 0 to _QueueFamilysN-1 do
+     _QueFamG := UINT32.MaxValue;
+     _QueFamP := UINT32.MaxValue;
+     for I := 0 to _QueFamsN-1 do
      begin
-          if ( _QueueFamilys[I].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
+          if ( _QueFams[I].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
           begin
-               if _GraphicsQueueFamilyI = UINT32.MaxValue then _GraphicsQueueFamilyI := i;
+               if _QueFamG = UINT32.MaxValue then _QueFamG := i;
 
                if Fs[I] = VK_TRUE then
                begin
-                    _GraphicsQueueFamilyI := i;
-                    _PresentQueueFamilyI  := i;
+                    _QueFamG := i;
+                    _QueFamP := i;
                     Break;
                end;
           end;
      end;
 
-     if _PresentQueueFamilyI = UINT32.MaxValue then
+     if _QueFamP = UINT32.MaxValue then
      begin
           // If didn't find a queue that supports both graphics and present, then
           // find a separate present queue.
-          for I := 0 to _QueueFamilysN-1 do
+          for I := 0 to _QueFamsN-1 do
           begin
                if Fs[I] = VK_TRUE then
                begin
-                    _PresentQueueFamilyI := i;
+                    _QueFamP := i;
                     Break;
                end;
           end;
@@ -282,7 +282,7 @@ begin
 
      // Generate error if could not find queues that support graphics
      // and present
-     if ( _GraphicsQueueFamilyI = UINT32.MaxValue ) or ( _PresentQueueFamilyI = UINT32.MaxValue ) then
+     if ( _QueFamG = UINT32.MaxValue ) or ( _QueFamP = UINT32.MaxValue ) then
      begin
           Log.d( 'Could not find a queues for both graphics and present' );
           RunError( 256-1 );
@@ -301,10 +301,10 @@ var
    I   :UInt32;
 begin
      // Get the list of VkFormats that are supported:
-     Assert( vkGetPhysicalDeviceSurfaceFormatsKHR( _PhysHandle, Surface_, @FsN, nil ) = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfaceFormatsKHR( _Physic, Surface_, @FsN, nil ) = VK_SUCCESS );
      Assert( FsN > 1 );
      SetLength( Fs, FsN );
-     Assert( vkGetPhysicalDeviceSurfaceFormatsKHR( _PhysHandle, Surface_, @FsN, @Fs[0] ) = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfaceFormatsKHR( _Physic, Surface_, @FsN, @Fs[0] ) = VK_SUCCESS );
      Assert( FsN > 1 );
 
      // If the device supports our preferred surface format, use it.
@@ -332,7 +332,7 @@ begin
      queue_info.pNext            := nil;
      queue_info.queueCount       := 1;
      queue_info.pQueuePriorities := @queue_priorities[0];
-     queue_info.queueFamilyIndex := _GraphicsQueueFamilyI;
+     queue_info.queueFamilyIndex := _QueFamG;
      device_info                              := Default( VkDeviceCreateInfo );
      device_info.sType                        := VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
      device_info.pNext                        := nil;
@@ -343,7 +343,7 @@ begin
      then device_info.ppEnabledExtensionNames := @_Extensions[0]
      else device_info.ppEnabledExtensionNames := nil;
      device_info.pEnabledFeatures             := nil;
-     Assert( vkCreateDevice( PhysHandle, @device_info, nil, @_Handle ) = VK_SUCCESS );
+     Assert( vkCreateDevice( Physic, @device_info, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkDevice<TVkDevices_>.DestroHandle;
@@ -354,29 +354,29 @@ end;
 
 procedure TVkDevice<TVkDevices_>.init_device_queue;
 begin
-     vkGetDeviceQueue( _Handle, _GraphicsQueueFamilyI, 0, @_GraQue );
+     vkGetDeviceQueue( _Handle, _QueFamG, 0, @_QueuerG );
 
-     if _GraphicsQueueFamilyI = _PresentQueueFamilyI then _PreQue := _GraQue
-                                                     else vkGetDeviceQueue( _Handle, _PresentQueueFamilyI, 0, @_PreQue );
+     if _QueFamG = _QueFamP then _QueuerP := _QueuerG
+                                                     else vkGetDeviceQueue( _Handle, _QueFamP, 0, @_QueuerP );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkDevice<TVkDevices_>.Create( const Devices_:TVkDevices_; const Handle_:VkPhysicalDevice );
+constructor TVkDevice<TVkDevices_>.Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice );
 begin
      inherited Create;
 
      _Devices    := Devices_;
-     _PhysHandle := Handle_;
+     _Physic := Physic_;
 
-     vkGetPhysicalDeviceProperties( PhysHandle, @_Props );
+     vkGetPhysicalDeviceProperties( Physic, @_Props );
 
-     vkGetPhysicalDeviceMemoryProperties( PhysHandle, @Memorys );
+     vkGetPhysicalDeviceMemoryProperties( Physic, @Memorys );
 
      InitLayers;
 
-     FindQueueFamilys;
-     FindQueueFamilyI( TVkDevices( _Devices ).Instance.Window.Surface.Handle );
+     FindQueFams;
+     FindQueFamI( TVkDevices( _Devices ).Instance.Window.Surface.Handle );
 
      FindFormat( TVkDevices( _Devices ).Instance.Window.Surface.Handle );
 

@@ -189,7 +189,7 @@ begin
      (* DEPENDS on info.cmd and info.queue initialized *)
 
      Assert( NativeInt( Vulkan_.Instance.Devices[0].ComPool.ComBufs.Handle ) <> VK_NULL_HANDLE );
-     Assert( NativeInt( Vulkan_.Instance.Devices[0].GraQue ) <> VK_NULL_HANDLE );
+     Assert( NativeInt( Vulkan_.Instance.Devices[0].QueuerG ) <> VK_NULL_HANDLE );
 
      image_memory_barrier.sType                           := VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
      image_memory_barrier.pNext                           := nil;
@@ -364,7 +364,7 @@ begin
      submit_info[0].pSignalSemaphores    := nil;
 
      (* Queue the command buffer for execution *)
-     res := vkQueueSubmit( Vulkan_.Instance.Devices[0].GraQue, 1, @submit_info[0], cmdFence );
+     res := vkQueueSubmit( Vulkan_.Instance.Devices[0].QueuerG, 1, @submit_info[0], cmdFence );
      Assert( res = VK_SUCCESS );
 
      (* Make sure command buffer is finished before mapping *)

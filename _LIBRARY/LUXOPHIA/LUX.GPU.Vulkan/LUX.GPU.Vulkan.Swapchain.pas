@@ -124,15 +124,15 @@ var
 begin
      (* DEPENDS on info.cmd and info.queue initialized *)
 
-     Assert( vkGetPhysicalDeviceSurfaceCapabilitiesKHR( TVkDevice( _Device ).PhysHandle, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @surfCapabilities ) = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfaceCapabilitiesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @surfCapabilities ) = VK_SUCCESS );
 
-     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).PhysHandle, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @presentModeCount, nil ) = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @presentModeCount, nil ) = VK_SUCCESS );
 
      Assert( presentModeCount > 0 );
 
      SetLength( presentModes, presentModeCount );
 
-     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).PhysHandle, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @presentModeCount, @presentModes[0] ) = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @presentModeCount, @presentModes[0] ) = VK_SUCCESS );
 
      // width and height are either both 0xFFFFFFFF, or both not 0xFFFFFFFF.
      if surfCapabilities.currentExtent.width = $FFFFFFFF then
@@ -190,8 +190,8 @@ begin
           end;
      end;
 
-     queueFamilyIndices[0] := TVkDevice( _Device ).GraphicsQueueFamilyI;
-     queueFamilyIndices[1] := TVkDevice( _Device ).PresentQueueFamilyI;
+     queueFamilyIndices[0] := TVkDevice( _Device ).QueFamG;
+     queueFamilyIndices[1] := TVkDevice( _Device ).QueFamP;
 
      with _Inform do
      begin
@@ -215,7 +215,7 @@ begin
           clipped               := 1;
           oldSwapchain          := VK_NULL_HANDLE;
 
-          if TVkDevice( _Device ).GraphicsQueueFamilyI <> TVkDevice( _Device ).PresentQueueFamilyI then
+          if TVkDevice( _Device ).QueFamG <> TVkDevice( _Device ).QueFamP then
           begin
                // If the graphics and present queues are from different queue families,
                // we either have to explicitly transfer ownership of images between the
