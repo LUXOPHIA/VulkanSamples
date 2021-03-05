@@ -8,7 +8,8 @@ uses System.Generics.Collections,
      LUX.GPU.Vulkan.Pipeline,
      LUX.GPU.Vulkan.Surface,
      LUX.GPU.Vulkan.Buffer,
-     LUX.GPU.Vulkan.Command;
+     LUX.GPU.Vulkan.Command,
+     LUX.GPU.Vulkan.Swapchain;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -46,6 +47,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        type TVkDevice_      = TVkDevice<TVkDevices_>;
             TVkBuffer_      = TVkBuffer<TVkDevice_>;
             TVkCommandPool_ = TVkCommandPool<TVkDevice_>;
+            TVkSwapchain_   = TVkSwapchain<TVkDevice_>;
      protected
        _Devices              :TVkDevices_;
        _PhysHandle           :VkPhysicalDevice;
@@ -60,6 +62,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Format               :VkFormat;
        _Buffers              :TVkBuffer_;
        _ComPool              :TVkCommandPool_;
+       _Swapchains           :TVkSwapchain_;
        ///// アクセス
        function GetQueueFamilys( const I_:Integer ) :VkQueueFamilyProperties;
        ///// メソッド
@@ -88,8 +91,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property GraphicsQueueFamilyI             :UInt32                           read   _GraphicsQueueFamilyI;
        property PresentQueueFamilyI              :UInt32                           read   _PresentQueueFamilyI ;
        property Format                           :VkFormat                         read   _Format              ;
-       property Buffers                          :TVkBuffer_                       read   _Buffers              write _Buffers;
-       property ComPool                          :TVkCommandPool_                  read   _ComPool              write _ComPool;
+       property Buffers                          :TVkBuffer_                       read   _Buffers              write _Buffers   ;
+       property ComPool                          :TVkCommandPool_                  read   _ComPool              write _ComPool   ;
+       property Swapchains                       :TVkSwapchain_                   read   _Swapchains            write _Swapchains;
        ///// メソッド
        function memory_type_from_properties( typeBits:UInt32; requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
      end;
