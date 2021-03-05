@@ -42,8 +42,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TVkImageViews<TVkSwapchain_:class> = class( TObjectList<TVkImageView<TVkImageViews<TVkSwapchain_>>> )
      private
+       type TVkImageViews_ = TVkImageViews<TVkSwapchain_>;
+            TVkImageView_  = TVkImageView<TVkImageViews_>;
      protected
-       _Swapch :TVkSwapchain_;
+       _Swapch  :TVkSwapchain_;
+       _ViewerI :UInt32;
+       ///// アクセス
+       function GetViewer :TVkImageView_;
        ///// メソッド
        procedure FindImages;
      public
@@ -51,7 +56,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Swapch :TVkSwapchain_ read _Swapch;
+       property Swapch  :TVkSwapchain_ read   _Swapch                ;
+       property ViewerI :UInt32        read   _ViewerI write _ViewerI;
+       property Viewer  :TVkImageView_ read GetViewer                ;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImageView
@@ -258,6 +265,11 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
+function TVkImageViews<TVkSwapchain_>.GetViewer :TVkImageView_;
+begin
+     Result := Items[ _ViewerI ];
+end;
+
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
 procedure TVkImageViews<TVkSwapchain_>.FindImages;
@@ -275,7 +287,7 @@ begin
 
      for I := 0 to VsN-1 do TVkImageView.Create( TVkImageViews( Self ), Vs[I] );
 
-     TVkSwapchain( _Swapch ).Device.Devices.Instance.Vulkan.Info.current_buffer := 0;
+     _ViewerI := 0;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
