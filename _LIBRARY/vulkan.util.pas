@@ -129,8 +129,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        dbgBreakCallback              :PFN_vkDebugReportMessageEXT;
        debug_report_callbacks        :TArray<VkDebugReportCallbackEXT>;
 
-       current_buffer     :T_uint32_t;
-
        viewport :VkViewport;
        scissor  :VkRect2D;
      end;
