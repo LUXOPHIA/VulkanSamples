@@ -485,9 +485,9 @@ begin
      fb_info.height               := Vulkan_.Instance.Window.height;
      fb_info.layers               := 1;
 
-     SetLength( Vulkan_.Info.framebuffers, Vulkan_.Info.swapchainImageCount );
+     SetLength( Vulkan_.Info.framebuffers, Vulkan_.Instance.Devices[0].Swapchains.ImageViews.Count );
 
-     for i := 0 to Vulkan_.Info.swapchainImageCount-1 do
+     for i := 0 to Vulkan_.Instance.Devices[0].Swapchains.ImageViews.Count-1 do
      begin
           attachments[0] := Vulkan_.Instance.Devices[0].Swapchains.ImageViews[i].Handle;
           res := vkCreateFramebuffer( Vulkan_.Instance.Devices[0].Handle, @fb_info, nil, @Vulkan_.Info.framebuffers[i] );
@@ -499,7 +499,7 @@ procedure destroy_framebuffers( const Vulkan_:TVulkan );
 var
    i :T_uint32_t;
 begin
-     for i := 0 to Vulkan_.Info.swapchainImageCount-1 do vkDestroyFramebuffer( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.framebuffers[i], nil );
+     for i := 0 to Vulkan_.Instance.Devices[0].Swapchains.ImageViews.Count-1 do vkDestroyFramebuffer( Vulkan_.Instance.Devices[0].Handle, Vulkan_.Info.framebuffers[i], nil );
      Vulkan_.Info.framebuffers := nil;
 end;
 
