@@ -63,6 +63,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Buffers              :TVkBuffer_;
        _ComPool              :TVkCommandPool_;
        _Swapchains           :TVkSwapchain_;
+       _GraQue               :VkQueue;
+       _PreQue               :VkQueue;
        ///// アクセス
        function GetQueueFamilys( const I_:Integer ) :VkQueueFamilyProperties;
        ///// メソッド
@@ -93,7 +95,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Format                           :VkFormat                         read   _Format              ;
        property Buffers                          :TVkBuffer_                       read   _Buffers              write _Buffers   ;
        property ComPool                          :TVkCommandPool_                  read   _ComPool              write _ComPool   ;
-       property Swapchains                       :TVkSwapchain_                   read   _Swapchains            write _Swapchains;
+       property Swapchains                       :TVkSwapchain_                    read   _Swapchains           write _Swapchains;
+       property GraQue                           :VkQueue                          read   _GraQue              ;
+       property PreQue                           :VkQueue                          read   _PreQue              ;
        ///// メソッド
        function memory_type_from_properties( typeBits:UInt32; requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
      end;
@@ -350,12 +354,10 @@ end;
 
 procedure TVkDevice<TVkDevices_>.init_device_queue;
 begin
-     (* DEPENDS on init_swapchain_extension() *)
+     vkGetDeviceQueue( _Handle, _GraphicsQueueFamilyI, 0, @_GraQue );
 
-     vkGetDeviceQueue( _Handle, _GraphicsQueueFamilyI, 0, @TVkDevices( _Devices ).Instance.Vulkan.Info.graphics_queue );
-     if _GraphicsQueueFamilyI = _PresentQueueFamilyI
-     then TVkDevices( _Devices ).Instance.Vulkan.Info.present_queue := TVkDevices( _Devices ).Instance.Vulkan.Info.graphics_queue
-     else vkGetDeviceQueue( _Handle, _PresentQueueFamilyI, 0, @TVkDevices( _Devices ).Instance.Vulkan.Info.present_queue );
+     if _GraphicsQueueFamilyI = _PresentQueueFamilyI then _PreQue := _GraQue
+                                                     else vkGetDeviceQueue( _Handle, _PresentQueueFamilyI, 0, @_PreQue );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
