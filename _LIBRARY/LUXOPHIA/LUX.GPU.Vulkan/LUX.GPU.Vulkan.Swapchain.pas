@@ -22,8 +22,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        type TVkSwapchain_  = TVkSwapchain<TDevice_>;
             TVkImageViews_ = TVkImageViews<TVkSwapchain_>;
      protected
-       _Device     :TDevice_;
-       _Handle     :VkSwapchainKHR;
+       _Device  :TDevice_;
+       _Inform  :VkSwapchainCreateInfoKHR;
+       _Handle  :VkSwapchainKHR;
        _Viewers :TVkImageViews_;
        ///// メソッド
        procedure CreateHandle;
@@ -33,9 +34,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Device  :TDevice_       read _Device ;
-       property Handle  :VkSwapchainKHR read _Handle ;
-       property Viewers :TVkImageViews_ read _Viewers;
+       property Device  :TDevice_                 read _Device ;
+       property Inform  :VkSwapchainCreateInfoKHR read _Inform ;
+       property Handle  :VkSwapchainKHR           read _Handle ;
+       property Viewers :TVkImageViews_           read _Viewers;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImageViews
@@ -52,7 +54,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// メソッド
        procedure FindImages;
      public
-       constructor Create( const Swapchain_:TVkSwapchain_ );
+       constructor Create( const Swapch_:TVkSwapchain_ );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
@@ -75,7 +77,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create( const ImageViews_:TVkImageViews_; const Image_:VkImage );
+       constructor Create( const Viewers_:TVkImageViews_; const Image_:VkImage );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
@@ -108,7 +110,6 @@ uses LUX.GPU.Vulkan,
 
 procedure TVkSwapchain<TDevice_>.CreateHandle;
 var
-   res                            :VkResult;
    surfCapabilities               :VkSurfaceCapabilitiesKHR;
    presentModeCount               :UInt32;
    presentModes                   :TArray<VkPresentModeKHR>;
@@ -118,21 +119,20 @@ var
    preTransform                   :VkSurfaceTransformFlagBitsKHR;
    compositeAlpha                 :VkCompositeAlphaFlagBitsKHR;
    compositeAlphaFlags            :array [ 0..4-1 ] of VkCompositeAlphaFlagBitsKHR;
-   i                              :UInt32;
-   swapchain_ci                   :VkSwapchainCreateInfoKHR;
+   I                              :UInt32;
    queueFamilyIndices             :array [ 0..2-1 ] of UInt32;
 begin
      (* DEPENDS on info.cmd and info.queue initialized *)
 
-     res := vkGetPhysicalDeviceSurfaceCapabilitiesKHR( TVkDevice( _Device ).PhysHandle, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @surfCapabilities );
-     Assert( res = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfaceCapabilitiesKHR( TVkDevice( _Device ).PhysHandle, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @surfCapabilities ) = VK_SUCCESS );
 
-     res := vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).PhysHandle, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @presentModeCount, nil );
-     Assert( res = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).PhysHandle, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @presentModeCount, nil ) = VK_SUCCESS );
+
+     Assert( presentModeCount > 0 );
+
      SetLength( presentModes, presentModeCount );
-     Assert( Length( presentModes ) > 0 );
-     res := vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).PhysHandle, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @presentModeCount, @presentModes[0] );
-     Assert( res = VK_SUCCESS );
+
+     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).PhysHandle, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @presentModeCount, @presentModes[0] ) = VK_SUCCESS );
 
      // width and height are either both 0xFFFFFFFF, or both not 0xFFFFFFFF.
      if surfCapabilities.currentExtent.width = $FFFFFFFF then
@@ -181,49 +181,53 @@ begin
      compositeAlphaFlags[2] := VK_COMPOSITE_ALPHA_POST_MULTIPLIED_BIT_KHR;
      compositeAlphaFlags[3] := VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR;
 
-     for i := 0 to Length( compositeAlphaFlags )-1 do
+     for I := 0 to Length( compositeAlphaFlags )-1 do
      begin
-          if ( surfCapabilities.supportedCompositeAlpha and Ord( compositeAlphaFlags[i] ) ) <> 0 then
+          if ( surfCapabilities.supportedCompositeAlpha and Ord( compositeAlphaFlags[I] ) ) <> 0 then
           begin
-               compositeAlpha := compositeAlphaFlags[i];
+               compositeAlpha := compositeAlphaFlags[I];
                Break;
           end;
      end;
 
-     swapchain_ci                       := Default( VkSwapchainCreateInfoKHR );
-     swapchain_ci.sType                 := VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-     swapchain_ci.pNext                 := nil;
-     swapchain_ci.surface               := TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle;
-     swapchain_ci.minImageCount         := desiredNumberOfSwapChainImages;
-     swapchain_ci.imageFormat           := TVkDevice( _Device ).Format;
-     swapchain_ci.imageExtent.width     := swapchainExtent.width;
-     swapchain_ci.imageExtent.height    := swapchainExtent.height;
-     swapchain_ci.preTransform          := preTransform;
-     swapchain_ci.compositeAlpha        := compositeAlpha;
-     swapchain_ci.imageArrayLayers      := 1;
-     swapchain_ci.presentMode           := swapchainPresentMode;
-     swapchain_ci.oldSwapchain          := VK_NULL_HANDLE;
-     swapchain_ci.clipped               := 1;
-     swapchain_ci.imageColorSpace       := VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-     swapchain_ci.imageUsage            := Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT );
-     swapchain_ci.imageSharingMode      := VK_SHARING_MODE_EXCLUSIVE;
-     swapchain_ci.queueFamilyIndexCount := 0;
-     swapchain_ci.pQueueFamilyIndices   := nil;
      queueFamilyIndices[0] := TVkDevice( _Device ).GraphicsQueueFamilyI;
      queueFamilyIndices[1] := TVkDevice( _Device ).PresentQueueFamilyI;
-     if TVkDevice( _Device ).GraphicsQueueFamilyI <> TVkDevice( _Device ).PresentQueueFamilyI then
+
+     with _Inform do
      begin
-          // If the graphics and present queues are from different queue families,
-          // we either have to explicitly transfer ownership of images between the
-          // queues, or we have to create the swapchain with imageSharingMode
-          // as VK_SHARING_MODE_CONCURRENT
-          swapchain_ci.imageSharingMode      := VK_SHARING_MODE_CONCURRENT;
-          swapchain_ci.queueFamilyIndexCount := 2;
-          swapchain_ci.pQueueFamilyIndices   := @queueFamilyIndices[0];
+          sType                 := VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+          pNext                 := nil;
+          flags                 := 0;
+          surface               := TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle;
+          minImageCount         := desiredNumberOfSwapChainImages;
+          imageFormat           := TVkDevice( _Device ).Format;
+          imageColorSpace       := VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
+          imageExtent.width     := swapchainExtent.width;
+          imageExtent.height    := swapchainExtent.height;
+          imageArrayLayers      := 1;
+          imageUsage            := Ord( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT ) or Ord( VK_IMAGE_USAGE_TRANSFER_SRC_BIT );
+          imageSharingMode      := VK_SHARING_MODE_EXCLUSIVE;
+          queueFamilyIndexCount := 0;
+          pQueueFamilyIndices   := nil;
+          preTransform          := preTransform;
+          compositeAlpha        := compositeAlpha;
+          presentMode           := swapchainPresentMode;
+          clipped               := 1;
+          oldSwapchain          := VK_NULL_HANDLE;
+
+          if TVkDevice( _Device ).GraphicsQueueFamilyI <> TVkDevice( _Device ).PresentQueueFamilyI then
+          begin
+               // If the graphics and present queues are from different queue families,
+               // we either have to explicitly transfer ownership of images between the
+               // queues, or we have to create the swapchain with imageSharingMode
+               // as VK_SHARING_MODE_CONCURRENT
+               imageSharingMode      := VK_SHARING_MODE_CONCURRENT;
+               queueFamilyIndexCount := 2;
+               pQueueFamilyIndices   := @queueFamilyIndices[0];
+          end;
      end;
 
-     res := vkCreateSwapchainKHR( TVkDevice( _Device ).Handle, @swapchain_ci, nil, @_Handle );
-     Assert( res = VK_SUCCESS );
+     Assert( vkCreateSwapchainKHR( TVkDevice( _Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkSwapchain<TDevice_>.DestroHandle;
@@ -292,11 +296,11 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkImageViews<TVkSwapchain_>.Create( const Swapchain_:TVkSwapchain_ );
+constructor TVkImageViews<TVkSwapchain_>.Create( const Swapch_:TVkSwapchain_ );
 begin
      inherited Create;
 
-     _Swapch := Swapchain_;
+     _Swapch := Swapch_;
 
      TVkSwapchain( _Swapch )._Viewers := TVkImageViews( Self );
 
@@ -342,11 +346,11 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkImageView<TVkImageViews_>.Create( const ImageViews_:TVkImageViews_; const Image_:VkImage );
+constructor TVkImageView<TVkImageViews_>.Create( const Viewers_:TVkImageViews_; const Image_:VkImage );
 begin
      inherited Create;
 
-     _Viewers  := ImageViews_;
+     _Viewers  := Viewers_;
 
      TVkImageViews( _Viewers ).Add( TVkImageView( Self ) );
 
