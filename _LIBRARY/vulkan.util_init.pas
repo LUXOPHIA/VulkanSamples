@@ -211,7 +211,7 @@ begin
      if Vulkan_.Info.depth.format = VK_FORMAT_UNDEFINED then Vulkan_.Info.depth.format := VK_FORMAT_D16_UNORM;
 
      depth_format := Vulkan_.Info.depth.format;
-     vkGetPhysicalDeviceFormatProperties( Vulkan_.Instance.Devices[0].PhysHandle, depth_format, @props );
+     vkGetPhysicalDeviceFormatProperties( Vulkan_.Instance.Devices[0].Physic, depth_format, @props );
      if ( props.linearTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
      then image_info.tiling := VK_IMAGE_TILING_LINEAR
      else
@@ -429,7 +429,7 @@ begin
      submit_info[0].signalSemaphoreCount := 0;
      submit_info[0].pSignalSemaphores    := nil;
 
-     res := vkQueueSubmit( Vulkan_.Instance.Devices[0].GraQue, 1, @submit_info[0], drawFence );
+     res := vkQueueSubmit( Vulkan_.Instance.Devices[0].QueuerG, 1, @submit_info[0], drawFence );
      Assert( res = VK_SUCCESS );
 
      repeat
@@ -783,7 +783,7 @@ begin
           end;
      end;
 
-     vkGetPhysicalDeviceFormatProperties( Vulkan_.Instance.Devices[0].PhysHandle, VK_FORMAT_R8G8B8A8_UNORM, @formatProps );
+     vkGetPhysicalDeviceFormatProperties( Vulkan_.Instance.Devices[0].Physic, VK_FORMAT_R8G8B8A8_UNORM, @formatProps );
 
      (* See if we can use a linear tiled image for a texture, if not, we will
       * need a staging buffer for the texture data *)
@@ -871,7 +871,7 @@ begin
      submit_info[0].pSignalSemaphores    := nil;
 
      (* Queue the command buffer for execution *)
-     res := vkQueueSubmit( Vulkan_.Instance.Devices[0].GraQue, 1, @submit_info[0], cmdFence );
+     res := vkQueueSubmit( Vulkan_.Instance.Devices[0].QueuerG, 1, @submit_info[0], cmdFence );
      Assert( res = VK_SUCCESS );
 
      subres            := Default( VkImageSubresource );

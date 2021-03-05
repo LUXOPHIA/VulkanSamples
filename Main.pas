@@ -184,7 +184,7 @@ begin
      submit_info[0].pSignalSemaphores    := nil;
 
      (* Queue the command buffer for execution *)
-     res := vkQueueSubmit( _Device.GraQue, 1, @submit_info[0], drawFence );
+     res := vkQueueSubmit( _Device.QueuerG, 1, @submit_info[0], drawFence );
      Assert( res = VK_SUCCESS );
 
      (* Now present the image in the window *)
@@ -203,7 +203,7 @@ begin
            res := vkWaitForFences( _Device.Handle, 1, @drawFence, VK_TRUE, FENCE_TIMEOUT );
      until res <> VK_TIMEOUT;
      Assert( res = VK_SUCCESS );
-     res := vkQueuePresentKHR( _Device.PreQue, @present );
+     res := vkQueuePresentKHR( _Device.QueuerP, @present );
      Assert( res = VK_SUCCESS );
 
      wait_seconds( 1 );
