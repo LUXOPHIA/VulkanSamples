@@ -23,6 +23,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             TVkImageViews_ = TVkImageViews<TVkSwapchain_>;
      protected
        _Device     :TDevice_;
+       _Handle     :VkSwapchainKHR;
        _ImageViews :TVkImageViews_;
        ///// メソッド
        procedure CreateHandle;
@@ -33,6 +34,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
        ///// プロパティ
        property Device     :TDevice_       read _Device                      ;
+       property Handle     :VkSwapchainKHR read _Handle                      ;
        property ImageViews :TVkImageViews_ read _ImageViews write _ImageViews;
      end;
 
@@ -213,13 +215,13 @@ begin
           swapchain_ci.pQueueFamilyIndices   := @queueFamilyIndices[0];
      end;
 
-     res := vkCreateSwapchainKHR( TVkDevice( _Device ).Handle, @swapchain_ci, nil, @TVkDevice( _Device ).Devices.Instance.Vulkan.Info.swap_chain );
+     res := vkCreateSwapchainKHR( TVkDevice( _Device ).Handle, @swapchain_ci, nil, @_Handle );
      Assert( res = VK_SUCCESS );
 end;
 
 procedure TVkSwapchain<TDevice_>.DestroHandle;
 begin
-     vkDestroySwapchainKHR( TVkDevice( Device ).Handle, TVkDevice( _Device ).Devices.Instance.Vulkan.Info.swap_chain, nil );
+     vkDestroySwapchainKHR( TVkDevice( Device ).Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -266,12 +268,12 @@ var
    color_image_view      :VkImageViewCreateInfo;
    sc_buffer                      :T_swap_chain_buffer;
 begin
-     res := vkGetSwapchainImagesKHR( TVkSwapchain( _Swapchain ).Device.Handle, TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.swap_chain, @TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.swapchainImageCount, nil );
+     res := vkGetSwapchainImagesKHR( TVkSwapchain( _Swapchain ).Device.Handle, TVkSwapchain( _Swapchain ).Handle, @TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.swapchainImageCount, nil );
      Assert( res = VK_SUCCESS );
 
      SetLength( swapchainImages, TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.swapchainImageCount );
      Assert( Length( swapchainImages ) > 0 );
-     res := vkGetSwapchainImagesKHR( TVkSwapchain( _Swapchain ).Device.Handle, TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.swap_chain, @TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.swapchainImageCount, @swapchainImages[0] );
+     res := vkGetSwapchainImagesKHR( TVkSwapchain( _Swapchain ).Device.Handle, TVkSwapchain( _Swapchain ).Handle, @TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.swapchainImageCount, @swapchainImages[0] );
      Assert( res = VK_SUCCESS );
 
      for i := 0 to TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.swapchainImageCount-1 do
