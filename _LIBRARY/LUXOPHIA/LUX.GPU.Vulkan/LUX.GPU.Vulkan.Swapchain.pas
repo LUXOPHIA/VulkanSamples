@@ -321,16 +321,8 @@ end;
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkImageView<TVkImageViews_>.CreateHandle;
-var
-   sc_buffer :T_swap_chain_buffer;
 begin
      Assert( vkCreateImageView( TVkImageViews( _ImageViews ).Swapchain.Device.Handle, @color_image_view, nil, @_Handle ) = VK_SUCCESS );
-
-     sc_buffer.image := color_image_view.image;
-     sc_buffer.view  := _Handle;
-
-     with TVkImageViews( _ImageViews ).Swapchain.Device.Devices.Instance.Vulkan.Info
-     do buffers := buffers + [ sc_buffer ];
 end;
 
 procedure TVkImageView<TVkImageViews_>.DestroHandle;
