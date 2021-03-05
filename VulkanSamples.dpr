@@ -32,7 +32,8 @@ uses
   LUX.GPU.Vulkan.Instance in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Instance.pas',
   LUX.GPU.Vulkan.Window in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Window.pas',
   LUX.GPU.Vulkan.Surface in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Surface.pas',
-  LUX.GPU.Vulkan.Command in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Command.pas';
+  LUX.GPU.Vulkan.Command in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Command.pas',
+  LUX.GPU.Vulkan.Swapchain in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Swapchain.pas';
 
 {$R *.res}
 

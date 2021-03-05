@@ -29,6 +29,7 @@ type
     _Device     :TVkDevice;
     _ComPool    :TVkCommandPool;
     _ComBuf     :TVkCommandBuffer;
+    _Swapchain  :TVkSwapchain;
     _Buffer     :TVkBuffer;
     _Pipeline   :TVkPipeline;
     _ShaderVert :TVkShaderVert;
@@ -96,7 +97,7 @@ begin
      _ComPool  := TVkCommandPool.Create( _Device );
      _ComBuf   := TVkCommandBuffer.Create( _ComPool );
      _ComBuf.BeginRecord;
-     init_swap_chain( _Vulkan );
+     _Swapchain := TVkSwapchain.Create( _Device );
      init_depth_buffer( _Vulkan );
      init_texture( _Vulkan );
      _Buffer := TVkBuffer.Create( _Device );
@@ -223,14 +224,14 @@ begin
      destroy_renderpass( _Vulkan );
      destroy_descriptor_and_pipeline_layouts( _Vulkan );
      destroy_depth_buffer( _Vulkan );
-     destroy_swap_chain( _Vulkan );
-     _ComBuf  .Free;
-     _ComPool .Free;
+     _Swapchain.Free;
+     _ComBuf   .Free;
+     _ComPool  .Free;
 
-     _Surface .Free;
-     _Window  .Free;
-     _Instance.Free;
-     _Vulkan  .Free;
+     _Surface  .Free;
+     _Window   .Free;
+     _Instance .Free;
+     _Vulkan   .Free;
 end;
 
 end. //######################################################################### ■
