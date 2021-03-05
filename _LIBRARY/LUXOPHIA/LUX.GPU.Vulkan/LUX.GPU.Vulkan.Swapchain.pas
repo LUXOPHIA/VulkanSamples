@@ -58,7 +58,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        _ImageViews :TVkImageViews_;
-       color_image_view      :VkImageViewCreateInfo;
+       _Inform     :VkImageViewCreateInfo;
        _Handle     :VkImageView;
        ///// アクセス
        function GetImage :VkImage;
@@ -70,9 +70,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property ImageViews :TVkImageViews_ read   _ImageViews;
-       property Image      :VkImage        read GetImage     ;
-       property Handle     :VkImageView    read   _Handle    ;
+       property ImageViews :TVkImageViews_        read   _ImageViews;
+       property Inform     :VkImageViewCreateInfo read   _Inform    ;
+       property Image      :VkImage               read GetImage     ;
+       property Handle     :VkImageView           read   _Handle    ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -315,14 +316,14 @@ end;
 
 function TVkImageView<TVkImageViews_>.GetImage :VkImage;
 begin
-     Result := color_image_view.image;
+     Result := _Inform.image;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkImageView<TVkImageViews_>.CreateHandle;
 begin
-     Assert( vkCreateImageView( TVkImageViews( _ImageViews ).Swapchain.Device.Handle, @color_image_view, nil, @_Handle ) = VK_SUCCESS );
+     Assert( vkCreateImageView( TVkImageViews( _ImageViews ).Swapchain.Device.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkImageView<TVkImageViews_>.DestroHandle;
@@ -342,22 +343,32 @@ begin
 
      TVkImageViews( _ImageViews ).Add( TVkImageView( Self ) );
 
-     color_image_view                                 := Default( VkImageViewCreateInfo );
-     color_image_view.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-     color_image_view.pNext                           := nil;
-     color_image_view.format                          := TVkImageViews( _ImageViews ).Swapchain.Device.Format;
-     color_image_view.components.r                    := VK_COMPONENT_SWIZZLE_R;
-     color_image_view.components.g                    := VK_COMPONENT_SWIZZLE_G;
-     color_image_view.components.b                    := VK_COMPONENT_SWIZZLE_B;
-     color_image_view.components.a                    := VK_COMPONENT_SWIZZLE_A;
-     color_image_view.subresourceRange.aspectMask     := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
-     color_image_view.subresourceRange.baseMipLevel   := 0;
-     color_image_view.subresourceRange.levelCount     := 1;
-     color_image_view.subresourceRange.baseArrayLayer := 0;
-     color_image_view.subresourceRange.layerCount     := 1;
-     color_image_view.viewType                        := VK_IMAGE_VIEW_TYPE_2D;
-     color_image_view.flags                           := 0;
-     color_image_view.image := Image_;
+     with _Inform do
+     begin
+          sType    := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+          pNext    := nil;
+          flags    := 0;
+          image    := Image_;
+          viewType := VK_IMAGE_VIEW_TYPE_2D;
+          format   := TVkImageViews( _ImageViews ).Swapchain.Device.Format;
+
+          with components do
+          begin
+               r := VK_COMPONENT_SWIZZLE_R;
+               g := VK_COMPONENT_SWIZZLE_G;
+               b := VK_COMPONENT_SWIZZLE_B;
+               a := VK_COMPONENT_SWIZZLE_A;
+          end;
+
+          with subresourceRange do
+          begin
+               aspectMask     := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
+               baseMipLevel   := 0;
+               levelCount     := 1;
+               baseArrayLayer := 0;
+               layerCount     := 1;
+          end;
+     end;
 
      CreateHandle;
 end;
