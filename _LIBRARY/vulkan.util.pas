@@ -93,7 +93,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        framebuffers  :TArray<VkFramebuffer>;
 
        swapchainImageCount    :T_uint32_t;
-       swap_chain             :VkSwapchainKHR;
        imageAcquiredSemaphore :VkSemaphore;
 
        depth :record
