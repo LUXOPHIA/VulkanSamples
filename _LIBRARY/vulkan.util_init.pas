@@ -429,7 +429,7 @@ begin
      submit_info[0].signalSemaphoreCount := 0;
      submit_info[0].pSignalSemaphores    := nil;
 
-     res := vkQueueSubmit( Vulkan_.Info.graphics_queue, 1, @submit_info[0], drawFence );
+     res := vkQueueSubmit( Vulkan_.Instance.Devices[0].GraQue, 1, @submit_info[0], drawFence );
      Assert( res = VK_SUCCESS );
 
      repeat
@@ -871,7 +871,7 @@ begin
      submit_info[0].pSignalSemaphores    := nil;
 
      (* Queue the command buffer for execution *)
-     res := vkQueueSubmit( Vulkan_.Info.graphics_queue, 1, @submit_info[0], cmdFence );
+     res := vkQueueSubmit( Vulkan_.Instance.Devices[0].GraQue, 1, @submit_info[0], cmdFence );
      Assert( res = VK_SUCCESS );
 
      subres            := Default( VkImageSubresource );
