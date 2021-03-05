@@ -262,24 +262,19 @@ end;
 
 procedure TVkImageViews<TVkSwapchain_>.FindImages;
 var
-   res                            :VkResult;
-   i                              :UInt32;
-   swapchainImages                :TArray<VkImage>;
-   color_image_view      :VkImageViewCreateInfo;
-   sc_buffer                      :T_swap_chain_buffer;
+   VsN, I :UInt32;
+   Vs :TArray<VkImage>;
 begin
-     res := vkGetSwapchainImagesKHR( TVkSwapchain( _Swapchain ).Device.Handle, TVkSwapchain( _Swapchain ).Handle, @TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.swapchainImageCount, nil );
-     Assert( res = VK_SUCCESS );
+     Assert( vkGetSwapchainImagesKHR( TVkSwapchain( _Swapchain ).Device.Handle, TVkSwapchain( _Swapchain ).Handle, @VsN, nil ) = VK_SUCCESS );
 
-     SetLength( swapchainImages, TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.swapchainImageCount );
-     Assert( Length( swapchainImages ) > 0 );
-     res := vkGetSwapchainImagesKHR( TVkSwapchain( _Swapchain ).Device.Handle, TVkSwapchain( _Swapchain ).Handle, @TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.swapchainImageCount, @swapchainImages[0] );
-     Assert( res = VK_SUCCESS );
+     Assert( VsN > 0 );
 
-     for i := 0 to TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.swapchainImageCount-1 do
-     begin
-          TVkImageView.Create( TVkImageViews( Self ), swapchainImages[i] );
-     end;
+     SetLength( Vs, VsN );
+
+     Assert( vkGetSwapchainImagesKHR( TVkSwapchain( _Swapchain ).Device.Handle, TVkSwapchain( _Swapchain ).Handle, @VsN, @Vs[0] ) = VK_SUCCESS );
+
+     for I := 0 to VsN-1 do TVkImageView.Create( TVkImageViews( Self ), Vs[I] );
+
      TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.current_buffer := 0;
 end;
 
@@ -336,8 +331,6 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TVkImageView<TVkImageViews_>.Create( const ImageViews_:TVkImageViews_; const Image_:VkImage );
-var
-   B :T_swap_chain_buffer;
 begin
      inherited Create;
 
