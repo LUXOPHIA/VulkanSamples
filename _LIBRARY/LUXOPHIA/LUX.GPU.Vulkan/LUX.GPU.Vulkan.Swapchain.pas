@@ -24,7 +24,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _Device     :TDevice_;
        _Handle     :VkSwapchainKHR;
-       _ImageViews :TVkImageViews_;
+       _Viewers :TVkImageViews_;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -33,9 +33,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Device     :TDevice_       read _Device                      ;
-       property Handle     :VkSwapchainKHR read _Handle                      ;
-       property ImageViews :TVkImageViews_ read _ImageViews write _ImageViews;
+       property Device  :TDevice_       read _Device ;
+       property Handle  :VkSwapchainKHR read _Handle ;
+       property Viewers :TVkImageViews_ read _Viewers;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImageViews
@@ -43,7 +43,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVkImageViews<TVkSwapchain_:class> = class( TObjectList<TVkImageView<TVkImageViews<TVkSwapchain_>>> )
      private
      protected
-       _Swapchain :TVkSwapchain_;
+       _Swapch :TVkSwapchain_;
        ///// メソッド
        procedure FindImages;
      public
@@ -51,7 +51,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Swapchain :TVkSwapchain_   read _Swapchain;
+       property Swapch :TVkSwapchain_ read _Swapch;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImageView
@@ -59,9 +59,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVkImageView<TVkImageViews_:class> = class
      private
      protected
-       _ImageViews :TVkImageViews_;
-       _Inform     :VkImageViewCreateInfo;
-       _Handle     :VkImageView;
+       _Viewers :TVkImageViews_;
+       _Inform  :VkImageViewCreateInfo;
+       _Handle  :VkImageView;
        ///// アクセス
        function GetImage :VkImage;
        ///// メソッド
@@ -72,10 +72,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property ImageViews :TVkImageViews_        read   _ImageViews;
-       property Inform     :VkImageViewCreateInfo read   _Inform    ;
-       property Image      :VkImage               read GetImage     ;
-       property Handle     :VkImageView           read   _Handle    ;
+       property Viewers :TVkImageViews_        read   _Viewers;
+       property Inform  :VkImageViewCreateInfo read   _Inform ;
+       property Image   :VkImage               read GetImage  ;
+       property Handle  :VkImageView           read   _Handle ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -236,7 +236,7 @@ begin
 
      CreateHandle;
 
-     _ImageViews := TVkImageViews_.Create( Self );
+     _Viewers := TVkImageViews_.Create( Self );
 end;
 
 procedure TVkSwapchain<TDevice_>.AfterConstruction;
@@ -247,7 +247,7 @@ end;
 
 destructor TVkSwapchain<TDevice_>.Destroy;
 begin
-     _ImageViews.Free;
+     _Viewers.Free;
 
      DestroHandle;
 
@@ -265,17 +265,17 @@ var
    VsN, I :UInt32;
    Vs :TArray<VkImage>;
 begin
-     Assert( vkGetSwapchainImagesKHR( TVkSwapchain( _Swapchain ).Device.Handle, TVkSwapchain( _Swapchain ).Handle, @VsN, nil ) = VK_SUCCESS );
+     Assert( vkGetSwapchainImagesKHR( TVkSwapchain( _Swapch ).Device.Handle, TVkSwapchain( _Swapch ).Handle, @VsN, nil ) = VK_SUCCESS );
 
      Assert( VsN > 0 );
 
      SetLength( Vs, VsN );
 
-     Assert( vkGetSwapchainImagesKHR( TVkSwapchain( _Swapchain ).Device.Handle, TVkSwapchain( _Swapchain ).Handle, @VsN, @Vs[0] ) = VK_SUCCESS );
+     Assert( vkGetSwapchainImagesKHR( TVkSwapchain( _Swapch ).Device.Handle, TVkSwapchain( _Swapch ).Handle, @VsN, @Vs[0] ) = VK_SUCCESS );
 
      for I := 0 to VsN-1 do TVkImageView.Create( TVkImageViews( Self ), Vs[I] );
 
-     TVkSwapchain( _Swapchain ).Device.Devices.Instance.Vulkan.Info.current_buffer := 0;
+     TVkSwapchain( _Swapch ).Device.Devices.Instance.Vulkan.Info.current_buffer := 0;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -284,9 +284,9 @@ constructor TVkImageViews<TVkSwapchain_>.Create( const Swapchain_:TVkSwapchain_ 
 begin
      inherited Create;
 
-     _Swapchain := Swapchain_;
+     _Swapch := Swapchain_;
 
-     TVkSwapchain( _Swapchain ).ImageViews := TVkImageViews( Self );
+     TVkSwapchain( _Swapch )._Viewers := TVkImageViews( Self );
 
      FindImages;
 end;
@@ -320,12 +320,12 @@ end;
 
 procedure TVkImageView<TVkImageViews_>.CreateHandle;
 begin
-     Assert( vkCreateImageView( TVkImageViews( _ImageViews ).Swapchain.Device.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
+     Assert( vkCreateImageView( TVkImageViews( _Viewers ).Swapch.Device.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkImageView<TVkImageViews_>.DestroHandle;
 begin
-     vkDestroyImageView( TVkImageViews( _ImageViews ).Swapchain.Device.Handle, _Handle, nil );
+     vkDestroyImageView( TVkImageViews( _Viewers ).Swapch.Device.Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -334,9 +334,9 @@ constructor TVkImageView<TVkImageViews_>.Create( const ImageViews_:TVkImageViews
 begin
      inherited Create;
 
-     _ImageViews  := ImageViews_;
+     _Viewers  := ImageViews_;
 
-     TVkImageViews( _ImageViews ).Add( TVkImageView( Self ) );
+     TVkImageViews( _Viewers ).Add( TVkImageView( Self ) );
 
      with _Inform do
      begin
@@ -345,7 +345,7 @@ begin
           flags    := 0;
           image    := Image_;
           viewType := VK_IMAGE_VIEW_TYPE_2D;
-          format   := TVkImageViews( _ImageViews ).Swapchain.Device.Format;
+          format   := TVkImageViews( _Viewers ).Swapch.Device.Format;
 
           with components do
           begin
