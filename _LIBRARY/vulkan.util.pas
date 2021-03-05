@@ -51,16 +51,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        tex_height    :T_int32_t;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% T_swap_chain_buffer
-     (*
-      * Keep each of our swap chain buffers' image, command buffer and view in one
-      * spot
-      *)
-     T_swap_chain_buffer = record
-       image :VkImage;
-       view  :VkImageView;
-     end;
-
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% T_layer_properties
      (*
       * A layer can expose extensions, keep track of those
@@ -82,15 +72,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        const APP_NAME_STR_LEN = 80;
      public
-       prepared           :T_bool;
-       use_staging_buffer :T_bool;
        save_images        :T_bool;
 
-       device_extension_properties :TArray<VkExtensionProperties>;
-
        framebuffers  :TArray<VkFramebuffer>;
-
-       imageAcquiredSemaphore :VkSemaphore;
 
        depth :record
                 format :VkFormat;
@@ -122,11 +106,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        desc_pool :VkDescriptorPool;
        desc_set  :TArray<VkDescriptorSet>;
 
-       dbgCreateDebugReportCallback  :PFN_vkCreateDebugReportCallbackEXT;
-       dbgDestroyDebugReportCallback :PFN_vkDestroyDebugReportCallbackEXT;
-       dbgBreakCallback              :PFN_vkDebugReportMessageEXT;
-       debug_report_callbacks        :TArray<VkDebugReportCallbackEXT>;
-
        viewport :VkViewport;
        scissor  :VkRect2D;
      end;
@@ -157,9 +136,6 @@ const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
 implementation //############################################################### ■
-
-uses System.SysUtils, System.Classes, 
-     FMX.Types;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
