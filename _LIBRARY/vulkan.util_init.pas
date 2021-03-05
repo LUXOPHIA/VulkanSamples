@@ -489,7 +489,7 @@ begin
 
      for i := 0 to Vulkan_.Info.swapchainImageCount-1 do
      begin
-          attachments[0] := Vulkan_.Info.buffers[i].view;
+          attachments[0] := Vulkan_.Instance.Devices[0].Swapchains.ImageViews[i].Handle;
           res := vkCreateFramebuffer( Vulkan_.Instance.Devices[0].Handle, @fb_info, nil, @Vulkan_.Info.framebuffers[i] );
           Assert( res = VK_SUCCESS );
      end;
