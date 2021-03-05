@@ -132,8 +132,8 @@ begin
      Assert( res = VK_SUCCESS );
 
      // Get the index of the next available swapchain image:
-     res := vkAcquireNextImageKHR(  _Device.Handle,  _Swapchain.Handle, UINT64_MAX, imageAcquiredSemaphore, VK_NULL_HANDLE,
-                                   @ _Vulkan.Info.current_buffer );
+     res := vkAcquireNextImageKHR( _Device.Handle,  _Swapchain.Handle, UINT64_MAX, imageAcquiredSemaphore, VK_NULL_HANDLE,
+                                   @_Swapchain.Viewers.ViewerI );
      // TODO: Deal with the VK_SUBOPTIMAL_KHR and VK_ERROR_OUT_OF_DATE_KHR
      // return codes
      Assert( res = VK_SUCCESS );
@@ -141,7 +141,7 @@ begin
      rp_begin.sType                    := VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
      rp_begin.pNext                    := nil;
      rp_begin.renderPass               :=  _Vulkan.Info.render_pass;
-     rp_begin.framebuffer              := _Vulkan.Info.framebuffers[_Vulkan.Info.current_buffer];
+     rp_begin.framebuffer              := _Vulkan.Info.framebuffers[ _Swapchain.Viewers.ViewerI ];
      rp_begin.renderArea.offset.x      := 0;
      rp_begin.renderArea.offset.y      := 0;
      rp_begin.renderArea.extent.width  := _Window.width;
@@ -193,7 +193,7 @@ begin
      present.pNext              := nil;
      present.swapchainCount     := 1;
      present.pSwapchains        := @_Swapchain.Handle;
-     present.pImageIndices      := @_Vulkan.Info.current_buffer;
+     present.pImageIndices      := @_Swapchain.Viewers.ViewerI;
      present.pWaitSemaphores    := nil;
      present.waitSemaphoreCount := 0;
      present.pResults           := nil;
