@@ -21,19 +21,19 @@ type
     const sample_title = 'Draw Textured Cube';
   public
     { public 宣言 }
-    _Vulkan     :TVulkan;
-    _Instance   :TVkInstance;
-    _Window     :TVkWindow;
-    _Surface    :TVkSurface;
-    _Devices    :TVkDevices;
-    _Device     :TVkDevice;
-    _ComPool    :TVkCommandPool;
-    _ComBuf     :TVkCommandBuffer;
-    _Swapchain  :TVkSwapchain;
-    _Buffer     :TVkBuffer;
-    _Pipeline   :TVkPipeline;
-    _ShaderVert :TVkShaderVert;
-    _ShaderFrag :TVkShaderFrag;
+    _Vulkan  :TVulkan;
+    _Instan  :TVkInstance;
+    _Window  :TVkWindow;
+    _Surfac  :TVkSurface;
+    _Devices :TVkDevices;
+    _Device  :TVkDevice;
+    _Pooler  :TVkCommandPool;
+    _Comman  :TVkCommandBuffer;
+    _Swapch  :TVkSwapchain;
+    _Buffer  :TVkBuffer;
+    _Pipeli  :TVkPipeline;
+    _ShaderV :TVkShaderVert;
+    _ShaderF :TVkShaderFrag;
 
     imageAcquiredSemaphore :VkSemaphore;
     drawFence              :VkFence;
@@ -88,19 +88,19 @@ var
    submit_info                      :array [ 0..1-1 ] of VkSubmitInfo;
    present                          :VkPresentInfoKHR;
 begin
-     _Vulkan   := TVulkan.Create;
-     _Instance := TVkInstance.Create( _Vulkan );
-     _Window   := TVkWindow.Create( _Instance, 500, 500, @WndProc );
-     _Surface  := TVkSurface.Create( _Window );
-     _Devices  := TVkDevices.Create( _Instance );
-     _Device   := _Devices[0];
-     _ComPool  := TVkCommandPool.Create( _Device );
-     _ComBuf   := TVkCommandBuffer.Create( _ComPool );
-     _ComBuf.BeginRecord;
-     _Swapchain := TVkSwapchain.Create( _Device );
+     _Vulkan  := TVulkan.Create;
+     _Instan  := TVkInstance.Create( _Vulkan );
+     _Window  := TVkWindow.Create( _Instan, 500, 500, @WndProc );
+     _Surfac  := TVkSurface.Create( _Window );
+     _Devices := TVkDevices.Create( _Instan );
+     _Device  := _Devices[0];
+     _Pooler  := TVkCommandPool.Create( _Device );
+     _Comman  := TVkCommandBuffer.Create( _Pooler );
+     _Comman.BeginRecord;
+     _Swapch  := TVkSwapchain.Create( _Device );
      init_depth_buffer( _Vulkan );
      init_texture( _Vulkan );
-     _Buffer := TVkBuffer.Create( _Device );
+     _Buffer  := TVkBuffer.Create( _Device );
      init_descriptor_and_pipeline_layouts( _Vulkan, true );
      init_renderpass( _Vulkan, depthPresent );
      init_framebuffers( _Vulkan, depthPresent );
@@ -108,12 +108,12 @@ begin
      init_descriptor_pool( _Vulkan, True );
      init_descriptor_set( _Vulkan, True );
      init_pipeline_cache( _Vulkan );
-     _Pipeline := TVkPipeline.Create( _Device, depthPresent );
-     _ShaderVert := TVkShaderVert.Create( _Pipeline );
-     _ShaderFrag := TVkShaderFrag.Create( _Pipeline );
-     _ShaderVert.LoadFromFile( '../../_DATA/draw_textured_cube.vert' );
-     _ShaderFrag.LoadFromFile( '../../_DATA/draw_textured_cube.frag' );
-     _Pipeline.CreateHandle;
+     _Pipeli := TVkPipeline.Create( _Device, depthPresent );
+     _ShaderV := TVkShaderVert.Create( _Pipeli );
+     _ShaderF := TVkShaderFrag.Create( _Pipeli );
+     _ShaderV.LoadFromFile( '../../_DATA/draw_textured_cube.vert' );
+     _ShaderF.LoadFromFile( '../../_DATA/draw_textured_cube.frag' );
+     _Pipeli.CreateHandle;
 
      (* VULKAN_KEY_START *)
 
@@ -132,8 +132,8 @@ begin
      Assert( res = VK_SUCCESS );
 
      // Get the index of the next available swapchain image:
-     res := vkAcquireNextImageKHR( _Device.Handle,  _Swapchain.Handle, UINT64_MAX, imageAcquiredSemaphore, VK_NULL_HANDLE,
-                                   @_Swapchain.Viewers.ViewerI );
+     res := vkAcquireNextImageKHR( _Device.Handle,  _Swapch.Handle, UINT64_MAX, imageAcquiredSemaphore, VK_NULL_HANDLE,
+                                   @_Swapch.Viewers.ViewerI );
      // TODO: Deal with the VK_SUBOPTIMAL_KHR and VK_ERROR_OUT_OF_DATE_KHR
      // return codes
      Assert( res = VK_SUCCESS );
@@ -141,7 +141,7 @@ begin
      rp_begin.sType                    := VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
      rp_begin.pNext                    := nil;
      rp_begin.renderPass               :=  _Vulkan.Info.render_pass;
-     rp_begin.framebuffer              := _Vulkan.Info.framebuffers[ _Swapchain.Viewers.ViewerI ];
+     rp_begin.framebuffer              := _Vulkan.Info.framebuffers[ _Swapch.Viewers.ViewerI ];
      rp_begin.renderArea.offset.x      := 0;
      rp_begin.renderArea.offset.y      := 0;
      rp_begin.renderArea.extent.width  := _Window.width;
@@ -151,7 +151,7 @@ begin
 
      vkCmdBeginRenderPass( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle, @rp_begin, VK_SUBPASS_CONTENTS_INLINE );
 
-     vkCmdBindPipeline( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Pipeline.Handle );
+     vkCmdBindPipeline( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Pipeli.Handle );
      vkCmdBindDescriptorSets( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Vulkan.Info.pipeline_layout, 0, NUM_DESCRIPTOR_SETS,
                               @_Vulkan.Info.desc_set[0], 0, nil );
 
@@ -163,7 +163,7 @@ begin
 
      vkCmdDraw( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle, 12 * 3, 1, 0, 0 );
      vkCmdEndRenderPass( _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle );
-     _ComBuf.EndRecord;
+     _Comman.EndRecord;
 
      cmd_bufs[0] := _Vulkan.Instance.Devices[0].ComPool.ComBufs.Handle;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
@@ -192,8 +192,8 @@ begin
      present.sType              := VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
      present.pNext              := nil;
      present.swapchainCount     := 1;
-     present.pSwapchains        := @_Swapchain.Handle;
-     present.pImageIndices      := @_Swapchain.Viewers.ViewerI;
+     present.pSwapchains        := @_Swapch.Handle;
+     present.pImageIndices      := @_Swapch.Viewers.ViewerI;
      present.pWaitSemaphores    := nil;
      present.waitSemaphoreCount := 0;
      present.pResults           := nil;
@@ -215,7 +215,7 @@ procedure TForm1.FormDestroy(Sender: TObject);
 begin
      vkDestroyFence( _Device.Handle, drawFence, nil );
      vkDestroySemaphore( _Device.Handle, imageAcquiredSemaphore, nil );
-     _Pipeline.Free;
+     _Pipeli.Free;
      destroy_pipeline_cache( _Vulkan );
      destroy_textures( _Vulkan );
      destroy_descriptor_pool( _Vulkan );
@@ -224,13 +224,13 @@ begin
      destroy_renderpass( _Vulkan );
      destroy_descriptor_and_pipeline_layouts( _Vulkan );
      destroy_depth_buffer( _Vulkan );
-     _Swapchain.Free;
-     _ComBuf   .Free;
-     _ComPool  .Free;
+     _Swapch.Free;
+     _Comman   .Free;
+     _Pooler  .Free;
 
-     _Surface  .Free;
+     _Surfac  .Free;
      _Window   .Free;
-     _Instance .Free;
+     _Instan .Free;
      _Vulkan   .Free;
 end;
 
