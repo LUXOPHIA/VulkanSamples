@@ -87,8 +87,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        save_images        :T_bool;
 
        device_extension_properties :TArray<VkExtensionProperties>;
-       graphics_queue              :VkQueue;
-       present_queue               :VkQueue;
 
        framebuffers  :TArray<VkFramebuffer>;
 
