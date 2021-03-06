@@ -108,7 +108,7 @@ begin
      init_descriptor_pool( _Vulkan, True );
      init_descriptor_set( _Vulkan, True );
      init_pipeline_cache( _Vulkan );
-     _Pipeli := TVkPipeline.Create( _Device, depthPresent );
+     _Pipeli  := TVkPipeline.Create( _Device, depthPresent );
      _ShaderV := TVkShaderVert.Create( _Pipeli );
      _ShaderF := TVkShaderFrag.Create( _Pipeli );
      _ShaderV.LoadFromFile( '../../_DATA/draw_textured_cube.vert' );
@@ -225,13 +225,12 @@ begin
      destroy_descriptor_and_pipeline_layouts( _Vulkan );
      destroy_depth_buffer( _Vulkan );
      _Swapch.Free;
-     _Comman   .Free;
-     _Pooler  .Free;
-
-     _Surfac  .Free;
-     _Window   .Free;
-     _Instan .Free;
-     _Vulkan   .Free;
+     _Comman.Free;
+     _Pooler.Free;
+     _Surfac.Free;
+     _Window.Free;
+     _Instan.Free;
+     _Vulkan.Free;
 end;
 
 end. //######################################################################### ■
