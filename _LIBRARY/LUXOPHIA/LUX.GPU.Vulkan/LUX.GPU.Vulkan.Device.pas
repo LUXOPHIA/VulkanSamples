@@ -20,26 +20,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevices
-
-     TVkDevices<TVkInstance_:class> = class( TObjectList<TVkDevice<TVkDevices<TVkInstance_>>> )
-     private
-       type TVkDevices_ = TVkDevices<TVkInstance_>;
-            TVkDevice_  = TVkDevice<TVkDevices_>;
-     protected
-       _Instance :TVkInstance_;
-       ///// アクセス
-       ///// メソッド
-       procedure GetDevices;
-     public
-       constructor Create( const Instance_:TVkInstance_ );
-       procedure AfterConstruction; override;
-       destructor Destroy; override;
-       ///// プロパティ
-       property Instance :TVkInstance_ read _Instance;
-       ///// メソッド
-     end;
-
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevice
 
      TVkDevice<TVkDevices_:class> = class
@@ -103,6 +83,26 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function memory_type_from_properties( typeBits:UInt32; const requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
      end;
 
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevices
+
+     TVkDevices<TVkInstance_:class> = class( TObjectList<TVkDevice<TVkDevices<TVkInstance_>>> )
+     private
+       type TVkDevices_ = TVkDevices<TVkInstance_>;
+            TVkDevice_  = TVkDevice<TVkDevices_>;
+     protected
+       _Instance :TVkInstance_;
+       ///// アクセス
+       ///// メソッド
+       procedure GetDevices;
+     public
+       constructor Create( const Instance_:TVkInstance_ );
+       procedure AfterConstruction; override;
+       destructor Destroy; override;
+       ///// プロパティ
+       property Instance :TVkInstance_ read _Instance;
+       ///// メソッド
+     end;
+
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
 
 //var //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【変数】
@@ -118,57 +118,6 @@ uses System.SysUtils,
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkShader
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-/////////////////////////////////////////////////////////////////////// アクセス
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-procedure TVkDevices<TVkInstance_>.GetDevices;
-var
-   DsN :UInt32;
-   Ds :TArray<VkPhysicalDevice>;
-   D :VkPhysicalDevice;
-begin
-     Assert( ( vkEnumeratePhysicalDevices( TVkInstance( _Instance ).Handle, @DsN, nil ) = VK_SUCCESS ) and ( DsN > 0 ) );
-
-     SetLength( Ds, DsN );
-
-     Assert( ( vkEnumeratePhysicalDevices( TVkInstance( _Instance ).Handle, @DsN, @Ds[0] ) = VK_SUCCESS ) and ( DsN > 0 ) );
-
-     for D in Ds do Add( TVkDevice_.Create( Self, D ) );
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TVkDevices<TVkInstance_>.Create( const Instance_:TVkInstance_ );
-begin
-     inherited Create;
-
-     _Instance := Instance_;
-
-     TVkInstance( _Instance ).Devices := TVkDevices( Self );
-end;
-
-procedure TVkDevices<TVkInstance_>.AfterConstruction;
-begin
-     inherited;
-
-     GetDevices;
-end;
-
-destructor TVkDevices<TVkInstance_>.Destroy;
-begin
-
-     inherited;
-end;
-
-/////////////////////////////////////////////////////////////////////// メソッド
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevice
 
@@ -400,6 +349,57 @@ begin
      // No memory types matched, return failure
      Result := False;
 end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevices
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TVkDevices<TVkInstance_>.GetDevices;
+var
+   DsN :UInt32;
+   Ds :TArray<VkPhysicalDevice>;
+   D :VkPhysicalDevice;
+begin
+     Assert( ( vkEnumeratePhysicalDevices( TVkInstance( _Instance ).Handle, @DsN, nil ) = VK_SUCCESS ) and ( DsN > 0 ) );
+
+     SetLength( Ds, DsN );
+
+     Assert( ( vkEnumeratePhysicalDevices( TVkInstance( _Instance ).Handle, @DsN, @Ds[0] ) = VK_SUCCESS ) and ( DsN > 0 ) );
+
+     for D in Ds do Add( TVkDevice_.Create( Self, D ) );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkDevices<TVkInstance_>.Create( const Instance_:TVkInstance_ );
+begin
+     inherited Create;
+
+     _Instance := Instance_;
+
+     TVkInstance( _Instance ).Devices := TVkDevices( Self );
+end;
+
+procedure TVkDevices<TVkInstance_>.AfterConstruction;
+begin
+     inherited;
+
+     GetDevices;
+end;
+
+destructor TVkDevices<TVkInstance_>.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
