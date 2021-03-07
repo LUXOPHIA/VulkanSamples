@@ -3,7 +3,7 @@
 interface //#################################################################### ■
 
 uses System.Classes,
-     vulkan_core, vulkan_win32,
+     vulkan_core,
      LUX.GPU.Vulkan.root,
      LUX.GPU.Vulkan.Window,
      LUX.GPU.Vulkan.Device;
@@ -24,26 +24,33 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             TVkDevices_  = TVkDevices<TVkInstance_>;
             TVkWindow_   = TVkWindow<TVkInstance_>;
      protected
-       _Handle     :VkInstance;
-       _Name       :String;
-       _Layers     :TStringList;
-       _Extensions :TStringList;
-       _Devices    :TVkDevices_;
-       _Window     :TVkWindow_;
+       _Vulkan  :TVulkan_;
+       _Name    :String;
+       _Applic  :VkApplicationInfo;
+       _Layeres :TStringList;
+       _Extenss :TStringList;
+       _Inform  :VkInstanceCreateInfo;
+       _Handle  :VkInstance;
+       _Devices :TVkDevices_;
+       _Window  :TVkWindow_;
+       ///// アクセス
+       function GetHandle :VkInstance;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
      public
        constructor Create( const Vulkan_:TVulkan_ );
-       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Handle     :VkInstance  read _Handle                   ;
-       property Name       :String      read _Name       write _Name   ;
-       property Layers     :TStringList read _Layers                   ;
-       property Extensions :TStringList read _Extensions               ;
-       property Devices    :TVkDevices_ read _Devices    write _Devices;
-       property Window     :TVkWindow_  read _Window     write _Window ;
+       property Vulkan  :TVulkan_             read   _Vulkan                ;
+       property Name    :String               read   _Name    write _Name   ;
+       property Applic  :VkApplicationInfo    read   _Applic                ;
+       property Layers  :TStringList          read   _Layeres               ;
+       property Extenss :TStringList          read   _Extenss               ;
+       property Inform  :VkInstanceCreateInfo read   _Inform                ;
+       property Handle  :VkInstance           read GetHandle                ;
+       property Devices :TVkDevices_          read   _Devices write _Devices;
+       property Window  :TVkWindow_           read   _Window  write _Window ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -55,6 +62,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 implementation //############################################################### ■
 
 uses System.AnsiStrings,
+     vulkan_win32,
      LUX.GPU.Vulkan;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
@@ -65,42 +73,36 @@ uses System.AnsiStrings,
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
+function TVkInstance<TVulkan_>.GetHandle :VkInstance;
+begin
+     if not Assigned( _Handle ) then CreateHandle;
+
+     Result := _Handle;
+end;
+
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
 procedure TVkInstance<TVulkan_>.CreateHandle;
 var
-   app_info :VkApplicationInfo;
    L, E :String;
    Ls, Es :TArray<PAnsiChar>;
-   inst_info :VkInstanceCreateInfo;
 begin
-     with app_info do
-     begin
-          sType              := VK_STRUCTURE_TYPE_APPLICATION_INFO;
-          pNext              := nil;
-          pApplicationName   := PAnsiChar( AnsiString( _Name ) );
-          applicationVersion := 1;
-          pEngineName        := PAnsiChar( AnsiString( _Name ) );
-          engineVersion      := 1;
-          apiVersion         := VK_API_VERSION_1_0;
-     end;
+     for L in _Layeres do Ls := Ls + [ System.AnsiStrings.StrNew( PAnsiChar( AnsiString( L ) ) ) ];
+     for E in _Extenss do Es := Es + [ System.AnsiStrings.StrNew( PAnsiChar( AnsiString( E ) ) ) ];
 
-     for L in _Layers     do Ls := Ls + [ System.AnsiStrings.StrNew( PAnsiChar( AnsiString( L ) ) ) ];
-     for E in _Extensions do Es := Es + [ System.AnsiStrings.StrNew( PAnsiChar( AnsiString( E ) ) ) ];
-
-     with inst_info do
+     with _Inform do
      begin
           sType                   := VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
           pNext                   := nil;
           flags                   := 0;
-          pApplicationInfo        := @app_info;
+          pApplicationInfo        := @_Applic;
           enabledLayerCount       := Length( Ls );
           ppEnabledLayerNames     := @Ls[0];
           enabledExtensionCount   := Length( Es );
           ppEnabledExtensionNames := @Es[0];
      end;
 
-     Assert( vkCreateInstance( @inst_info, nil, @_Handle ) = VK_SUCCESS );
+     Assert( vkCreateInstance( @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkInstance<TVulkan_>.DestroHandle;
@@ -114,31 +116,40 @@ constructor TVkInstance<TVulkan_>.Create( const Vulkan_:TVulkan_ );
 begin
      inherited;
 
-     _Layers     := TStringList.Create;
-     _Extensions := TStringList.Create;
+     _Layeres := TStringList.Create;
+     _Extenss := TStringList.Create;
+
+     _Vulkan := Vulkan_;
 
      TVulkan( Vulkan_ ).Instance := TVkInstance( Self );
 
-     _Extensions.Add( VK_KHR_SURFACE_EXTENSION_NAME       );
-     _Extensions.Add( VK_KHR_WIN32_SURFACE_EXTENSION_NAME );
+     with _Applic do
+     begin
+          sType              := VK_STRUCTURE_TYPE_APPLICATION_INFO;
+          pNext              := nil;
+          pApplicationName   := PAnsiChar( AnsiString( _Name ) );
+          applicationVersion := 1;
+          pEngineName        := PAnsiChar( AnsiString( _Name ) );
+          engineVersion      := 1;
+          apiVersion         := VK_API_VERSION_1_0;
+     end;
+
+     _Extenss.Add( VK_KHR_SURFACE_EXTENSION_NAME       );
+     _Extenss.Add( VK_KHR_WIN32_SURFACE_EXTENSION_NAME );
+
+     _Handle := nil;
 
      CreateHandle;
-end;
-
-procedure TVkInstance<TVulkan_>.AfterConstruction;
-begin
-     inherited;
-
 end;
 
 destructor TVkInstance<TVulkan_>.Destroy;
 begin
      _Devices.Free;
 
-     DestroHandle;
+     if Assigned( _Handle ) then DestroHandle;
 
-     _Layers    .Free;
-     _Extensions.Free;
+     _Layeres.Free;
+     _Extenss.Free;
 
      inherited;
 end;
