@@ -215,11 +215,11 @@ end;
 procedure TVkDevice<TVkDevices_>.FindQueFams;
 begin
      vkGetPhysicalDeviceQueueFamilyProperties( Physic, @_QueFamsN, nil );
-     Assert( _QueFamsN > 1 );
+     Assert( _QueFamsN > 0 );
 
      SetLength( _QueFams, _QueFamsN );
      vkGetPhysicalDeviceQueueFamilyProperties( Physic, @_QueFamsN, @_QueFams[0] );
-     Assert( _QueFamsN > 1 );
+     Assert( _QueFamsN > 0 );
 end;
 
 procedure TVkDevice<TVkDevices_>.FindQueFamI;
@@ -302,10 +302,10 @@ var
 begin
      // Get the list of VkFormats that are supported:
      Assert( vkGetPhysicalDeviceSurfaceFormatsKHR( _Physic, Surface_, @FsN, nil ) = VK_SUCCESS );
-     Assert( FsN > 1 );
+     Assert( FsN > 0 );
      SetLength( Fs, FsN );
      Assert( vkGetPhysicalDeviceSurfaceFormatsKHR( _Physic, Surface_, @FsN, @Fs[0] ) = VK_SUCCESS );
-     Assert( FsN > 1 );
+     Assert( FsN > 0 );
 
      // If the device supports our preferred surface format, use it.
      // Otherwise, use whatever the device's first reported surface
