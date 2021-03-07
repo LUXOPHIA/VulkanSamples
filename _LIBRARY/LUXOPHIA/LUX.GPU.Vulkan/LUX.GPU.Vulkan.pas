@@ -2,11 +2,11 @@
 
 interface //#################################################################### ■
 
-uses System.Classes, SYstem.Generics.Collections,
-     vulkan_core, vulkan_win32,
+uses vulkan_core,
      vulkan.util,
      LUX, LUX.Code.C,
      LUX.GPU.Vulkan.root,
+     LUX.GPU.Vulkan.Layere,
      LUX.GPU.Vulkan.Instance,
        LUX.GPU.Vulkan.Window,
          LUX.GPU.Vulkan.Surface,
@@ -20,9 +20,8 @@ uses System.Classes, SYstem.Generics.Collections,
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
      TVulkan                    = class;
-       TVkLayeres               = class;
-         TVkLayere              = class;
-           TVkExtenss           = TArray<VkExtensionProperties>;
+       TVkLayeres               = TVkLayeres<TVulkan>;
+         TVkLayere              = TVkLayere<TVulkan>;
        TVkInstance              = TVkInstance<TVulkan>;
          TVkWindow              = TVkWindow<TVkInstance>;
            TVkSurface           = TVkSurface<TVkWindow>;
@@ -45,55 +44,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkLayere
-
-     TVkLayere = class
-     private
-     protected
-       _Parent      :TVkLayeres;
-       _Inform :VkLayerProperties;
-       _Extenss  :TVkExtenss;
-       ///// メソッド
-       function GetExtensions :VkResult;
-     public
-       constructor Create( const Parent_:TVkLayeres; const Inform_:VkLayerProperties );
-       destructor Destroy; override;
-       ///// プロパティ
-       property Parent     :TVkLayeres         read _Parent    ;
-       property Inform     :VkLayerProperties read _Inform;
-       property Extenss :TVkExtenss     read _Extenss;
-     end;
-
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkLayeres
-
-     TVkLayeres = class( TObjectList<TVkLayere> )
-     private
-     protected
-       _Parent :TVulkan;
-       ///// メソッド
-       function FindLayeres :VkResult;
-     public
-       constructor Create( const Parent_:TVulkan );
-       destructor Destroy; override;
-       ///// プロパティ
-       property Parent :TVulkan read _Parent;
-       ///// メソッド
-       function Add( const Inform_:VkLayerProperties ) :TVkLayere; overload;
-     end;
-
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVulkan
 
      TVulkan = class
      private
      protected
-       _Layers   :TVkLayeres;
+       _Layeres  :TVkLayeres;
        _Instance :TVkInstance;
      public
        Info :T_sample_info;
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property Layeres   :TVkLayeres   read _Layers                  ;
+       property Layeres  :TVkLayeres  read _Layeres                 ;
        property Instance :TVkInstance read _Instance write _Instance;
      end;
 
@@ -116,121 +79,12 @@ function read_ppm( const filename_:String; var width_:T_int; var height_:T_int; 
 
 implementation //############################################################### ■
 
-uses System.SysUtils,
+uses System.SysUtils, System.Classes,
      FMX.Types;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkLayere
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-function TVkLayere.GetExtensions :VkResult;
-var
-   EsN :UInt32;
-begin
-     repeat
-           Result := vkEnumerateInstanceExtensionProperties( _Inform.layerName, @EsN, nil );
-           if Result <> VK_SUCCESS then Exit;
-
-           if EsN = 0 then Exit( VK_SUCCESS );
-
-           SetLength( _Extenss, EsN );
-           Result := vkEnumerateInstanceExtensionProperties( _Inform.layerName, @EsN, @_Extenss[0] );
-
-     until Result <> VK_INCOMPLETE;
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TVkLayere.Create( const Parent_:TVkLayeres; const Inform_:VkLayerProperties );
-begin
-     inherited Create;
-
-     _Parent := Parent_;
-     _Inform := Inform_;
-
-     TVkLayeres( _Parent ).Add( TVkLayere( Self ) );
-
-     GetExtensions;
-end;
-
-destructor TVkLayere.Destroy;
-begin
-
-     inherited;
-end;
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkLayeres
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-function TVkLayeres.FindLayeres :VkResult;
-var
-   LsN, I :UInt32;
-   Ls :TArray<VkLayerProperties>;
-begin
-     (*
-      * It's possible, though very rare, that the number of
-      * instance layers could change. For example, installing something
-      * could include new layers that the loader would pick up
-      * between the initial query for the count and the
-      * request for VkLayerProperties. The loader indicates that
-      * by returning a VK_INCOMPLETE status and will update the
-      * the count parameter.
-      * The count parameter will be updated with the number of
-      * entries loaded into the data pointer - in case the number
-      * of layers went down or is smaller than the size given.
-      *)
-     repeat
-           Result := vkEnumerateInstanceLayerProperties( @LsN, nil );
-           if Result <> VK_SUCCESS then Exit;
-
-           if LsN = 0 then Exit( VK_SUCCESS );
-
-           SetLength( Ls, LsN );
-
-           Result := vkEnumerateInstanceLayerProperties( @LsN, @Ls[0] );
-
-     until Result <> VK_INCOMPLETE;
-
-     (*
-      * Now gather the extension list for each instance layer.
-      *)
-     for I := 0 to LsN-1 do Add( Ls[I] );
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TVkLayeres.Create( const Parent_:TVulkan );
-begin
-     inherited Create;
-
-     _Parent := Parent_;
-
-     FindLayeres;
-end;
-
-destructor TVkLayeres.Destroy;
-begin
-
-     inherited;
-end;
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-function TVkLayeres.Add( const Inform_:VkLayerProperties ) :TVkLayere;
-begin
-     Result := TVkLayere.Create( Self, Inform_ );
-end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVulkan
 
@@ -244,12 +98,12 @@ constructor TVulkan.Create;
 begin
      inherited;
 
-     _Layers := TVkLayeres.Create( Self );
+     _Layeres := TVkLayeres.Create( Self );
 end;
 
 destructor TVulkan.Destroy;
 begin
-     _Layers.Free;
+     _Layeres.Free;
 
      inherited;
 end;
