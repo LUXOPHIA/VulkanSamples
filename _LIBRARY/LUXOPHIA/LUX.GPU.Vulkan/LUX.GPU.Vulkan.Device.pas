@@ -13,12 +13,50 @@ uses System.Generics.Collections,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkDevices<TVkInstance_:class> = class;
-     TVkDevice<TVkDevices_:class>   = class;
+     TVkDevices<TVkInstance_:class>    = class;
+       TVkDevice<TVkDevices_:class>    = class;
+         TVkDevLays<TVkDevice_:class>  = class;
+           TVkDevLay<TVkDevice_:class> = class;
+             TVkDevExts                = TArray<VkExtensionProperties>;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevLay
+
+     TVkDevLay<TVkDevice_:class> = class
+     private
+       type TVkDevLays_ = TVkDevLays<TVkDevice_>;
+     protected
+       _Parent  :TVkDevLays_;
+       _LayereI :Integer;
+       _Extenss :TVkDevExts;
+       ///// メソッド
+       function GetExtenss :VkResult;
+     public
+       constructor Create( const Parent_:TVkDevLays_; const LayereI_:Integer );
+       destructor Destroy; override;
+       ///// プロパティ
+       property Parent  :TVkDevLays_ read _Parent ;
+       property Extenss :TVkDevExts  read _Extenss;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevLays
+
+     TVkDevLays<TVkDevice_:class> = class( TObjectList<TVkDevLay<TVkDevice_>> )
+     private
+       type TVkDevLay_ = TVkDevLay<TVkDevice_>;
+     protected
+       _Parent :TVkDevice_;
+       ///// メソッド
+       procedure MakeLayeres;
+     public
+       constructor Create( const Parent_:TVkDevice_ );
+       destructor Destroy; override;
+       ///// プロパティ
+       property Parent :TVkDevice_ read _Parent;
+     end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevices
 
@@ -45,6 +83,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVkDevice<TVkDevices_:class> = class
      private
        type TVkDevice_      = TVkDevice<TVkDevices_>;
+            TVkDevLays_     = TVkDevLays<TVkDevice_>;
             TVkBuffer_      = TVkBuffer<TVkDevice_>;
             TVkCommandPool_ = TVkCommandPool<TVkDevice_>;
             TVkSwapchain_   = TVkSwapchain<TVkDevice_>;
@@ -53,6 +92,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Physic     :VkPhysicalDevice;
        _Props      :VkPhysicalDeviceProperties;
        _Memorys    :VkPhysicalDeviceMemoryProperties;
+
+       _Layeres    :TVkDevLays_;
+
        _Handle     :VkDevice;
        _Extensions :TArray<PAnsiChar>;
        _QueFamsN   :UInt32;
@@ -68,8 +110,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// アクセス
        function GetQueFams( const I_:Integer ) :VkQueueFamilyProperties;
        ///// メソッド
-       function init_device_extension_properties( var L_:T_layer_properties ) :VkResult;
-       procedure InitLayers;
        procedure FindQueFams;
        procedure FindQueFamI; overload;
        procedure FindQueFamI( const Surface_:VkSurfaceKHR ); overload;
@@ -86,6 +126,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Physic                      :VkPhysicalDevice                 read   _Physic                      ;
        property Props                       :VkPhysicalDeviceProperties       read   _Props                       ;
        property Memorys                     :VkPhysicalDeviceMemoryProperties read   _Memorys                     ;
+
+       property Layeres                     :TVkDevLays_                      read   _Layeres    write _Layeres   ;
+
        property Handle                      :VkDevice                         read   _Handle                      ;
        property Extensions                  :TArray<PAnsiChar>                read   _Extensions                  ;
        property QueFamsN                    :UInt32                           read   _QueFamsN                    ;
@@ -113,6 +156,91 @@ implementation //###############################################################
 uses System.SysUtils, System.Classes,
      FMX.Types,
      LUX.GPU.Vulkan;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevLay
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+function TVkDevLay<TVkDevice_>.GetExtenss :VkResult;
+var
+   D :TVkDevice;
+   C :PAnsiChar;
+   EsN :UInt32;
+begin
+     D := TVkDevLays( _Parent ).Parent;
+     C := D.Devices.Instance.Vulkan.Layeres[ _LayereI ].Inform.layerName;
+
+     repeat
+           Result := vkEnumerateDeviceExtensionProperties( D.Physic, C, @EsN, nil );
+           if Result <> VK_SUCCESS then Exit;
+
+           if EsN = 0 then Exit( VK_SUCCESS );
+
+           SetLength( _Extenss, EsN );
+           Result := vkEnumerateDeviceExtensionProperties( D.Physic, C, @EsN, @_Extenss[0] );
+
+     until Result <> VK_INCOMPLETE;
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkDevLay<TVkDevice_>.Create( const Parent_:TVkDevLays_; const LayereI_:Integer );
+begin
+     inherited Create;
+
+     _Parent  := Parent_ ;
+     _LayereI := LayereI_;
+
+     TVkDevLays_( _Parent ).Add( Self );
+
+     GetExtenss;
+end;
+
+destructor TVkDevLay<TVkDevice_>.Destroy;
+begin
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevLays
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+procedure TVkDevLays<TVkDevice_>.MakeLayeres;
+var
+   Ls :TVkLayeres;
+   I :Integer;
+begin
+     Ls := TVkDevice( _Parent ).Devices.Instance.Vulkan.Layeres;
+
+     (* query device extensions for enabled layers *)
+     for I := 0 to Ls.Count-1 do TVkDevLay_.Create( Self, I );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkDevLays<TVkDevice_>.Create( const Parent_:TVkDevice_ );
+begin
+     inherited Create;
+
+     _Parent := Parent_;
+
+     TVkDevice( _Parent ).Layeres := TVkDevLays( Self );
+
+     MakeLayeres;
+end;
+
+destructor TVkDevLays<TVkDevice_>.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -183,34 +311,6 @@ begin
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
-
-function TVkDevice<TVkDevices_>.init_device_extension_properties( var L_:T_layer_properties ) :VkResult;
-var
-   EsN   :UInt32;
-   Lname :PAnsiChar;
-begin
-     Lname := L_.properties.layerName;
-
-     repeat
-           Result := vkEnumerateDeviceExtensionProperties( Physic, Lname, @EsN, nil );
-           if Result <> VK_SUCCESS then Exit;
-
-           if EsN = 0 then Exit( VK_SUCCESS );
-
-           SetLength( L_.device_extensions, EsN );
-           Result := vkEnumerateDeviceExtensionProperties( Physic, Lname, @EsN, @L_.device_extensions[0] );
-
-     until Result <> VK_INCOMPLETE;
-end;
-
-procedure TVkDevice<TVkDevices_>.InitLayers;
-var
-   I :Integer;
-begin
-     (* query device extensions for enabled layers *)
-     for I := 0 to Length( TVkDevices( Devices ).Instance.Vulkan.Layers )-1
-     do init_device_extension_properties( TVkDevices( Devices ).Instance.Vulkan.Layers[I] );
-end;
 
 procedure TVkDevice<TVkDevices_>.FindQueFams;
 begin
@@ -357,7 +457,7 @@ begin
      vkGetDeviceQueue( _Handle, _QueFamG, 0, @_QueuerG );
 
      if _QueFamG = _QueFamP then _QueuerP := _QueuerG
-                                                     else vkGetDeviceQueue( _Handle, _QueFamP, 0, @_QueuerP );
+                            else vkGetDeviceQueue( _Handle, _QueFamP, 0, @_QueuerP );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -373,7 +473,7 @@ begin
 
      vkGetPhysicalDeviceMemoryProperties( Physic, @Memorys );
 
-     InitLayers;
+     _Layeres := TVkDevLays_.Create( Self );
 
      FindQueFams;
      FindQueFamI( TVkDevices( _Devices ).Instance.Window.Surface.Handle );
@@ -398,6 +498,8 @@ begin
      if Assigned( _Buffers ) then _Buffers.Free;
 
      DestroHandle;
+
+     _Layeres.Free;
 
      inherited;
 end;
