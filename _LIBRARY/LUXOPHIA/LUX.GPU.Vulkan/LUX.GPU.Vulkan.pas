@@ -26,7 +26,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
          TVkWindow              = TVkWindow<TVkInstance>;
            TVkSurface           = TVkSurface<TVkWindow>;
          TVkDevices             = TVkDevices<TVkInstance>;
-           TVkDevice            = TVkDevice<TVkDevices>;
+           TVkDevice            = TVkDevice<TVkInstance>;
              TVkDevLays         = TVkDevLays<TVkDevice>;
                TVkDevLay        = TVkDevLays<TVkDevice>;
              TVkPipeline        = TVkPipeline<TVkDevice>;
