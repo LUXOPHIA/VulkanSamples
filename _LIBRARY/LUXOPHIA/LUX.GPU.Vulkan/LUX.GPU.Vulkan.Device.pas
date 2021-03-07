@@ -94,7 +94,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Instance :TVkInstance_;
        ///// アクセス
        ///// メソッド
-       procedure GetDevices;
+       procedure FindDevices;
      public
        constructor Create( const Instance_:TVkInstance_ );
        procedure AfterConstruction; override;
@@ -102,6 +102,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// プロパティ
        property Instance :TVkInstance_ read _Instance;
        ///// メソッド
+       function Add( const Physic_:VkPhysicalDevice ) :TVkDevice_; overload;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -292,6 +293,8 @@ begin
      _Devices := Devices_;
      _Physic  := Physic_ ;
 
+     TVkDevices_( _Devices ).Add( Self );
+
      vkGetPhysicalDeviceProperties( Physic, @_Propers );
 
      vkGetPhysicalDeviceMemoryProperties( Physic, @Memorys );
@@ -361,19 +364,21 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkDevices<TVkInstance_>.GetDevices;
+procedure TVkDevices<TVkInstance_>.FindDevices;
 var
-   DsN :UInt32;
-   Ds :TArray<VkPhysicalDevice>;
-   D :VkPhysicalDevice;
+   PsN :UInt32;
+   Ps :TArray<VkPhysicalDevice>;
+   P :VkPhysicalDevice;
 begin
-     Assert( ( vkEnumeratePhysicalDevices( TVkInstance( _Instance ).Handle, @DsN, nil ) = VK_SUCCESS ) and ( DsN > 0 ) );
+     Assert( vkEnumeratePhysicalDevices( TVkInstance( _Instance ).Handle, @PsN, nil ) = VK_SUCCESS );
+     Assert( PsN > 0 );
 
-     SetLength( Ds, DsN );
+     SetLength( Ps, PsN );
 
-     Assert( ( vkEnumeratePhysicalDevices( TVkInstance( _Instance ).Handle, @DsN, @Ds[0] ) = VK_SUCCESS ) and ( DsN > 0 ) );
+     Assert( vkEnumeratePhysicalDevices( TVkInstance( _Instance ).Handle, @PsN, @Ps[0] ) = VK_SUCCESS );
+     Assert( PsN > 0 );
 
-     for D in Ds do Add( TVkDevice_.Create( Self, D ) );
+     for P in Ps do Add( P );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -391,7 +396,7 @@ procedure TVkDevices<TVkInstance_>.AfterConstruction;
 begin
      inherited;
 
-     GetDevices;
+     FindDevices;
 end;
 
 destructor TVkDevices<TVkInstance_>.Destroy;
@@ -401,6 +406,11 @@ begin
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
+
+function TVkDevices<TVkInstance_>.Add( const Physic_:VkPhysicalDevice ) :TVkDevice_;
+begin
+     Result := TVkDevice_.Create( Self, Physic_ );
+end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
