@@ -10,31 +10,106 @@ uses System.Classes,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkInstan<TVulkan_:class> = class;
+     TVkInstan<TVulkan_:class>                   = class;
+       TVkInstanInform<TVkInstan_:class>         = class;
+         TVkApplicInform<TVkInstanInform_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkApplicInform
+
+     TVkApplicInform<TVkInstanInform_:class> = class
+     private
+     protected
+       _Parent :TVkInstanInform_;
+       _Inform :VkApplicationInfo;
+       _Handle :P_VkApplicationInfo;
+       ///// アクセス
+       function GetType :VkStructureType;
+       procedure SetType( const Type_:VkStructureType );
+       function GetNext :Pointer;
+       procedure SetNext( const Next_:Pointer );
+       function GetApplicationName :String;
+       procedure SetApplicationName( const ApplicationName_:String );
+       function GetApplicationVersion :UInt32;
+       procedure SetApplicationVersion( const ApplicationVersion_:UInt32 );
+       function GetEngineName :String;
+       procedure SetEngineName( const EngineName_:String );
+       function GetEngineVersion :UInt32;
+       procedure SetEngineVersion( const EngineVersion_:UInt32 );
+       function GetApiVersion :UInt32;
+       procedure SetApiVersion( const ApiVersion_:UInt32 );
+       function GetHandle :P_VkApplicationInfo;
+       procedure SetHandle( const Handle_:P_VkApplicationInfo );
+     public
+       constructor Create( const Parent_:TVkInstanInform_ );
+       destructor Destroy; override;
+       ///// プロパティ
+       property Parent              :TVkInstanInform_    read   _Parent                                        ;
+       property Type_               :VkStructureType     read GetType               write SetType              ;
+       property Next_               :Pointer             read GetNext               write SetNext              ;
+       property ApplicationName_    :String              read GetApplicationName    write SetApplicationName   ;
+       property ApplicationVersion_ :UInt32              read GetApplicationVersion write SetApplicationVersion;
+       property EngineName_         :String              read GetEngineName         write SetEngineName        ;
+       property EngineVersion_      :UInt32              read GetEngineVersion      write SetEngineVersion     ;
+       property ApiVersion_         :UInt32              read GetApiVersion         write SetApiVersion        ;
+       property Handle              :P_VkApplicationInfo read GetHandle             write SetHandle            ;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInstanInform
+
+     TVkInstanInform<TVkInstan_:class> = class
+     private
+       type TVkApplicInform_ = TVkApplicInform<TVkInstan_>;
+     protected
+       _Parent                :TVkInstan_;
+       _Inform                :VkInstanceCreateInfo;
+       _ApplicationInfo       :TVkApplicInform_;
+       _EnabledLayerNames     :TStringList;
+       _EnabledExtensionNames :TStringList;
+       _Handle                :P_VkInstanceCreateInfo;
+       ///// アクセス
+       function GetType :VkStructureType;
+       procedure SetType( const Type_:VkStructureType );
+       function GetNext :Pointer;
+       procedure SetNext( const Next_:Pointer );
+       function GetFlags :VkInstanceCreateFlags;
+       procedure SetFlags( const Flags_:VkInstanceCreateFlags );
+       function GetHandle :P_VkInstanceCreateInfo;
+       procedure SetHandle( const Handle_:P_VkInstanceCreateInfo );
+     public
+       constructor Create( const Parent_:TVkInstan_ );
+       destructor Destroy; override;
+       ///// プロパティ
+       property Parent                 :TVkInstan_             read    _Parent                              ;
+       property Type_                  :VkStructureType        read GetType                  write SetType  ;
+       property Next_                  :Pointer                read GetNext                  write SetNext  ;
+       property Flags_                 :VkInstanceCreateFlags  read GetFlags                 write SetFlags ;
+       property ApplicationInfo_       :TVkApplicInform_       read   _ApplicationInfo                      ;
+       property EnabledLayerNames_     :TStringList            read   _EnabledLayerNames                    ;
+       property EnabledExtensionNames_ :TStringList            read   _EnabledExtensionNames                ;
+       property Handle                 :P_VkInstanceCreateInfo read GetHandle                write SetHandle;
+     end;
+
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInstan
 
      TVkInstan<TVulkan_:class> = class( TVkObject<TVulkan_> )
      private
-       type TVkInstan_  = TVkInstan<TVulkan_>;
-            TVkDevices_ = TVkDevices<TVkInstan_>;
-            TVkWindow_  = TVkWindow<TVkInstan_>;
+       type TVkInstan_       = TVkInstan<TVulkan_>;
+            TVkInstanInform_ = TVkInstanInform<TVulkan_>;
+            TVkDevices_      = TVkDevices<TVkInstan_>;
+            TVkWindow_       = TVkWindow<TVkInstan_>;
      protected
        _Vulkan  :TVulkan_;
-       _Name    :String;
-       _Applic  :VkApplicationInfo;
-       _Layeres :TStringList;
-       _Extenss :TStringList;
-       _Inform  :VkInstanceCreateInfo;
+       _Inform  :TVkInstanInform_;
        _Handle  :VkInstance;
        _Devices :TVkDevices_;
        _Window  :TVkWindow_;
        ///// アクセス
        function GetHandle :VkInstance;
+       procedure SetHandle( const Handle_:VkInstance );
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -42,15 +117,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Vulkan_:TVulkan_ );
        destructor Destroy; override;
        ///// プロパティ
-       property Vulkan  :TVulkan_             read   _Vulkan                ;
-       property Name    :String               read   _Name    write _Name   ;
-       property Applic  :VkApplicationInfo    read   _Applic                ;
-       property Layers  :TStringList          read   _Layeres               ;
-       property Extenss :TStringList          read   _Extenss               ;
-       property Inform  :VkInstanceCreateInfo read   _Inform                ;
-       property Handle  :VkInstance           read GetHandle                ;
-       property Devices :TVkDevices_          read   _Devices write _Devices;
-       property Window  :TVkWindow_           read   _Window  write _Window ;
+       property Vulkan  :TVulkan_         read   _Vulkan                  ;
+       property Inform  :TVkInstanInform_ read   _Inform                  ;
+       property Handle  :VkInstance       read GetHandle  write SetHandle ;
+       property Devices :TVkDevices_      read   _Devices write   _Devices;
+       property Window  :TVkWindow_       read   _Window  write   _Window ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -69,9 +140,237 @@ uses System.AnsiStrings,
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkApplicInform
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkApplicInform<TVkInstanInform_>.GetType :VkStructureType;
+begin
+     Result := _Inform.sType;
+end;
+
+procedure TVkApplicInform<TVkInstanInform_>.SetType( const Type_:VkStructureType );
+begin
+     _Inform.sType := Type_;  Handle := nil;
+end;
+
+function TVkApplicInform<TVkInstanInform_>.GetNext :Pointer;
+begin
+     Result := _Inform.pNext;
+end;
+
+procedure TVkApplicInform<TVkInstanInform_>.SetNext( const Next_:Pointer );
+begin
+     _Inform.pNext := Next_;  Handle := nil;
+end;
+
+function TVkApplicInform<TVkInstanInform_>.GetApplicationName :String;
+begin
+     Result := String( _Inform.pApplicationName );
+end;
+
+procedure TVkApplicInform<TVkInstanInform_>.SetApplicationName( const ApplicationName_:String );
+begin
+     _Inform.pApplicationName := PAnsiChar( AnsiString( ApplicationName_ ) );  Handle := nil;
+end;
+
+function TVkApplicInform<TVkInstanInform_>.GetApplicationVersion :UInt32;
+begin
+     Result := _Inform.applicationVersion;
+end;
+
+procedure TVkApplicInform<TVkInstanInform_>.SetApplicationVersion( const ApplicationVersion_:UInt32 );
+begin
+     _Inform.applicationVersion := ApplicationVersion_;  Handle := nil;
+end;
+
+function TVkApplicInform<TVkInstanInform_>.GetEngineName :String;
+begin
+     Result := String( _Inform.pEngineName );
+end;
+
+procedure TVkApplicInform<TVkInstanInform_>.SetEngineName( const EngineName_:String );
+begin
+     _Inform.pEngineName := PAnsiChar( AnsiString( EngineName_ ) );  Handle := nil;
+end;
+
+function TVkApplicInform<TVkInstanInform_>.GetEngineVersion :UInt32;
+begin
+     Result := _Inform.engineVersion;
+end;
+
+procedure TVkApplicInform<TVkInstanInform_>.SetEngineVersion( const EngineVersion_:UInt32 );
+begin
+     _Inform.engineVersion := EngineVersion_;  Handle := nil;
+end;
+
+function TVkApplicInform<TVkInstanInform_>.GetApiVersion :UInt32;
+begin
+     Result := _Inform.apiVersion;
+end;
+
+procedure TVkApplicInform<TVkInstanInform_>.SetApiVersion( const ApiVersion_:UInt32 );
+begin
+     _Inform.apiVersion := ApiVersion_;  Handle := nil;
+end;
+
+//------------------------------------------------------------------------------
+
+function TVkApplicInform<TVkInstanInform_>.GetHandle :P_VkApplicationInfo;
+begin
+     if not Assigned( _Handle ) then _Handle := @_Inform;
+
+     Result := _Handle;
+end;
+
+procedure TVkApplicInform<TVkInstanInform_>.SetHandle( const Handle_:P_VkApplicationInfo );
+begin
+     _Handle := Handle_;
+
+     TVkInstanInform( _Parent ).Handle := nil;
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkApplicInform<TVkInstanInform_>.Create( const Parent_:TVkInstanInform_ );
+begin
+     inherited Create;
+
+     _Parent := Parent_;
+
+     Type_               := VK_STRUCTURE_TYPE_APPLICATION_INFO;
+     Next_               := nil;
+     ApplicationName_    := 'Application';
+     ApplicationVersion_ := 1;
+     EngineName_         := 'Engine';
+     EngineVersion_      := 1;
+     ApiVersion_         := VK_API_VERSION_1_0;
+
+     _Handle := nil;
+end;
+
+destructor TVkApplicInform<TVkInstanInform_>.Destroy;
+begin
+     Handle := nil;
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInstanInform
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkInstanInform<TVkInstan_>.GetType :VkStructureType;
+begin
+     Result := _Inform.sType;
+end;
+
+procedure TVkInstanInform<TVkInstan_>.SetType( const Type_:VkStructureType );
+begin
+     _Inform.sType := Type_;  Handle := nil;
+end;
+
+function TVkInstanInform<TVkInstan_>.GetNext :Pointer;
+begin
+     Result := _Inform.pNext;
+end;
+
+procedure TVkInstanInform<TVkInstan_>.SetNext( const Next_:Pointer );
+begin
+     _Inform.pNext := Next_;  Handle := nil;
+end;
+
+function TVkInstanInform<TVkInstan_>.GetFlags :VkInstanceCreateFlags;
+begin
+     Result := _Inform.flags;
+end;
+
+procedure TVkInstanInform<TVkInstan_>.SetFlags( const Flags_:VkInstanceCreateFlags );
+begin
+     _Inform.flags := Flags_;  Handle := nil;
+end;
+
+//------------------------------------------------------------------------------
+
+function TVkInstanInform<TVkInstan_>.GetHandle :P_VkInstanceCreateInfo;
+var
+   L, E :String;
+   Ls, Es :TArray<PAnsiChar>;
+begin
+     if not Assigned( _Handle ) then
+     begin
+          for L in _EnabledLayerNames     do Ls := Ls + [ System.AnsiStrings.StrNew( PAnsiChar( AnsiString( L ) ) ) ];
+          for E in _EnabledExtensionNames do Es := Es + [ System.AnsiStrings.StrNew( PAnsiChar( AnsiString( E ) ) ) ];
+
+          with _Inform do
+          begin
+               enabledLayerCount     := Length( Ls );
+             ppEnabledLayerNames     := @Ls[0];
+               enabledExtensionCount := Length( Es );
+             ppEnabledExtensionNames := @Es[0];
+          end;
+
+          _Handle := @_Inform;
+     end;
+
+     Result := _Handle;
+end;
+
+procedure TVkInstanInform<TVkInstan_>.SetHandle( const Handle_:P_VkInstanceCreateInfo );
+begin
+     _Handle := Handle_;
+
+     TVkInstan( _Parent ).Handle := nil;
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkInstanInform<TVkInstan_>.Create( const Parent_:TVkInstan_ );
+begin
+     inherited Create;
+
+     _Parent := Parent_;
+
+     _ApplicationInfo       := TVkApplicInform_.Create( Self );
+     _EnabledLayerNames     := TStringList.Create;
+     _EnabledExtensionNames := TStringList.Create;
+
+     Type_  := VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+     Next_  := nil;
+     Flags_ := 0;
+
+     EnabledExtensionNames_.Add( VK_KHR_SURFACE_EXTENSION_NAME       );
+     EnabledExtensionNames_.Add( VK_KHR_WIN32_SURFACE_EXTENSION_NAME );
+
+     _Handle := nil;
+end;
+
+destructor TVkInstanInform<TVkInstan_>.Destroy;
+begin
+     Handle := nil;
+
+     _ApplicationInfo      .Free;
+     _EnabledLayerNames    .Free;
+     _EnabledExtensionNames.Free;
+
+     inherited;
+end;
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInstan
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
 
 function TVkInstan<TVulkan_>.GetHandle :VkInstance;
 begin
@@ -80,29 +379,18 @@ begin
      Result := _Handle;
 end;
 
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+procedure TVkInstan<TVulkan_>.SetHandle( const Handle_:VkInstance );
+begin
+     if Assigned( _Handle ) then DestroHandle;
+
+     _Handle := Handle_;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkInstan<TVulkan_>.CreateHandle;
-var
-   L, E :String;
-   Ls, Es :TArray<PAnsiChar>;
 begin
-     for L in _Layeres do Ls := Ls + [ System.AnsiStrings.StrNew( PAnsiChar( AnsiString( L ) ) ) ];
-     for E in _Extenss do Es := Es + [ System.AnsiStrings.StrNew( PAnsiChar( AnsiString( E ) ) ) ];
-
-     with _Inform do
-     begin
-          sType                   := VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-          pNext                   := nil;
-          flags                   := 0;
-          pApplicationInfo        := @_Applic;
-          enabledLayerCount       := Length( Ls );
-          ppEnabledLayerNames     := @Ls[0];
-          enabledExtensionCount   := Length( Es );
-          ppEnabledExtensionNames := @Es[0];
-     end;
-
-     Assert( vkCreateInstance( @_Inform, nil, @_Handle ) = VK_SUCCESS );
+     Assert( vkCreateInstance( _Inform.Handle, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkInstan<TVulkan_>.DestroHandle;
@@ -116,40 +404,22 @@ constructor TVkInstan<TVulkan_>.Create( const Vulkan_:TVulkan_ );
 begin
      inherited;
 
-     _Layeres := TStringList.Create;
-     _Extenss := TStringList.Create;
-
      _Vulkan := Vulkan_;
 
      TVulkan( Vulkan_ ).Instans := TVkInstan( Self );
 
-     with _Applic do
-     begin
-          sType              := VK_STRUCTURE_TYPE_APPLICATION_INFO;
-          pNext              := nil;
-          pApplicationName   := PAnsiChar( AnsiString( _Name ) );
-          applicationVersion := 1;
-          pEngineName        := PAnsiChar( AnsiString( _Name ) );
-          engineVersion      := 1;
-          apiVersion         := VK_API_VERSION_1_0;
-     end;
-
-     _Extenss.Add( VK_KHR_SURFACE_EXTENSION_NAME       );
-     _Extenss.Add( VK_KHR_WIN32_SURFACE_EXTENSION_NAME );
+     _Inform := TVkInstanInform_.Create( Self );
 
      _Handle := nil;
-
-     CreateHandle;
 end;
 
 destructor TVkInstan<TVulkan_>.Destroy;
 begin
      _Devices.Free;
 
-     if Assigned( _Handle ) then DestroHandle;
+      Handle := nil;
 
-     _Layeres.Free;
-     _Extenss.Free;
+     _Inform.Free;
 
      inherited;
 end;

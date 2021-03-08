@@ -23,6 +23,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        TVkLayeres               = TVkLayeres<TVulkan>;
          TVkLayere              = TVkLayere<TVulkan>;
        TVkInstan                = TVkInstan<TVulkan>;
+         TVkInstanInform        = TVkInstanInform<TVkInstan>;
+           TVkApplicInform      = TVkApplicInform<TVkInstanInform>;
          TVkWindow              = TVkWindow<TVkInstan>;
            TVkSurface           = TVkSurface<TVkWindow>;
          TVkDevices             = TVkDevices<TVkInstan>;
