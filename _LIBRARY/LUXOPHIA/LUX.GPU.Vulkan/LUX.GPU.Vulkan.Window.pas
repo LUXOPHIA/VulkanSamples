@@ -8,22 +8,22 @@ uses WinApi.Windows,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkWindow<TVkInstance_:class> = class;
+     TVkWindow<TVkInstan_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkWindow
 
-     TVkWindow<TVkInstance_:class> = class
+     TVkWindow<TVkInstan_:class> = class
      private
-       type TVkWindow_  = TVkWindow<TVkInstance_>;
+       type TVkWindow_  = TVkWindow<TVkInstan_>;
             TVkSurface_ = TVkSurface<TVkWindow_>;
      protected
-       _Instance :TVkInstance_;
-       _Width    :Integer;
-       _Height   :Integer;
-       _Proc     :TFNWndProc;
-       _Surface  :TVkSurface_;
+       _Instan  :TVkInstan_;
+       _Width   :Integer;
+       _Height  :Integer;
+       _Proc    :TFNWndProc;
+       _Surface :TVkSurface_;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -32,15 +32,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        name       :String;  // Name to put on the window/icon
        window     :HWND;    // hWnd - window handle
 
-       constructor Create( const Instance_:TVkInstance_; const Width_,Height_:Integer; const Proc_:TFNWndProc );
+       constructor Create( const Instan_:TVkInstan_; const Width_,Height_:Integer; const Proc_:TFNWndProc );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Instance :TVkInstance_ read _Instance               ;
-       property Width    :Integer      read _Width    write _Width  ;
-       property Height   :Integer      read _Height   write _Height ;
-       property Proc     :TFNWndProc   read _Proc     write _Proc   ;
-       property Surface  :TVkSurface_  read _Surface  write _Surface;
+       property Instan  :TVkInstan_ read _Instan                 ;
+       property Width   :Integer      read _Width    write _Width  ;
+       property Height  :Integer      read _Height   write _Height ;
+       property Proc    :TFNWndProc   read _Proc     write _Proc   ;
+       property Surface :TVkSurface_  read _Surface  write _Surface;
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -66,7 +66,7 @@ uses FMX.Types,
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-procedure TVkWindow<TVkInstance_>.CreateHandle;
+procedure TVkWindow<TVkInstan_>.CreateHandle;
 var
    win_class :WNDCLASSEX;
    wr        :TRect;
@@ -101,15 +101,15 @@ begin
      wr := TRect.Create( 0, 0, _Width, _Height );
      AdjustWindowRect( wr, WS_OVERLAPPEDWINDOW, False );
      window := CreateWindowEx( 0,
-                               LPCWSTR( name ),              // class name
-                               LPCWSTR( name ),              // app name
+                               LPCWSTR( name ),                                  // class name
+                               LPCWSTR( name ),                                  // app name
                                WS_OVERLAPPEDWINDOW or WS_VISIBLE or WS_SYSMENU,  // window style
                                100, 100,                                         // x/y coords
                                wr.right - wr.left,                               // width
                                wr.bottom - wr.top,                               // height
                                0,                                                // handle to parent
                                0,                                                // handle to menu
-                               connection,                                 // hInstance
+                               connection,                                       // hInstance
                                nil );                                            // no extra parameters
      if window = 0 then
      begin
@@ -117,37 +117,37 @@ begin
           Log.d( 'Cannot create a window in which to draw!' );
           RunError( 1 );
      end;
-     SetWindowLongPtr( window, GWLP_USERDATA, LONG_PTR( @TVkInstan( _Instance ).Vulkan.Info ) );
+     SetWindowLongPtr( window, GWLP_USERDATA, LONG_PTR( @TVkInstan( _Instan ).Vulkan.Info ) );
 end;
 
-procedure TVkWindow<TVkInstance_>.DestroHandle;
+procedure TVkWindow<TVkInstan_>.DestroHandle;
 begin
      DestroyWindow( window );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkWindow<TVkInstance_>.Create( const Instance_:TVkInstance_; const Width_,Height_:Integer; const Proc_:TFNWndProc );
+constructor TVkWindow<TVkInstan_>.Create( const Instan_:TVkInstan_; const Width_,Height_:Integer; const Proc_:TFNWndProc );
 begin
      inherited Create;
 
-     _Instance := Instance_;
-     _Width    := Width_ ;
-     _Height   := Height_;
-     _Proc     := Proc_;
+     _Instan := Instan_;
+     _Width  := Width_ ;
+     _Height := Height_;
+     _Proc   := Proc_  ;
 
-     TVkInstan( _Instance ).Window := TVkWindow( Self );
+     TVkInstan( _Instan ).Window := TVkWindow( Self );
 
      CreateHandle;
 end;
 
-procedure TVkWindow<TVkInstance_>.AfterConstruction;
+procedure TVkWindow<TVkInstan_>.AfterConstruction;
 begin
      inherited;
 
 end;
 
-destructor TVkWindow<TVkInstance_>.Destroy;
+destructor TVkWindow<TVkInstan_>.Destroy;
 begin
      DestroHandle;
 

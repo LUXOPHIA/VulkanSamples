@@ -57,12 +57,12 @@ uses System.SysUtils,
 
 procedure TVkSurface<TVkWindow_>.CreateHandle;
 begin
-     Assert( vkCreateWin32SurfaceKHR( TVkWindow( _Window ).Instance.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
+     Assert( vkCreateWin32SurfaceKHR( TVkWindow( _Window ).Instan.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkSurface<TVkWindow_>.DestroHandle;
 begin
-     vkDestroySurfaceKHR( TVkWindow( _Window ).Instance.Handle, _Handle, nil );
+     vkDestroySurfaceKHR( TVkWindow( _Window ).Instan.Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
