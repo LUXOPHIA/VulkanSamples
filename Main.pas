@@ -89,7 +89,7 @@ var
    present                          :VkPresentInfoKHR;
 begin
      _Vulkan  := TVulkan.Create;
-     _Instan  := TVkInstan.Create( _Vulkan );
+     _Instan  := _Vulkan.Instans.Add;
      _Window  := TVkWindow.Create( _Instan, 500, 500, @WndProc );
      _Surfac  := TVkSurface.Create( _Window );
      _Devices := TVkDevices.Create( _Instan );
@@ -149,23 +149,23 @@ begin
      rp_begin.clearValueCount          := 2;
      rp_begin.pClearValues             := @clear_values[0];
 
-     vkCmdBeginRenderPass( _Vulkan.Instans.Devices[0].Pooler.ComBufs.Handle, @rp_begin, VK_SUBPASS_CONTENTS_INLINE );
+     vkCmdBeginRenderPass( _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle, @rp_begin, VK_SUBPASS_CONTENTS_INLINE );
 
-     vkCmdBindPipeline( _Vulkan.Instans.Devices[0].Pooler.ComBufs.Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Pipeli.Handle );
-     vkCmdBindDescriptorSets( _Vulkan.Instans.Devices[0].Pooler.ComBufs.Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Vulkan.Info.pipeline_layout, 0, NUM_DESCRIPTOR_SETS,
+     vkCmdBindPipeline( _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Pipeli.Handle );
+     vkCmdBindDescriptorSets( _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Vulkan.Info.pipeline_layout, 0, NUM_DESCRIPTOR_SETS,
                               @_Vulkan.Info.desc_set[0], 0, nil );
 
      offsets[0] := 0;
-     vkCmdBindVertexBuffers( _Vulkan.Instans.Devices[0].Pooler.ComBufs.Handle, 0, 1, @_Vulkan.Info.vertex_buffer.buf, @offsets[0] );
+     vkCmdBindVertexBuffers( _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle, 0, 1, @_Vulkan.Info.vertex_buffer.buf, @offsets[0] );
 
      init_viewports( _Vulkan );
      init_scissors( _Vulkan );
 
-     vkCmdDraw( _Vulkan.Instans.Devices[0].Pooler.ComBufs.Handle, 12 * 3, 1, 0, 0 );
-     vkCmdEndRenderPass( _Vulkan.Instans.Devices[0].Pooler.ComBufs.Handle );
+     vkCmdDraw( _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle, 12 * 3, 1, 0, 0 );
+     vkCmdEndRenderPass( _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle );
      _Comman.EndRecord;
 
-     cmd_bufs[0] := _Vulkan.Instans.Devices[0].Pooler.ComBufs.Handle;
+     cmd_bufs[0] := _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
@@ -229,7 +229,6 @@ begin
      _Pooler.Free;
      _Surfac.Free;
      _Window.Free;
-     _Instan.Free;
      _Vulkan.Free;
 end;
 
