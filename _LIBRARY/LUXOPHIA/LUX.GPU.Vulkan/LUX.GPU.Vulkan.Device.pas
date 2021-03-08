@@ -65,7 +65,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// プロパティ
        property Devices                     :TVkDevices_                      read   _Devices                ;
        property Physic                      :VkPhysicalDevice                 read   _Physic                 ;
-       property Props                       :VkPhysicalDeviceProperties       read   _Propers                ;
+       property Propers                     :VkPhysicalDeviceProperties       read   _Propers                ;
        property Memorys                     :VkPhysicalDeviceMemoryProperties read   _Memorys                ;
        property Layeres                     :TVkDevLays_                      read   _Layeres  write _Layeres;
        property Handle                      :VkDevice                         read   _Handle                 ;
