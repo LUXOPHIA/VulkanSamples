@@ -422,7 +422,9 @@ constructor TVkInstan<TVulkan_>.Create( const Vulkan_:TVulkan_ );
 begin
      inherited;
 
-     _Vulkan := Vulkan_;  TVulkan( Vulkan_ ).Instans.Add( TVkInstan( Self ) );
+     _Vulkan := Vulkan_;
+
+     TVulkan( Vulkan_ ).Instans.Add( TVkInstan( Self ) );
 
      _Inform := TVkInstanInform_.Create( Self );
 
