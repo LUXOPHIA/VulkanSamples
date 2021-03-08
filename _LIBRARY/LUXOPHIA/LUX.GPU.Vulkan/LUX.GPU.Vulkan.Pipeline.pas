@@ -94,9 +94,9 @@ begin
      vi.pNext                           := nil;
      vi.flags                           := 0;
      vi.vertexBindingDescriptionCount   := 1;
-     vi.pVertexBindingDescriptions      := @TVkDevice( _Device ).Devices.Instance.Vulkan.Info.vi_binding;
+     vi.pVertexBindingDescriptions      := @TVkDevice( _Device ).Devices.Instan.Vulkan.Info.vi_binding;
      vi.vertexAttributeDescriptionCount := 2;
-     vi.pVertexAttributeDescriptions    := @TVkDevice( _Device ).Devices.Instance.Vulkan.Info.vi_attribs[0];
+     vi.pVertexAttributeDescriptions    := @TVkDevice( _Device ).Devices.Instan.Vulkan.Info.vi_attribs[0];
 
      ia.sType                  := VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
      ia.pNext                  := nil;
@@ -187,7 +187,7 @@ begin
 
      pipeline.sType               := VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
      pipeline.pNext               := nil;
-     pipeline.layout              := TVkDevice( _Device ).Devices.Instance.Vulkan.Info.pipeline_layout;
+     pipeline.layout              := TVkDevice( _Device ).Devices.Instan.Vulkan.Info.pipeline_layout;
      pipeline.basePipelineHandle  := VK_NULL_HANDLE;
      pipeline.basePipelineIndex   := 0;
      pipeline.flags               := 0;
@@ -206,10 +206,10 @@ begin
      pipeline.pStages             := @shaderStages[0];
      pipeline.stageCount          := Length( shaderStages );
 
-     pipeline.renderPass          := TVkDevice( _Device ).Devices.Instance.Vulkan.Info.render_pass;
+     pipeline.renderPass          := TVkDevice( _Device ).Devices.Instan.Vulkan.Info.render_pass;
      pipeline.subpass             := 0;
 
-     res := vkCreateGraphicsPipelines( TVkDevice( _Device ).Handle, TVkDevice( _Device ).Devices.Instance.Vulkan.Info.pipelineCache, 1, @pipeline, nil, @_Handle );
+     res := vkCreateGraphicsPipelines( TVkDevice( _Device ).Handle, TVkDevice( _Device ).Devices.Instan.Vulkan.Info.pipelineCache, 1, @pipeline, nil, @_Handle );
      Assert( res = VK_SUCCESS );
 end;
 

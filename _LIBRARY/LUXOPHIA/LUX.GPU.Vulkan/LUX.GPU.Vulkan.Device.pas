@@ -91,7 +91,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        type TVkDevices_ = TVkDevices<TVkInstance_>;
             TVkDevice_  = TVkDevice<TVkInstance_>;
      protected
-       _Instance :TVkInstance_;
+       _Instan :TVkInstance_;
        ///// アクセス
        ///// メソッド
        procedure FindDevices;
@@ -100,7 +100,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Instance :TVkInstance_ read _Instance;
+       property Instan :TVkInstance_ read _Instan;
        ///// メソッド
        function Add( const Physic_:VkPhysicalDevice ) :TVkDevice_; overload;
      end;
@@ -302,9 +302,9 @@ begin
      _Layeres := TVkDevLays_.Create( Self );
 
      FindQueFams;
-     FindQueFamI( TVkDevices( _Devices ).Instance.Window.Surface.Handle );
+     FindQueFamI( TVkDevices( _Devices ).Instan.Window.Surface.Handle );
 
-     FindFormat( TVkDevices( _Devices ).Instance.Window.Surface.Handle );
+     FindFormat( TVkDevices( _Devices ).Instan.Window.Surface.Handle );
 
      _Extenss := _Extenss + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
 
@@ -370,12 +370,12 @@ var
    Ps :TArray<VkPhysicalDevice>;
    P :VkPhysicalDevice;
 begin
-     Assert( vkEnumeratePhysicalDevices( TVkInstan( _Instance ).Handle, @PsN, nil ) = VK_SUCCESS );
+     Assert( vkEnumeratePhysicalDevices( TVkInstan( _Instan ).Handle, @PsN, nil ) = VK_SUCCESS );
      Assert( PsN > 0 );
 
      SetLength( Ps, PsN );
 
-     Assert( vkEnumeratePhysicalDevices( TVkInstan( _Instance ).Handle, @PsN, @Ps[0] ) = VK_SUCCESS );
+     Assert( vkEnumeratePhysicalDevices( TVkInstan( _Instan ).Handle, @PsN, @Ps[0] ) = VK_SUCCESS );
      Assert( PsN > 0 );
 
      for P in Ps do Add( P );
@@ -387,9 +387,9 @@ constructor TVkDevices<TVkInstance_>.Create( const Instance_:TVkInstance_ );
 begin
      inherited Create;
 
-     _Instance := Instance_;
+     _Instan := Instance_;
 
-     TVkInstan( _Instance ).Devices := TVkDevices( Self );
+     TVkInstan( _Instan ).Devices := TVkDevices( Self );
 end;
 
 procedure TVkDevices<TVkInstance_>.AfterConstruction;

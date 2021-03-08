@@ -124,23 +124,23 @@ var
 begin
      (* DEPENDS on info.cmd and info.queue initialized *)
 
-     Assert( vkGetPhysicalDeviceSurfaceCapabilitiesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @surfCapabilities ) = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfaceCapabilitiesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instan.Window.Surface.Handle, @surfCapabilities ) = VK_SUCCESS );
 
-     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @presentModeCount, nil ) = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instan.Window.Surface.Handle, @presentModeCount, nil ) = VK_SUCCESS );
 
      Assert( presentModeCount > 0 );
 
      SetLength( presentModes, presentModeCount );
 
-     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle, @presentModeCount, @presentModes[0] ) = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instan.Window.Surface.Handle, @presentModeCount, @presentModes[0] ) = VK_SUCCESS );
 
      // width and height are either both 0xFFFFFFFF, or both not 0xFFFFFFFF.
      if surfCapabilities.currentExtent.width = $FFFFFFFF then
      begin
           // If the surface size is undefined, the size is set to
           // the size of the images requested.
-          swapchainExtent.width  := TVkDevice( _Device ).Devices.Instance.Window.width;
-          swapchainExtent.height := TVkDevice( _Device ).Devices.Instance.Window.height;
+          swapchainExtent.width  := TVkDevice( _Device ).Devices.Instan.Window.width;
+          swapchainExtent.height := TVkDevice( _Device ).Devices.Instan.Window.height;
           if swapchainExtent.width < surfCapabilities.minImageExtent.width
           then swapchainExtent.width := surfCapabilities.minImageExtent.width
           else
@@ -198,7 +198,7 @@ begin
           sType                 := VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
           pNext                 := nil;
           flags                 := 0;
-          surface               := TVkDevice( _Device ).Devices.Instance.Window.Surface.Handle;
+          surface               := TVkDevice( _Device ).Devices.Instan.Window.Surface.Handle;
           minImageCount         := desiredNumberOfSwapChainImages;
           imageFormat           := TVkDevice( _Device ).Format;
           imageColorSpace       := VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;

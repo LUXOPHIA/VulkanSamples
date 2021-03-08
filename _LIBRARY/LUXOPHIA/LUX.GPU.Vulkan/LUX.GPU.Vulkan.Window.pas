@@ -36,11 +36,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Instan  :TVkInstan_ read _Instan                 ;
-       property Width   :Integer      read _Width    write _Width  ;
-       property Height  :Integer      read _Height   write _Height ;
-       property Proc    :TFNWndProc   read _Proc     write _Proc   ;
-       property Surface :TVkSurface_  read _Surface  write _Surface;
+       property Instan  :TVkInstan_  read _Instan                ;
+       property Width   :Integer     read _Width   write _Width  ;
+       property Height  :Integer     read _Height  write _Height ;
+       property Proc    :TFNWndProc  read _Proc    write _Proc   ;
+       property Surface :TVkSurface_ read _Surface write _Surface;
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
