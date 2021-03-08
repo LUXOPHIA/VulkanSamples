@@ -69,7 +69,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Memorys                     :VkPhysicalDeviceMemoryProperties read   _Memorys                ;
        property Layeres                     :TVkDevLays_                      read   _Layeres  write _Layeres;
        property Handle                      :VkDevice                         read   _Handle                 ;
-       property Extensions                  :TArray<PAnsiChar>                read   _Extenss                ;
+       property Extenss                     :TArray<PAnsiChar>                read   _Extenss                ;
        property FamilysN                    :UInt32                           read   _FamilysN               ;
        property Familys[ const I_:Integer ] :VkQueueFamilyProperties          read GetQueFams                ;
        property FamilyG                     :UInt32                           read   _FamilyG                ;
