@@ -13,8 +13,8 @@ uses System.Generics.Collections,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkDevices<TVkInstance_:class>  = class;
-       TVkDevice<TVkInstance_:class> = class;
+     TVkDevices<TVkInstan_:class>  = class;
+       TVkDevice<TVkInstan_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -22,10 +22,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevice
 
-     TVkDevice<TVkInstance_:class> = class
+     TVkDevice<TVkInstan_:class> = class
      private
-       type TVkDevice_      = TVkDevice<TVkInstance_>;
-            TVkDevices_     = TVkDevices<TVkInstance_>;
+       type TVkDevice_      = TVkDevice<TVkInstan_>;
+            TVkDevices_     = TVkDevices<TVkInstan_>;
             TVkDevLays_     = TVkDevLays<TVkDevice_>;
             TVkBuffer_      = TVkBuffer<TVkDevice_>;
             TVkCommandPool_ = TVkCommandPool<TVkDevice_>;
@@ -86,21 +86,21 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevices
 
-     TVkDevices<TVkInstance_:class> = class( TObjectList<TVkDevice<TVkInstance_>> )
+     TVkDevices<TVkInstan_:class> = class( TObjectList<TVkDevice<TVkInstan_>> )
      private
-       type TVkDevices_ = TVkDevices<TVkInstance_>;
-            TVkDevice_  = TVkDevice<TVkInstance_>;
+       type TVkDevices_ = TVkDevices<TVkInstan_>;
+            TVkDevice_  = TVkDevice<TVkInstan_>;
      protected
-       _Instan :TVkInstance_;
+       _Instan :TVkInstan_;
        ///// アクセス
        ///// メソッド
        procedure FindDevices;
      public
-       constructor Create( const Instance_:TVkInstance_ );
+       constructor Create( const Instan_:TVkInstan_ );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Instan :TVkInstance_ read _Instan;
+       property Instan :TVkInstan_ read _Instan;
        ///// メソッド
        function Add( const Physic_:VkPhysicalDevice ) :TVkDevice_; overload;
      end;
@@ -129,14 +129,14 @@ uses System.SysUtils,
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkDevice<TVkInstance_>.GetQueFams( const I_:Integer ) :VkQueueFamilyProperties;
+function TVkDevice<TVkInstan_>.GetQueFams( const I_:Integer ) :VkQueueFamilyProperties;
 begin
      Result := _Familys[ I_ ];
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkDevice<TVkInstance_>.FindQueFams;
+procedure TVkDevice<TVkInstan_>.FindQueFams;
 begin
      vkGetPhysicalDeviceQueueFamilyProperties( Physic, @_FamilysN, nil );
      Assert( _FamilysN > 0 );
@@ -146,7 +146,7 @@ begin
      Assert( _FamilysN > 0 );
 end;
 
-procedure TVkDevice<TVkInstance_>.FindQueFamI;
+procedure TVkDevice<TVkInstan_>.FindQueFamI;
 var
    I :UInt32;
 begin
@@ -162,7 +162,7 @@ begin
      end;
 end;
 
-procedure TVkDevice<TVkInstance_>.FindQueFamI( const Surface_:VkSurfaceKHR );
+procedure TVkDevice<TVkInstan_>.FindQueFamI( const Surface_:VkSurfaceKHR );
 var
    Fs :TArray<VkBool32>;
    I  :UInt32;
@@ -213,7 +213,7 @@ begin
      end;
 end;
 
-procedure TVkDevice<TVkInstance_>.FindFormat( const Surface_:VkSurfaceKHR );
+procedure TVkDevice<TVkInstan_>.FindFormat( const Surface_:VkSurfaceKHR );
 const
      (* Use this surface format if it's available.  This ensures that generated
       * images are similar on different devices and with different drivers.
@@ -244,7 +244,7 @@ begin
      end;
 end;
 
-procedure TVkDevice<TVkInstance_>.CreateHandle;
+procedure TVkDevice<TVkInstan_>.CreateHandle;
 var
    queue_priorities :array [ 0..1-1 ] of Single;
    queue_info       :VkDeviceQueueCreateInfo;
@@ -270,13 +270,13 @@ begin
      Assert( vkCreateDevice( Physic, @device_info, nil, @_Handle ) = VK_SUCCESS );
 end;
 
-procedure TVkDevice<TVkInstance_>.DestroHandle;
+procedure TVkDevice<TVkInstan_>.DestroHandle;
 begin
      vkDeviceWaitIdle( _Handle );
      vkDestroyDevice( _Handle, nil );
 end;
 
-procedure TVkDevice<TVkInstance_>.init_device_queue;
+procedure TVkDevice<TVkInstan_>.init_device_queue;
 begin
      vkGetDeviceQueue( _Handle, _FamilyG, 0, @_QueuerG );
 
@@ -286,7 +286,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkDevice<TVkInstance_>.Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice );
+constructor TVkDevice<TVkInstan_>.Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice );
 begin
      inherited Create;
 
@@ -313,13 +313,13 @@ begin
      init_device_queue;
 end;
 
-procedure TVkDevice<TVkInstance_>.AfterConstruction;
+procedure TVkDevice<TVkInstan_>.AfterConstruction;
 begin
      inherited;
 
 end;
 
-destructor TVkDevice<TVkInstance_>.Destroy;
+destructor TVkDevice<TVkInstan_>.Destroy;
 begin
      if Assigned( _Buffers ) then _Buffers.Free;
 
@@ -332,7 +332,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-function TVkDevice<TVkInstance_>.memory_type_from_properties( typeBits:UInt32; const requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
+function TVkDevice<TVkInstan_>.memory_type_from_properties( typeBits:UInt32; const requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
 var
    I :UInt32;
 begin
@@ -364,7 +364,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkDevices<TVkInstance_>.FindDevices;
+procedure TVkDevices<TVkInstan_>.FindDevices;
 var
    PsN :UInt32;
    Ps :TArray<VkPhysicalDevice>;
@@ -383,23 +383,23 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkDevices<TVkInstance_>.Create( const Instance_:TVkInstance_ );
+constructor TVkDevices<TVkInstan_>.Create( const Instan_:TVkInstan_ );
 begin
      inherited Create;
 
-     _Instan := Instance_;
+     _Instan := Instan_;
 
      TVkInstan( _Instan ).Devices := TVkDevices( Self );
 end;
 
-procedure TVkDevices<TVkInstance_>.AfterConstruction;
+procedure TVkDevices<TVkInstan_>.AfterConstruction;
 begin
      inherited;
 
      FindDevices;
 end;
 
-destructor TVkDevices<TVkInstance_>.Destroy;
+destructor TVkDevices<TVkInstan_>.Destroy;
 begin
 
      inherited;
@@ -407,7 +407,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-function TVkDevices<TVkInstance_>.Add( const Physic_:VkPhysicalDevice ) :TVkDevice_;
+function TVkDevices<TVkInstan_>.Add( const Physic_:VkPhysicalDevice ) :TVkDevice_;
 begin
      Result := TVkDevice_.Create( Self, Physic_ );
 end;
