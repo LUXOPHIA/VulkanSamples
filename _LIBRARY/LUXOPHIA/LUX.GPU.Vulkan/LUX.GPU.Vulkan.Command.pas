@@ -108,7 +108,7 @@ begin
 
      _Device := Device_;
 
-     TVkDevice( _Device ).ComPool := TVkCommandPool( Self );
+     TVkDevice( _Device ).Pooler := TVkCommandPool( Self );
 
      CreateHandle;
 end;
