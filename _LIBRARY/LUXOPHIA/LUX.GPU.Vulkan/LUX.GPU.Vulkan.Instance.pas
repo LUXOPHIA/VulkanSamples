@@ -121,7 +121,7 @@ begin
 
      _Vulkan := Vulkan_;
 
-     TVulkan( Vulkan_ ).Instance := TVkInstance( Self );
+     TVulkan( Vulkan_ ).Instans := TVkInstance( Self );
 
      with _Applic do
      begin
