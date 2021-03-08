@@ -22,11 +22,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVulkan                    = class;
        TVkLayeres               = TVkLayeres<TVulkan>;
          TVkLayere              = TVkLayere<TVulkan>;
-       TVkInstance              = TVkInstance<TVulkan>;
-         TVkWindow              = TVkWindow<TVkInstance>;
+       TVkInstan                = TVkInstan<TVulkan>;
+         TVkWindow              = TVkWindow<TVkInstan>;
            TVkSurface           = TVkSurface<TVkWindow>;
-         TVkDevices             = TVkDevices<TVkInstance>;
-           TVkDevice            = TVkDevice<TVkInstance>;
+         TVkDevices             = TVkDevices<TVkInstan>;
+           TVkDevice            = TVkDevice<TVkInstan>;
              TVkDevLays         = TVkDevLays<TVkDevice>;
                TVkDevLay        = TVkDevLays<TVkDevice>;
              TVkPipeline        = TVkPipeline<TVkDevice>;
@@ -50,14 +50,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        _Layeres :TVkLayeres;
-       _Instans :TVkInstance;
+       _Instans :TVkInstan;
      public
        Info :T_sample_info;
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property Layeres :TVkLayeres  read _Layeres               ;
-       property Instans :TVkInstance read _Instans write _Instans;
+       property Layeres :TVkLayeres read _Layeres               ;
+       property Instans :TVkInstan  read _Instans write _Instans;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】

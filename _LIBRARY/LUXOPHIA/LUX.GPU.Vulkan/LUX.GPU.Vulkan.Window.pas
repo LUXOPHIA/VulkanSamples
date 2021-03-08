@@ -117,7 +117,7 @@ begin
           Log.d( 'Cannot create a window in which to draw!' );
           RunError( 1 );
      end;
-     SetWindowLongPtr( window, GWLP_USERDATA, LONG_PTR( @TVkInstance( _Instance ).Vulkan.Info ) );
+     SetWindowLongPtr( window, GWLP_USERDATA, LONG_PTR( @TVkInstan( _Instance ).Vulkan.Info ) );
 end;
 
 procedure TVkWindow<TVkInstance_>.DestroHandle;
@@ -136,7 +136,7 @@ begin
      _Height   := Height_;
      _Proc     := Proc_;
 
-     TVkInstance( _Instance ).Window := TVkWindow( Self );
+     TVkInstan( _Instance ).Window := TVkWindow( Self );
 
      CreateHandle;
 end;

@@ -10,7 +10,7 @@ uses System.Classes,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkInstance<TVulkan_:class> = class;
+     TVkInstan<TVulkan_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -18,9 +18,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInstance
 
-     TVkInstance<TVulkan_:class> = class( TVkObject<TVulkan_> )
+     TVkInstan<TVulkan_:class> = class( TVkObject<TVulkan_> )
      private
-       type TVkInstance_ = TVkInstance<TVulkan_>;
+       type TVkInstance_ = TVkInstan<TVulkan_>;
             TVkDevices_  = TVkDevices<TVkInstance_>;
             TVkWindow_   = TVkWindow<TVkInstance_>;
      protected
@@ -73,7 +73,7 @@ uses System.AnsiStrings,
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
-function TVkInstance<TVulkan_>.GetHandle :VkInstance;
+function TVkInstan<TVulkan_>.GetHandle :VkInstance;
 begin
      if not Assigned( _Handle ) then CreateHandle;
 
@@ -82,7 +82,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-procedure TVkInstance<TVulkan_>.CreateHandle;
+procedure TVkInstan<TVulkan_>.CreateHandle;
 var
    L, E :String;
    Ls, Es :TArray<PAnsiChar>;
@@ -105,14 +105,14 @@ begin
      Assert( vkCreateInstance( @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
-procedure TVkInstance<TVulkan_>.DestroHandle;
+procedure TVkInstan<TVulkan_>.DestroHandle;
 begin
      vkDestroyInstance( _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkInstance<TVulkan_>.Create( const Vulkan_:TVulkan_ );
+constructor TVkInstan<TVulkan_>.Create( const Vulkan_:TVulkan_ );
 begin
      inherited;
 
@@ -121,7 +121,7 @@ begin
 
      _Vulkan := Vulkan_;
 
-     TVulkan( Vulkan_ ).Instans := TVkInstance( Self );
+     TVulkan( Vulkan_ ).Instans := TVkInstan( Self );
 
      with _Applic do
      begin
@@ -142,7 +142,7 @@ begin
      CreateHandle;
 end;
 
-destructor TVkInstance<TVulkan_>.Destroy;
+destructor TVkInstan<TVulkan_>.Destroy;
 begin
      _Devices.Free;
 

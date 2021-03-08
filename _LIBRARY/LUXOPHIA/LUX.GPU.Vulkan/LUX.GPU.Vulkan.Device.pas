@@ -370,12 +370,12 @@ var
    Ps :TArray<VkPhysicalDevice>;
    P :VkPhysicalDevice;
 begin
-     Assert( vkEnumeratePhysicalDevices( TVkInstance( _Instance ).Handle, @PsN, nil ) = VK_SUCCESS );
+     Assert( vkEnumeratePhysicalDevices( TVkInstan( _Instance ).Handle, @PsN, nil ) = VK_SUCCESS );
      Assert( PsN > 0 );
 
      SetLength( Ps, PsN );
 
-     Assert( vkEnumeratePhysicalDevices( TVkInstance( _Instance ).Handle, @PsN, @Ps[0] ) = VK_SUCCESS );
+     Assert( vkEnumeratePhysicalDevices( TVkInstan( _Instance ).Handle, @PsN, @Ps[0] ) = VK_SUCCESS );
      Assert( PsN > 0 );
 
      for P in Ps do Add( P );
@@ -389,7 +389,7 @@ begin
 
      _Instance := Instance_;
 
-     TVkInstance( _Instance ).Devices := TVkDevices( Self );
+     TVkInstan( _Instance ).Devices := TVkDevices( Self );
 end;
 
 procedure TVkDevices<TVkInstance_>.AfterConstruction;
