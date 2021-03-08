@@ -190,8 +190,8 @@ begin
           end;
      end;
 
-     queueFamilyIndices[0] := TVkDevice( _Device ).QueFamG;
-     queueFamilyIndices[1] := TVkDevice( _Device ).QueFamP;
+     queueFamilyIndices[0] := TVkDevice( _Device ).FamilyG;
+     queueFamilyIndices[1] := TVkDevice( _Device ).FamilyP;
 
      with _Inform do
      begin
@@ -215,7 +215,7 @@ begin
           clipped               := 1;
           oldSwapchain          := VK_NULL_HANDLE;
 
-          if TVkDevice( _Device ).QueFamG <> TVkDevice( _Device ).QueFamP then
+          if TVkDevice( _Device ).FamilyG <> TVkDevice( _Device ).FamilyP then
           begin
                // If the graphics and present queues are from different queue families,
                // we either have to explicitly transfer ownership of images between the

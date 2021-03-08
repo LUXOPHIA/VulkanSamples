@@ -88,7 +88,7 @@ begin
      begin
           sType            := VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
           pNext            := nil;
-          queueFamilyIndex := TVkDevice( _Device ).QueFamG;
+          queueFamilyIndex := TVkDevice( _Device ).FamilyG;
           flags            := Ord( VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
      end;
 

@@ -51,9 +51,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// アクセス
        function GetQueFams( const I_:Integer ) :VkQueueFamilyProperties;
        ///// メソッド
-       procedure FindQueFams;
-       procedure FindQueFamI; overload;
-       procedure FindQueFamI( const Surface_:VkSurfaceKHR ); overload;
+       procedure FindFamilys;
+       procedure FindFamilyI; overload;
+       procedure FindFamilyI( const Surface_:VkSurfaceKHR ); overload;
        procedure FindFormat( const Surface_:VkSurfaceKHR );
        procedure CreateHandle;
        procedure DestroHandle;
@@ -70,10 +70,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Layeres                     :TVkDevLays_                      read   _Layeres  write _Layeres;
        property Handle                      :VkDevice                         read   _Handle                 ;
        property Extensions                  :TArray<PAnsiChar>                read   _Extenss                ;
-       property QueFamsN                    :UInt32                           read   _FamilysN               ;
-       property QueFams[ const I_:Integer ] :VkQueueFamilyProperties          read GetQueFams                ;
-       property QueFamG                     :UInt32                           read   _FamilyG                ;
-       property QueFamP                     :UInt32                           read   _FamilyP                ;
+       property FamilysN                    :UInt32                           read   _FamilysN               ;
+       property Familys[ const I_:Integer ] :VkQueueFamilyProperties          read GetQueFams                ;
+       property FamilyG                     :UInt32                           read   _FamilyG                ;
+       property FamilyP                     :UInt32                           read   _FamilyP                ;
        property Format                      :VkFormat                         read   _Format                 ;
        property Buffers                     :TVkBuffer_                       read   _Buffers  write _Buffers;
        property ComPool                     :TVkCommandPool_                  read   _Poolers  write _Poolers;
@@ -136,7 +136,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkDevice<TVkInstan_>.FindQueFams;
+procedure TVkDevice<TVkInstan_>.FindFamilys;
 begin
      vkGetPhysicalDeviceQueueFamilyProperties( Physic, @_FamilysN, nil );
      Assert( _FamilysN > 0 );
@@ -146,7 +146,7 @@ begin
      Assert( _FamilysN > 0 );
 end;
 
-procedure TVkDevice<TVkInstan_>.FindQueFamI;
+procedure TVkDevice<TVkInstan_>.FindFamilyI;
 var
    I :UInt32;
 begin
@@ -162,7 +162,7 @@ begin
      end;
 end;
 
-procedure TVkDevice<TVkInstan_>.FindQueFamI( const Surface_:VkSurfaceKHR );
+procedure TVkDevice<TVkInstan_>.FindFamilyI( const Surface_:VkSurfaceKHR );
 var
    Fs :TArray<VkBool32>;
    I  :UInt32;
@@ -301,8 +301,8 @@ begin
 
      _Layeres := TVkDevLays_.Create( Self );
 
-     FindQueFams;
-     FindQueFamI( TVkDevices( _Devices ).Instan.Window.Surface.Handle );
+     FindFamilys;
+     FindFamilyI( TVkDevices( _Devices ).Instan.Window.Surface.Handle );
 
      FindFormat( TVkDevices( _Devices ).Instan.Window.Surface.Handle );
 
