@@ -2,7 +2,7 @@
 
 interface //#################################################################### ■
 
-uses System.Classes,
+uses System.Classes, System.Generics.Collections,
      vulkan_core,
      LUX.GPU.Vulkan.root,
      LUX.GPU.Vulkan.Window,
@@ -10,9 +10,10 @@ uses System.Classes,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkInstan<TVulkan_:class>                   = class;
-       TVkInstanInform<TVkInstan_:class>         = class;
-         TVkApplicInform<TVkInstanInform_:class> = class;
+     TVkInstans<TVulkan_:class>                    = class;
+       TVkInstan<TVulkan_:class>                   = class;
+         TVkInstanInform<TVkInstan_:class>         = class;
+           TVkApplicInform<TVkInstanInform_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -122,6 +123,23 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Handle  :VkInstance       read GetHandle  write SetHandle ;
        property Devices :TVkDevices_      read   _Devices write   _Devices;
        property Window  :TVkWindow_       read   _Window  write   _Window ;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInstans
+
+     TVkInstans<TVulkan_:class> = class( TObjectList<TVkInstan<TVulkan_>> )
+     private
+       type TVkInstans_ = TVkInstans<TVulkan_>;
+            TVkInstan_  = TVkInstan<TVulkan_>;
+     protected
+       _Vulkan :TVulkan_;
+     public
+       constructor Create( const Vulkan_:TVulkan_ );
+       destructor Destroy; override;
+       ///// プロパティ
+       property Vulkan :TVulkan_ read _Vulkan;
+       ///// メソッド
+       function Add :TVkInstan_; overload;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -404,9 +422,7 @@ constructor TVkInstan<TVulkan_>.Create( const Vulkan_:TVulkan_ );
 begin
      inherited;
 
-     _Vulkan := Vulkan_;
-
-     TVulkan( Vulkan_ ).Instans := TVkInstan( Self );
+     _Vulkan := Vulkan_;  TVulkan( Vulkan_ ).Instans.Add( TVkInstan( Self ) );
 
      _Inform := TVkInstanInform_.Create( Self );
 
@@ -422,6 +438,34 @@ begin
      _Inform.Free;
 
      inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInstans
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkInstans<TVulkan_>.Create( const Vulkan_:TVulkan_ );
+begin
+     inherited Create;
+
+     _Vulkan := Vulkan_;
+end;
+
+destructor TVkInstans<TVulkan_>.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+function TVkInstans<TVulkan_>.Add :TVkInstan_;
+begin
+     Result := TVkInstan_.Create( _Vulkan );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
