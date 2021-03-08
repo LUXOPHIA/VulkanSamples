@@ -20,9 +20,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TVkInstan<TVulkan_:class> = class( TVkObject<TVulkan_> )
      private
-       type TVkInstance_ = TVkInstan<TVulkan_>;
-            TVkDevices_  = TVkDevices<TVkInstance_>;
-            TVkWindow_   = TVkWindow<TVkInstance_>;
+       type TVkInstan_  = TVkInstan<TVulkan_>;
+            TVkDevices_ = TVkDevices<TVkInstan_>;
+            TVkWindow_  = TVkWindow<TVkInstan_>;
      protected
        _Vulkan  :TVulkan_;
        _Name    :String;
