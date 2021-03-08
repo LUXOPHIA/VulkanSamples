@@ -22,7 +22,7 @@ type
   public
     { public 宣言 }
     _Vulkan  :TVulkan;
-    _Instan  :TVkInstance;
+    _Instan  :TVkInstan;
     _Window  :TVkWindow;
     _Surfac  :TVkSurface;
     _Devices :TVkDevices;
@@ -89,7 +89,7 @@ var
    present                          :VkPresentInfoKHR;
 begin
      _Vulkan  := TVulkan.Create;
-     _Instan  := TVkInstance.Create( _Vulkan );
+     _Instan  := TVkInstan.Create( _Vulkan );
      _Window  := TVkWindow.Create( _Instan, 500, 500, @WndProc );
      _Surfac  := TVkSurface.Create( _Window );
      _Devices := TVkDevices.Create( _Instan );
