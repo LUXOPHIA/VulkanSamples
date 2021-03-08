@@ -243,7 +243,7 @@ begin
 
      _Device := Device_;
 
-     TVkDevice( _Device ).Swapchains := TVkSwapchain( Self );
+     TVkDevice( _Device ).Swapchs := TVkSwapchain( Self );
 
      CreateHandle;
 

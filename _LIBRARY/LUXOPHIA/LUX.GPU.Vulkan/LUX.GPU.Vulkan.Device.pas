@@ -77,7 +77,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Format                      :VkFormat                         read   _Format                 ;
        property Buffers                     :TVkBuffer_                       read   _Buffers  write _Buffers;
        property Pooler                      :TVkCommandPool_                  read   _Poolers  write _Poolers;
-       property Swapchains                  :TVkSwapchain_                    read   _Swapchs  write _Swapchs;
+       property Swapchs                     :TVkSwapchain_                    read   _Swapchs  write _Swapchs;
        property QueuerG                     :VkQueue                          read   _QueuerG                ;
        property QueuerP                     :VkQueue                          read   _QueuerP                ;
        ///// メソッド
