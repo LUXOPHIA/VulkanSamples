@@ -29,8 +29,8 @@ type
     _Window  :HWND;
     _Surfac  :TVkSurfac;
     _Device  :TVkDevice;
-    _Pooler  :TVkCommandPool;
-    _Comman  :TVkCommandBuffer;
+    _Pooler  :TVkPooler;
+    _Comman  :TVkComman;
     _Swapch  :TVkSwapchain;
     _Buffer  :TVkBuffer;
     _Pipeli  :TVkPipeline;
@@ -167,8 +167,8 @@ begin
      _Window  := CreateWindow( 500, 500 );
      _Surfac  := TVkSurfac.Create( _Instan, _Window );
      _Device.Surfac := _Surfac;
-     _Pooler  := TVkCommandPool.Create( _Device );
-     _Comman  := TVkCommandBuffer.Create( _Pooler );
+     _Pooler  := TVkPooler.Create( _Device );
+     _Comman  := TVkComman.Create( _Pooler );
      _Comman.BeginRecord;
      _Swapch  := TVkSwapchain.Create( _Device );
      init_depth_buffer( _Vulkan );
@@ -222,23 +222,23 @@ begin
      rp_begin.clearValueCount          := 2;
      rp_begin.pClearValues             := @clear_values[0];
 
-     vkCmdBeginRenderPass( _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle, @rp_begin, VK_SUBPASS_CONTENTS_INLINE );
+     vkCmdBeginRenderPass( _Vulkan.Instans[0].Devices[0].Pooler.Comman.Handle, @rp_begin, VK_SUBPASS_CONTENTS_INLINE );
 
-     vkCmdBindPipeline( _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Pipeli.Handle );
-     vkCmdBindDescriptorSets( _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Vulkan.Info.pipeline_layout, 0, NUM_DESCRIPTOR_SETS,
+     vkCmdBindPipeline( _Vulkan.Instans[0].Devices[0].Pooler.Comman.Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Pipeli.Handle );
+     vkCmdBindDescriptorSets( _Vulkan.Instans[0].Devices[0].Pooler.Comman.Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Vulkan.Info.pipeline_layout, 0, NUM_DESCRIPTOR_SETS,
                               @_Vulkan.Info.desc_set[0], 0, nil );
 
      offsets[0] := 0;
-     vkCmdBindVertexBuffers( _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle, 0, 1, @_Vulkan.Info.vertex_buffer.buf, @offsets[0] );
+     vkCmdBindVertexBuffers( _Vulkan.Instans[0].Devices[0].Pooler.Comman.Handle, 0, 1, @_Vulkan.Info.vertex_buffer.buf, @offsets[0] );
 
      init_viewports( _Vulkan );
      init_scissors( _Vulkan );
 
-     vkCmdDraw( _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle, 12 * 3, 1, 0, 0 );
-     vkCmdEndRenderPass( _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle );
+     vkCmdDraw( _Vulkan.Instans[0].Devices[0].Pooler.Comman.Handle, 12 * 3, 1, 0, 0 );
+     vkCmdEndRenderPass( _Vulkan.Instans[0].Devices[0].Pooler.Comman.Handle );
      _Comman.EndRecord;
 
-     cmd_bufs[0] := _Vulkan.Instans[0].Devices[0].Pooler.ComBufs.Handle;
+     cmd_bufs[0] := _Vulkan.Instans[0].Devices[0].Pooler.Comman.Handle;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
