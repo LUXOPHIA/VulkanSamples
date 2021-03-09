@@ -25,13 +25,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVkDevice<TVkInstan_:class> = class
      private
        type TVkDevice_      = TVkDevice<TVkInstan_>;
-            TVkDevices_     = TVkDevices<TVkInstan_>;
             TVkDevLays_     = TVkDevLays<TVkDevice_>;
             TVkBuffer_      = TVkBuffer<TVkDevice_>;
             TVkCommandPool_ = TVkCommandPool<TVkDevice_>;
             TVkSwapchain_   = TVkSwapchain<TVkDevice_>;
      protected
-       _Devices  :TVkDevices_;
+       _Instan   :TVkInstan_;
        _Physic   :VkPhysicalDevice;
        _Propers  :VkPhysicalDeviceProperties;
        _Memorys  :VkPhysicalDeviceMemoryProperties;
@@ -59,11 +58,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DestroHandle;
        procedure init_device_queue;
      public
-       constructor Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice );
+       constructor Create( const Instan_:TVkInstan_; const Physic_:VkPhysicalDevice );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Devices                     :TVkDevices_                      read   _Devices                ;
+       property Instan                      :TVkInstan_                       read   _Instan                 ;
        property Physic                      :VkPhysicalDevice                 read   _Physic                 ;
        property Propers                     :VkPhysicalDeviceProperties       read   _Propers                ;
        property Memorys                     :VkPhysicalDeviceMemoryProperties read   _Memorys                ;
@@ -286,14 +285,14 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkDevice<TVkInstan_>.Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice );
+constructor TVkDevice<TVkInstan_>.Create( const Instan_:TVkInstan_; const Physic_:VkPhysicalDevice );
 begin
      inherited Create;
 
-     _Devices := Devices_;
-     _Physic  := Physic_ ;
+     _Instan := Instan_;
+     _Physic := Physic_;
 
-     TVkDevices_( _Devices ).Add( Self );
+     TVkInstan( _Instan ).Devices.Add( TVkDevice( Self ) );
 
      vkGetPhysicalDeviceProperties( Physic, @_Propers );
 
@@ -302,9 +301,9 @@ begin
      _Layeres := TVkDevLays_.Create( Self );
 
      FindFamilys;
-     FindFamilyI( TVkDevices( _Devices ).Instan.Surfacs[0].Handle );
+     FindFamilyI( TVkInstan( _Instan ).Surfacs[0].Handle );
 
-     FindFormat( TVkDevices( _Devices ).Instan.Surfacs[0].Handle );
+     FindFormat( TVkInstan( _Instan ).Surfacs[0].Handle );
 
      _Extenss := _Extenss + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
 
@@ -409,7 +408,7 @@ end;
 
 function TVkDevices<TVkInstan_>.Add( const Physic_:VkPhysicalDevice ) :TVkDevice_;
 begin
-     Result := TVkDevice_.Create( Self, Physic_ );
+     Result := TVkDevice_.Create( _Instan, Physic_ );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
