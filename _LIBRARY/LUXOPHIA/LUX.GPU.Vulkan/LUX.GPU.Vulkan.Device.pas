@@ -32,27 +32,29 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             TVkCommandPool_ = TVkCommandPool<TVkDevice_>;
             TVkSwapchain_   = TVkSwapchain<TVkDevice_>;
      protected
+       _Extenss  :TArray<PAnsiChar>;
        _Devices  :TVkDevices_;
        _Physic   :VkPhysicalDevice;
        _Propers  :VkPhysicalDeviceProperties;
        _Memorys  :VkPhysicalDeviceMemoryProperties;
        _Layeres  :TVkDevLays_;
-       _Surfac   :TVkSurfac_;
-       _Handle   :VkDevice;
-       _Extenss  :TArray<PAnsiChar>;
        _FamilysN :UInt32;
        _Familys  :TArray<VkQueueFamilyProperties>;
+       _Surfac   :TVkSurfac_;
        _FamilyG  :UInt32;
        _FamilyP  :UInt32;
        _Format   :VkFormat;
+       _Handle   :VkDevice;
+       _QueuerG  :VkQueue;
+       _QueuerP  :VkQueue;
        _Buffers  :TVkBuffer_;
        _Poolers  :TVkCommandPool_;
        _Swapchs  :TVkSwapchain_;
-       _QueuerG  :VkQueue;
-       _QueuerP  :VkQueue;
        ///// アクセス
        function GetInstan :TVkInstan_;
        function GetFamilys( const I_:Integer ) :VkQueueFamilyProperties;
+       function GetSurfac :TVkSurfac_;
+       procedure SetSurfac( const Surfac_:TVkSurfac_ );
        function GetHandle :VkDevice;
        procedure SetHandle( const Handle_:VkDevice );
        ///// メソッド
@@ -62,7 +64,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure FindFormat( const Surfac_:VkSurfaceKHR );
        procedure CreateHandle;
        procedure DestroHandle;
-       procedure init_device_queue;
+       procedure InitQueuers;
      public
        constructor Create; overload;
        constructor Create( const Devices_:TVkDevices_ ); overload;
@@ -70,24 +72,25 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice; const Surfac_:TVkSurfac_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
+       property Extenss                     :TArray<PAnsiChar>                read   _Extenss                  ;
        property Instan                      :TVkInstan_                       read GetInstan                   ;
        property Devices                     :TVkDevices_                      read   _Devices                  ;
        property Physic                      :VkPhysicalDevice                 read   _Physic                   ;
        property Propers                     :VkPhysicalDeviceProperties       read   _Propers                  ;
        property Memorys                     :VkPhysicalDeviceMemoryProperties read   _Memorys                  ;
-       property Layeres                     :TVkDevLays_                      read   _Layeres  write   _Layeres;
-       property Handle                      :VkDevice                         read GetHandle   write SetHandle ;
-       property Extenss                     :TArray<PAnsiChar>                read   _Extenss                  ;
+       property Layeres                     :TVkDevLays_                      read   _Layeres                  ;
        property FamilysN                    :UInt32                           read   _FamilysN                 ;
        property Familys[ const I_:Integer ] :VkQueueFamilyProperties          read GetFamilys                  ;
+       property Surfac                      :TVkSurfac_                       read GetSurfac   write SetSurfac ;
        property FamilyG                     :UInt32                           read   _FamilyG                  ;
        property FamilyP                     :UInt32                           read   _FamilyP                  ;
        property Format                      :VkFormat                         read   _Format                   ;
+       property Handle                      :VkDevice                         read GetHandle   write SetHandle ;
+       property QueuerG                     :VkQueue                          read   _QueuerG                  ;
+       property QueuerP                     :VkQueue                          read   _QueuerP                  ;
        property Buffers                     :TVkBuffer_                       read   _Buffers  write   _Buffers;
        property Pooler                      :TVkCommandPool_                  read   _Poolers  write   _Poolers;
        property Swapchs                     :TVkSwapchain_                    read   _Swapchs  write   _Swapchs;
-       property QueuerG                     :VkQueue                          read   _QueuerG                  ;
-       property QueuerP                     :VkQueue                          read   _QueuerP                  ;
        ///// メソッド
        function memory_type_from_properties( typeBits:UInt32; const requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
      end;
@@ -141,10 +144,31 @@ begin
      Result := _Devices.Instan;
 end;
 
+//------------------------------------------------------------------------------
+
 function TVkDevice<TVkInstan_>.GetFamilys( const I_:Integer ) :VkQueueFamilyProperties;
 begin
      Result := _Familys[ I_ ];
 end;
+
+//------------------------------------------------------------------------------
+
+function TVkDevice<TVkInstan_>.GetSurfac :TVkSurfac_;
+begin
+     Result := _Surfac;
+end;
+
+procedure TVkDevice<TVkInstan_>.SetSurfac( const Surfac_:TVkSurfac_ );
+begin
+     _Surfac := Surfac_;
+
+     FindFamilyI( _Surfac.Handle );
+     FindFormat ( _Surfac.Handle );
+
+     Handle := nil;
+end;
+
+//------------------------------------------------------------------------------
 
 function TVkDevice<TVkInstan_>.GetHandle :VkDevice;
 begin
@@ -152,7 +176,7 @@ begin
      begin
           CreateHandle;
 
-          init_device_queue;
+          InitQueuers;
      end;
 
      Result := _Handle;
@@ -310,7 +334,7 @@ begin
      vkDestroyDevice( _Handle, nil );
 end;
 
-procedure TVkDevice<TVkInstan_>.init_device_queue;
+procedure TVkDevice<TVkInstan_>.InitQueuers;
 begin
      vkGetDeviceQueue( _Handle, _FamilyG, 0, @_QueuerG );
 
@@ -356,11 +380,7 @@ constructor TVkDevice<TVkInstan_>.Create( const Devices_:TVkDevices_; const Phys
 begin
      Create( Devices_, Physic_ );
 
-     _Surfac := Surfac_;
-
-     FindFamilyI( _Surfac.Handle );
-
-     FindFormat( _Surfac.Handle );
+     Surfac := Surfac_;
 end;
 
 destructor TVkDevice<TVkInstan_>.Destroy;
