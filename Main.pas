@@ -28,7 +28,6 @@ type
     _Instan  :TVkInstan;
     _Window  :HWND;
     _Surfac  :TVkSurfac;
-    _Devices :TVkDevices;
     _Device  :TVkDevice;
     _Pooler  :TVkCommandPool;
     _Comman  :TVkCommandBuffer;
@@ -155,10 +154,10 @@ var
 begin
      _Vulkan  := TVulkan.Create;
      _Instan  := TVkInstan.Create( _Vulkan );
+     _Device  := _Instan.Devices[0];
      _Window  := CreateWindow( 500, 500 );
      _Surfac  := TVkSurfac.Create( _Instan, _Window );
-     _Devices := TVkDevices.Create( _Instan );
-     _Device  := _Devices[0];
+     _Device.Surfac := _Surfac;
      _Pooler  := TVkCommandPool.Create( _Device );
      _Comman  := TVkCommandBuffer.Create( _Pooler );
      _Comman.BeginRecord;
