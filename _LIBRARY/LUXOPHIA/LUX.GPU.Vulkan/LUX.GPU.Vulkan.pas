@@ -8,8 +8,7 @@ uses vulkan_core,
      LUX.GPU.Vulkan.root,
      LUX.GPU.Vulkan.Layere,
      LUX.GPU.Vulkan.Instan,
-       LUX.GPU.Vulkan.Window,
-         LUX.GPU.Vulkan.Surfac,
+       LUX.GPU.Vulkan.Surfac,
        LUX.GPU.Vulkan.Device,
          LUX.GPU.Vulkan.Pipeline,
            LUX.GPU.Vulkan.Shader,
@@ -26,8 +25,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
          TVkInstan                = TVkInstan<TVulkan>;
            TVkInstanInform        = TVkInstanInform<TVkInstan>;
              TVkApplicInform      = TVkApplicInform<TVkInstanInform>;
-           TVkWindow              = TVkWindow<TVkInstan>;
-             TVkSurfac            = TVkSurfac<TVkWindow>;
+           TVkSurfacs             = TVkSurfacs<TVkInstan>;
+             TVkSurfac            = TVkSurfac<TVkInstan>;
            TVkDevices             = TVkDevices<TVkInstan>;
              TVkDevice            = TVkDevice<TVkInstan>;
                TVkDevLays         = TVkDevLays<TVkDevice>;
@@ -207,8 +206,8 @@ begin
      image_create_info.pNext                 := nil;
      image_create_info.imageType             := VK_IMAGE_TYPE_2D;
      image_create_info.format                := Vulkan_.Instans[0].Devices[0].Format;
-     image_create_info.extent.width          := Vulkan_.Instans[0].Window.width;
-     image_create_info.extent.height         := Vulkan_.Instans[0].Window.height;
+     image_create_info.extent.width          := Vulkan_.Instans[0].Surfacs[0].PxSizeX;
+     image_create_info.extent.height         := Vulkan_.Instans[0].Surfacs[0].PxSizeY;
      image_create_info.extent.depth          := 1;
      image_create_info.mipLevels             := 1;
      image_create_info.arrayLayers           := 1;
@@ -275,8 +274,8 @@ begin
      copy_region.dstOffset.x                   := 0;
      copy_region.dstOffset.y                   := 0;
      copy_region.dstOffset.z                   := 0;
-     copy_region.extent.width                  := Vulkan_.Instans[0].Window.width;
-     copy_region.extent.height                 := Vulkan_.Instans[0].Window.height;
+     copy_region.extent.width                  := Vulkan_.Instans[0].Surfacs[0].PxSizeX;
+     copy_region.extent.height                 := Vulkan_.Instans[0].Surfacs[0].PxSizeY;
      copy_region.extent.depth                  := 1;
 
      (* Put the copy command into the command buffer *)
@@ -331,16 +330,16 @@ begin
      F := TFileStream.Create( filename, fmCreate );
 
      S := 'P6'                                               + #13#10;  F.Write( BytesOf( S ), Length( S ) );
-     S := Vulkan_.Instans[0].Window.width.ToString + ' ' + Vulkan_.Instans[0].Window.height.ToString + #13#10;  F.Write( BytesOf( S ), Length( S ) );
+     S := Vulkan_.Instans[0].Surfacs[0].PxSizeX.ToString + ' ' + Vulkan_.Instans[0].Surfacs[0].PxSizeY.ToString + #13#10;  F.Write( BytesOf( S ), Length( S ) );
      S := '255'                                              + #13#10;  F.Write( BytesOf( S ), Length( S ) );
 
-     for y := 0 to Vulkan_.Instans[0].Window.height-1 do
+     for y := 0 to Vulkan_.Instans[0].Surfacs[0].PxSizeY-1 do
      begin
           row := P_uint32_t( ptr );
 
           if ( Vulkan_.Instans[0].Devices[0].Format = VK_FORMAT_B8G8R8A8_UNORM ) or ( Vulkan_.Instans[0].Devices[0].Format = VK_FORMAT_B8G8R8A8_SRGB ) then
           begin
-               for x := 0 to Vulkan_.Instans[0].Window.width-1 do
+               for x := 0 to Vulkan_.Instans[0].Surfacs[0].PxSizeX-1 do
                begin
                     swapped := ( row^ and $ff00ff00 ) or ( row^ and $000000ff ) shl 16 or ( row^ and $00ff0000 ) shr 16;
                     F.Write( swapped, 3 );
@@ -350,7 +349,7 @@ begin
           else
           if Vulkan_.Instans[0].Devices[0].Format = VK_FORMAT_R8G8B8A8_UNORM then
           begin
-               for x := 0 to Vulkan_.Instans[0].Window.width-1 do
+               for x := 0 to Vulkan_.Instans[0].Surfacs[0].PxSizeX-1 do
                begin
                     F.Write( row^, 3 );
                     Inc( row );
