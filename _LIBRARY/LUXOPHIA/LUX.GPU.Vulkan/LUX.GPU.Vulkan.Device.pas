@@ -2,7 +2,7 @@
 
 interface //#################################################################### ■
 
-uses System.Generics.Collections,
+uses System.Classes, System.Generics.Collections,
      vulkan_core,
      LUX.GPU.Vulkan.Layere,
      LUX.GPU.Vulkan.Pipeline,
@@ -32,14 +32,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             TVkPoolers_   = TVkPoolers<TVkDevice_>;
             TVkSwapchain_ = TVkSwapchain<TVkDevice_>;
      protected
-       _Extenss  :TArray<PAnsiChar>;
-       _Devices  :TVkDevices_;
+       _Extenss  :TStringList;
        _Physic   :VkPhysicalDevice;
        _Propers  :VkPhysicalDeviceProperties;
        _Memorys  :VkPhysicalDeviceMemoryProperties;
-       _Layeres  :TVkDevLays_;
        _FamilysN :UInt32;
        _Familys  :TArray<VkQueueFamilyProperties>;
+       _Devices  :TVkDevices_;
+       _Layeres  :TVkDevLays_;
        _Surfac   :TVkSurfac_;
        _FamilyG  :UInt32;
        _FamilyP  :UInt32;
@@ -73,12 +73,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Physic_:VkPhysicalDevice; const Devices_:TVkDevices_; const Surfac_:TVkSurfac_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
-       property Extenss                     :TArray<PAnsiChar>                read   _Extenss                  ;
-       property Instan                      :TVkInstan_                       read GetInstan                   ;
-       property Devices                     :TVkDevices_                      read   _Devices                  ;
+       property Extenss                     :TStringList                      read   _Extenss                  ;
        property Physic                      :VkPhysicalDevice                 read   _Physic                   ;
        property Propers                     :VkPhysicalDeviceProperties       read   _Propers                  ;
        property Memorys                     :VkPhysicalDeviceMemoryProperties read   _Memorys                  ;
+       property Instan                      :TVkInstan_                       read GetInstan                   ;
+       property Devices                     :TVkDevices_                      read   _Devices                  ;
        property Layeres                     :TVkDevLays_                      read   _Layeres                  ;
        property FamilysN                    :UInt32                           read   _FamilysN                 ;
        property Familys[ const I_:Integer ] :VkQueueFamilyProperties          read GetFamilys                  ;
@@ -124,7 +124,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
-uses System.SysUtils,
+uses System.SysUtils, System.AnsiStrings,
      FMX.Types,
      LUX.GPU.Vulkan;
 
@@ -304,6 +304,8 @@ procedure TVkDevice<TVkInstan_>.CreateHandle;
 var
    QueuerPrioris :array [ 0..1-1 ] of Single;
    QueuerInform  :VkDeviceQueueCreateInfo;
+   E :String;
+   Es :TArray<PAnsiChar>;
 begin
      QueuerPrioris[0] := 0;
 
@@ -317,6 +319,8 @@ begin
           pQueuePriorities := @QueuerPrioris[0];
      end;
 
+     for E in _Extenss do Es := Es + [ System.AnsiStrings.StrNew( PAnsiChar( AnsiString( E ) ) ) ];
+
      with _Inform do
      begin
           sType                   := VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
@@ -326,8 +330,8 @@ begin
           pQueueCreateInfos       := @QueuerInform;
           enabledLayerCount       := 0;
           ppEnabledLayerNames     := nil;
-          enabledExtensionCount   := Length( _Extenss );
-          ppEnabledExtensionNames := @_Extenss[0];
+          enabledExtensionCount   := Length( Es );
+          ppEnabledExtensionNames := @Es[0];
           pEnabledFeatures        := nil;
      end;
 
@@ -357,10 +361,11 @@ begin
 
      _Handle := nil;
 
+     _Extenss := TStringList.Create;
      _Layeres := TVkDevLays_.Create( Self );
      _Poolers := TVkPoolers_.Create( Self );
 
-     _Extenss := _Extenss + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
+     _Extenss.Add( VK_KHR_SWAPCHAIN_EXTENSION_NAME );
 end;
 
 constructor TVkDevice<TVkInstan_>.Create( const Physic_:VkPhysicalDevice );
@@ -398,8 +403,8 @@ begin
      if Assigned( _Buffers ) then _Buffers.Free;
 
      _Poolers.Free;
-
      _Layeres.Free;
+     _Extenss.Free;
 
       Handle := nil;
 
