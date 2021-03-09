@@ -60,73 +60,82 @@ end;
 
 function WndProc( hwnd:HWND; uMsg:UINT; wParam:WPARAM; lParam:LPARAM ) :LRESULT; stdcall;
 var
-   info :P_sample_info;
+   Info :P_sample_info;
 begin
-     info := P_sample_info( GetWindowLongPtr( hWnd, GWLP_USERDATA ) );
+     Info := P_sample_info( GetWindowLongPtr( hWnd, GWLP_USERDATA ) );
 
      case uMsg of
        WM_CLOSE:
           PostQuitMessage( 0 );
        WM_PAINT:
           begin
-               run( info^ );
-               Exit( 0 );
+               run( Info^ );
+               //Exit( 0 );
           end;
      else
      end;
+
      Result := DefWindowProc( hWnd, uMsg, wParam, lParam );
 end;
 
 function TForm1.CreateWindow( const ClientW_,ClientH_:Integer ) :HWND;
 var
-   name       :LPCWSTR;
-   connection :HINST;
-   win_class  :WNDCLASSEX;
-   wr         :TRect;
+   C :LPCWSTR;
+   M :HINST;
+   W :WNDCLASSEX;
+   R :TRect;
 begin
-     name := 'Sample';
-     connection := HInstance;
+     C := 'Sample';
+     M := HInstance;
 
      // Initialize the window class structure:
-     win_class.cbSize        := SizeOf( WNDCLASSEX );
-     win_class.style         := CS_HREDRAW or CS_VREDRAW;
-     win_class.lpfnWndProc   := @WndProc;
-     win_class.cbClsExtra    := 0;
-     win_class.cbWndExtra    := 0;
-     win_class.hInstance     := connection;  // hInstance
-     win_class.hIcon         := LoadIcon( 0, IDI_APPLICATION );
-     win_class.hCursor       := LoadCursor( 0, IDC_ARROW );
-     win_class.hbrBackground := HBRUSH( GetStockObject( WHITE_BRUSH ) );
-     win_class.lpszMenuName  := nil;
-     win_class.lpszClassName := LPCWSTR( name );
-     win_class.hIconSm       := LoadIcon( 0, IDI_WINLOGO );
+     with W do
+     begin
+          cbSize        := SizeOf( WNDCLASSEX );
+          style         := CS_HREDRAW or CS_VREDRAW;
+          lpfnWndProc   := @WndProc;
+          cbClsExtra    := 0;
+          cbWndExtra    := 0;
+          hInstance     := M;  // hInstance
+          hIcon         := LoadIcon( 0, IDI_APPLICATION );
+          hCursor       := LoadCursor( 0, IDC_ARROW );
+          hbrBackground := HBRUSH( GetStockObject( WHITE_BRUSH ) );
+          lpszMenuName  := nil;
+          lpszClassName := C;
+          hIconSm       := LoadIcon( 0, IDI_WINLOGO );
+     end;
+
      // Register window class:
-     if RegisterClassEx( win_class ) = 0 then
+     if RegisterClassEx( W ) = 0 then
      begin
           // It didn't work, so try to give a useful error:
           Log.d( 'Unexpected error trying to start the application!' );
           RunError( 1 );
      end;
+
      // Create window with the registered class:
-     wr := TRect.Create( 0, 0, ClientW_, ClientH_ );
-     AdjustWindowRect( wr, WS_OVERLAPPEDWINDOW, False );
+     R := TRect.Create( 0, 0, ClientW_, ClientH_ );
+     AdjustWindowRect( R, WS_OVERLAPPEDWINDOW, False );
+
      Result := CreateWindowEx( 0,
-                               name,                                             // class name
-                               name,                                             // app name
+                               C,                                                // class name
+                               C,                                                // app name
                                WS_OVERLAPPEDWINDOW or WS_VISIBLE or WS_SYSMENU,  // window style
                                100, 100,                                         // x/y coords
-                               wr.right - wr.left,                               // width
-                               wr.bottom - wr.top,                               // height
+                               R.Width,                                          // width
+                               R.Height,                                         // height
                                0,                                                // handle to parent
                                0,                                                // handle to menu
-                               connection,                                       // hInstance
+                               M,                                                // hInstance
                                nil );                                            // no extra parameters
+
      if Result = 0 then
      begin
           // It didn't work, so try to give a useful error:
           Log.d( 'Cannot create a window in which to draw!' );
           RunError( 1 );
      end;
+
      SetWindowLongPtr( Result, GWLP_USERDATA, LONG_PTR( @_Vulkan.Info ) );
 end;
 
