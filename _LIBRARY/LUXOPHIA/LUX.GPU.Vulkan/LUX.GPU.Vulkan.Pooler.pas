@@ -18,12 +18,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVkPooler<TVkDevice_:class> = class
      private
        type TVkPooler_  = TVkPooler<TVkDevice_>;
-            TVkComman_  = TVkComman<TVkPooler_>;
             TVkCommans_ = TVkCommans<TVkPooler_>;
      protected
        _Device  :TVkDevice_;
        _Handle  :VkCommandPool;
-       _Comman  :TVkComman_;
        _Commans :TVkCommans_;
        /////
        procedure CreateHandle;
