@@ -2,11 +2,13 @@
 
 interface //#################################################################### ■
 
-uses vulkan_core, vulkan_win32;
+uses System.Generics.Collections,
+     vulkan_core;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkComman<TVkPooler_:class> = class;
+     TVkCommans<TVkPooler_:class>  = class;
+       TVkComman<TVkPooler_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -31,6 +33,22 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// メソッド
        procedure BeginRecord;
        procedure EndRecord;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkCommans
+
+     TVkCommans<TVkPooler_:class> = class( TObjectList<TVkComman<TVkPooler_>> )
+     private
+       type TVkComman_ = TVkComman<TVkPooler_>;
+     protected
+       _Pooler :TVkPooler_;
+     public
+       constructor Create( const Pooler_:TVkPooler_ );
+       destructor Destroy; override;
+       ///// プロパティ
+       property Pooler :TVkPooler_ read _Pooler;
+       ///// メソッド
+       function Add :TVkComman_; overload;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -90,6 +108,7 @@ begin
      _Pooler := Pooler_;
 
      TVkPooler( _Pooler ).Comman := TVkComman( Self );
+     TVkPooler( _Pooler ).Commans.Add( TVkComman( Self ) );
 
      CreateHandle;
 end;
@@ -125,6 +144,33 @@ begin
      Assert( vkEndCommandBuffer( _Handle ) = VK_SUCCESS );
 end;
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkCommans
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkCommans<TVkPooler_>.Create( const Pooler_:TVkPooler_ );
+begin
+     inherited Create;
+
+     _Pooler := Pooler_;
+end;
+
+destructor TVkCommans<TVkPooler_>.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+function TVkCommans<TVkPooler_>.Add :TVkComman_;
+begin
+     Result := TVkComman_.Create( _Pooler );
+end;
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
 //############################################################################## □

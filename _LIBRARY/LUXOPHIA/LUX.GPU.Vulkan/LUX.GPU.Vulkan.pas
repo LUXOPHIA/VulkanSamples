@@ -32,7 +32,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                TVkDevLays       = TVkDevLays<TVkDevice>;
                  TVkDevLay      = TVkDevLay<TVkDevice>;
                TVkPooler        = TVkPooler<TVkDevice>;
-                 TVkComman      = TVkComman<TVkPooler>;
+                 TVkCommans     = TVkCommans<TVkPooler>;
+                   TVkComman    = TVkComman<TVkPooler>;
                TVkPipeline      = TVkPipeline<TVkDevice>;
                  TVkShader      = TVkShader<TVkPipeline>;
                  TVkShaderVert  = TVkShaderVert<TVkPipeline>;
