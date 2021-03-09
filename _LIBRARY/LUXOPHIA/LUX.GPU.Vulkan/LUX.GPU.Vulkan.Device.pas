@@ -25,6 +25,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVkDevice<TVkInstan_:class> = class
      private
        type TVkDevice_      = TVkDevice<TVkInstan_>;
+            TVkSurfac_      = TVkSurfac<TVkInstan_>;
             TVkDevLays_     = TVkDevLays<TVkDevice_>;
             TVkBuffer_      = TVkBuffer<TVkDevice_>;
             TVkCommandPool_ = TVkCommandPool<TVkDevice_>;
@@ -35,6 +36,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Propers  :VkPhysicalDeviceProperties;
        _Memorys  :VkPhysicalDeviceMemoryProperties;
        _Layeres  :TVkDevLays_;
+       _Surfac   :TVkSurfac_;
        _Handle   :VkDevice;
        _Extenss  :TArray<PAnsiChar>;
        _FamilysN :UInt32;
@@ -63,6 +65,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create; overload;
        constructor Create( const Instan_:TVkInstan_ ); overload;
        constructor Create( const Instan_:TVkInstan_; const Physic_:VkPhysicalDevice ); overload;
+       constructor Create( const Instan_:TVkInstan_; const Physic_:VkPhysicalDevice; const Surfac_:TVkSurfac_ ); overload;
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
@@ -315,6 +318,8 @@ constructor TVkDevice<TVkInstan_>.Create;
 begin
      inherited;
 
+     _Handle := nil;
+
      _Extenss := _Extenss + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
 end;
 
@@ -339,11 +344,17 @@ begin
      _Layeres := TVkDevLays_.Create( Self );
 
      FindFamilys;
-     FindFamilyI( TVkInstan( _Instan ).Surfacs[0].Handle );
+end;
 
-     FindFormat( TVkInstan( _Instan ).Surfacs[0].Handle );
+constructor TVkDevice<TVkInstan_>.Create( const Instan_:TVkInstan_; const Physic_:VkPhysicalDevice; const Surfac_:TVkSurfac_ );
+begin
+     Create( Instan_, Physic_ );
 
-     _Handle := nil;
+     _Surfac := Surfac_;
+
+     FindFamilyI( _Surfac.Handle );
+
+     FindFormat( _Surfac.Handle );
 end;
 
 procedure TVkDevice<TVkInstan_>.AfterConstruction;
@@ -442,7 +453,7 @@ end;
 
 function TVkDevices<TVkInstan_>.Add( const Physic_:VkPhysicalDevice ) :TVkDevice_;
 begin
-     Result := TVkDevice_.Create( _Instan, Physic_ );
+     Result := TVkDevice_.Create( _Instan, Physic_, TVkSurfac<TVkInstan_>( TVkInstan( _Instan ).Surfacs[0] ) );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
