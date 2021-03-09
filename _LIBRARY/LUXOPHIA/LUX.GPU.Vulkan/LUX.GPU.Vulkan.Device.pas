@@ -9,7 +9,7 @@ uses System.Classes, System.Generics.Collections,
      LUX.GPU.Vulkan.Surfac,
      LUX.GPU.Vulkan.Pooler,
      LUX.GPU.Vulkan.Buffer,
-     LUX.GPU.Vulkan.Swapchain;
+     LUX.GPU.Vulkan.Swapch;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 

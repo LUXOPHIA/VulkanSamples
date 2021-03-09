@@ -11,10 +11,10 @@ uses vulkan_core,
        LUX.GPU.Vulkan.Device,
          LUX.GPU.Vulkan.Pooler,
            LUX.GPU.Vulkan.Comman,
-         LUX.GPU.Vulkan.Pipeline,
-           LUX.GPU.Vulkan.Shader,
          LUX.GPU.Vulkan.Buffer,
-         LUX.GPU.Vulkan.Swapchain;
+         LUX.GPU.Vulkan.Swapch,
+         LUX.GPU.Vulkan.Pipeline,
+           LUX.GPU.Vulkan.Shader;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -35,15 +35,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                  TVkPooler      = TVkPooler<TVkDevice>;
                    TVkCommans   = TVkCommans<TVkPooler>;
                      TVkComman  = TVkComman<TVkPooler>;
+               TVkBuffer        = TVkBuffer<TVkDevice>;
                TVkSwapchain     = TVkSwapchain<TVkDevice>;
                  TVkImageViews  = TVkImageViews<TVkSwapchain>;
                    TVkImageView = TVkImageView<TVkImageViews>;
-
                TVkPipeline      = TVkPipeline<TVkDevice>;
                  TVkShader      = TVkShader<TVkPipeline>;
                  TVkShaderVert  = TVkShaderVert<TVkPipeline>;
                  TVkShaderFrag  = TVkShaderFrag<TVkPipeline>;
-               TVkBuffer        = TVkBuffer<TVkDevice>;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
