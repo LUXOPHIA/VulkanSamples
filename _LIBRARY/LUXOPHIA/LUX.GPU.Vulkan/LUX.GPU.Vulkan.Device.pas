@@ -49,6 +49,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _QueuerP  :VkQueue;
        ///// アクセス
        function GetQueFams( const I_:Integer ) :VkQueueFamilyProperties;
+       function GetHandle :VkDevice;
+       procedure SetHandle( const Handle_:VkDevice );
        ///// メソッド
        procedure FindFamilys;
        procedure FindFamilyI; overload;
@@ -64,23 +66,23 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Instan                      :TVkInstan_                       read   _Instan                 ;
-       property Physic                      :VkPhysicalDevice                 read   _Physic                 ;
-       property Propers                     :VkPhysicalDeviceProperties       read   _Propers                ;
-       property Memorys                     :VkPhysicalDeviceMemoryProperties read   _Memorys                ;
-       property Layeres                     :TVkDevLays_                      read   _Layeres  write _Layeres;
-       property Handle                      :VkDevice                         read   _Handle                 ;
-       property Extenss                     :TArray<PAnsiChar>                read   _Extenss                ;
-       property FamilysN                    :UInt32                           read   _FamilysN               ;
-       property Familys[ const I_:Integer ] :VkQueueFamilyProperties          read GetQueFams                ;
-       property FamilyG                     :UInt32                           read   _FamilyG                ;
-       property FamilyP                     :UInt32                           read   _FamilyP                ;
-       property Format                      :VkFormat                         read   _Format                 ;
-       property Buffers                     :TVkBuffer_                       read   _Buffers  write _Buffers;
-       property Pooler                      :TVkCommandPool_                  read   _Poolers  write _Poolers;
-       property Swapchs                     :TVkSwapchain_                    read   _Swapchs  write _Swapchs;
-       property QueuerG                     :VkQueue                          read   _QueuerG                ;
-       property QueuerP                     :VkQueue                          read   _QueuerP                ;
+       property Instan                      :TVkInstan_                       read   _Instan                   ;
+       property Physic                      :VkPhysicalDevice                 read   _Physic                   ;
+       property Propers                     :VkPhysicalDeviceProperties       read   _Propers                  ;
+       property Memorys                     :VkPhysicalDeviceMemoryProperties read   _Memorys                  ;
+       property Layeres                     :TVkDevLays_                      read   _Layeres  write   _Layeres;
+       property Handle                      :VkDevice                         read GetHandle   write SetHandle ;
+       property Extenss                     :TArray<PAnsiChar>                read   _Extenss                  ;
+       property FamilysN                    :UInt32                           read   _FamilysN                 ;
+       property Familys[ const I_:Integer ] :VkQueueFamilyProperties          read GetQueFams                  ;
+       property FamilyG                     :UInt32                           read   _FamilyG                  ;
+       property FamilyP                     :UInt32                           read   _FamilyP                  ;
+       property Format                      :VkFormat                         read   _Format                   ;
+       property Buffers                     :TVkBuffer_                       read   _Buffers  write   _Buffers;
+       property Pooler                      :TVkCommandPool_                  read   _Poolers  write   _Poolers;
+       property Swapchs                     :TVkSwapchain_                    read   _Swapchs  write   _Swapchs;
+       property QueuerG                     :VkQueue                          read   _QueuerG                  ;
+       property QueuerP                     :VkQueue                          read   _QueuerP                  ;
        ///// メソッド
        function memory_type_from_properties( typeBits:UInt32; const requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
      end;
@@ -133,6 +135,25 @@ uses System.SysUtils,
 function TVkDevice<TVkInstan_>.GetQueFams( const I_:Integer ) :VkQueueFamilyProperties;
 begin
      Result := _Familys[ I_ ];
+end;
+
+function TVkDevice<TVkInstan_>.GetHandle :VkDevice;
+begin
+     if not Assigned( _Handle ) then
+     begin
+          CreateHandle;
+
+          init_device_queue;
+     end;
+
+     Result := _Handle;
+end;
+
+procedure TVkDevice<TVkInstan_>.SetHandle( const Handle_:VkDevice );
+begin
+     if Assigned( _Handle ) then DestroHandle;
+
+     _Handle := Handle_;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -322,9 +343,7 @@ begin
 
      FindFormat( TVkInstan( _Instan ).Surfacs[0].Handle );
 
-     CreateHandle;
-
-     init_device_queue;
+     _Handle := nil;
 end;
 
 procedure TVkDevice<TVkInstan_>.AfterConstruction;
@@ -337,7 +356,7 @@ destructor TVkDevice<TVkInstan_>.Destroy;
 begin
      if Assigned( _Buffers ) then _Buffers.Free;
 
-     DestroHandle;
+      Handle := nil;
 
      _Layeres.Free;
 
