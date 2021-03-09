@@ -21,15 +21,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _Pooler :TVkPooler_;
        _Handle :VkCommandBuffer;
+       ///// アクセス
+       function GetHandle :VkCommandBuffer;
+       procedure SetHandle( const Handle_:VkCommandBuffer );
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create( const Pooler_:TVkPooler_ );
+       constructor Create; overload;
+       constructor Create( const Pooler_:TVkPooler_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
-       property Pooler :TVkPooler_      read _Pooler;
-       property Handle :VkCommandBuffer read _Handle;
+       property Pooler :TVkPooler_      read   _Pooler;
+       property Handle :VkCommandBuffer read GetHandle write SetHandle;
        ///// メソッド
        procedure BeginRecord;
        procedure EndRecord;
@@ -71,6 +75,22 @@ uses LUX.GPU.Vulkan;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkComman<TVkPooler_>.GetHandle :VkCommandBuffer;
+begin
+     if not Assigned( _Handle ) then CreateHandle;
+
+     Result := _Handle;
+end;
+
+procedure TVkComman<TVkPooler_>.SetHandle( const Handle_:VkCommandBuffer );
+begin
+     if Assigned( _Handle ) then DestroHandle;
+
+     _Handle := Handle_;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkComman<TVkPooler_>.CreateHandle;
@@ -101,20 +121,25 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
+constructor TVkComman<TVkPooler_>.Create;
+begin
+     inherited;
+
+     _Handle := nil;
+end;
+
 constructor TVkComman<TVkPooler_>.Create( const Pooler_:TVkPooler_ );
 begin
-     inherited Create;
+     Create;
 
      _Pooler := Pooler_;
 
      TVkPooler( _Pooler ).Commans.Add( TVkComman( Self ) );
-
-     CreateHandle;
 end;
 
 destructor TVkComman<TVkPooler_>.Destroy;
 begin
-     DestroHandle;
+      Handle := nil;
 
      inherited;
 end;
@@ -135,12 +160,12 @@ begin
           pInheritanceInfo := nil;
      end;
 
-     Assert( vkBeginCommandBuffer( _Handle, @B ) = VK_SUCCESS );
+     Assert( vkBeginCommandBuffer( Handle, @B ) = VK_SUCCESS );
 end;
 
 procedure TVkComman<TVkPooler_>.EndRecord;
 begin
-     Assert( vkEndCommandBuffer( _Handle ) = VK_SUCCESS );
+     Assert( vkEndCommandBuffer( Handle ) = VK_SUCCESS );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkCommans
