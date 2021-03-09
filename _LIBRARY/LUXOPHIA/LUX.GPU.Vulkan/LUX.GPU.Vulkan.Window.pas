@@ -4,7 +4,7 @@ interface //####################################################################
 
 uses WinApi.Windows,
      vulkan_core, vulkan_win32,
-     LUX.GPU.Vulkan.Surface;
+     LUX.GPU.Vulkan.Surfac;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
