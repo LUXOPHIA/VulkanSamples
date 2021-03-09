@@ -30,7 +30,7 @@ uses
   vulkan.util in '_LIBRARY\vulkan.util.pas',
   LUX.GPU.Vulkan.Instan in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Instan.pas',
   LUX.GPU.Vulkan.Surfac in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Surfac.pas',
-  LUX.GPU.Vulkan.Command in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Command.pas',
+  LUX.GPU.Vulkan.Comman in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Comman.pas',
   LUX.GPU.Vulkan.Swapchain in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Swapchain.pas',
   LUX.GPU.Vulkan.Layere in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Layere.pas';
 
