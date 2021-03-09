@@ -231,7 +231,7 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Instan.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Surfac.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Comman.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Swapchain.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Swapch.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Layere.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Pooler.pas"/>
         <BuildConfiguration Include="Release">
