@@ -24,14 +24,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TVkDevice<TVkInstan_:class> = class
      private
-       type TVkDevice_      = TVkDevice<TVkInstan_>;
+       type TVkDevices_     = TVkDevices<TVkInstan_>;
+            TVkDevice_      = TVkDevice<TVkInstan_>;
             TVkSurfac_      = TVkSurfac<TVkInstan_>;
             TVkDevLays_     = TVkDevLays<TVkDevice_>;
             TVkBuffer_      = TVkBuffer<TVkDevice_>;
             TVkCommandPool_ = TVkCommandPool<TVkDevice_>;
             TVkSwapchain_   = TVkSwapchain<TVkDevice_>;
      protected
-       _Instan   :TVkInstan_;
+       _Devices  :TVkDevices_;
        _Physic   :VkPhysicalDevice;
        _Propers  :VkPhysicalDeviceProperties;
        _Memorys  :VkPhysicalDeviceMemoryProperties;
@@ -50,7 +51,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _QueuerG  :VkQueue;
        _QueuerP  :VkQueue;
        ///// アクセス
-       function GetQueFams( const I_:Integer ) :VkQueueFamilyProperties;
+       function GetInstan :TVkInstan_;
+       function GetFamilys( const I_:Integer ) :VkQueueFamilyProperties;
        function GetHandle :VkDevice;
        procedure SetHandle( const Handle_:VkDevice );
        ///// メソッド
@@ -63,13 +65,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure init_device_queue;
      public
        constructor Create; overload;
-       constructor Create( const Instan_:TVkInstan_ ); overload;
-       constructor Create( const Instan_:TVkInstan_; const Physic_:VkPhysicalDevice ); overload;
-       constructor Create( const Instan_:TVkInstan_; const Physic_:VkPhysicalDevice; const Surfac_:TVkSurfac_ ); overload;
-       procedure AfterConstruction; override;
+       constructor Create( const Devices_:TVkDevices_ ); overload;
+       constructor Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice ); overload;
+       constructor Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice; const Surfac_:TVkSurfac_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
-       property Instan                      :TVkInstan_                       read   _Instan                   ;
+       property Instan                      :TVkInstan_                       read GetInstan                   ;
+       property Devices                     :TVkDevices_                      read   _Devices                  ;
        property Physic                      :VkPhysicalDevice                 read   _Physic                   ;
        property Propers                     :VkPhysicalDeviceProperties       read   _Propers                  ;
        property Memorys                     :VkPhysicalDeviceMemoryProperties read   _Memorys                  ;
@@ -77,7 +79,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Handle                      :VkDevice                         read GetHandle   write SetHandle ;
        property Extenss                     :TArray<PAnsiChar>                read   _Extenss                  ;
        property FamilysN                    :UInt32                           read   _FamilysN                 ;
-       property Familys[ const I_:Integer ] :VkQueueFamilyProperties          read GetQueFams                  ;
+       property Familys[ const I_:Integer ] :VkQueueFamilyProperties          read GetFamilys                  ;
        property FamilyG                     :UInt32                           read   _FamilyG                  ;
        property FamilyP                     :UInt32                           read   _FamilyP                  ;
        property Format                      :VkFormat                         read   _Format                   ;
@@ -103,7 +105,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure FindDevices;
      public
        constructor Create( const Instan_:TVkInstan_ );
-       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        property Instan :TVkInstan_ read _Instan;
@@ -135,7 +136,12 @@ uses System.SysUtils,
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkDevice<TVkInstan_>.GetQueFams( const I_:Integer ) :VkQueueFamilyProperties;
+function TVkDevice<TVkInstan_>.GetInstan :TVkInstan_;
+begin
+     Result := _Devices.Instan;
+end;
+
+function TVkDevice<TVkInstan_>.GetFamilys( const I_:Integer ) :VkQueueFamilyProperties;
 begin
      Result := _Familys[ I_ ];
 end;
@@ -323,18 +329,18 @@ begin
      _Extenss := _Extenss + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
 end;
 
-constructor TVkDevice<TVkInstan_>.Create( const Instan_:TVkInstan_ );
+constructor TVkDevice<TVkInstan_>.Create( const Devices_:TVkDevices_ );
 begin
      Create;
 
-     _Instan := Instan_;
+     _Devices := Devices_;
 
-     TVkInstan( _Instan ).Devices.Add( TVkDevice( Self ) );
+     TVkDevices( _Devices ).Add( TVkDevice( Self ) );
 end;
 
-constructor TVkDevice<TVkInstan_>.Create( const Instan_:TVkInstan_; const Physic_:VkPhysicalDevice );
+constructor TVkDevice<TVkInstan_>.Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice );
 begin
-     Create( Instan_ );
+     Create( Devices_ );
 
      _Physic := Physic_;
 
@@ -346,21 +352,15 @@ begin
      FindFamilys;
 end;
 
-constructor TVkDevice<TVkInstan_>.Create( const Instan_:TVkInstan_; const Physic_:VkPhysicalDevice; const Surfac_:TVkSurfac_ );
+constructor TVkDevice<TVkInstan_>.Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice; const Surfac_:TVkSurfac_ );
 begin
-     Create( Instan_, Physic_ );
+     Create( Devices_, Physic_ );
 
      _Surfac := Surfac_;
 
      FindFamilyI( _Surfac.Handle );
 
      FindFormat( _Surfac.Handle );
-end;
-
-procedure TVkDevice<TVkInstan_>.AfterConstruction;
-begin
-     inherited;
-
 end;
 
 destructor TVkDevice<TVkInstan_>.Destroy;
@@ -434,11 +434,6 @@ begin
      _Instan := Instan_;
 
      TVkInstan( _Instan ).Devices := TVkDevices( Self );
-end;
-
-procedure TVkDevices<TVkInstan_>.AfterConstruction;
-begin
-     inherited;
 
      FindDevices;
 end;
@@ -453,7 +448,7 @@ end;
 
 function TVkDevices<TVkInstan_>.Add( const Physic_:VkPhysicalDevice ) :TVkDevice_;
 begin
-     Result := TVkDevice_.Create( _Instan, Physic_, TVkSurfac<TVkInstan_>( TVkInstan( _Instan ).Surfacs[0] ) );
+     Result := TVkDevice_.Create( Self, Physic_, TVkSurfac<TVkInstan_>( TVkInstan( _Instan ).Surfacs[0] ) );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
