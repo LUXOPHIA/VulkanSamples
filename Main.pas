@@ -298,7 +298,6 @@ begin
      destroy_descriptor_and_pipeline_layouts( _Vulkan );
      destroy_depth_buffer( _Vulkan );
      _Swapch.Free;
-     _Comman.Free;
      _Pooler.Free;
      DestroWindow( _Window );
      _Vulkan.Free;
