@@ -27,7 +27,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
            TVkInstanInform        = TVkInstanInform<TVkInstan>;
              TVkApplicInform      = TVkApplicInform<TVkInstanInform>;
            TVkWindow              = TVkWindow<TVkInstan>;
-             TVkSurface           = TVkSurface<TVkWindow>;
+             TVkSurfac            = TVkSurfac<TVkWindow>;
            TVkDevices             = TVkDevices<TVkInstan>;
              TVkDevice            = TVkDevice<TVkInstan>;
                TVkDevLays         = TVkDevLays<TVkDevice>;

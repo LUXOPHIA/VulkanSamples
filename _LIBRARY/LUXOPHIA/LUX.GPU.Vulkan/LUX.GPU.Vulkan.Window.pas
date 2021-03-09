@@ -16,14 +16,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TVkWindow<TVkInstan_:class> = class
      private
-       type TVkWindow_  = TVkWindow<TVkInstan_>;
-            TVkSurface_ = TVkSurface<TVkWindow_>;
+       type TVkWindow_ = TVkWindow<TVkInstan_>;
+            TVkSurfac_ = TVkSurfac<TVkWindow_>;
      protected
-       _Instan  :TVkInstan_;
-       _Width   :Integer;
-       _Height  :Integer;
-       _Proc    :TFNWndProc;
-       _Surface :TVkSurface_;
+       _Instan :TVkInstan_;
+       _Width  :Integer;
+       _Height :Integer;
+       _Proc   :TFNWndProc;
+       _Surfac :TVkSurfac_;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -36,11 +36,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Instan  :TVkInstan_  read _Instan                ;
-       property Width   :Integer     read _Width   write _Width  ;
-       property Height  :Integer     read _Height  write _Height ;
-       property Proc    :TFNWndProc  read _Proc    write _Proc   ;
-       property Surface :TVkSurface_ read _Surface write _Surface;
+       property Instan :TVkInstan_ read _Instan              ;
+       property Width  :Integer    read _Width  write _Width ;
+       property Height :Integer    read _Height write _Height;
+       property Proc   :TFNWndProc read _Proc   write _Proc  ;
+       property Surfac :TVkSurfac_ read _Surfac write _Surfac;
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】

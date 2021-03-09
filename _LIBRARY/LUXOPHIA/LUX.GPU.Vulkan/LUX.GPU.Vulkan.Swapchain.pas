@@ -124,15 +124,15 @@ var
 begin
      (* DEPENDS on info.cmd and info.queue initialized *)
 
-     Assert( vkGetPhysicalDeviceSurfaceCapabilitiesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instan.Window.Surface.Handle, @surfCapabilities ) = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfaceCapabilitiesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instan.Window.Surfac.Handle, @surfCapabilities ) = VK_SUCCESS );
 
-     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instan.Window.Surface.Handle, @presentModeCount, nil ) = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instan.Window.Surfac.Handle, @presentModeCount, nil ) = VK_SUCCESS );
 
      Assert( presentModeCount > 0 );
 
      SetLength( presentModes, presentModeCount );
 
-     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instan.Window.Surface.Handle, @presentModeCount, @presentModes[0] ) = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfacePresentModesKHR( TVkDevice( _Device ).Physic, TVkDevice( _Device ).Devices.Instan.Window.Surfac.Handle, @presentModeCount, @presentModes[0] ) = VK_SUCCESS );
 
      // width and height are either both 0xFFFFFFFF, or both not 0xFFFFFFFF.
      if surfCapabilities.currentExtent.width = $FFFFFFFF then
@@ -198,7 +198,7 @@ begin
           sType                 := VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
           pNext                 := nil;
           flags                 := 0;
-          surface               := TVkDevice( _Device ).Devices.Instan.Window.Surface.Handle;
+          surface               := TVkDevice( _Device ).Devices.Instan.Window.Surfac.Handle;
           minImageCount         := desiredNumberOfSwapChainImages;
           imageFormat           := TVkDevice( _Device ).Format;
           imageColorSpace       := VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;

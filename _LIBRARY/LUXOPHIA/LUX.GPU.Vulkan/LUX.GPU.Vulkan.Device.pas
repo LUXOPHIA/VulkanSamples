@@ -53,8 +53,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// メソッド
        procedure FindFamilys;
        procedure FindFamilyI; overload;
-       procedure FindFamilyI( const Surface_:VkSurfaceKHR ); overload;
-       procedure FindFormat( const Surface_:VkSurfaceKHR );
+       procedure FindFamilyI( const Surfac_:VkSurfaceKHR ); overload;
+       procedure FindFormat( const Surfac_:VkSurfaceKHR );
        procedure CreateHandle;
        procedure DestroHandle;
        procedure init_device_queue;
@@ -162,14 +162,14 @@ begin
      end;
 end;
 
-procedure TVkDevice<TVkInstan_>.FindFamilyI( const Surface_:VkSurfaceKHR );
+procedure TVkDevice<TVkInstan_>.FindFamilyI( const Surfac_:VkSurfaceKHR );
 var
    Fs :TArray<VkBool32>;
    I  :UInt32;
 begin
      // Iterate over each queue to learn whether it supports presenting:
      SetLength( Fs, _FamilysN );
-     for I := 0 to _FamilysN-1 do vkGetPhysicalDeviceSurfaceSupportKHR( _Physic, I, Surface_, @Fs[I] );
+     for I := 0 to _FamilysN-1 do vkGetPhysicalDeviceSurfaceSupportKHR( _Physic, I, Surfac_, @Fs[I] );
 
      // Search for a graphics and a present queue in the array of queue
      // families, try to find one that supports both
@@ -213,7 +213,7 @@ begin
      end;
 end;
 
-procedure TVkDevice<TVkInstan_>.FindFormat( const Surface_:VkSurfaceKHR );
+procedure TVkDevice<TVkInstan_>.FindFormat( const Surfac_:VkSurfaceKHR );
 const
      (* Use this surface format if it's available.  This ensures that generated
       * images are similar on different devices and with different drivers.
@@ -225,10 +225,10 @@ var
    I   :UInt32;
 begin
      // Get the list of VkFormats that are supported:
-     Assert( vkGetPhysicalDeviceSurfaceFormatsKHR( _Physic, Surface_, @FsN, nil ) = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfaceFormatsKHR( _Physic, Surfac_, @FsN, nil ) = VK_SUCCESS );
      Assert( FsN > 0 );
      SetLength( Fs, FsN );
-     Assert( vkGetPhysicalDeviceSurfaceFormatsKHR( _Physic, Surface_, @FsN, @Fs[0] ) = VK_SUCCESS );
+     Assert( vkGetPhysicalDeviceSurfaceFormatsKHR( _Physic, Surfac_, @FsN, @Fs[0] ) = VK_SUCCESS );
      Assert( FsN > 0 );
 
      // If the device supports our preferred surface format, use it.
@@ -302,9 +302,9 @@ begin
      _Layeres := TVkDevLays_.Create( Self );
 
      FindFamilys;
-     FindFamilyI( TVkDevices( _Devices ).Instan.Window.Surface.Handle );
+     FindFamilyI( TVkDevices( _Devices ).Instan.Window.Surfac.Handle );
 
-     FindFormat( TVkDevices( _Devices ).Instan.Window.Surface.Handle );
+     FindFormat( TVkDevices( _Devices ).Instan.Window.Surfac.Handle );
 
      _Extenss := _Extenss + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
 

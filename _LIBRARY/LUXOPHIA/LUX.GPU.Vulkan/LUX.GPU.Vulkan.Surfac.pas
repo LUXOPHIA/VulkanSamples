@@ -11,9 +11,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkSurface
 
-     TVkSurface<TVkWindow_:class> = class
+     TVkSurfac<TVkWindow_:class> = class
      private
-       type TVkSurface_ = TVkSurface<TVkWindow_>;
+       type TVkSurfac_ = TVkSurfac<TVkWindow_>;
      protected
        _Window :TVkWindow_;
        _Inform :VkWin32SurfaceCreateInfoKHR;
@@ -55,25 +55,25 @@ uses System.SysUtils,
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-procedure TVkSurface<TVkWindow_>.CreateHandle;
+procedure TVkSurfac<TVkWindow_>.CreateHandle;
 begin
      Assert( vkCreateWin32SurfaceKHR( TVkWindow( _Window ).Instan.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
-procedure TVkSurface<TVkWindow_>.DestroHandle;
+procedure TVkSurfac<TVkWindow_>.DestroHandle;
 begin
      vkDestroySurfaceKHR( TVkWindow( _Window ).Instan.Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkSurface<TVkWindow_>.Create( const Window_:TVkWindow_ );
+constructor TVkSurfac<TVkWindow_>.Create( const Window_:TVkWindow_ );
 begin
      inherited Create;
 
      _Window := Window_;
 
-     TVkWindow( _Window ).Surface := TVkSurface( Self );
+     TVkWindow( _Window ).Surfac := TVkSurfac( Self );
 
      with _Inform do
      begin
@@ -87,13 +87,13 @@ begin
      CreateHandle;
 end;
 
-procedure TVkSurface<TVkWindow_>.AfterConstruction;
+procedure TVkSurfac<TVkWindow_>.AfterConstruction;
 begin
      inherited;
 
 end;
 
-destructor TVkSurface<TVkWindow_>.Destroy;
+destructor TVkSurfac<TVkWindow_>.Destroy;
 begin
      DestroHandle;
 
