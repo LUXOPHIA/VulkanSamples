@@ -314,8 +314,6 @@ begin
 
      _Device := Device_;
 
-     TVkDevice( _Device ).Layeres := TVkDevLays( Self );
-
      FindDevLays;
 end;
 

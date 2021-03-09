@@ -435,7 +435,7 @@ begin
 
      _Vulkan := Vulkan_;
 
-     TVulkan( Vulkan_ ).Instans.Add( TVkInstan( Self ) );
+     TVulkan( _Vulkan ).Instans.Add( TVkInstan( Self ) );
 end;
 
 destructor TVkInstan<TVulkan_>.Destroy;
