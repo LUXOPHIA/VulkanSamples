@@ -468,7 +468,7 @@ end;
 
 function TVkDevices<TVkInstan_>.Add( const Physic_:VkPhysicalDevice ) :TVkDevice_;
 begin
-     Result := TVkDevice_.Create( Self, Physic_, TVkSurfac<TVkInstan_>( TVkInstan( _Instan ).Surfacs[0] ) );
+     Result := TVkDevice_.Create( Self, Physic_ );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
