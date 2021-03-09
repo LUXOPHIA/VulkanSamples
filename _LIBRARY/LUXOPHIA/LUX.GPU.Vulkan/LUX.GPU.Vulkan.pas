@@ -5,7 +5,6 @@ interface //####################################################################
 uses vulkan_core,
      vulkan.util,
      LUX, LUX.Code.C,
-     LUX.GPU.Vulkan.root,
      LUX.GPU.Vulkan.Layere,
      LUX.GPU.Vulkan.Instan,
        LUX.GPU.Vulkan.Surfac,

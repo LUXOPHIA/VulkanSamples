@@ -4,7 +4,6 @@ interface //####################################################################
 
 uses System.Classes, System.Generics.Collections,
      vulkan_core,
-     LUX.GPU.Vulkan.root,
      LUX.GPU.Vulkan.Surfac,
      LUX.GPU.Vulkan.Device;
 
@@ -96,7 +95,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInstan
 
-     TVkInstan<TVulkan_:class> = class( TVkObject<TVulkan_> )
+     TVkInstan<TVulkan_:class> = class
      private
        type TVkInstan_       = TVkInstan<TVulkan_>;
             TVkInstanInform_ = TVkInstanInform<TVulkan_>;
@@ -115,7 +114,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create( const Vulkan_:TVulkan_ );
+       constructor Create; overload;
+       constructor Create( const Vulkan_:TVulkan_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
        property Vulkan  :TVulkan_         read   _Vulkan                  ;
@@ -418,19 +418,24 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkInstan<TVulkan_>.Create( const Vulkan_:TVulkan_ );
+constructor TVkInstan<TVulkan_>.Create;
 begin
      inherited;
-
-     _Vulkan := Vulkan_;
-
-     TVulkan( Vulkan_ ).Instans.Add( TVkInstan( Self ) );
 
      _Inform := TVkInstanInform_.Create( Self );
 
      _Handle := nil;
 
      _Surfacs := TVkSurfacs_.Create( Self );
+end;
+
+constructor TVkInstan<TVulkan_>.Create( const Vulkan_:TVulkan_ );
+begin
+     Create;
+
+     _Vulkan := Vulkan_;
+
+     TVulkan( Vulkan_ ).Instans.Add( TVkInstan( Self ) );
 end;
 
 destructor TVkInstan<TVulkan_>.Destroy;
