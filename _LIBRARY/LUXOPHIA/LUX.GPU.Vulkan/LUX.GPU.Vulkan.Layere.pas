@@ -253,7 +253,7 @@ var
    C :PAnsiChar;
 begin
      D := TVkDevice( Device );
-     C := D.Devices.Instan.Vulkan.Layeres[ _LayereI ].Inform.layerName;
+     C := D.Instan.Vulkan.Layeres[ _LayereI ].Inform.layerName;
 
      repeat
            Result := vkEnumerateDeviceExtensionProperties( D.Physic, C, @_ExtenssN, nil );
@@ -300,7 +300,7 @@ var
    Ls :TVkLayeres;
    I :Integer;
 begin
-     Ls := TVkDevice( _Device ).Devices.Instan.Vulkan.Layeres;
+     Ls := TVkDevice( _Device ).Instan.Vulkan.Layeres;
 
      (* query device extensions for enabled layers *)
      for I := 0 to Ls.Count-1 do Add( I );
