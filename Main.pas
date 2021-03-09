@@ -24,7 +24,7 @@ type
     _Vulkan  :TVulkan;
     _Instan  :TVkInstan;
     _Window  :TVkWindow;
-    _Surfac  :TVkSurface;
+    _Surfac  :TVkSurfac;
     _Devices :TVkDevices;
     _Device  :TVkDevice;
     _Pooler  :TVkCommandPool;
@@ -91,7 +91,7 @@ begin
      _Vulkan  := TVulkan.Create;
      _Instan  := _Vulkan.Instans.Add;
      _Window  := TVkWindow.Create( _Instan, 500, 500, @WndProc );
-     _Surfac  := TVkSurface.Create( _Window );
+     _Surfac  := TVkSurfac.Create( _Window );
      _Devices := TVkDevices.Create( _Instan );
      _Device  := _Devices[0];
      _Pooler  := TVkCommandPool.Create( _Device );
