@@ -2,7 +2,8 @@
 
 interface //#################################################################### ■
 
-uses vulkan_core, vulkan_win32;
+uses System.Generics.Collections,
+     vulkan_core, vulkan_win32;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -18,7 +19,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Device :TDevice_;
        _Handle :VkBuffer;
        _Memory :VkDeviceMemory;
-       _Info   :VkDescriptorBufferInfo;
+       _Descri :VkDescriptorBufferInfo;
        /////
        procedure CreateHandle;
        procedure DestroHandle;
@@ -30,7 +31,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Device :TDevice_               read _Device;
        property Handle :VkBuffer               read _Handle;
        property Memory :VkDeviceMemory         read _Memory;
-       property Info   :VkDescriptorBufferInfo read _Info  ;
+       property Descri :VkDescriptorBufferInfo read _Descri;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -124,9 +125,9 @@ begin
      res := vkBindBufferMemory( TVkDevice( _Device ).Handle, _Handle, _Memory, 0 );
      Assert( res = VK_SUCCESS );
 
-     _Info.buffer := _Handle;
-     _Info.offset := 0;
-     _Info.range  := SizeOf( MVP );
+     _Descri.buffer := _Handle;
+     _Descri.offset := 0;
+     _Descri.range  := SizeOf( MVP );
 end;
 
 procedure TVkBuffer<TDevice_>.DestroHandle;
