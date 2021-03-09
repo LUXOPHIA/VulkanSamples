@@ -186,7 +186,6 @@ begin
      _ShaderF := TVkShaderFrag.Create( _Pipeli );
      _ShaderV.LoadFromFile( '../../_DATA/draw_textured_cube.vert' );
      _ShaderF.LoadFromFile( '../../_DATA/draw_textured_cube.frag' );
-     _Pipeli.CreateHandle;
 
      (* VULKAN_KEY_START *)
 
