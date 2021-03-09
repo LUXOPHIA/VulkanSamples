@@ -6,6 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Memo.Types, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
+  WinApi.Windows,
   vulkan_core,
   vulkan.util, vulkan.util_init,
   LUX, LUX.Code.C,
@@ -19,11 +20,13 @@ type
   private
     { private 宣言 }
     const sample_title = 'Draw Textured Cube';
+    function CreateWindow( const ClientW_,ClientH_:Integer ) :HWND;
+    procedure DestroWindow( const Window_:HWND );
   public
     { public 宣言 }
     _Vulkan  :TVulkan;
     _Instan  :TVkInstan;
-    _Window  :TVkWindow;
+    _Window  :HWND;
     _Surfac  :TVkSurfac;
     _Devices :TVkDevices;
     _Device  :TVkDevice;
@@ -46,8 +49,10 @@ implementation //###############################################################
 
 {$R *.fmx}
 
-uses WinApi.Windows, WinApi.Messages,
+uses WinApi.Messages,
      cube_data;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 procedure run( var info:T_sample_info );
 begin
@@ -73,6 +78,66 @@ begin
      Result := DefWindowProc( hWnd, uMsg, wParam, lParam );
 end;
 
+function TForm1.CreateWindow( const ClientW_,ClientH_:Integer ) :HWND;
+var
+   name       :LPCWSTR;
+   connection :HINST;
+   win_class  :WNDCLASSEX;
+   wr         :TRect;
+begin
+     name := 'Sample';
+     connection := HInstance;
+
+     // Initialize the window class structure:
+     win_class.cbSize        := SizeOf( WNDCLASSEX );
+     win_class.style         := CS_HREDRAW or CS_VREDRAW;
+     win_class.lpfnWndProc   := @WndProc;
+     win_class.cbClsExtra    := 0;
+     win_class.cbWndExtra    := 0;
+     win_class.hInstance     := connection;  // hInstance
+     win_class.hIcon         := LoadIcon( 0, IDI_APPLICATION );
+     win_class.hCursor       := LoadCursor( 0, IDC_ARROW );
+     win_class.hbrBackground := HBRUSH( GetStockObject( WHITE_BRUSH ) );
+     win_class.lpszMenuName  := nil;
+     win_class.lpszClassName := LPCWSTR( name );
+     win_class.hIconSm       := LoadIcon( 0, IDI_WINLOGO );
+     // Register window class:
+     if RegisterClassEx( win_class ) = 0 then
+     begin
+          // It didn't work, so try to give a useful error:
+          Log.d( 'Unexpected error trying to start the application!' );
+          RunError( 1 );
+     end;
+     // Create window with the registered class:
+     wr := TRect.Create( 0, 0, ClientW_, ClientH_ );
+     AdjustWindowRect( wr, WS_OVERLAPPEDWINDOW, False );
+     Result := CreateWindowEx( 0,
+                               name,                                             // class name
+                               name,                                             // app name
+                               WS_OVERLAPPEDWINDOW or WS_VISIBLE or WS_SYSMENU,  // window style
+                               100, 100,                                         // x/y coords
+                               wr.right - wr.left,                               // width
+                               wr.bottom - wr.top,                               // height
+                               0,                                                // handle to parent
+                               0,                                                // handle to menu
+                               connection,                                       // hInstance
+                               nil );                                            // no extra parameters
+     if Result = 0 then
+     begin
+          // It didn't work, so try to give a useful error:
+          Log.d( 'Cannot create a window in which to draw!' );
+          RunError( 1 );
+     end;
+     SetWindowLongPtr( Result, GWLP_USERDATA, LONG_PTR( @_Vulkan.Info ) );
+end;
+
+procedure TForm1.DestroWindow( const Window_:HWND );
+begin
+     DestroyWindow( Window_ );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
 procedure TForm1.FormCreate(Sender: TObject);
 const
      depthPresent :T_bool = True;
@@ -89,9 +154,9 @@ var
    present                          :VkPresentInfoKHR;
 begin
      _Vulkan  := TVulkan.Create;
-     _Instan  := _Vulkan.Instans.Add;
-     _Window  := TVkWindow.Create( _Instan, 500, 500, @WndProc );
-     _Surfac  := TVkSurfac.Create( _Window );
+     _Instan  := TVkInstan.Create( _Vulkan );
+     _Window  := CreateWindow( 500, 500 );
+     _Surfac  := TVkSurfac.Create( _Instan, _Window );
      _Devices := TVkDevices.Create( _Instan );
      _Device  := _Devices[0];
      _Pooler  := TVkCommandPool.Create( _Device );
@@ -144,8 +209,8 @@ begin
      rp_begin.framebuffer              := _Vulkan.Info.framebuffers[ _Swapch.Viewers.ViewerI ];
      rp_begin.renderArea.offset.x      := 0;
      rp_begin.renderArea.offset.y      := 0;
-     rp_begin.renderArea.extent.width  := _Window.width;
-     rp_begin.renderArea.extent.height := _Window.height;
+     rp_begin.renderArea.extent.width  := _Surfac.PxSizeX;
+     rp_begin.renderArea.extent.height := _Surfac.PxSizeY;
      rp_begin.clearValueCount          := 2;
      rp_begin.pClearValues             := @clear_values[0];
 
@@ -227,8 +292,7 @@ begin
      _Swapch.Free;
      _Comman.Free;
      _Pooler.Free;
-     _Surfac.Free;
-     _Window.Free;
+     DestroWindow( _Window );
      _Vulkan.Free;
 end;
 
