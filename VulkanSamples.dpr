@@ -28,7 +28,6 @@ uses
   LUX.GPU.Vulkan.Device in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Device.pas',
   vulkan.util_init in '_LIBRARY\vulkan.util_init.pas',
   vulkan.util in '_LIBRARY\vulkan.util.pas',
-  LUX.GPU.Vulkan.root in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.root.pas',
   LUX.GPU.Vulkan.Instan in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Instan.pas',
   LUX.GPU.Vulkan.Surfac in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Surfac.pas',
   LUX.GPU.Vulkan.Command in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Command.pas',
