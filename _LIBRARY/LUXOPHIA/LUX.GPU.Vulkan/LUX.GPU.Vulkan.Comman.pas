@@ -107,7 +107,6 @@ begin
 
      _Pooler := Pooler_;
 
-     TVkPooler( _Pooler ).Comman := TVkComman( Self );
      TVkPooler( _Pooler ).Commans.Add( TVkComman( Self ) );
 
      CreateHandle;

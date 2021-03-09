@@ -32,10 +32,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Device_:TVkDevice_ );
        destructor Destroy; override;
        ///// プロパティ
-       property Device  :TVkDevice_    read _Device              ;
-       property Handle  :VkCommandPool read _Handle              ;
-       property Comman  :TVkComman_    read _Comman write _Comman;
-       property Commans :TVkCommans_   read _Commans             ;
+       property Device  :TVkDevice_    read _Device ;
+       property Handle  :VkCommandPool read _Handle ;
+       property Commans :TVkCommans_   read _Commans;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
