@@ -2,12 +2,14 @@
 
 interface //#################################################################### ■
 
-uses vulkan_core,
+uses System.Generics.Collections,
+     vulkan_core,
      LUX.GPU.Vulkan.Comman;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkPooler<TVkDevice_:class> = class;
+     TVkPoolers<TVkDevice_:class>  = class;
+       TVkPooler<TVkDevice_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -33,6 +35,22 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Device  :TVkDevice_    read _Device ;
        property Handle  :VkCommandPool read _Handle ;
        property Commans :TVkCommans_   read _Commans;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkPoolers
+
+     TVkPoolers<TVkDevice_:class> = class( TObjectList<TVkPooler<TVkDevice_>> )
+     private
+       type TVkPooler_ = TVkPooler<TVkDevice_>;
+     protected
+       _Device :TVkDevice_;
+     public
+       constructor Create( const Device_:TVkDevice_ );
+       destructor Destroy; override;
+       ///// プロパティ
+       property Device :TVkDevice_ read _Device;
+       ///// メソッド
+       function Add :TVkPooler_; overload;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -99,6 +117,34 @@ begin
      DestroHandle;
 
      inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkPoolers
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkPoolers<TVkDevice_>.Create( const Device_:TVkDevice_ );
+begin
+     inherited Create;
+
+     _Device := Device_;
+end;
+
+destructor TVkPoolers<TVkDevice_>.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+function TVkPoolers<TVkDevice_>.Add :TVkPooler_;
+begin
+     Result := TVkPooler_.Create( _Device );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
