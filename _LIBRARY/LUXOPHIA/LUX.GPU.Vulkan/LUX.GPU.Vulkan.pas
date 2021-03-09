@@ -17,29 +17,29 @@ uses vulkan_core,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVulkan                      = class;
-       TVkLayeres                 = TVkLayeres<TVulkan>;
-         TVkLayere                = TVkLayere<TVulkan>;
-       TVkInstans                 = TVkInstans<TVulkan>;
-         TVkInstan                = TVkInstan<TVulkan>;
-           TVkInstanInform        = TVkInstanInform<TVkInstan>;
-             TVkApplicInform      = TVkApplicInform<TVkInstanInform>;
-           TVkSurfacs             = TVkSurfacs<TVkInstan>;
-             TVkSurfac            = TVkSurfac<TVkInstan>;
-           TVkDevices             = TVkDevices<TVkInstan>;
-             TVkDevice            = TVkDevice<TVkInstan>;
-               TVkDevLays         = TVkDevLays<TVkDevice>;
-                 TVkDevLay        = TVkDevLay<TVkDevice>;
-               TVkPipeline        = TVkPipeline<TVkDevice>;
-                 TVkShader        = TVkShader<TVkPipeline>;
-                 TVkShaderVert    = TVkShaderVert<TVkPipeline>;
-                 TVkShaderFrag    = TVkShaderFrag<TVkPipeline>;
-               TVkBuffer          = TVkBuffer<TVkDevice>;
-               TVkCommandPool     = TVkCommandPool<TVkDevice>;
-                 TVkCommandBuffer = TVkCommandBuffer<TVkCommandPool>;
-               TVkSwapchain       = TVkSwapchain<TVkDevice>;
-                 TVkImageViews    = TVkImageViews<TVkSwapchain>;
-                   TVkImageView   = TVkImageView<TVkImageViews>;
+     TVulkan                    = class;
+       TVkLayeres               = TVkLayeres<TVulkan>;
+         TVkLayere              = TVkLayere<TVulkan>;
+       TVkInstans               = TVkInstans<TVulkan>;
+         TVkInstan              = TVkInstan<TVulkan>;
+           TVkInstanInform      = TVkInstanInform<TVkInstan>;
+             TVkApplicInform    = TVkApplicInform<TVkInstanInform>;
+           TVkSurfacs           = TVkSurfacs<TVkInstan>;
+             TVkSurfac          = TVkSurfac<TVkInstan>;
+           TVkDevices           = TVkDevices<TVkInstan>;
+             TVkDevice          = TVkDevice<TVkInstan>;
+               TVkDevLays       = TVkDevLays<TVkDevice>;
+                 TVkDevLay      = TVkDevLay<TVkDevice>;
+               TVkPooler        = TVkPooler<TVkDevice>;
+                 TVkComman      = TVkComman<TVkPooler>;
+               TVkPipeline      = TVkPipeline<TVkDevice>;
+                 TVkShader      = TVkShader<TVkPipeline>;
+                 TVkShaderVert  = TVkShaderVert<TVkPipeline>;
+                 TVkShaderFrag  = TVkShaderFrag<TVkPipeline>;
+               TVkBuffer        = TVkBuffer<TVkDevice>;
+               TVkSwapchain     = TVkSwapchain<TVkDevice>;
+                 TVkImageViews  = TVkImageViews<TVkSwapchain>;
+                   TVkImageView = TVkImageView<TVkImageViews>;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -127,7 +127,7 @@ var
 begin
      (* DEPENDS on info.cmd and info.queue initialized *)
 
-     Assert( NativeInt( Vulkan_.Instans[0].Devices[0].Pooler.ComBufs.Handle ) <> VK_NULL_HANDLE );
+     Assert( NativeInt( Vulkan_.Instans[0].Devices[0].Pooler.Comman.Handle ) <> VK_NULL_HANDLE );
      Assert( NativeInt( Vulkan_.Instans[0].Devices[0].QueuerG ) <> VK_NULL_HANDLE );
 
      image_memory_barrier.sType                           := VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -173,7 +173,7 @@ begin
           image_memory_barrier.dstAccessMask := Ord( VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT );
      end;
 
-     vkCmdPipelineBarrier( Vulkan_.Instans[0].Devices[0].Pooler.ComBufs.Handle, src_stages_, dest_stages_, 0, 0, nil, 0, nil, 1, @image_memory_barrier );
+     vkCmdPipelineBarrier( Vulkan_.Instans[0].Devices[0].Pooler.Comman.Handle, src_stages_, dest_stages_, 0, 0, nil, 0, nil, 1, @image_memory_barrier );
 end;
 
 procedure write_ppm( Vulkan_:TVulkan; const basename_:String );
@@ -251,7 +251,7 @@ begin
      cmd_buf_info.flags            := 0;
      cmd_buf_info.pInheritanceInfo := nil;
 
-     res := vkBeginCommandBuffer( Vulkan_.Instans[0].Devices[0].Pooler.ComBufs.Handle, @cmd_buf_info );
+     res := vkBeginCommandBuffer( Vulkan_.Instans[0].Devices[0].Pooler.Comman.Handle, @cmd_buf_info );
      Assert( res = VK_SUCCESS );
      set_image_layout( Vulkan_, mappableImage, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_UNDEFINED,
                        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, Ord( VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT ), Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ) );
@@ -278,15 +278,15 @@ begin
      copy_region.extent.depth                  := 1;
 
      (* Put the copy command into the command buffer *)
-     vkCmdCopyImage( Vulkan_.Instans[0].Devices[0].Pooler.ComBufs.Handle, Vulkan_.Instans[0].Devices[0].Swapchs.Viewers.Viewer.Image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, mappableImage,
+     vkCmdCopyImage( Vulkan_.Instans[0].Devices[0].Pooler.Comman.Handle, Vulkan_.Instans[0].Devices[0].Swapchs.Viewers.Viewer.Image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, mappableImage,
                      VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region);
 
      set_image_layout( Vulkan_, mappableImage, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL,
                        Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ), Ord( VK_PIPELINE_STAGE_HOST_BIT ) );
 
-     res := vkEndCommandBuffer( Vulkan_.Instans[0].Devices[0].Pooler.ComBufs.Handle );
+     res := vkEndCommandBuffer( Vulkan_.Instans[0].Devices[0].Pooler.Comman.Handle );
      Assert( res = VK_SUCCESS );
-     cmd_bufs[0] := Vulkan_.Instans[0].Devices[0].Pooler.ComBufs.Handle;
+     cmd_bufs[0] := Vulkan_.Instans[0].Devices[0].Pooler.Comman.Handle;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;

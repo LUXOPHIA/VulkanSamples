@@ -6,53 +6,51 @@ uses vulkan_core, vulkan_win32;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkCommandPool<TDevice_:class>          = class;
-     TVkCommandBuffer<TVkCommandPool_:class> = class;
+     TVkPooler<TVkDevice_:class> = class;
+     TVkComman<TVkPooler_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkCommandPool
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkPooler
 
-     TVkCommandPool<TDevice_:class> = class
+     TVkPooler<TVkDevice_:class> = class
      private
-       type TVkCommandPool_   = TVkCommandPool<TDevice_>;
-            TVkCommandBuffer_ = TVkCommandBuffer<TVkCommandPool_>;
+       type TVkPooler_ = TVkPooler<TVkDevice_>;
+            TVkComman_ = TVkComman<TVkPooler_>;
      protected
-       _Device  :TDevice_;
-       _Handle  :VkCommandPool;
-       _ComBufs :TVkCommandBuffer_;
+       _Device :TVkDevice_;
+       _Handle :VkCommandPool;
+       _Comman :TVkComman_;
        /////
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create( const Device_:TDevice_ );
-       procedure AfterConstruction; override;
+       constructor Create( const Device_:TVkDevice_ );
        destructor Destroy; override;
        ///// プロパティ
-       property Device  :TDevice_          read _Device                ;
-       property Handle  :VkCommandPool     read _Handle                ;
-       property ComBufs :TVkCommandBuffer_ read _ComBufs write _ComBufs;
+       property Device :TVkDevice_    read _Device              ;
+       property Handle :VkCommandPool read _Handle              ;
+       property Comman :TVkComman_    read _Comman write _Comman;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkCommandBuffer
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkComman
 
-     TVkCommandBuffer<TVkCommandPool_:class> = class
+     TVkComman<TVkPooler_:class> = class
      private
      protected
-       _ComPool :TVkCommandPool_;
-       _Handle  :VkCommandBuffer;
+       _Pooler :TVkPooler_;
+       _Handle :VkCommandBuffer;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create( const ComPool_:TVkCommandPool_ );
-       procedure AfterConstruction; override;
+       constructor Create( const Pooler_:TVkPooler_ );
        destructor Destroy; override;
        ///// プロパティ
-       property Pool   :TVkCommandPool_ read _ComPool;
-       property Handle :VkCommandBuffer read _Handle ;
+       property Pooler :TVkPooler_      read _Pooler;
+       property Handle :VkCommandBuffer read _Handle;
        ///// メソッド
        procedure BeginRecord;
        procedure EndRecord;
@@ -72,13 +70,13 @@ uses LUX.GPU.Vulkan;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkCommandPool
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkPooler
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-procedure TVkCommandPool<TDevice_>.CreateHandle;
+procedure TVkPooler<TVkDevice_>.CreateHandle;
 var
    P :VkCommandPoolCreateInfo;
 begin
@@ -95,38 +93,32 @@ begin
      Assert( vkCreateCommandPool( TVkDevice( _Device ).Handle, @P, nil, @Handle ) = VK_SUCCESS );
 end;
 
-procedure TVkCommandPool<TDevice_>.DestroHandle;
+procedure TVkPooler<TVkDevice_>.DestroHandle;
 begin
      vkDestroyCommandPool( TVkDevice( _Device ).Handle, Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkCommandPool<TDevice_>.Create( const Device_:TDevice_ );
+constructor TVkPooler<TVkDevice_>.Create( const Device_:TVkDevice_ );
 begin
      inherited Create;
 
      _Device := Device_;
 
-     TVkDevice( _Device ).Pooler := TVkCommandPool( Self );
+     TVkDevice( _Device ).Pooler := TVkPooler( Self );
 
      CreateHandle;
 end;
 
-procedure TVkCommandPool<TDevice_>.AfterConstruction;
-begin
-     inherited;
-
-end;
-
-destructor TVkCommandPool<TDevice_>.Destroy;
+destructor TVkPooler<TVkDevice_>.Destroy;
 begin
      DestroHandle;
 
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkCommandBuffer
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkComman
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -134,7 +126,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkCommandBuffer<TVkCommandPool_>.CreateHandle;
+procedure TVkComman<TVkPooler_>.CreateHandle;
 var
    B :VkCommandBufferAllocateInfo;
 begin
@@ -144,42 +136,36 @@ begin
      begin
           sType              := VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
           pNext              := nil;
-          commandPool        := TVkCommandPool( _ComPool ).Handle;
+          commandPool        := TVkPooler( _Pooler ).Handle;
           level              := VK_COMMAND_BUFFER_LEVEL_PRIMARY;
           commandBufferCount := 1;
      end;
 
-     Assert( vkAllocateCommandBuffers( TVkCommandPool( _ComPool ).Device.Handle, @B, @_Handle ) = VK_SUCCESS );
+     Assert( vkAllocateCommandBuffers( TVkPooler( _Pooler ).Device.Handle, @B, @_Handle ) = VK_SUCCESS );
 end;
 
-procedure TVkCommandBuffer<TVkCommandPool_>.DestroHandle;
+procedure TVkComman<TVkPooler_>.DestroHandle;
 var
    Bs :array [ 0..1-1 ] of VkCommandBuffer;
 begin
      Bs[0] := _Handle;
-     vkFreeCommandBuffers( TVkCommandPool( _ComPool ).Device.Handle, TVkCommandPool( _ComPool ).Handle, 1, @Bs[0] );
+     vkFreeCommandBuffers( TVkPooler( _Pooler ).Device.Handle, TVkPooler( _Pooler ).Handle, 1, @Bs[0] );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkCommandBuffer<TVkCommandPool_>.Create( const ComPool_:TVkCommandPool_ );
+constructor TVkComman<TVkPooler_>.Create( const Pooler_:TVkPooler_ );
 begin
      inherited Create;
 
-     _ComPool := ComPool_;
+     _Pooler := Pooler_;
 
-     TVkCommandPool( _ComPool ).ComBufs := TVkCommandBuffer( Self );
+     TVkPooler( _Pooler ).Comman := TVkComman( Self );
 
      CreateHandle;
 end;
 
-procedure TVkCommandBuffer<TVkCommandPool_>.AfterConstruction;
-begin
-     inherited;
-
-end;
-
-destructor TVkCommandBuffer<TVkCommandPool_>.Destroy;
+destructor TVkComman<TVkPooler_>.Destroy;
 begin
      DestroHandle;
 
@@ -188,22 +174,24 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkCommandBuffer<TVkCommandPool_>.BeginRecord;
+procedure TVkComman<TVkPooler_>.BeginRecord;
 var
-   cmd_buf_info :VkCommandBufferBeginInfo;
+   B :VkCommandBufferBeginInfo;
 begin
      (* DEPENDS on init_command_buffer() *)
 
-     cmd_buf_info                  := Default( VkCommandBufferBeginInfo );
-     cmd_buf_info.sType            := VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-     cmd_buf_info.pNext            := nil;
-     cmd_buf_info.flags            := 0;
-     cmd_buf_info.pInheritanceInfo := nil;
+     with B do
+     begin
+          sType            := VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+          pNext            := nil;
+          flags            := 0;
+          pInheritanceInfo := nil;
+     end;
 
-     Assert( vkBeginCommandBuffer( _Handle, @cmd_buf_info ) = VK_SUCCESS );
+     Assert( vkBeginCommandBuffer( _Handle, @B ) = VK_SUCCESS );
 end;
 
-procedure TVkCommandBuffer<TVkCommandPool_>.EndRecord;
+procedure TVkComman<TVkPooler_>.EndRecord;
 begin
      Assert( vkEndCommandBuffer( _Handle ) = VK_SUCCESS );
 end;

@@ -29,7 +29,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             TVkSurfac_      = TVkSurfac<TVkInstan_>;
             TVkDevLays_     = TVkDevLays<TVkDevice_>;
             TVkBuffer_      = TVkBuffer<TVkDevice_>;
-            TVkCommandPool_ = TVkCommandPool<TVkDevice_>;
+            TVkPooler_      = TVkPooler<TVkDevice_>;
             TVkSwapchain_   = TVkSwapchain<TVkDevice_>;
      protected
        _Extenss  :TArray<PAnsiChar>;
@@ -49,7 +49,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _QueuerG  :VkQueue;
        _QueuerP  :VkQueue;
        _Buffers  :TVkBuffer_;
-       _Poolers  :TVkCommandPool_;
+       _Poolers  :TVkPooler_;
        _Swapchs  :TVkSwapchain_;
        ///// アクセス
        function GetInstan :TVkInstan_;
@@ -91,7 +91,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property QueuerG                     :VkQueue                          read   _QueuerG                  ;
        property QueuerP                     :VkQueue                          read   _QueuerP                  ;
        property Buffers                     :TVkBuffer_                       read   _Buffers  write   _Buffers;
-       property Pooler                      :TVkCommandPool_                  read   _Poolers  write   _Poolers;
+       property Pooler                      :TVkPooler_                       read   _Poolers  write   _Poolers;
        property Swapchs                     :TVkSwapchain_                    read   _Swapchs  write   _Swapchs;
        ///// メソッド
        function memory_type_from_properties( typeBits:UInt32; const requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
