@@ -2,7 +2,7 @@
 
 interface //#################################################################### ■
 
-uses vulkan_core, vulkan_win32,
+uses vulkan_core,
      LUX.GPU.Vulkan.Comman;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -17,12 +17,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TVkPooler<TVkDevice_:class> = class
      private
-       type TVkPooler_ = TVkPooler<TVkDevice_>;
-            TVkComman_ = TVkComman<TVkPooler_>;
+       type TVkPooler_  = TVkPooler<TVkDevice_>;
+            TVkComman_  = TVkComman<TVkPooler_>;
+            TVkCommans_ = TVkCommans<TVkPooler_>;
      protected
-       _Device :TVkDevice_;
-       _Handle :VkCommandPool;
-       _Comman :TVkComman_;
+       _Device  :TVkDevice_;
+       _Handle  :VkCommandPool;
+       _Comman  :TVkComman_;
+       _Commans :TVkCommans_;
        /////
        procedure CreateHandle;
        procedure DestroHandle;
@@ -30,9 +32,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Device_:TVkDevice_ );
        destructor Destroy; override;
        ///// プロパティ
-       property Device :TVkDevice_    read _Device              ;
-       property Handle :VkCommandPool read _Handle              ;
-       property Comman :TVkComman_    read _Comman write _Comman;
+       property Device  :TVkDevice_    read _Device              ;
+       property Handle  :VkCommandPool read _Handle              ;
+       property Comman  :TVkComman_    read _Comman write _Comman;
+       property Commans :TVkCommans_   read _Commans             ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -88,10 +91,14 @@ begin
      TVkDevice( _Device ).Pooler := TVkPooler( Self );
 
      CreateHandle;
+
+     _Commans := TVkCommans_.Create( Self );
 end;
 
 destructor TVkPooler<TVkDevice_>.Destroy;
 begin
+     _Commans.Free;
+
      DestroHandle;
 
      inherited;
