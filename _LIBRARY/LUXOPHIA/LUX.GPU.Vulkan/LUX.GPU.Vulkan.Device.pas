@@ -44,6 +44,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _FamilyG  :UInt32;
        _FamilyP  :UInt32;
        _Format   :VkFormat;
+       _Inform   :VkDeviceCreateInfo;
        _Handle   :VkDevice;
        _QueuerG  :VkQueue;
        _QueuerP  :VkQueue;
@@ -85,6 +86,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property FamilyG                     :UInt32                           read   _FamilyG                  ;
        property FamilyP                     :UInt32                           read   _FamilyP                  ;
        property Format                      :VkFormat                         read   _Format                   ;
+       property Inform                      :VkDeviceCreateInfo               read   _Inform                   ;
        property Handle                      :VkDevice                         read GetHandle   write SetHandle ;
        property QueuerG                     :VkQueue                          read   _QueuerG                  ;
        property QueuerP                     :VkQueue                          read   _QueuerP                  ;
@@ -301,36 +303,42 @@ end;
 
 procedure TVkDevice<TVkInstan_>.CreateHandle;
 var
-   queue_priorities :array [ 0..1-1 ] of Single;
-   queue_info       :VkDeviceQueueCreateInfo;
-   device_info      :VkDeviceCreateInfo;
+   QueuerPrioris :array [ 0..1-1 ] of Single;
+   QueuerInform  :VkDeviceQueueCreateInfo;
 begin
-     queue_priorities[0] := 0;
+     QueuerPrioris[0] := 0;
 
-     queue_info                  := Default( VkDeviceQueueCreateInfo );
-     queue_info.sType            := VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-     queue_info.pNext            := nil;
-     queue_info.queueCount       := 1;
-     queue_info.pQueuePriorities := @queue_priorities[0];
-     queue_info.queueFamilyIndex := _FamilyG;
+     with QueuerInform do
+     begin
+          sType            := VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+          pNext            := nil;
+          flags            := 0;
+          queueFamilyIndex := _FamilyG;
+          queueCount       := 1;
+          pQueuePriorities := @QueuerPrioris[0];
+     end;
 
-     device_info                              := Default( VkDeviceCreateInfo );
-     device_info.sType                        := VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-     device_info.pNext                        := nil;
-     device_info.queueCreateInfoCount         := 1;
-     device_info.pQueueCreateInfos            := @queue_info;
-     device_info.enabledExtensionCount        := Length( _Extenss );
-     if device_info.enabledExtensionCount > 0
-     then device_info.ppEnabledExtensionNames := @_Extenss[0]
-     else device_info.ppEnabledExtensionNames := nil;
-     device_info.pEnabledFeatures             := nil;
+     with _Inform do
+     begin
+          sType                   := VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+          pNext                   := nil;
+          flags                   := 0;
+          queueCreateInfoCount    := 1;
+          pQueueCreateInfos       := @QueuerInform;
+          enabledLayerCount       := 0;
+          ppEnabledLayerNames     := nil;
+          enabledExtensionCount   := Length( _Extenss );
+          ppEnabledExtensionNames := @_Extenss[0];
+          pEnabledFeatures        := nil;
+     end;
 
-     Assert( vkCreateDevice( _Physic, @device_info, nil, @_Handle ) = VK_SUCCESS );
+     Assert( vkCreateDevice( _Physic, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkDevice<TVkInstan_>.DestroHandle;
 begin
      vkDeviceWaitIdle( _Handle );
+
      vkDestroyDevice( _Handle, nil );
 end;
 
