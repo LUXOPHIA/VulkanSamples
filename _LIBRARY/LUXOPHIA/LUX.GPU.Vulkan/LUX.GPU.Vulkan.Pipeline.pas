@@ -258,9 +258,9 @@ end;
 
 destructor TVkPipeline<TVkDevice_>.Destroy;
 begin
-      Handle := 0;
-
      _Shaders.Free;
+
+      Handle := 0;
 
      inherited;
 end;
