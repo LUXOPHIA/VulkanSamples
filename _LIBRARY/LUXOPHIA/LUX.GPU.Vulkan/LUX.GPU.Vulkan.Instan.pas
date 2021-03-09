@@ -5,7 +5,7 @@ interface //####################################################################
 uses System.Classes, System.Generics.Collections,
      vulkan_core,
      LUX.GPU.Vulkan.root,
-     LUX.GPU.Vulkan.Window,
+     LUX.GPU.Vulkan.Surfac,
      LUX.GPU.Vulkan.Device;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -100,14 +100,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        type TVkInstan_       = TVkInstan<TVulkan_>;
             TVkInstanInform_ = TVkInstanInform<TVulkan_>;
+            TVkSurfacs_      = TVkSurfacs<TVkInstan_>;
             TVkDevices_      = TVkDevices<TVkInstan_>;
-            TVkWindow_       = TVkWindow<TVkInstan_>;
      protected
        _Vulkan  :TVulkan_;
        _Inform  :TVkInstanInform_;
        _Handle  :VkInstance;
+       _Surfacs :TVkSurfacs_;
        _Devices :TVkDevices_;
-       _Window  :TVkWindow_;
        ///// アクセス
        function GetHandle :VkInstance;
        procedure SetHandle( const Handle_:VkInstance );
@@ -121,8 +121,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Vulkan  :TVulkan_         read   _Vulkan                  ;
        property Inform  :TVkInstanInform_ read   _Inform                  ;
        property Handle  :VkInstance       read GetHandle  write SetHandle ;
+       property Surfacs :TVkSurfacs_      read   _Surfacs                 ;
        property Devices :TVkDevices_      read   _Devices write   _Devices;
-       property Window  :TVkWindow_       read   _Window  write   _Window ;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInstans
@@ -429,11 +429,15 @@ begin
      _Inform := TVkInstanInform_.Create( Self );
 
      _Handle := nil;
+
+     _Surfacs := TVkSurfacs_.Create( Self );
 end;
 
 destructor TVkInstan<TVulkan_>.Destroy;
 begin
      _Devices.Free;
+
+     _Surfacs.Free;
 
       Handle := nil;
 
