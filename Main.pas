@@ -162,13 +162,13 @@ var
    present                          :VkPresentInfoKHR;
 begin
      _Vulkan  := TVulkan.Create;
-     _Instan  := TVkInstan.Create( _Vulkan );
+     _Instan  := TVkInstan.Create( _Vulkan );  //= _Vulkan.Instans.Add;
      _Device  := _Instan.Devices[0];
      _Window  := CreateWindow( 500, 500 );
      _Surfac  := TVkSurfac.Create( _Instan, _Window );
      _Device.Surfac := _Surfac;
      _Pooler  := TVkPooler.Create( _Device );
-     _Comman  := TVkComman.Create( _Pooler );
+     _Comman  := TVkComman.Create( _Pooler );  //= _Pooler.Commans.Add;
      _Comman.BeginRecord;
      _Swapch  := TVkSwapchain.Create( _Device );
      init_depth_buffer( _Vulkan );
