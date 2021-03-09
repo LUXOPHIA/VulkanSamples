@@ -68,9 +68,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure InitQueuers;
      public
        constructor Create; overload;
-       constructor Create( const Devices_:TVkDevices_ ); overload;
-       constructor Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice ); overload;
-       constructor Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice; const Surfac_:TVkSurfac_ ); overload;
+       constructor Create( const Physic_:VkPhysicalDevice ); overload;
+       constructor Create( const Physic_:VkPhysicalDevice; const Devices_:TVkDevices_ ); overload;
+       constructor Create( const Physic_:VkPhysicalDevice; const Devices_:TVkDevices_; const Surfac_:TVkSurfac_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
        property Extenss                     :TArray<PAnsiChar>                read   _Extenss                  ;
@@ -105,7 +105,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             TVkDevice_  = TVkDevice<TVkInstan_>;
      protected
        _Instan :TVkInstan_;
-       ///// アクセス
        ///// メソッド
        procedure FindDevices;
      public
@@ -358,37 +357,38 @@ begin
 
      _Handle := nil;
 
+     _Layeres := TVkDevLays_.Create( Self );
      _Poolers := TVkPoolers_.Create( Self );
 
      _Extenss := _Extenss + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
 end;
 
-constructor TVkDevice<TVkInstan_>.Create( const Devices_:TVkDevices_ );
+constructor TVkDevice<TVkInstan_>.Create( const Physic_:VkPhysicalDevice );
 begin
      Create;
-
-     _Devices := Devices_;
-
-     TVkDevices( _Devices ).Add( TVkDevice( Self ) );
-end;
-
-constructor TVkDevice<TVkInstan_>.Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice );
-begin
-     Create( Devices_ );
 
      _Physic := Physic_;
 
      vkGetPhysicalDeviceProperties      ( _Physic, @_Propers );
      vkGetPhysicalDeviceMemoryProperties( _Physic, @_Memorys );
 
-     _Layeres := TVkDevLays_.Create( Self );
-
      FindFamilys;
 end;
 
-constructor TVkDevice<TVkInstan_>.Create( const Devices_:TVkDevices_; const Physic_:VkPhysicalDevice; const Surfac_:TVkSurfac_ );
+constructor TVkDevice<TVkInstan_>.Create( const Physic_:VkPhysicalDevice; const Devices_:TVkDevices_ );
 begin
-     Create( Devices_, Physic_ );
+     Create( Physic_ );
+
+     _Devices := Devices_;
+
+     TVkDevices( _Devices ).Add( TVkDevice( Self ) );
+
+     _Layeres.FindDevLays;
+end;
+
+constructor TVkDevice<TVkInstan_>.Create( const Physic_:VkPhysicalDevice; const Devices_:TVkDevices_; const Surfac_:TVkSurfac_ );
+begin
+     Create( Physic_, Devices_ );
 
      Surfac := Surfac_;
 end;
@@ -397,9 +397,9 @@ destructor TVkDevice<TVkInstan_>.Destroy;
 begin
      if Assigned( _Buffers ) then _Buffers.Free;
 
-     _Layeres.Free;
-
      _Poolers.Free;
+
+     _Layeres.Free;
 
       Handle := nil;
 
@@ -435,8 +435,6 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-/////////////////////////////////////////////////////////////////////// アクセス
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
@@ -480,7 +478,7 @@ end;
 
 function TVkDevices<TVkInstan_>.Add( const Physic_:VkPhysicalDevice ) :TVkDevice_;
 begin
-     Result := TVkDevice_.Create( Self, Physic_ );
+     Result := TVkDevice_.Create( Physic_, Self );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】

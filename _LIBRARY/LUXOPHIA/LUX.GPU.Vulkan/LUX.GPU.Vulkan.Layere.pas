@@ -313,8 +313,6 @@ begin
      inherited Create;
 
      _Device := Device_;
-
-     FindDevLays;
 end;
 
 destructor TVkDevLays<TVkDevice_>.Destroy;
