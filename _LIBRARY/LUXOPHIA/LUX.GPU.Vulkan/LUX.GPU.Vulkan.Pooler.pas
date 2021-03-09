@@ -103,7 +103,7 @@ begin
 
      _Device := Device_;
 
-     TVkDevice( _Device ).Pooler := TVkPooler( Self );
+     TVkDevice( _Device ).Poolers.Add( TVkPooler( Self ) );
 
      CreateHandle;
 
