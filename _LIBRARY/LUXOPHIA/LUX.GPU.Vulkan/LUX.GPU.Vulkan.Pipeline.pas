@@ -28,18 +28,20 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Handle    :VkPipeline;
        _DepthTest :Boolean;
        _Shaders   :TVkShaders_;
+       ///// アクセス
+       function GetHandle :VkPipeline;
+       procedure SetHandle( const Handle_:VkPipeline );
        ///// メソッド
+       procedure CreateHandle;
        procedure DestroHandle;
      public
        constructor Create( const Device_:TVkDevice_; const DepthTest_:Boolean );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Device  :TVkDevice_  read _Device ;
-       property Handle  :VkPipeline  read _Handle ;
-       property Shaders :TVkShaders_ read _Shaders;
-       ///// メソッド
-       procedure CreateHandle;
+       property Device  :TVkDevice_  read   _Device                 ;
+       property Handle  :VkPipeline  read GetHandle  write SetHandle;
+       property Shaders :TVkShaders_ read   _Shaders                ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -61,6 +63,22 @@ uses LUX.GPU.Vulkan;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkPipeline<TVkDevice_>.GetHandle :VkPipeline;
+begin
+     if _Handle = 0 then CreateHandle;
+
+     Result := _Handle;
+end;
+
+procedure TVkPipeline<TVkDevice_>.SetHandle( const Handle_:VkPipeline );
+begin
+     if _Handle <> 0 then DestroHandle;
+
+     _Handle := Handle_;
+end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
@@ -224,9 +242,12 @@ constructor TVkPipeline<TVkDevice_>.Create( const Device_:TVkDevice_; const Dept
 begin
      inherited Create;
 
+     _Handle := 0;
+
+     _Shaders := TVkShaders_.Create;
+
      _Device    := Device_;
      _DepthTest := DepthTest_;
-     _Shaders   := TVkShaders_.Create;
 end;
 
 procedure TVkPipeline<TVkDevice_>.AfterConstruction;
@@ -237,7 +258,7 @@ end;
 
 destructor TVkPipeline<TVkDevice_>.Destroy;
 begin
-     DestroHandle;
+      Handle := 0;
 
      _Shaders.Free;
 
