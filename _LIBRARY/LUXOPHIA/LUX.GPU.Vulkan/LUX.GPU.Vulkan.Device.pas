@@ -302,9 +302,9 @@ begin
      _Layeres := TVkDevLays_.Create( Self );
 
      FindFamilys;
-     FindFamilyI( TVkDevices( _Devices ).Instan.Window.Surfac.Handle );
+     FindFamilyI( TVkDevices( _Devices ).Instan.Surfacs[0].Handle );
 
-     FindFormat( TVkDevices( _Devices ).Instan.Window.Surfac.Handle );
+     FindFormat( TVkDevices( _Devices ).Instan.Surfacs[0].Handle );
 
      _Extenss := _Extenss + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
 
