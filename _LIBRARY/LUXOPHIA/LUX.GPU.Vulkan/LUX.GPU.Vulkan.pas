@@ -9,10 +9,10 @@ uses vulkan_core,
      LUX.GPU.Vulkan.Instan,
        LUX.GPU.Vulkan.Surfac,
        LUX.GPU.Vulkan.Device,
+         LUX.GPU.Vulkan.Comman,
          LUX.GPU.Vulkan.Pipeline,
            LUX.GPU.Vulkan.Shader,
          LUX.GPU.Vulkan.Buffer,
-         LUX.GPU.Vulkan.Command,
          LUX.GPU.Vulkan.Swapchain;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】

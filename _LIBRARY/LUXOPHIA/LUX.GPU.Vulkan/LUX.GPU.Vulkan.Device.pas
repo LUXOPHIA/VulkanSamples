@@ -7,8 +7,8 @@ uses System.Generics.Collections,
      LUX.GPU.Vulkan.Layere,
      LUX.GPU.Vulkan.Pipeline,
      LUX.GPU.Vulkan.Surfac,
+     LUX.GPU.Vulkan.Comman,
      LUX.GPU.Vulkan.Buffer,
-     LUX.GPU.Vulkan.Command,
      LUX.GPU.Vulkan.Swapchain;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
