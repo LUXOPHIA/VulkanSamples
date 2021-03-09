@@ -229,8 +229,8 @@ begin
      image_info.pNext                 := nil;
      image_info.imageType             := VK_IMAGE_TYPE_2D;
      image_info.format                := depth_format;
-     image_info.extent.width          := Vulkan_.Instans[0].Window.width;
-     image_info.extent.height         := Vulkan_.Instans[0].Window.height;
+     image_info.extent.width          := Vulkan_.Instans[0].Surfacs[0].PxSizeX;
+     image_info.extent.height         := Vulkan_.Instans[0].Surfacs[0].PxSizeY;
      image_info.extent.depth          := 1;
      image_info.mipLevels             := 1;
      image_info.arrayLayers           := 1;
@@ -481,8 +481,8 @@ begin
      then fb_info.attachmentCount := 2
      else fb_info.attachmentCount := 1;
      fb_info.pAttachments         := @attachments[0];
-     fb_info.width                := Vulkan_.Instans[0].Window.width;
-     fb_info.height               := Vulkan_.Instans[0].Window.height;
+     fb_info.width                := Vulkan_.Instans[0].Surfacs[0].PxSizeX;
+     fb_info.height               := Vulkan_.Instans[0].Surfacs[0].PxSizeY;
      fb_info.layers               := 1;
 
      SetLength( Vulkan_.Info.framebuffers, Vulkan_.Instans[0].Devices[0].Swapchs.Viewers.Count );
@@ -660,8 +660,8 @@ end;
 
 procedure init_viewports( const Vulkan_:TVulkan );
 begin
-     Vulkan_.Info.viewport.height   := Vulkan_.Instans[0].Window.height;
-     Vulkan_.Info.viewport.width    := Vulkan_.Instans[0].Window.width;
+     Vulkan_.Info.viewport.height   := Vulkan_.Instans[0].Surfacs[0].PxSizeY;
+     Vulkan_.Info.viewport.width    := Vulkan_.Instans[0].Surfacs[0].PxSizeX;
      Vulkan_.Info.viewport.minDepth := 0.0;
      Vulkan_.Info.viewport.maxDepth := 1.0;
      Vulkan_.Info.viewport.x        := 0;
@@ -671,8 +671,8 @@ end;
 
 procedure init_scissors( const Vulkan_:TVulkan );
 begin
-     Vulkan_.Info.scissor.extent.width  := Vulkan_.Instans[0].Window.width;
-     Vulkan_.Info.scissor.extent.height := Vulkan_.Instans[0].Window.height;
+     Vulkan_.Info.scissor.extent.width  := Vulkan_.Instans[0].Surfacs[0].PxSizeX;
+     Vulkan_.Info.scissor.extent.height := Vulkan_.Instans[0].Surfacs[0].PxSizeY;
      Vulkan_.Info.scissor.offset.x      := 0;
      Vulkan_.Info.scissor.offset.y      := 0;
      vkCmdSetScissor( Vulkan_.Instans[0].Devices[0].Pooler.ComBufs.Handle, 0, NUM_SCISSORS, @Vulkan_.Info.scissor );
