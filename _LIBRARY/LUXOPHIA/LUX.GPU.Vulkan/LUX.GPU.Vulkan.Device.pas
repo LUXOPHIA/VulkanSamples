@@ -58,7 +58,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DestroHandle;
        procedure init_device_queue;
      public
-       constructor Create( const Instan_:TVkInstan_; const Physic_:VkPhysicalDevice );
+       constructor Create; overload;
+       constructor Create( const Instan_:TVkInstan_ ); overload;
+       constructor Create( const Instan_:TVkInstan_; const Physic_:VkPhysicalDevice ); overload;
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
@@ -137,11 +139,11 @@ end;
 
 procedure TVkDevice<TVkInstan_>.FindFamilys;
 begin
-     vkGetPhysicalDeviceQueueFamilyProperties( Physic, @_FamilysN, nil );
+     vkGetPhysicalDeviceQueueFamilyProperties( _Physic, @_FamilysN, nil );
      Assert( _FamilysN > 0 );
 
      SetLength( _Familys, _FamilysN );
-     vkGetPhysicalDeviceQueueFamilyProperties( Physic, @_FamilysN, @_Familys[0] );
+     vkGetPhysicalDeviceQueueFamilyProperties( _Physic, @_FamilysN, @_Familys[0] );
      Assert( _FamilysN > 0 );
 end;
 
@@ -178,12 +180,12 @@ begin
      begin
           if ( _Familys[I].queueFlags and Ord( VK_QUEUE_GRAPHICS_BIT ) ) <> 0 then
           begin
-               if _FamilyG = UINT32.MaxValue then _FamilyG := i;
+               if _FamilyG = UINT32.MaxValue then _FamilyG := I;
 
                if Fs[I] = VK_TRUE then
                begin
-                    _FamilyG := i;
-                    _FamilyP := i;
+                    _FamilyG := I;
+                    _FamilyP := I;
                     Break;
                end;
           end;
@@ -197,7 +199,7 @@ begin
           begin
                if Fs[I] = VK_TRUE then
                begin
-                    _FamilyP := i;
+                    _FamilyP := I;
                     Break;
                end;
           end;
@@ -249,13 +251,15 @@ var
    queue_info       :VkDeviceQueueCreateInfo;
    device_info      :VkDeviceCreateInfo;
 begin
-     queue_priorities[0]         := 0;
+     queue_priorities[0] := 0;
+
      queue_info                  := Default( VkDeviceQueueCreateInfo );
      queue_info.sType            := VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
      queue_info.pNext            := nil;
      queue_info.queueCount       := 1;
      queue_info.pQueuePriorities := @queue_priorities[0];
      queue_info.queueFamilyIndex := _FamilyG;
+
      device_info                              := Default( VkDeviceCreateInfo );
      device_info.sType                        := VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
      device_info.pNext                        := nil;
@@ -266,7 +270,8 @@ begin
      then device_info.ppEnabledExtensionNames := @_Extenss[0]
      else device_info.ppEnabledExtensionNames := nil;
      device_info.pEnabledFeatures             := nil;
-     Assert( vkCreateDevice( Physic, @device_info, nil, @_Handle ) = VK_SUCCESS );
+
+     Assert( vkCreateDevice( _Physic, @device_info, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkDevice<TVkInstan_>.DestroHandle;
@@ -285,18 +290,30 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkDevice<TVkInstan_>.Create( const Instan_:TVkInstan_; const Physic_:VkPhysicalDevice );
+constructor TVkDevice<TVkInstan_>.Create;
 begin
-     inherited Create;
+     inherited;
+
+     _Extenss := _Extenss + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
+end;
+
+constructor TVkDevice<TVkInstan_>.Create( const Instan_:TVkInstan_ );
+begin
+     Create;
 
      _Instan := Instan_;
-     _Physic := Physic_;
 
      TVkInstan( _Instan ).Devices.Add( TVkDevice( Self ) );
+end;
 
-     vkGetPhysicalDeviceProperties( Physic, @_Propers );
+constructor TVkDevice<TVkInstan_>.Create( const Instan_:TVkInstan_; const Physic_:VkPhysicalDevice );
+begin
+     Create( Instan_ );
 
-     vkGetPhysicalDeviceMemoryProperties( Physic, @Memorys );
+     _Physic := Physic_;
+
+     vkGetPhysicalDeviceProperties      ( _Physic, @_Propers );
+     vkGetPhysicalDeviceMemoryProperties( _Physic, @_Memorys );
 
      _Layeres := TVkDevLays_.Create( Self );
 
@@ -304,8 +321,6 @@ begin
      FindFamilyI( TVkInstan( _Instan ).Surfacs[0].Handle );
 
      FindFormat( TVkInstan( _Instan ).Surfacs[0].Handle );
-
-     _Extenss := _Extenss + [ VK_KHR_SWAPCHAIN_EXTENSION_NAME ];
 
      CreateHandle;
 
