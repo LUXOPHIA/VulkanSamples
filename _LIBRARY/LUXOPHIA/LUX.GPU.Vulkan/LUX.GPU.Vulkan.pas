@@ -29,7 +29,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
            TVkDevices             = TVkDevices<TVkInstan>;
              TVkDevice            = TVkDevice<TVkInstan>;
                TVkDevLays         = TVkDevLays<TVkDevice>;
-                 TVkDevLay        = TVkDevLays<TVkDevice>;
+                 TVkDevLay        = TVkDevLay<TVkDevice>;
                TVkPipeline        = TVkPipeline<TVkDevice>;
                  TVkShader        = TVkShader<TVkPipeline>;
                  TVkShaderVert    = TVkShaderVert<TVkPipeline>;
