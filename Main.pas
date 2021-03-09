@@ -222,23 +222,23 @@ begin
      rp_begin.clearValueCount          := 2;
      rp_begin.pClearValues             := @clear_values[0];
 
-     vkCmdBeginRenderPass( _Vulkan.Instans[0].Devices[0].Pooler.Commans[0].Handle, @rp_begin, VK_SUBPASS_CONTENTS_INLINE );
+     vkCmdBeginRenderPass( _Vulkan.Instans[0].Devices[0].Poolers[0].Commans[0].Handle, @rp_begin, VK_SUBPASS_CONTENTS_INLINE );
 
-     vkCmdBindPipeline( _Vulkan.Instans[0].Devices[0].Pooler.Commans[0].Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Pipeli.Handle );
-     vkCmdBindDescriptorSets( _Vulkan.Instans[0].Devices[0].Pooler.Commans[0].Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Vulkan.Info.pipeline_layout, 0, NUM_DESCRIPTOR_SETS,
+     vkCmdBindPipeline( _Vulkan.Instans[0].Devices[0].Poolers[0].Commans[0].Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Pipeli.Handle );
+     vkCmdBindDescriptorSets( _Vulkan.Instans[0].Devices[0].Poolers[0].Commans[0].Handle, VK_PIPELINE_BIND_POINT_GRAPHICS, _Vulkan.Info.pipeline_layout, 0, NUM_DESCRIPTOR_SETS,
                               @_Vulkan.Info.desc_set[0], 0, nil );
 
      offsets[0] := 0;
-     vkCmdBindVertexBuffers( _Vulkan.Instans[0].Devices[0].Pooler.Commans[0].Handle, 0, 1, @_Vulkan.Info.vertex_buffer.buf, @offsets[0] );
+     vkCmdBindVertexBuffers( _Vulkan.Instans[0].Devices[0].Poolers[0].Commans[0].Handle, 0, 1, @_Vulkan.Info.vertex_buffer.buf, @offsets[0] );
 
      init_viewports( _Vulkan );
      init_scissors( _Vulkan );
 
-     vkCmdDraw( _Vulkan.Instans[0].Devices[0].Pooler.Commans[0].Handle, 12 * 3, 1, 0, 0 );
-     vkCmdEndRenderPass( _Vulkan.Instans[0].Devices[0].Pooler.Commans[0].Handle );
+     vkCmdDraw( _Vulkan.Instans[0].Devices[0].Poolers[0].Commans[0].Handle, 12 * 3, 1, 0, 0 );
+     vkCmdEndRenderPass( _Vulkan.Instans[0].Devices[0].Poolers[0].Commans[0].Handle );
      _Comman.EndRecord;
 
-     cmd_bufs[0] := _Vulkan.Instans[0].Devices[0].Pooler.Commans[0].Handle;
+     cmd_bufs[0] := _Vulkan.Instans[0].Devices[0].Poolers[0].Commans[0].Handle;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
@@ -298,7 +298,6 @@ begin
      destroy_descriptor_and_pipeline_layouts( _Vulkan );
      destroy_depth_buffer( _Vulkan );
      _Swapch.Free;
-     _Pooler.Free;
      DestroWindow( _Window );
      _Vulkan.Free;
 end;

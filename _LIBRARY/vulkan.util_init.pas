@@ -411,7 +411,7 @@ var
    submit_info      :T_submit_info;
 begin
      (* Queue the command buffer for execution *)
-     cmd_bufs[0] := Vulkan_.Instans[0].Devices[0].Pooler.Commans[0].Handle;
+     cmd_bufs[0] := Vulkan_.Instans[0].Devices[0].Poolers[0].Commans[0].Handle;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
@@ -666,7 +666,7 @@ begin
      Vulkan_.Info.viewport.maxDepth := 1.0;
      Vulkan_.Info.viewport.x        := 0;
      Vulkan_.Info.viewport.y        := 0;
-     vkCmdSetViewport( Vulkan_.Instans[0].Devices[0].Pooler.Commans[0].Handle, 0, NUM_VIEWPORTS, @Vulkan_.Info.viewport );
+     vkCmdSetViewport( Vulkan_.Instans[0].Devices[0].Poolers[0].Commans[0].Handle, 0, NUM_VIEWPORTS, @Vulkan_.Info.viewport );
 end;
 
 procedure init_scissors( const Vulkan_:TVulkan );
@@ -675,7 +675,7 @@ begin
      Vulkan_.Info.scissor.extent.height := Vulkan_.Instans[0].Surfacs[0].PxSizeY;
      Vulkan_.Info.scissor.offset.x      := 0;
      Vulkan_.Info.scissor.offset.y      := 0;
-     vkCmdSetScissor( Vulkan_.Instans[0].Devices[0].Pooler.Commans[0].Handle, 0, NUM_SCISSORS, @Vulkan_.Info.scissor );
+     vkCmdSetScissor( Vulkan_.Instans[0].Devices[0].Poolers[0].Commans[0].Handle, 0, NUM_SCISSORS, @Vulkan_.Info.scissor );
 end;
 
 procedure init_pipeline_cache( const Vulkan_:TVulkan );
@@ -852,8 +852,8 @@ begin
      res := vkBindImageMemory( Vulkan_.Instans[0].Devices[0].Handle, texObj_.image, texObj_.image_memory, 0 );
      Assert( res = VK_SUCCESS );
 
-     Vulkan_.Instans[0].Devices[0].Pooler.Commans[0].EndRecord;
-     cmd_bufs[0] := Vulkan_.Instans[0].Devices[0].Pooler.Commans[0].Handle;
+     Vulkan_.Instans[0].Devices[0].Poolers[0].Commans[0].EndRecord;
+     cmd_bufs[0] := Vulkan_.Instans[0].Devices[0].Poolers[0].Commans[0].Handle;
      fenceInfo.sType := VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
      fenceInfo.pNext := nil;
      fenceInfo.flags := 0;
@@ -913,9 +913,9 @@ begin
      then vkUnmapMemory( Vulkan_.Instans[0].Devices[0].Handle, texObj_.buffer_memory )
      else vkUnmapMemory( Vulkan_.Instans[0].Devices[0].Handle, texObj_.image_memory  );
 
-     res := vkResetCommandBuffer( Vulkan_.Instans[0].Devices[0].Pooler.Commans[0].Handle, 0 );
+     res := vkResetCommandBuffer( Vulkan_.Instans[0].Devices[0].Poolers[0].Commans[0].Handle, 0 );
      Assert( res = VK_SUCCESS );
-     Vulkan_.Instans[0].Devices[0].Pooler.Commans[0].BeginRecord;
+     Vulkan_.Instans[0].Devices[0].Poolers[0].Commans[0].BeginRecord;
 
      if not texObj_.needs_staging then
      begin
@@ -946,7 +946,7 @@ begin
           copy_region.imageExtent.depth               := 1;
 
           (* Put the copy command into the command buffer *)
-          vkCmdCopyBufferToImage( Vulkan_.Instans[0].Devices[0].Pooler.Commans[0].Handle, texObj_.buffer, texObj_.image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
+          vkCmdCopyBufferToImage( Vulkan_.Instans[0].Devices[0].Poolers[0].Commans[0].Handle, texObj_.buffer, texObj_.image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
 
           (* Set the layout for the texture image from DESTINATION_OPTIMAL to
            * SHADER_READ_ONLY *)
