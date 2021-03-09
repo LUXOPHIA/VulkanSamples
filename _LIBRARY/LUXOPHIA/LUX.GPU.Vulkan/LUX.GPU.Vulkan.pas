@@ -35,14 +35,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                  TVkPooler      = TVkPooler<TVkDevice>;
                    TVkCommans   = TVkCommans<TVkPooler>;
                      TVkComman  = TVkComman<TVkPooler>;
+               TVkSwapchain     = TVkSwapchain<TVkDevice>;
+                 TVkImageViews  = TVkImageViews<TVkSwapchain>;
+                   TVkImageView = TVkImageView<TVkImageViews>;
+
                TVkPipeline      = TVkPipeline<TVkDevice>;
                  TVkShader      = TVkShader<TVkPipeline>;
                  TVkShaderVert  = TVkShaderVert<TVkPipeline>;
                  TVkShaderFrag  = TVkShaderFrag<TVkPipeline>;
                TVkBuffer        = TVkBuffer<TVkDevice>;
-               TVkSwapchain     = TVkSwapchain<TVkDevice>;
-                 TVkImageViews  = TVkImageViews<TVkSwapchain>;
-                   TVkImageView = TVkImageView<TVkImageViews>;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
