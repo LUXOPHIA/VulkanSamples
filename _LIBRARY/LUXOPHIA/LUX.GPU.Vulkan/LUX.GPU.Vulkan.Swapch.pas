@@ -391,7 +391,7 @@ begin
 
      _Device := Device_;
 
-     TVkDevice( _Device ).Swapchs := TVkSwapch( Self );
+     TVkDevice( _Device ).Swapchs.Add( TVkSwapch( Self ) );
 
      CreateHandle;
 

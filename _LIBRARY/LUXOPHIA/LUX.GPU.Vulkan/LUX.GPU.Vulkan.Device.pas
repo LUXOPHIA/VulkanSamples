@@ -24,13 +24,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TVkDevice<TVkInstan_:class> = class
      private
-       type TVkDevices_   = TVkDevices<TVkInstan_>;
-            TVkDevice_    = TVkDevice<TVkInstan_>;
-            TVkSurfac_    = TVkSurfac<TVkInstan_>;
-            TVkDevLays_   = TVkDevLays<TVkDevice_>;
-            TVkBuffers_   = TVkBuffers<TVkDevice_>;
-            TVkPoolers_   = TVkPoolers<TVkDevice_>;
-            TVkSwapchain_ = TVkSwapch<TVkDevice_>;
+       type TVkDevices_ = TVkDevices<TVkInstan_>;
+            TVkDevice_  = TVkDevice<TVkInstan_>;
+            TVkSurfac_  = TVkSurfac<TVkInstan_>;
+            TVkDevLays_ = TVkDevLays<TVkDevice_>;
+            TVkBuffers_ = TVkBuffers<TVkDevice_>;
+            TVkPoolers_ = TVkPoolers<TVkDevice_>;
+            TVkSwapchs_ = TVkSwapchs<TVkDevice_>;
      protected
        _Extenss  :TStringList;
        _Physic   :VkPhysicalDevice;
@@ -50,7 +50,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _QueuerP  :VkQueue;
        _Poolers  :TVkPoolers_;
        _Buffers  :TVkBuffers_;
-       _Swapchs  :TVkSwapchain_;
+       _Swapchs  :TVkSwapchs_;
        ///// アクセス
        function GetInstan :TVkInstan_;
        function GetFamilys( const I_:Integer ) :VkQueueFamilyProperties;
@@ -92,7 +92,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property QueuerP                     :VkQueue                          read   _QueuerP                  ;
        property Poolers                     :TVkPoolers_                      read   _Poolers                  ;
        property Buffers                     :TVkBuffers_                      read   _Buffers                  ;
-       property Swapchs                     :TVkSwapchain_                    read   _Swapchs  write   _Swapchs;
+       property Swapchs                     :TVkSwapchs_                      read   _Swapchs                  ;
        ///// メソッド
        function memory_type_from_properties( typeBits:UInt32; const requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
      end;
@@ -367,6 +367,7 @@ begin
 
      _Poolers := TVkPoolers_.Create( Self );
      _Buffers := TVkBuffers_.Create( Self );
+     _Swapchs := TVkSwapchs_.Create( Self );
 
      _Extenss.Add( VK_KHR_SWAPCHAIN_EXTENSION_NAME );
 end;
@@ -405,6 +406,7 @@ destructor TVkDevice<TVkInstan_>.Destroy;
 begin
      _Poolers.Free;
      _Buffers.Free;
+     _Swapchs.Free;
 
       Handle := nil;
 
