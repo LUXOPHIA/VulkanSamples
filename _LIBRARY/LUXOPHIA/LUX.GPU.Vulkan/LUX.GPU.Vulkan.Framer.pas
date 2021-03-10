@@ -24,7 +24,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Inform  :VkImageViewCreateInfo;
        _Handle  :VkImageView;
        ///// アクセス
+       function GetSwapch :TVkSwapch_;
        function GetImage :VkImage;
+       function GetHandle :VkImageView;
+       procedure SetHandle( const Handle_:VkImageView );
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -32,10 +35,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Framers_:TVkFramers_; const Image_:VkImage );
        destructor Destroy; override;
        ///// プロパティ
+       property Swapch  :TVkSwapch_            read GetSwapch ;
        property Framers :TVkFramers_           read   _Framers;
        property Inform  :VkImageViewCreateInfo read   _Inform ;
        property Image   :VkImage               read GetImage  ;
-       property Handle  :VkImageView           read   _Handle ;
+       property Handle  :VkImageView           read GetHandle  write SetHandle;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkFramers
@@ -81,21 +85,44 @@ uses LUX.GPU.Vulkan;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
+function TVkFramer<TVkSwapch_>.GetSwapch :TVkSwapch_;
+begin
+     Result := _Framers.Swapch;
+end;
+
+//------------------------------------------------------------------------------
+
 function TVkFramer<TVkSwapch_>.GetImage :VkImage;
 begin
      Result := _Inform.image;
+end;
+
+//------------------------------------------------------------------------------
+
+function TVkFramer<TVkSwapch_>.GetHandle :VkImageView;
+begin
+     if _Handle = 0 then CreateHandle;
+
+     Result := _Handle;
+end;
+
+procedure TVkFramer<TVkSwapch_>.SetHandle( const Handle_:VkImageView );
+begin
+     if _Handle <> 0 then DestroHandle;
+
+     _Handle := Handle_;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkFramer<TVkSwapch_>.CreateHandle;
 begin
-     Assert( vkCreateImageView( TVkFramers( _Framers ).Swapch.Device.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
+     Assert( vkCreateImageView( TVkSwapch( Swapch ).Device.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkFramer<TVkSwapch_>.DestroHandle;
 begin
-     vkDestroyImageView( TVkFramers( _Framers ).Swapch.Device.Handle, _Handle, nil );
+     vkDestroyImageView( TVkSwapch( Swapch ).Device.Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -104,9 +131,11 @@ constructor TVkFramer<TVkSwapch_>.Create( const Framers_:TVkFramers_; const Imag
 begin
      inherited Create;
 
-     _Framers  := Framers_;
+     _Handle := 0;
 
-     TVkFramers( _Framers ).Add( TVkFramer( Self ) );
+     _Framers := Framers_;
+
+     _Framers.Add( Self );
 
      with _Inform do
      begin
@@ -134,13 +163,11 @@ begin
                layerCount     := 1;
           end;
      end;
-
-     CreateHandle;
 end;
 
 destructor TVkFramer<TVkSwapch_>.Destroy;
 begin
-     DestroHandle;
+      Handle := 0;
 
      inherited;
 end;
