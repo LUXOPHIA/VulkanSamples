@@ -30,7 +30,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             TVkDevLays_   = TVkDevLays<TVkDevice_>;
             TVkBuffers_   = TVkBuffers<TVkDevice_>;
             TVkPoolers_   = TVkPoolers<TVkDevice_>;
-            TVkSwapchain_ = TVkSwapchain<TVkDevice_>;
+            TVkSwapchain_ = TVkSwapch<TVkDevice_>;
      protected
        _Extenss  :TStringList;
        _Physic   :VkPhysicalDevice;
