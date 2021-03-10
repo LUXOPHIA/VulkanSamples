@@ -7,9 +7,10 @@ uses System.Generics.Collections,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkSwapch<TVkDevice_:class>      = class;
-       TVkFramers<TVkSwapch_:class>   = class;
-         TVkFramer<TVkFramers_:class> = class;
+     TVkSwapchs<TVkDevice_:class>       = class;
+       TVkSwapch<TVkDevice_:class>      = class;
+         TVkFramers<TVkSwapch_:class>   = class;
+           TVkFramer<TVkFramers_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
