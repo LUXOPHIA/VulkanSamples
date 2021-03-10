@@ -9,7 +9,8 @@ uses System.Classes, System.Generics.Collections,
      LUX.GPU.Vulkan.Surfac,
      LUX.GPU.Vulkan.Pooler,
      LUX.GPU.Vulkan.Buffer,
-     LUX.GPU.Vulkan.Swapch;
+     LUX.GPU.Vulkan.Swapch,
+     LUX.GPU.Vulkan.Depthr;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -25,12 +26,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVkDevice<TVkInstan_:class> = class
      private
        type TVkDevices_ = TVkDevices<TVkInstan_>;
-            TVkDevice_  = TVkDevice<TVkInstan_>;
-            TVkSurfac_  = TVkSurfac<TVkInstan_>;
+            TVkDevice_  = TVkDevice <TVkInstan_>;
+            TVkSurfac_  = TVkSurfac <TVkInstan_>;
             TVkDevLays_ = TVkDevLays<TVkDevice_>;
             TVkBuffers_ = TVkBuffers<TVkDevice_>;
             TVkPoolers_ = TVkPoolers<TVkDevice_>;
             TVkSwapchs_ = TVkSwapchs<TVkDevice_>;
+            TVkDepthr_  = TVkDepthr <TVkDevice_>;
      protected
        _Extenss  :TStringList;
        _Physic   :VkPhysicalDevice;
@@ -51,6 +53,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Poolers  :TVkPoolers_;
        _Buffers  :TVkBuffers_;
        _Swapchs  :TVkSwapchs_;
+       _Depthr   :TVkDepthr_;
        ///// アクセス
        function GetInstan :TVkInstan_;
        function GetFamilys( const I_:Integer ) :VkQueueFamilyProperties;
@@ -93,6 +96,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Poolers                     :TVkPoolers_                      read   _Poolers                  ;
        property Buffers                     :TVkBuffers_                      read   _Buffers                  ;
        property Swapchs                     :TVkSwapchs_                      read   _Swapchs                  ;
+       property Depthr                      :TVkDepthr_                       read   _Depthr   write   _Depthr ;
        ///// メソッド
        function memory_type_from_properties( typeBits:UInt32; const requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
      end;
@@ -390,7 +394,7 @@ begin
 
      _Devices := Devices_;
 
-     TVkDevices( _Devices ).Add( TVkDevice( Self ) );
+     _Devices.Add( Self );
 
      _Layeres.FindDevLays;
 end;
@@ -407,6 +411,8 @@ begin
      _Poolers.Free;
      _Buffers.Free;
      _Swapchs.Free;
+
+     if Assigned( _Depthr ) then _Depthr.Free;
 
       Handle := nil;
 
