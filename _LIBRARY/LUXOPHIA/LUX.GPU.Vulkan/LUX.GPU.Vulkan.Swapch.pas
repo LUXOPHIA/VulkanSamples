@@ -7,20 +7,20 @@ uses System.Generics.Collections,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkSwapch<TVkDevice_:class>            = class;
-       TVkImageViews<TVkSwapch_:class>      = class;
-         TVkImageView<TVkImageViews_:class> = class;
+     TVkSwapch<TVkDevice_:class>      = class;
+       TVkFramers<TVkSwapch_:class>   = class;
+         TVkFramer<TVkFramers_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImageView
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkFramer
 
-     TVkImageView<TVkImageViews_:class> = class
+     TVkFramer<TVkFramers_:class> = class
      private
      protected
-       _Viewers :TVkImageViews_;
+       _Viewers :TVkFramers_;
        _Inform  :VkImageViewCreateInfo;
        _Handle  :VkImageView;
        ///// アクセス
@@ -29,37 +29,35 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create( const Viewers_:TVkImageViews_; const Image_:VkImage );
-       procedure AfterConstruction; override;
+       constructor Create( const Viewers_:TVkFramers_; const Image_:VkImage );
        destructor Destroy; override;
        ///// プロパティ
-       property Viewers :TVkImageViews_        read   _Viewers;
+       property Viewers :TVkFramers_           read   _Viewers;
        property Inform  :VkImageViewCreateInfo read   _Inform ;
        property Image   :VkImage               read GetImage  ;
        property Handle  :VkImageView           read   _Handle ;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImageViews
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkFramers
 
-     TVkImageViews<TVkSwapch_:class> = class( TObjectList<TVkImageView<TVkImageViews<TVkSwapch_>>> )
+     TVkFramers<TVkSwapch_:class> = class( TObjectList<TVkFramer<TVkFramers<TVkSwapch_>>> )
      private
-       type TVkImageViews_ = TVkImageViews<TVkSwapch_>;
-            TVkImageView_  = TVkImageView<TVkImageViews_>;
+       type TVkFramers_ = TVkFramers<TVkSwapch_>;
+            TVkFramer_  = TVkFramer<TVkFramers_>;
      protected
        _Swapch  :TVkSwapch_;
        _ViewerI :UInt32;
        ///// アクセス
-       function GetViewer :TVkImageView_;
+       function GetViewer :TVkFramer_;
        ///// メソッド
        procedure FindImages;
      public
        constructor Create( const Swapch_:TVkSwapch_ );
-       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Swapch  :TVkSwapch_    read   _Swapch                ;
-       property ViewerI :UInt32        read   _ViewerI write _ViewerI;
-       property Viewer  :TVkImageView_ read GetViewer                ;
+       property Swapch  :TVkSwapch_ read   _Swapch                ;
+       property ViewerI :UInt32     read   _ViewerI write _ViewerI;
+       property Viewer  :TVkFramer_ read GetViewer                ;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkSwapch
@@ -67,24 +65,23 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVkSwapch<TVkDevice_:class> = class
      private
        type TVkSwapch_  = TVkSwapch<TVkDevice_>;
-            TVkImageViews_ = TVkImageViews<TVkSwapch_>;
+            TVkFramers_ = TVkFramers<TVkSwapch_>;
      protected
        _Device  :TVkDevice_;
        _Inform  :VkSwapchainCreateInfoKHR;
        _Handle  :VkSwapchainKHR;
-       _Viewers :TVkImageViews_;
+       _Viewers :TVkFramers_;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
      public
        constructor Create( const Device_:TVkDevice_ );
-       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        property Device  :TVkDevice_               read _Device ;
        property Inform  :VkSwapchainCreateInfoKHR read _Inform ;
        property Handle  :VkSwapchainKHR           read _Handle ;
-       property Viewers :TVkImageViews_           read _Viewers;
+       property Viewers :TVkFramers_              read _Viewers;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkSwapchs
@@ -118,7 +115,7 @@ uses LUX.GPU.Vulkan,
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImageView
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkFramer
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -126,32 +123,32 @@ uses LUX.GPU.Vulkan,
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkImageView<TVkImageViews_>.GetImage :VkImage;
+function TVkFramer<TVkFramers_>.GetImage :VkImage;
 begin
      Result := _Inform.image;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkImageView<TVkImageViews_>.CreateHandle;
+procedure TVkFramer<TVkFramers_>.CreateHandle;
 begin
-     Assert( vkCreateImageView( TVkImageViews( _Viewers ).Swapch.Device.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
+     Assert( vkCreateImageView( TVkFramers( _Viewers ).Swapch.Device.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
-procedure TVkImageView<TVkImageViews_>.DestroHandle;
+procedure TVkFramer<TVkFramers_>.DestroHandle;
 begin
-     vkDestroyImageView( TVkImageViews( _Viewers ).Swapch.Device.Handle, _Handle, nil );
+     vkDestroyImageView( TVkFramers( _Viewers ).Swapch.Device.Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkImageView<TVkImageViews_>.Create( const Viewers_:TVkImageViews_; const Image_:VkImage );
+constructor TVkFramer<TVkFramers_>.Create( const Viewers_:TVkFramers_; const Image_:VkImage );
 begin
      inherited Create;
 
      _Viewers  := Viewers_;
 
-     TVkImageViews( _Viewers ).Add( TVkImageView( Self ) );
+     TVkFramers( _Viewers ).Add( TVkFramer( Self ) );
 
      with _Inform do
      begin
@@ -160,7 +157,7 @@ begin
           flags    := 0;
           image    := Image_;
           viewType := VK_IMAGE_VIEW_TYPE_2D;
-          format   := TVkImageViews( _Viewers ).Swapch.Device.Format;
+          format   := TVkFramers( _Viewers ).Swapch.Device.Format;
 
           with components do
           begin
@@ -183,31 +180,25 @@ begin
      CreateHandle;
 end;
 
-procedure TVkImageView<TVkImageViews_>.AfterConstruction;
-begin
-     inherited;
-
-end;
-
-destructor TVkImageView<TVkImageViews_>.Destroy;
+destructor TVkFramer<TVkFramers_>.Destroy;
 begin
      DestroHandle;
 
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImageViews
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkFramers
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
-function TVkImageViews<TVkSwapch_>.GetViewer :TVkImageView_;
+function TVkFramers<TVkSwapch_>.GetViewer :TVkFramer_;
 begin
      Result := Items[ _ViewerI ];
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-procedure TVkImageViews<TVkSwapch_>.FindImages;
+procedure TVkFramers<TVkSwapch_>.FindImages;
 var
    VsN, I :UInt32;
    Vs :TArray<VkImage>;
@@ -220,31 +211,25 @@ begin
 
      Assert( vkGetSwapchainImagesKHR( TVkSwapch( _Swapch ).Device.Handle, TVkSwapch( _Swapch ).Handle, @VsN, @Vs[0] ) = VK_SUCCESS );
 
-     for I := 0 to VsN-1 do TVkImageView.Create( TVkImageViews( Self ), Vs[I] );
+     for I := 0 to VsN-1 do TVkFramer.Create( TVkFramers( Self ), Vs[I] );
 
      _ViewerI := 0;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkImageViews<TVkSwapch_>.Create( const Swapch_:TVkSwapch_ );
+constructor TVkFramers<TVkSwapch_>.Create( const Swapch_:TVkSwapch_ );
 begin
      inherited Create;
 
      _Swapch := Swapch_;
 
-     TVkSwapch( _Swapch )._Viewers := TVkImageViews( Self );
+     TVkSwapch( _Swapch )._Viewers := TVkFramers( Self );
 
      FindImages;
 end;
 
-procedure TVkImageViews<TVkSwapch_>.AfterConstruction;
-begin
-     inherited;
-
-end;
-
-destructor TVkImageViews<TVkSwapch_>.Destroy;
+destructor TVkFramers<TVkSwapch_>.Destroy;
 begin
 
      inherited;
@@ -395,13 +380,7 @@ begin
 
      CreateHandle;
 
-     _Viewers := TVkImageViews_.Create( Self );
-end;
-
-procedure TVkSwapch<TVkDevice_>.AfterConstruction;
-begin
-     inherited;
-
+     _Viewers := TVkFramers_.Create( Self );
 end;
 
 destructor TVkSwapch<TVkDevice_>.Destroy;
