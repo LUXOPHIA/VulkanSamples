@@ -25,20 +25,20 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Handle  :VkImageView;
        ///// アクセス
        function GetSwapch :TVkSwapch_;
-       function GetImage :VkImage;
+       function GetImager :VkImage;
        function GetHandle :VkImageView;
        procedure SetHandle( const Handle_:VkImageView );
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create( const Framers_:TVkFramers_; const Image_:VkImage );
+       constructor Create( const Framers_:TVkFramers_; const Imager_:VkImage );
        destructor Destroy; override;
        ///// プロパティ
        property Swapch  :TVkSwapch_            read GetSwapch ;
        property Framers :TVkFramers_           read   _Framers;
        property Inform  :VkImageViewCreateInfo read   _Inform ;
-       property Image   :VkImage               read GetImage  ;
+       property Imager  :VkImage               read GetImager ;
        property Handle  :VkImageView           read GetHandle  write SetHandle;
      end;
 
@@ -92,7 +92,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TVkFramer<TVkSwapch_>.GetImage :VkImage;
+function TVkFramer<TVkSwapch_>.GetImager :VkImage;
 begin
      Result := _Inform.image;
 end;
@@ -127,7 +127,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkFramer<TVkSwapch_>.Create( const Framers_:TVkFramers_; const Image_:VkImage );
+constructor TVkFramer<TVkSwapch_>.Create( const Framers_:TVkFramers_; const Imager_:VkImage );
 begin
      inherited Create;
 
@@ -142,7 +142,7 @@ begin
           sType    := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
           pNext    := nil;
           flags    := 0;
-          image    := Image_;
+          image    := Imager_;
           viewType := VK_IMAGE_VIEW_TYPE_2D;
           format   := TVkFramers( _Framers ).Swapch.Device.Format;
 
