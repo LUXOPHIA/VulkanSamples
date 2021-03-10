@@ -49,18 +49,18 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        type TVkFramer_ = TVkFramer<TVkSwapch_>;
      protected
        _Swapch  :TVkSwapch_;
-       _FramerI :UInt32;
+       _SelectI :UInt32;
        ///// アクセス
-       function GetFramer :TVkFramer_;
+       function GetSelect :TVkFramer_;
        ///// メソッド
        procedure FindImages;
      public
        constructor Create( const Swapch_:TVkSwapch_ );
        destructor Destroy; override;
        ///// プロパティ
-       property Swapch  :TVkSwapch_ read   _Swapch                ;
-       property FramerI :UInt32     read   _FramerI write _FramerI;
-       property Framer  :TVkFramer_ read GetFramer                ;
+       property Swapch  :TVkSwapch_ read   _Swapch ;
+       property SelectI :UInt32     read   _SelectI;
+       property Select  :TVkFramer_ read GetSelect ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -176,9 +176,9 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
-function TVkFramers<TVkSwapch_>.GetFramer :TVkFramer_;
+function TVkFramers<TVkSwapch_>.GetSelect :TVkFramer_;
 begin
-     Result := Items[ _FramerI ];
+     Result := Items[ _SelectI ];
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
@@ -198,7 +198,7 @@ begin
 
      for I := 0 to VsN-1 do TVkFramer.Create( TVkFramers( Self ), Vs[I] );
 
-     _FramerI := 0;
+     _SelectI := 0;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
