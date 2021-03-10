@@ -262,7 +262,7 @@ begin
      set_image_layout( Vulkan_, mappableImage, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_UNDEFINED,
                        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, Ord( VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT ), Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ) );
 
-     set_image_layout( Vulkan_, Vulkan_.Instans[0].Devices[0].Swapchs.Viewers.Viewer.Image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+     set_image_layout( Vulkan_, Vulkan_.Instans[0].Devices[0].Swapchs[0].Viewers.Viewer.Image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
                        VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, Ord( VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT ), Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ) );
 
      copy_region.srcSubresource.aspectMask     := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
@@ -284,7 +284,7 @@ begin
      copy_region.extent.depth                  := 1;
 
      (* Put the copy command into the command buffer *)
-     vkCmdCopyImage( Vulkan_.Instans[0].Devices[0].Poolers[0].Commans[0].Handle, Vulkan_.Instans[0].Devices[0].Swapchs.Viewers.Viewer.Image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, mappableImage,
+     vkCmdCopyImage( Vulkan_.Instans[0].Devices[0].Poolers[0].Commans[0].Handle, Vulkan_.Instans[0].Devices[0].Swapchs[0].Viewers.Viewer.Image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, mappableImage,
                      VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region);
 
      set_image_layout( Vulkan_, mappableImage, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL,
