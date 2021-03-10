@@ -19,7 +19,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVkFramer<TVkFramers_:class> = class
      private
      protected
-       _Viewers :TVkFramers_;
+       _Framers :TVkFramers_;
        _Inform  :VkImageViewCreateInfo;
        _Handle  :VkImageView;
        ///// アクセス
@@ -28,10 +28,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create( const Viewers_:TVkFramers_; const Image_:VkImage );
+       constructor Create( const Framers_:TVkFramers_; const Image_:VkImage );
        destructor Destroy; override;
        ///// プロパティ
-       property Viewers :TVkFramers_           read   _Viewers;
+       property Framers :TVkFramers_           read   _Framers;
        property Inform  :VkImageViewCreateInfo read   _Inform ;
        property Image   :VkImage               read GetImage  ;
        property Handle  :VkImageView           read   _Handle ;
@@ -45,9 +45,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             TVkFramer_  = TVkFramer<TVkFramers_>;
      protected
        _Swapch  :TVkSwapch_;
-       _ViewerI :UInt32;
+       _FramerI :UInt32;
        ///// アクセス
-       function GetViewer :TVkFramer_;
+       function GetFramer :TVkFramer_;
        ///// メソッド
        procedure FindImages;
      public
@@ -55,8 +55,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
        ///// プロパティ
        property Swapch  :TVkSwapch_ read   _Swapch                ;
-       property ViewerI :UInt32     read   _ViewerI write _ViewerI;
-       property Viewer  :TVkFramer_ read GetViewer                ;
+       property FramerI :UInt32     read   _FramerI write _FramerI;
+       property Framer  :TVkFramer_ read GetFramer                ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -90,23 +90,23 @@ end;
 
 procedure TVkFramer<TVkFramers_>.CreateHandle;
 begin
-     Assert( vkCreateImageView( TVkFramers( _Viewers ).Swapch.Device.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
+     Assert( vkCreateImageView( TVkFramers( _Framers ).Swapch.Device.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkFramer<TVkFramers_>.DestroHandle;
 begin
-     vkDestroyImageView( TVkFramers( _Viewers ).Swapch.Device.Handle, _Handle, nil );
+     vkDestroyImageView( TVkFramers( _Framers ).Swapch.Device.Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkFramer<TVkFramers_>.Create( const Viewers_:TVkFramers_; const Image_:VkImage );
+constructor TVkFramer<TVkFramers_>.Create( const Framers_:TVkFramers_; const Image_:VkImage );
 begin
      inherited Create;
 
-     _Viewers  := Viewers_;
+     _Framers  := Framers_;
 
-     TVkFramers( _Viewers ).Add( TVkFramer( Self ) );
+     TVkFramers( _Framers ).Add( TVkFramer( Self ) );
 
      with _Inform do
      begin
@@ -115,7 +115,7 @@ begin
           flags    := 0;
           image    := Image_;
           viewType := VK_IMAGE_VIEW_TYPE_2D;
-          format   := TVkFramers( _Viewers ).Swapch.Device.Format;
+          format   := TVkFramers( _Framers ).Swapch.Device.Format;
 
           with components do
           begin
@@ -149,9 +149,9 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
-function TVkFramers<TVkSwapch_>.GetViewer :TVkFramer_;
+function TVkFramers<TVkSwapch_>.GetFramer :TVkFramer_;
 begin
-     Result := Items[ _ViewerI ];
+     Result := Items[ _FramerI ];
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
@@ -171,7 +171,7 @@ begin
 
      for I := 0 to VsN-1 do TVkFramer.Create( TVkFramers( Self ), Vs[I] );
 
-     _ViewerI := 0;
+     _FramerI := 0;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
