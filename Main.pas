@@ -31,7 +31,7 @@ type
     _Device  :TVkDevice;
     _Pooler  :TVkPooler;
     _Comman  :TVkComman;
-    _Swapch  :TVkSwapchain;
+    _Swapch  :TVkSwapch;
     _Buffer  :TVkBuffer;
     _Pipeli  :TVkPipeline;
     _ShaderV :TVkShaderVert;
@@ -170,7 +170,7 @@ begin
      _Pooler  := TVkPooler.Create( _Device );
      _Comman  := TVkComman.Create( _Pooler );  //= _Pooler.Commans.Add;
      _Comman.BeginRecord;
-     _Swapch  := TVkSwapchain.Create( _Device );
+     _Swapch  := TVkSwapch.Create( _Device );
      init_depth_buffer( _Vulkan );
      init_texture( _Vulkan );
      _Buffer  := TVkBuffer.Create( _Device );
