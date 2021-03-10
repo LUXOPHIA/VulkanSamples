@@ -264,7 +264,7 @@ begin
      present.sType              := VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
      present.pNext              := nil;
      present.swapchainCount     := 1;
-     present.pSwapchains        := @_Swapch.Handle;
+     present.pSwapchains        := _Swapch.HandleP;
      present.pImageIndices      := @_Swapch.Framers.FramerI;
      present.pWaitSemaphores    := nil;
      present.waitSemaphoreCount := 0;
