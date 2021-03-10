@@ -13,6 +13,7 @@ uses vulkan_core,
            LUX.GPU.Vulkan.Comman,
          LUX.GPU.Vulkan.Buffer,
          LUX.GPU.Vulkan.Swapch,
+           LUX.GPU.Vulkan.Framer,
          LUX.GPU.Vulkan.Pipeline,
            LUX.GPU.Vulkan.Shader;
 
