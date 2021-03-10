@@ -34,7 +34,8 @@ uses
   LUX.GPU.Vulkan.Swapch in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Swapch.pas',
   LUX.GPU.Vulkan.Layere in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Layere.pas',
   LUX.GPU.Vulkan.Pooler in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Pooler.pas',
-  LUX.GPU.Vulkan.Framer in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Framer.pas';
+  LUX.GPU.Vulkan.Framer in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Framer.pas',
+  LUX.GPU.Vulkan.Depthr in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Depthr.pas';
 
 {$R *.res}
 

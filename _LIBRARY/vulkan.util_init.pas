@@ -62,9 +62,6 @@ procedure destroy_descriptor_and_pipeline_layouts( const Vulkan_:TVulkan );
 
 //////////////////////////////////////////////////////////////////////////////// 10-init_render_pass
 
-procedure init_depth_buffer( const Vulkan_:TVulkan );
-procedure destroy_depth_buffer( const Vulkan_:TVulkan );
-
 //////////////////////////////////////////////////////////////////////////////// 11-init_shaders
 
 //////////////////////////////////////////////////////////////////////////////// 12-init_frame_buffers
@@ -195,111 +192,6 @@ begin
 end;
 
 //////////////////////////////////////////////////////////////////////////////// 10-init_render_pass
-
-procedure init_depth_buffer( const Vulkan_:TVulkan );
-var
-   res          :VkResult;
-   pass         :T_bool;
-   image_info   :VkImageCreateInfo;
-   props        :VkFormatProperties;
-   depth_format :VkFormat;
-   mem_alloc    :VkMemoryAllocateInfo;
-   view_info    :VkImageViewCreateInfo;
-   mem_reqs     :VkMemoryRequirements;
-begin
-     (* allow custom depth formats *)
-     if Vulkan_.Info.depth.format = VK_FORMAT_UNDEFINED then Vulkan_.Info.depth.format := VK_FORMAT_D16_UNORM;
-
-     depth_format := Vulkan_.Info.depth.format;
-     vkGetPhysicalDeviceFormatProperties( Vulkan_.Instans[0].Devices[0].Physic, depth_format, @props );
-     if ( props.linearTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
-     then image_info.tiling := VK_IMAGE_TILING_LINEAR
-     else
-     if ( props.optimalTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
-     then image_info.tiling := VK_IMAGE_TILING_OPTIMAL
-     else
-     begin
-          (* Try other depth formats? *)
-          Log.d( 'depth_format ' + Ord( depth_format ).ToString + ' Unsupported.' );
-          RunError( 256-1 );
-     end;
-
-     image_info                       := Default( VkImageCreateInfo );
-     image_info.sType                 := VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-     image_info.pNext                 := nil;
-     image_info.imageType             := VK_IMAGE_TYPE_2D;
-     image_info.format                := depth_format;
-     image_info.extent.width          := Vulkan_.Instans[0].Surfacs[0].PxSizeX;
-     image_info.extent.height         := Vulkan_.Instans[0].Surfacs[0].PxSizeY;
-     image_info.extent.depth          := 1;
-     image_info.mipLevels             := 1;
-     image_info.arrayLayers           := 1;
-     image_info.samples               := NUM_SAMPLES;
-     image_info.initialLayout         := VK_IMAGE_LAYOUT_UNDEFINED;
-     image_info.queueFamilyIndexCount := 0;
-     image_info.pQueueFamilyIndices   := nil;
-     image_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
-     image_info.usage                 := Ord( VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT );
-     image_info.flags                 := 0;
-
-     mem_alloc                 := Default( VkMemoryAllocateInfo );
-     mem_alloc.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-     mem_alloc.pNext           := nil;
-     mem_alloc.allocationSize  := 0;
-     mem_alloc.memoryTypeIndex := 0;
-
-     view_info                                 := Default( VkImageViewCreateInfo );
-     view_info.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-     view_info.pNext                           := nil;
-     view_info.image                           := VK_NULL_HANDLE;
-     view_info.format                          := depth_format;
-     view_info.components.r                    := VK_COMPONENT_SWIZZLE_R;
-     view_info.components.g                    := VK_COMPONENT_SWIZZLE_G;
-     view_info.components.b                    := VK_COMPONENT_SWIZZLE_B;
-     view_info.components.a                    := VK_COMPONENT_SWIZZLE_A;
-     view_info.subresourceRange.aspectMask     := Ord( VK_IMAGE_ASPECT_DEPTH_BIT );
-     view_info.subresourceRange.baseMipLevel   := 0;
-     view_info.subresourceRange.levelCount     := 1;
-     view_info.subresourceRange.baseArrayLayer := 0;
-     view_info.subresourceRange.layerCount     := 1;
-     view_info.viewType                        := VK_IMAGE_VIEW_TYPE_2D;
-     view_info.flags                           := 0;
-
-     if ( depth_format = VK_FORMAT_D16_UNORM_S8_UINT ) or ( depth_format = VK_FORMAT_D24_UNORM_S8_UINT ) or
-        ( depth_format = VK_FORMAT_D32_SFLOAT_S8_UINT )
-     then view_info.subresourceRange.aspectMask := view_info.subresourceRange.aspectMask or Ord( VK_IMAGE_ASPECT_STENCIL_BIT );
-
-     (* Create image *)
-     res := vkCreateImage( Vulkan_.Instans[0].Devices[0].Handle, @image_info, nil, @Vulkan_.Info.depth.image );
-     Assert( res = VK_SUCCESS );
-
-     vkGetImageMemoryRequirements( Vulkan_.Instans[0].Devices[0].Handle, Vulkan_.Info.depth.image, @mem_reqs );
-
-     mem_alloc.allocationSize := mem_reqs.size;
-     (* Use the memory properties to determine the type of memory required *)
-     pass := Vulkan_.Instans[0].Devices[0].memory_type_from_properties( mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex );
-     Assert( pass );
-
-     (* Allocate memory *)
-     res := vkAllocateMemory( Vulkan_.Instans[0].Devices[0].Handle, @mem_alloc, nil, @Vulkan_.Info.depth.mem );
-     Assert( res = VK_SUCCESS );
-
-     (* Bind memory *)
-     res := vkBindImageMemory( Vulkan_.Instans[0].Devices[0].Handle, Vulkan_.Info.depth.image, Vulkan_.Info.depth.mem, 0 );
-     Assert( res = VK_SUCCESS );
-
-     (* Create image view *)
-     view_info.image := Vulkan_.Info.depth.image;
-     res := vkCreateImageView( Vulkan_.Instans[0].Devices[0].Handle, @view_info, nil, @Vulkan_.Info.depth.view );
-     Assert( res = VK_SUCCESS );
-end;
-
-procedure destroy_depth_buffer( const Vulkan_:TVulkan );
-begin
-     vkDestroyImageView( Vulkan_.Instans[0].Devices[0].Handle, Vulkan_.Info.depth.view, nil );
-     vkDestroyImage( Vulkan_.Instans[0].Devices[0].Handle, Vulkan_.Info.depth.image, nil );
-     vkFreeMemory( Vulkan_.Instans[0].Devices[0].Handle, Vulkan_.Info.depth.mem, nil );
-end;
 
 //////////////////////////////////////////////////////////////////////////////// 11-init_shaders
 
