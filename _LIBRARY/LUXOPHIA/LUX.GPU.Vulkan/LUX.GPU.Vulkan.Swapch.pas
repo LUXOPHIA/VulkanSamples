@@ -25,7 +25,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Device  :TVkDevice_;
        _Inform  :VkSwapchainCreateInfoKHR;
        _Handle  :VkSwapchainKHR;
-       _Viewers :TVkFramers_;
+       _Framers :TVkFramers_;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -36,7 +36,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Device  :TVkDevice_               read _Device ;
        property Inform  :VkSwapchainCreateInfoKHR read _Inform ;
        property Handle  :VkSwapchainKHR           read _Handle ;
-       property Viewers :TVkFramers_              read _Viewers;
+       property Framers :TVkFramers_              read _Framers;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkSwapchs
@@ -214,12 +214,12 @@ begin
 
      CreateHandle;
 
-     _Viewers := TVkFramers_.Create( Self );
+     _Framers := TVkFramers_.Create( Self );
 end;
 
 destructor TVkSwapch<TVkDevice_>.Destroy;
 begin
-     _Viewers.Free;
+     _Framers.Free;
 
      DestroHandle;
 
