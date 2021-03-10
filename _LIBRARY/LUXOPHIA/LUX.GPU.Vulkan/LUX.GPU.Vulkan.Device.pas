@@ -28,7 +28,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             TVkDevice_    = TVkDevice<TVkInstan_>;
             TVkSurfac_    = TVkSurfac<TVkInstan_>;
             TVkDevLays_   = TVkDevLays<TVkDevice_>;
-            TVkBuffer_    = TVkBuffer<TVkDevice_>;
+            TVkBuffers_   = TVkBuffers<TVkDevice_>;
             TVkPoolers_   = TVkPoolers<TVkDevice_>;
             TVkSwapchain_ = TVkSwapchain<TVkDevice_>;
      protected
@@ -49,7 +49,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _QueuerG  :VkQueue;
        _QueuerP  :VkQueue;
        _Poolers  :TVkPoolers_;
-       _Buffers  :TVkBuffer_;
+       _Buffers  :TVkBuffers_;
        _Swapchs  :TVkSwapchain_;
        ///// アクセス
        function GetInstan :TVkInstan_;
@@ -91,7 +91,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property QueuerG                     :VkQueue                          read   _QueuerG                  ;
        property QueuerP                     :VkQueue                          read   _QueuerP                  ;
        property Poolers                     :TVkPoolers_                      read   _Poolers                  ;
-       property Buffers                     :TVkBuffer_                       read   _Buffers  write   _Buffers;
+       property Buffers                     :TVkBuffers_                      read   _Buffers                  ;
        property Swapchs                     :TVkSwapchain_                    read   _Swapchs  write   _Swapchs;
        ///// メソッド
        function memory_type_from_properties( typeBits:UInt32; const requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
@@ -359,11 +359,14 @@ constructor TVkDevice<TVkInstan_>.Create;
 begin
      inherited;
 
+     _Extenss := TStringList.Create;
+
+     _Layeres := TVkDevLays_.Create( Self );
+
      _Handle := nil;
 
-     _Extenss := TStringList.Create;
-     _Layeres := TVkDevLays_.Create( Self );
      _Poolers := TVkPoolers_.Create( Self );
+     _Buffers := TVkBuffers_.Create( Self );
 
      _Extenss.Add( VK_KHR_SWAPCHAIN_EXTENSION_NAME );
 end;
@@ -400,13 +403,14 @@ end;
 
 destructor TVkDevice<TVkInstan_>.Destroy;
 begin
-     if Assigned( _Buffers ) then _Buffers.Free;
-
      _Poolers.Free;
-     _Layeres.Free;
-     _Extenss.Free;
+     _Buffers.Free;
 
       Handle := nil;
+
+     _Layeres.Free;
+
+     _Extenss.Free;
 
      inherited;
 end;
