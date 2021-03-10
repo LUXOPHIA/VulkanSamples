@@ -296,7 +296,6 @@ begin
      destroy_renderpass( _Vulkan );
      destroy_descriptor_and_pipeline_layouts( _Vulkan );
      destroy_depth_buffer( _Vulkan );
-     _Swapch.Free;
      DestroWindow( _Window );
      _Vulkan.Free;
 end;
