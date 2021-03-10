@@ -85,7 +85,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Device_:TVkDevice_ );
        destructor Destroy; override;
        ///// プロパティ
-       property Pooler :TVkDevice_ read _Device;
+       property Device :TVkDevice_ read _Device;
        ///// メソッド
        function Add :TVkBuffer_; overload;
      end;
