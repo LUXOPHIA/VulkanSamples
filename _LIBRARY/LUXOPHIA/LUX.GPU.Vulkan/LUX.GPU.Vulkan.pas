@@ -38,9 +38,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                TVkBuffers       = TVkBuffers<TVkDevice>;
                  TVkBuffer      = TVkBuffer<TVkDevice>;
                    TVkMemory    = TVkMemory<TVkDevice>;
-               TVkSwapch        = TVkSwapch<TVkDevice>;
-                 TVkImageViews  = TVkImageViews<TVkSwapch>;
-                   TVkImageView = TVkImageView<TVkImageViews>;
+               TVkSwapchs       = TVkSwapchs<TVkDevice>;
+                 TVkSwapch      = TVkSwapch<TVkDevice>;
+                   TVkImageViews  = TVkImageViews<TVkSwapch>;
+                     TVkImageView = TVkImageView<TVkImageViews>;
                TVkPipeline      = TVkPipeline<TVkDevice>;
                  TVkShader      = TVkShader<TVkPipeline>;
                  TVkShaderVert  = TVkShaderVert<TVkPipeline>;

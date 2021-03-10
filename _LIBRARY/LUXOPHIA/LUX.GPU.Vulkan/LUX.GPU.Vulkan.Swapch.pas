@@ -7,8 +7,8 @@ uses System.Generics.Collections,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkSwapch<TDevice_:class>           = class;
-       TVkImageViews<TVkSwapch_:class>   = class;
+     TVkSwapch<TVkDevice_:class>            = class;
+       TVkImageViews<TVkSwapch_:class>      = class;
          TVkImageView<TVkImageViews_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
@@ -57,19 +57,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Swapch  :TVkSwapch_ read   _Swapch                ;
+       property Swapch  :TVkSwapch_    read   _Swapch                ;
        property ViewerI :UInt32        read   _ViewerI write _ViewerI;
        property Viewer  :TVkImageView_ read GetViewer                ;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkSwapch
 
-     TVkSwapch<TDevice_:class> = class
+     TVkSwapch<TVkDevice_:class> = class
      private
-       type TVkSwapch_  = TVkSwapch<TDevice_>;
+       type TVkSwapch_  = TVkSwapch<TVkDevice_>;
             TVkImageViews_ = TVkImageViews<TVkSwapch_>;
      protected
-       _Device  :TDevice_;
+       _Device  :TVkDevice_;
        _Inform  :VkSwapchainCreateInfoKHR;
        _Handle  :VkSwapchainKHR;
        _Viewers :TVkImageViews_;
@@ -77,14 +77,30 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create( const Device_:TDevice_ );
+       constructor Create( const Device_:TVkDevice_ );
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Device  :TDevice_                 read _Device ;
+       property Device  :TVkDevice_               read _Device ;
        property Inform  :VkSwapchainCreateInfoKHR read _Inform ;
        property Handle  :VkSwapchainKHR           read _Handle ;
        property Viewers :TVkImageViews_           read _Viewers;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkSwapchs
+
+     TVkSwapchs<TVkDevice_:class> = class( TObjectList<TVkSwapch<TVkDevice_>> )
+     private
+       type TVkSwapch_ = TVkSwapch<TVkDevice_>;
+     protected
+       _Device :TVkDevice_;
+     public
+       constructor Create( const Device_:TVkDevice_ );
+       destructor Destroy; override;
+       ///// プロパティ
+       property Device :TVkDevice_ read _Device;
+       ///// メソッド
+       function Add :TVkSwapch_; overload;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -240,7 +256,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-procedure TVkSwapch<TDevice_>.CreateHandle;
+procedure TVkSwapch<TVkDevice_>.CreateHandle;
 var
    surfCapabilities               :VkSurfaceCapabilitiesKHR;
    presentModeCount               :UInt32;
@@ -362,14 +378,14 @@ begin
      Assert( vkCreateSwapchainKHR( TVkDevice( _Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
-procedure TVkSwapch<TDevice_>.DestroHandle;
+procedure TVkSwapch<TVkDevice_>.DestroHandle;
 begin
      vkDestroySwapchainKHR( TVkDevice( Device ).Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkSwapch<TDevice_>.Create( const Device_:TDevice_ );
+constructor TVkSwapch<TVkDevice_>.Create( const Device_:TVkDevice_ );
 begin
      inherited Create;
 
@@ -382,19 +398,47 @@ begin
      _Viewers := TVkImageViews_.Create( Self );
 end;
 
-procedure TVkSwapch<TDevice_>.AfterConstruction;
+procedure TVkSwapch<TVkDevice_>.AfterConstruction;
 begin
      inherited;
 
 end;
 
-destructor TVkSwapch<TDevice_>.Destroy;
+destructor TVkSwapch<TVkDevice_>.Destroy;
 begin
      _Viewers.Free;
 
      DestroHandle;
 
      inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkSwapchs
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkSwapchs<TVkDevice_>.Create( const Device_:TVkDevice_ );
+begin
+     inherited Create;
+
+     _Device := Device_;
+end;
+
+destructor TVkSwapchs<TVkDevice_>.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+function TVkSwapchs<TVkDevice_>.Add :TVkSwapch_;
+begin
+     Result := TVkSwapch_.Create( _Device );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
