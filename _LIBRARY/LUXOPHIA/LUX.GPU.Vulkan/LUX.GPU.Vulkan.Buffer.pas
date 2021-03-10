@@ -34,6 +34,22 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Descri :VkDescriptorBufferInfo read _Descri;
      end;
 
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffers
+
+     TVkBuffers<TDevice_:class> = class( TObjectList<TVkBuffer<TDevice_>> )
+     private
+       type TVkBuffer_ = TVkBuffer<TDevice_>;
+     protected
+       _Device :TDevice_;
+     public
+       constructor Create( const Device_:TDevice_ );
+       destructor Destroy; override;
+       ///// プロパティ
+       property Pooler :TDevice_ read _Device;
+       ///// メソッド
+       function Add :TVkBuffer_; overload;
+     end;
+
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
 
 //var //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【変数】
@@ -132,8 +148,8 @@ end;
 
 procedure TVkBuffer<TDevice_>.DestroHandle;
 begin
+     vkFreeMemory   ( TVkDevice( _Device ).Handle, _Memory, nil );
      vkDestroyBuffer( TVkDevice( _Device ).Handle, _Handle, nil );
-     vkFreeMemory( TVkDevice( _Device ).Handle, _Memory, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -144,7 +160,7 @@ begin
 
      _Device := Device_;
 
-     TVkDevice( _Device ).Buffers := TVkBuffer( Self );
+     TVkDevice( _Device ).Buffers.Add( TVkBuffer( Self ) );
 
      CreateHandle;
 end;
@@ -160,6 +176,34 @@ begin
      DestroHandle;
 
      inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffers
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkBuffers<TDevice_>.Create( const Device_:TDevice_ );
+begin
+     inherited Create;
+
+     _Device := Device_;
+end;
+
+destructor TVkBuffers<TDevice_>.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+function TVkBuffers<TDevice_>.Add :TVkBuffer_;
+begin
+     Result := TVkBuffer_.Create( _Device );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
