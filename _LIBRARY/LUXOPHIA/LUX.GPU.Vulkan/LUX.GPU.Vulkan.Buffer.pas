@@ -7,8 +7,8 @@ uses System.Generics.Collections,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkBuffers<TDevice_:class>      = class;
-       TVkBuffer<TDevice_:class>     = class;
+     TVkBuffers<TVkDevice_:class>      = class;
+       TVkBuffer<TVkDevice_:class>     = class;
          TVkMemory<TVkDevice_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
@@ -48,11 +48,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer
 
-     TVkBuffer<TDevice_:class> = class
+     TVkBuffer<TVkDevice_:class> = class
      private
-       type TVkMemory_ = TVkMemory<TDevice_>;
+       type TVkMemory_ = TVkMemory<TVkDevice_>;
      protected
-       _Device :TDevice_;
+       _Device :TVkDevice_;
        _Inform :VkBufferCreateInfo;
        _Handle :VkBuffer;
        _Descri :VkDescriptorBufferInfo;
@@ -64,10 +64,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create( const Device_:TDevice_ );
+       constructor Create( const Device_:TVkDevice_ );
        destructor Destroy; override;
        ///// プロパティ
-       property Device :TDevice_               read   _Device;
+       property Device :TVkDevice_             read   _Device;
        property Inform :VkBufferCreateInfo     read   _Inform;
        property Handle :VkBuffer               read GetHandle write SetHandle;
        property Descri :VkDescriptorBufferInfo read   _Descri;
@@ -76,16 +76,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffers
 
-     TVkBuffers<TDevice_:class> = class( TObjectList<TVkBuffer<TDevice_>> )
+     TVkBuffers<TVkDevice_:class> = class( TObjectList<TVkBuffer<TVkDevice_>> )
      private
-       type TVkBuffer_ = TVkBuffer<TDevice_>;
+       type TVkBuffer_ = TVkBuffer<TVkDevice_>;
      protected
-       _Device :TDevice_;
+       _Device :TVkDevice_;
      public
-       constructor Create( const Device_:TDevice_ );
+       constructor Create( const Device_:TVkDevice_ );
        destructor Destroy; override;
        ///// プロパティ
-       property Pooler :TDevice_ read _Device;
+       property Pooler :TVkDevice_ read _Device;
        ///// メソッド
        function Add :TVkBuffer_; overload;
      end;
@@ -203,14 +203,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkBuffer<TDevice_>.GetHandle :VkBuffer;
+function TVkBuffer<TVkDevice_>.GetHandle :VkBuffer;
 begin
      if _Handle = 0 then CreateHandle;
 
      Result := _Handle;
 end;
 
-procedure TVkBuffer<TDevice_>.SetHandle( const Handle_:VkBuffer );
+procedure TVkBuffer<TVkDevice_>.SetHandle( const Handle_:VkBuffer );
 begin
      if _Handle <> 0 then DestroHandle;
 
@@ -219,7 +219,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkBuffer<TDevice_>.CreateHandle;
+procedure TVkBuffer<TVkDevice_>.CreateHandle;
 begin
      _Inform                       := Default( VkBufferCreateInfo );
      _Inform.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -238,14 +238,14 @@ begin
      _Descri.range  := SizeOf( TSingleM4 );
 end;
 
-procedure TVkBuffer<TDevice_>.DestroHandle;
+procedure TVkBuffer<TVkDevice_>.DestroHandle;
 begin
      vkDestroyBuffer( TVkDevice( _Device ).Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkBuffer<TDevice_>.Create( const Device_:TDevice_ );
+constructor TVkBuffer<TVkDevice_>.Create( const Device_:TVkDevice_ );
 var
    fov        :Single;
    Projection :TSingleM4;
@@ -289,7 +289,7 @@ begin
      _Memory.Unmap;
 end;
 
-destructor TVkBuffer<TDevice_>.Destroy;
+destructor TVkBuffer<TVkDevice_>.Destroy;
 begin
      _Memory.Free;
 
@@ -306,14 +306,14 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkBuffers<TDevice_>.Create( const Device_:TDevice_ );
+constructor TVkBuffers<TVkDevice_>.Create( const Device_:TVkDevice_ );
 begin
      inherited Create;
 
      _Device := Device_;
 end;
 
-destructor TVkBuffers<TDevice_>.Destroy;
+destructor TVkBuffers<TVkDevice_>.Destroy;
 begin
 
      inherited;
@@ -321,7 +321,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-function TVkBuffers<TDevice_>.Add :TVkBuffer_;
+function TVkBuffers<TVkDevice_>.Add :TVkBuffer_;
 begin
      Result := TVkBuffer_.Create( _Device );
 end;
