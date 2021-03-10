@@ -183,6 +183,32 @@ end;
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkBuffer<TDevice_>.CreateHandle;
+begin
+     _Inform                       := Default( VkBufferCreateInfo );
+     _Inform.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+     _Inform.pNext                 := nil;
+     _Inform.usage                 := Ord( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
+     _Inform.size                  := SizeOf( TSingleM4 );
+     _Inform.queueFamilyIndexCount := 0;
+     _Inform.pQueueFamilyIndices   := nil;
+     _Inform.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
+     _Inform.flags                 := 0;
+
+     Assert( vkCreateBuffer( TVkDevice( _Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
+
+     _Descri.buffer := _Handle;
+     _Descri.offset := 0;
+     _Descri.range  := SizeOf( TSingleM4 );
+end;
+
+procedure TVkBuffer<TDevice_>.DestroHandle;
+begin
+     vkDestroyBuffer( TVkDevice( _Device ).Handle, _Handle, nil );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkBuffer<TDevice_>.Create( const Device_:TDevice_ );
 var
    fov        :Single;
    Projection :TSingleM4;
@@ -192,6 +218,18 @@ var
    MVP        :TSingleM4;
    pData      :PByte;
 begin
+     inherited Create;
+
+     _Device := Device_;
+
+     TVkDevice( _Device ).Buffers.Add( TVkBuffer( Self ) );
+
+     CreateHandle;
+
+     _Memory := TVkMemory_.Create( Self );
+
+     //////////////////////////////
+
      fov := DegToRad( 45 );
      Projection := TSingleM4.ProjPersH( fov, 1, 0.1, 100 );
      View := TSingleM4.LookAt( TSingle3D.Create( -5, +3, -10 ),    // Camera is at (-5,3,-10), in World Space
@@ -207,47 +245,11 @@ begin
 
      MVP := Clip * Projection *View * Model;
 
-     _Inform                       := Default( VkBufferCreateInfo );
-     _Inform.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-     _Inform.pNext                 := nil;
-     _Inform.usage                 := Ord( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
-     _Inform.size                  := SizeOf( MVP );
-     _Inform.queueFamilyIndexCount := 0;
-     _Inform.pQueueFamilyIndices   := nil;
-     _Inform.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
-     _Inform.flags                 := 0;
-
-     Assert( vkCreateBuffer( TVkDevice( _Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
-
-     _Descri.buffer := _Handle;
-     _Descri.offset := 0;
-     _Descri.range  := SizeOf( MVP );
-
-     _Memory := TVkMemory_.Create( Self );
-
      _Memory.Map( pData );
 
      Move( MVP, pData^, SizeOf( MVP ) );
 
      _Memory.Unmap;
-end;
-
-procedure TVkBuffer<TDevice_>.DestroHandle;
-begin
-     vkDestroyBuffer( TVkDevice( _Device ).Handle, _Handle, nil );
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TVkBuffer<TDevice_>.Create( const Device_:TDevice_ );
-begin
-     inherited Create;
-
-     _Device := Device_;
-
-     TVkDevice( _Device ).Buffers.Add( TVkBuffer( Self ) );
-
-     CreateHandle;
 end;
 
 destructor TVkBuffer<TDevice_>.Destroy;
