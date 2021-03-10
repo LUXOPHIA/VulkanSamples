@@ -37,6 +37,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                      TVkComman  = TVkComman<TVkPooler>;
                TVkBuffers       = TVkBuffers<TVkDevice>;
                  TVkBuffer      = TVkBuffer<TVkDevice>;
+                   TVkMemory    = TVkMemory<TVkDevice>;
                TVkSwapchain     = TVkSwapchain<TVkDevice>;
                  TVkImageViews  = TVkImageViews<TVkSwapchain>;
                    TVkImageView = TVkImageView<TVkImageViews>;
