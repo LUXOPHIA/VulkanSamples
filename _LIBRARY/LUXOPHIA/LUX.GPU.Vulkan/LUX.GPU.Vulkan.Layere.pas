@@ -154,7 +154,7 @@ begin
      _Layeres := Layeres_;
      _Inform  := Inform_ ;
 
-     TVkLayeres_( _Layeres ).Add( Self );
+     _Layeres.Add( Self );
 
      FindExtenss;
 end;
@@ -276,7 +276,7 @@ begin
      _DevLays := DevLays_;
      _LayereI := LayereI_;
 
-     TVkDevLays_( _DevLays ).Add( Self );
+     _DevLays.Add( Self );
 
      FindExtenss;
 end;
