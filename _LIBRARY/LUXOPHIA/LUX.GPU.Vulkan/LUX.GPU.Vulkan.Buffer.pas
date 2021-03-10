@@ -235,7 +235,7 @@ begin
 
      _Descri.buffer := _Handle;
      _Descri.offset := 0;
-     _Descri.range  := SizeOf( TSingleM4 );
+     _Descri.range  := _Inform.size;
 end;
 
 procedure TVkBuffer<TVkDevice_>.DestroHandle;
