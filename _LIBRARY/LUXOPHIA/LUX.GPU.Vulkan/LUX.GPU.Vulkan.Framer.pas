@@ -182,8 +182,6 @@ begin
 
      _Swapch := Swapch_;
 
-     TVkSwapch( _Swapch )._Viewers := TVkFramers( Self );
-
      FindImages;
 end;
 
