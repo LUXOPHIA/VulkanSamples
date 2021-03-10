@@ -26,6 +26,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Inform  :VkSwapchainCreateInfoKHR;
        _Handle  :VkSwapchainKHR;
        _Framers :TVkFramers_;
+       ///// アクセス
+       function GetHandle :VkSwapchainKHR;
+       procedure SetHandle( const Handle_:VkSwapchainKHR );
+       function GetHandleP :P_VkSwapchainKHR;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -33,10 +37,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Device_:TVkDevice_ );
        destructor Destroy; override;
        ///// プロパティ
-       property Device  :TVkDevice_               read _Device ;
-       property Inform  :VkSwapchainCreateInfoKHR read _Inform ;
-       property Handle  :VkSwapchainKHR           read _Handle ;
-       property Framers :TVkFramers_              read _Framers;
+       property Device  :TVkDevice_               read   _Device ;
+       property Inform  :VkSwapchainCreateInfoKHR read   _Inform ;
+       property Handle  :VkSwapchainKHR           read GetHandle  write SetHandle;
+       property HandleP :P_VkSwapchainKHR         read GetHandleP;
+       property Framers :TVkFramers_              read   _Framers;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkSwapchs
@@ -74,6 +79,31 @@ uses LUX.GPU.Vulkan;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkSwapch<TVkDevice_>.GetHandle :VkSwapchainKHR;
+begin
+     if _Handle = 0 then CreateHandle;
+
+     Result := _Handle;
+end;
+
+procedure TVkSwapch<TVkDevice_>.SetHandle( const Handle_:VkSwapchainKHR );
+begin
+     if _Handle <> 0 then DestroHandle;
+
+     _Handle := Handle_;
+end;
+
+function TVkSwapch<TVkDevice_>.GetHandleP :P_VkSwapchainKHR;
+begin
+     if _Handle = 0 then CreateHandle;
+
+     Result := @_Handle;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkSwapch<TVkDevice_>.CreateHandle;
 var
@@ -208,11 +238,11 @@ constructor TVkSwapch<TVkDevice_>.Create( const Device_:TVkDevice_ );
 begin
      inherited Create;
 
+     _Handle := 0;
+
      _Device := Device_;
 
      TVkDevice( _Device ).Swapchs.Add( TVkSwapch( Self ) );
-
-     CreateHandle;
 
      _Framers := TVkFramers_.Create( Self );
 end;
@@ -221,7 +251,7 @@ destructor TVkSwapch<TVkDevice_>.Destroy;
 begin
      _Framers.Free;
 
-     DestroHandle;
+      Handle := 0;
 
      inherited;
 end;
