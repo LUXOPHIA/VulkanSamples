@@ -27,6 +27,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Handle :VkDeviceMemory;
        ///// アクセス
        function GetDevice :TVkDevice_;
+       function GetHandle :VkDeviceMemory;
+       procedure SetHandle( const Handle_:VkDeviceMemory );
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -38,7 +40,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Buffer :TVkBuffer_           read   _Buffer;
        property Requir :VkMemoryRequirements read   _Requir;
        property Inform :VkMemoryAllocateInfo read   _Inform;
-       property Handle :VkDeviceMemory       read   _Handle;
+       property Handle :VkDeviceMemory       read GetHandle write SetHandle;
        ///// メソッド
        function Map( var Pointer_:PByte ) :Boolean;
        procedure Unmap;
@@ -55,6 +57,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Handle :VkBuffer;
        _Descri :VkDescriptorBufferInfo;
        _Memory :TVkMemory_;
+       ///// アクセス
+       function GetHandle :VkBuffer;
+       procedure SetHandle( const Handle_:VkBuffer );
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -64,7 +69,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// プロパティ
        property Device :TDevice_               read   _Device;
        property Inform :VkBufferCreateInfo     read   _Inform;
-       property Handle :VkBuffer               read   _Handle;
+       property Handle :VkBuffer               read GetHandle write SetHandle;
        property Descri :VkDescriptorBufferInfo read   _Descri;
        property Memory :TVkMemory_             read   _Memory;
      end;
@@ -114,6 +119,22 @@ begin
      Result := _Buffer.Device;
 end;
 
+//------------------------------------------------------------------------------
+
+function TVkMemory<TVkDevice_>.GetHandle :VkDeviceMemory;
+begin
+     if _Handle = 0 then CreateHandle;
+
+     Result := _Handle;
+end;
+
+procedure TVkMemory<TVkDevice_>.SetHandle( const Handle_:VkDeviceMemory );
+begin
+     if _Handle <> 0 then DestroHandle;
+
+     _Handle := Handle_;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkMemory<TVkDevice_>.CreateHandle;
@@ -150,14 +171,14 @@ constructor TVkMemory<TVkDevice_>.Create( const Buffer_:TVkBuffer_ );
 begin
      inherited Create;
 
-     _Buffer := Buffer_;
+     _Handle := 0;
 
-     CreateHandle;
+     _Buffer := Buffer_;
 end;
 
 destructor TVkMemory<TVkDevice_>.Destroy;
 begin
-     DestroHandle;
+      Handle := 0;
 
      inherited;
 end;
@@ -179,6 +200,22 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkBuffer<TDevice_>.GetHandle :VkBuffer;
+begin
+     if _Handle = 0 then CreateHandle;
+
+     Result := _Handle;
+end;
+
+procedure TVkBuffer<TDevice_>.SetHandle( const Handle_:VkBuffer );
+begin
+     if _Handle <> 0 then DestroHandle;
+
+     _Handle := Handle_;
+end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
@@ -220,11 +257,11 @@ var
 begin
      inherited Create;
 
+     _Handle := 0;
+
      _Device := Device_;
 
      TVkDevice( _Device ).Buffers.Add( TVkBuffer( Self ) );
-
-     CreateHandle;
 
      _Memory := TVkMemory_.Create( Self );
 
@@ -256,7 +293,7 @@ destructor TVkBuffer<TDevice_>.Destroy;
 begin
      _Memory.Free;
 
-     DestroHandle;
+      Handle := 0;
 
      inherited;
 end;
