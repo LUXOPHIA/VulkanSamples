@@ -42,7 +42,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                TVkSwapchs      = TVkSwapchs<TVkDevice>;
                  TVkSwapch     = TVkSwapch<TVkDevice>;
                    TVkFramers  = TVkFramers<TVkSwapch>;
-                     TVkFramer = TVkFramer<TVkFramers>;
+                     TVkFramer = TVkFramer<TVkSwapch>;
                TVkPipeline     = TVkPipeline<TVkDevice>;
                  TVkShader     = TVkShader<TVkPipeline>;
                  TVkShaderVert = TVkShaderVert<TVkPipeline>;

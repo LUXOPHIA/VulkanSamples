@@ -8,7 +8,7 @@ uses System.Generics.Collections,
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
      TVkFramers<TVkSwapch_:class>   = class;
-       TVkFramer<TVkFramers_:class> = class;
+       TVkFramer<TVkSwapch_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -16,8 +16,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkFramer
 
-     TVkFramer<TVkFramers_:class> = class
+     TVkFramer<TVkSwapch_:class> = class
      private
+       type TVkFramers_ = TVkFramers<TVkSwapch_>;
      protected
        _Framers :TVkFramers_;
        _Inform  :VkImageViewCreateInfo;
@@ -39,10 +40,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkFramers
 
-     TVkFramers<TVkSwapch_:class> = class( TObjectList<TVkFramer<TVkFramers<TVkSwapch_>>> )
+     TVkFramers<TVkSwapch_:class> = class( TObjectList<TVkFramer<TVkSwapch_>> )
      private
-       type TVkFramers_ = TVkFramers<TVkSwapch_>;
-            TVkFramer_  = TVkFramer<TVkFramers_>;
+       type TVkFramer_ = TVkFramer<TVkSwapch_>;
      protected
        _Swapch  :TVkSwapch_;
        _FramerI :UInt32;
@@ -81,26 +81,26 @@ uses LUX.GPU.Vulkan;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkFramer<TVkFramers_>.GetImage :VkImage;
+function TVkFramer<TVkSwapch_>.GetImage :VkImage;
 begin
      Result := _Inform.image;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkFramer<TVkFramers_>.CreateHandle;
+procedure TVkFramer<TVkSwapch_>.CreateHandle;
 begin
      Assert( vkCreateImageView( TVkFramers( _Framers ).Swapch.Device.Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
-procedure TVkFramer<TVkFramers_>.DestroHandle;
+procedure TVkFramer<TVkSwapch_>.DestroHandle;
 begin
      vkDestroyImageView( TVkFramers( _Framers ).Swapch.Device.Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkFramer<TVkFramers_>.Create( const Framers_:TVkFramers_; const Image_:VkImage );
+constructor TVkFramer<TVkSwapch_>.Create( const Framers_:TVkFramers_; const Image_:VkImage );
 begin
      inherited Create;
 
@@ -138,7 +138,7 @@ begin
      CreateHandle;
 end;
 
-destructor TVkFramer<TVkFramers_>.Destroy;
+destructor TVkFramer<TVkSwapch_>.Destroy;
 begin
      DestroHandle;
 
