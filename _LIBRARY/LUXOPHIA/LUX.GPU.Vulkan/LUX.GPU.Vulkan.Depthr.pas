@@ -20,7 +20,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _Device :TVkDevice_;
        _Inform :VkImageCreateInfo;
-       _Handle :VkImage;
        ///// アクセス
        function GetHandle :VkImage;
        procedure SetHandle( const Handle_:VkImage );
@@ -28,13 +27,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure CreateHandle;
        procedure DestroHandle;
      public
+       format :VkFormat;
+       image  :VkImage;
+       mem    :VkDeviceMemory;
+       view   :VkImageView;
        constructor Create; overload;
        constructor Create( const Device_:TVkDevice_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
        property Device  :TVkDevice_        read   _Device                ;
        property Inform  :VkImageCreateInfo read   _Inform                ;
-       property Handle  :VkImage           read GetHandle write SetHandle;
+       //property Handle  :VkImage           read GetHandle write SetHandle;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -64,16 +67,16 @@ uses System.SysUtils,
 
 function TVkDepthr<TVkDevice_>.GetHandle :VkImage;
 begin
-     if _Handle = 0 then CreateHandle;
+     //if _Handle = 0 then CreateHandle;
 
-     Result := _Handle;
+     //Result := _Handle;
 end;
 
 procedure TVkDepthr<TVkDevice_>.SetHandle( const Handle_:VkImage );
 begin
-     if _Handle <> 0 then DestroHandle;
+     //if _Handle <> 0 then DestroHandle;
 
-     _Handle := Handle_;
+     //_Handle := Handle_;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -90,9 +93,9 @@ var
    mem_reqs     :VkMemoryRequirements;
 begin
      (* allow custom depth formats *)
-     if TVkDevice( Device ).Instan.Vulkan.Info.depth.format = VK_FORMAT_UNDEFINED then TVkDevice( Device ).Instan.Vulkan.Info.depth.format := VK_FORMAT_D16_UNORM;
+     if TVkDevice( Device ).Depthr.format = VK_FORMAT_UNDEFINED then TVkDevice( Device ).Depthr.format := VK_FORMAT_D16_UNORM;
 
-     depth_format := TVkDevice( Device ).Instan.Vulkan.Info.depth.format;
+     depth_format := TVkDevice( Device ).Depthr.format;
      vkGetPhysicalDeviceFormatProperties( TVkDevice( Device ).Physic, depth_format, @props );
      if ( props.linearTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
      then image_info.tiling := VK_IMAGE_TILING_LINEAR
@@ -152,10 +155,10 @@ begin
      then view_info.subresourceRange.aspectMask := view_info.subresourceRange.aspectMask or Ord( VK_IMAGE_ASPECT_STENCIL_BIT );
 
      (* Create image *)
-     res := vkCreateImage( TVkDevice( Device ).Handle, @image_info, nil, @TVkDevice( Device ).Instan.Vulkan.Info.depth.image );
+     res := vkCreateImage( TVkDevice( Device ).Handle, @image_info, nil, @TVkDevice( Device ).Depthr.image );
      Assert( res = VK_SUCCESS );
 
-     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, TVkDevice( Device ).Instan.Vulkan.Info.depth.image, @mem_reqs );
+     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, TVkDevice( Device ).Depthr.image, @mem_reqs );
 
      mem_alloc.allocationSize := mem_reqs.size;
      (* Use the memory properties to determine the type of memory required *)
@@ -163,24 +166,24 @@ begin
      Assert( pass );
 
      (* Allocate memory *)
-     res := vkAllocateMemory( TVkDevice( Device ).Handle, @mem_alloc, nil, @TVkDevice( Device ).Instan.Vulkan.Info.depth.mem );
+     res := vkAllocateMemory( TVkDevice( Device ).Handle, @mem_alloc, nil, @TVkDevice( Device ).Depthr.mem );
      Assert( res = VK_SUCCESS );
 
      (* Bind memory *)
-     res := vkBindImageMemory( TVkDevice( Device ).Handle, TVkDevice( Device ).Instan.Vulkan.Info.depth.image, TVkDevice( Device ).Instan.Vulkan.Info.depth.mem, 0 );
+     res := vkBindImageMemory( TVkDevice( Device ).Handle, TVkDevice( Device ).Depthr.image, TVkDevice( Device ).Depthr.mem, 0 );
      Assert( res = VK_SUCCESS );
 
      (* Create image view *)
-     view_info.image := TVkDevice( Device ).Instan.Vulkan.Info.depth.image;
-     res := vkCreateImageView( TVkDevice( Device ).Handle, @view_info, nil, @TVkDevice( Device ).Instan.Vulkan.Info.depth.view );
+     view_info.image := TVkDevice( Device ).Depthr.image;
+     res := vkCreateImageView( TVkDevice( Device ).Handle, @view_info, nil, @TVkDevice( Device ).Depthr.view );
      Assert( res = VK_SUCCESS );
 end;
 
 procedure TVkDepthr<TVkDevice_>.DestroHandle;
 begin
-     vkDestroyImageView( TVkDevice( Device ).Handle, TVkDevice( Device ).Instan.Vulkan.Info.depth.view , nil );
-     vkDestroyImage    ( TVkDevice( Device ).Handle, TVkDevice( Device ).Instan.Vulkan.Info.depth.image, nil );
-     vkFreeMemory      ( TVkDevice( Device ).Handle, TVkDevice( Device ).Instan.Vulkan.Info.depth.mem  , nil );
+     vkDestroyImageView( TVkDevice( Device ).Handle, TVkDevice( Device ).Depthr.view , nil );
+     vkFreeMemory      ( TVkDevice( Device ).Handle, TVkDevice( Device ).Depthr.mem  , nil );
+     vkDestroyImage    ( TVkDevice( Device ).Handle, TVkDevice( Device ).Depthr.image, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -189,7 +192,7 @@ constructor TVkDepthr<TVkDevice_>.Create;
 begin
      inherited Create;
 
-     _Handle := 0;
+     //_Handle := 0;
 end;
 
 constructor TVkDepthr<TVkDevice_>.Create( const Device_:TVkDevice_ );
@@ -207,7 +210,7 @@ destructor TVkDepthr<TVkDevice_>.Destroy;
 begin
      DestroHandle;
 
-      Handle := 0;
+      //Handle := 0;
 
      inherited;
 end;
