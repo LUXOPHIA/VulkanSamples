@@ -76,8 +76,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
        framebuffers  :TArray<VkFramebuffer>;
 
-       //textures :TArray<T_texture_object>;
-
        texture_data :record
                        image_info :VkDescriptorImageInfo;
                      end;
