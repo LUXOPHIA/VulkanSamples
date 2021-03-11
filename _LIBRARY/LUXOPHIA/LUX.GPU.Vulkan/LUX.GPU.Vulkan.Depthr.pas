@@ -19,7 +19,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        type TVkDepthr_  = TVkDepthr<TVkDevice_>;
      protected
        _Device :TVkDevice_;
-       _Inform :VkImageCreateInfo;
        _Handle :VkImage;
        ///// アクセス
        function GetHandle :VkImage;
@@ -28,7 +27,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       format :VkFormat;
+       image_info :VkImageCreateInfo;
        mem    :VkDeviceMemory;
        view   :VkImageView;
        constructor Create; overload;
@@ -36,7 +35,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
        ///// プロパティ
        property Device  :TVkDevice_        read   _Device                ;
-       property Inform  :VkImageCreateInfo read   _Inform                ;
+       //property Inform  :VkImageCreateInfo read   _Inform                ;
        property Handle  :VkImage           read GetHandle write SetHandle;
      end;
 
@@ -85,48 +84,10 @@ procedure TVkDepthr<TVkDevice_>.CreateHandle;
 var
    res          :VkResult;
    pass         :Boolean;
-   image_info   :VkImageCreateInfo;
-   props        :VkFormatProperties;
-   depth_format :VkFormat;
    mem_alloc    :VkMemoryAllocateInfo;
    view_info    :VkImageViewCreateInfo;
    mem_reqs     :VkMemoryRequirements;
 begin
-     (* allow custom depth formats *)
-     if TVkDevice( Device ).Depthr.format = VK_FORMAT_UNDEFINED then TVkDevice( Device ).Depthr.format := VK_FORMAT_D16_UNORM;
-
-     depth_format := TVkDevice( Device ).Depthr.format;
-     vkGetPhysicalDeviceFormatProperties( TVkDevice( Device ).Physic, depth_format, @props );
-     if ( props.linearTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
-     then image_info.tiling := VK_IMAGE_TILING_LINEAR
-     else
-     if ( props.optimalTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
-     then image_info.tiling := VK_IMAGE_TILING_OPTIMAL
-     else
-     begin
-          (* Try other depth formats? *)
-          Log.d( 'depth_format ' + Ord( depth_format ).ToString + ' Unsupported.' );
-          RunError( 256-1 );
-     end;
-
-     image_info                       := Default( VkImageCreateInfo );
-     image_info.sType                 := VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-     image_info.pNext                 := nil;
-     image_info.imageType             := VK_IMAGE_TYPE_2D;
-     image_info.format                := depth_format;
-     image_info.extent.width          := TVkDevice( Device ).Surfac.PxSizeX;
-     image_info.extent.height         := TVkDevice( Device ).Surfac.PxSizeY;
-     image_info.extent.depth          := 1;
-     image_info.mipLevels             := 1;
-     image_info.arrayLayers           := 1;
-     image_info.samples               := NUM_SAMPLES;
-     image_info.initialLayout         := VK_IMAGE_LAYOUT_UNDEFINED;
-     image_info.queueFamilyIndexCount := 0;
-     image_info.pQueueFamilyIndices   := nil;
-     image_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
-     image_info.usage                 := Ord( VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT );
-     image_info.flags                 := 0;
-
      mem_alloc                 := Default( VkMemoryAllocateInfo );
      mem_alloc.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
      mem_alloc.pNext           := nil;
@@ -137,7 +98,7 @@ begin
      view_info.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
      view_info.pNext                           := nil;
      view_info.image                           := VK_NULL_HANDLE;
-     view_info.format                          := depth_format;
+     view_info.format                          := image_info.format;
      view_info.components.r                    := VK_COMPONENT_SWIZZLE_R;
      view_info.components.g                    := VK_COMPONENT_SWIZZLE_G;
      view_info.components.b                    := VK_COMPONENT_SWIZZLE_B;
@@ -150,8 +111,8 @@ begin
      view_info.viewType                        := VK_IMAGE_VIEW_TYPE_2D;
      view_info.flags                           := 0;
 
-     if ( depth_format = VK_FORMAT_D16_UNORM_S8_UINT ) or ( depth_format = VK_FORMAT_D24_UNORM_S8_UINT ) or
-        ( depth_format = VK_FORMAT_D32_SFLOAT_S8_UINT )
+     if ( image_info.format = VK_FORMAT_D16_UNORM_S8_UINT ) or ( image_info.format = VK_FORMAT_D24_UNORM_S8_UINT ) or
+        ( image_info.format = VK_FORMAT_D32_SFLOAT_S8_UINT )
      then view_info.subresourceRange.aspectMask := view_info.subresourceRange.aspectMask or Ord( VK_IMAGE_ASPECT_STENCIL_BIT );
 
      (* Create image *)
@@ -196,12 +157,45 @@ begin
 end;
 
 constructor TVkDepthr<TVkDevice_>.Create( const Device_:TVkDevice_ );
+var
+   props :VkFormatProperties;
 begin
      Create;
 
      _Device := Device_;
 
      TVkDevice( _Device ).Depthr := TVkDepthr( Self );
+
+     image_info.sType                 := VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+     image_info.pNext                 := nil;
+     image_info.flags                 := 0;
+     image_info.imageType             := VK_IMAGE_TYPE_2D;
+     image_info.format                := VK_FORMAT_D16_UNORM;
+     image_info.extent.width          := TVkDevice( Device ).Surfac.PxSizeX;
+     image_info.extent.height         := TVkDevice( Device ).Surfac.PxSizeY;
+     image_info.extent.depth          := 1;
+     image_info.mipLevels             := 1;
+     image_info.arrayLayers           := 1;
+     image_info.samples               := NUM_SAMPLES;
+
+     vkGetPhysicalDeviceFormatProperties( TVkDevice( Device ).Physic, image_info.format, @props );
+     if ( props.linearTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
+     then image_info.tiling := VK_IMAGE_TILING_LINEAR
+     else
+     if ( props.optimalTilingFeatures and Ord( VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT ) ) <> 0
+     then image_info.tiling := VK_IMAGE_TILING_OPTIMAL
+     else
+     begin
+          (* Try other depth formats? *)
+          Log.d( 'image_info.format ' + Ord( image_info.format ).ToString + ' Unsupported.' );
+          RunError( 256-1 );
+     end;
+
+     image_info.usage                 := Ord( VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT );
+     image_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
+     image_info.queueFamilyIndexCount := 0;
+     image_info.pQueueFamilyIndices   := nil;
+     image_info.initialLayout         := VK_IMAGE_LAYOUT_UNDEFINED;
 
      CreateHandle;
 end;
