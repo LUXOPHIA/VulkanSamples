@@ -82,6 +82,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Texturs :TVkTexturs_;
        _Imager  :TVkImager_;
        _Samplr  :TVkSamplr_;
+       _Descri  :VkDescriptorImageInfo;
         texObj  :T_texture_object;
        ///// アクセス
        function GetDevice :TVkDevice_;
@@ -94,10 +95,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Device_:TVkDevice_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
-       property Device  :TVkDevice_  read GetDevice ;
-       property Texturs :TVkTexturs_ read   _Texturs;
-       property Imager  :TVkImager_  read   _Imager ;
-       property Samplr  :TVkSamplr_  read   _Samplr ;
+       property Device  :TVkDevice_            read GetDevice ;
+       property Texturs :TVkTexturs_           read   _Texturs;
+       property Imager  :TVkImager_            read   _Imager ;
+       property Samplr  :TVkSamplr_            read   _Samplr ;
+       property Descri  :VkDescriptorImageInfo read   _Descri ;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkTexturs
@@ -164,12 +166,12 @@ end;
 
 procedure TVkSamplr<TVkDevice_>.CreateHandle;
 begin
-
+     Assert( vkCreateSampler( TVkDevice( Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkSamplr<TVkDevice_>.DestroHandle;
 begin
-
+     vkDestroySampler( TVkDevice( Device ).Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -179,6 +181,28 @@ begin
      inherited Create;
 
      _Handle := 0;
+
+     with _Inform do
+     begin
+          sType                   := VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+          pNext                   := nil;
+          flags                   := 0;
+          magFilter               := VK_FILTER_NEAREST;
+          minFilter               := VK_FILTER_NEAREST;
+          mipmapMode              := VK_SAMPLER_MIPMAP_MODE_NEAREST;
+          addressModeU            := VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+          addressModeV            := VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+          addressModeW            := VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+          mipLodBias              := 0.0;
+          anisotropyEnable        := VK_FALSE;
+          maxAnisotropy           := 1;
+          compareEnable           := VK_FALSE;
+          compareOp               := VK_COMPARE_OP_NEVER;
+          minLod                  := 0.0;
+          maxLod                  := 0.0;
+          borderColor             := VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE;
+          unnormalizedCoordinates := 0;
+     end;
 end;
 
 constructor TVkSamplr<TVkDevice_>.Create( const Textur_:TVkTextur_ );
@@ -306,7 +330,7 @@ begin
 
      _Texturs := Texturs_;
 
-     TVkTexturs( _Texturs ).Add( TVkTextur( Self ) );
+     _Texturs.Add( Self );
 
      //////////
 
@@ -319,23 +343,26 @@ begin
      (* create image *)
      init_image( V, texObj, textureName_, extraUsages_, extraFeatures_ );
 
-     (* create sampler *)
-     init_sampler( V, texObj.sampler );
-
      (* track a description of the texture *)
-     V.Info.texture_data.image_info.imageView   := texObj.view;
-     V.Info.texture_data.image_info.sampler     := texObj.sampler;
-     V.Info.texture_data.image_info.imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+     with _Descri do
+     begin
+          imageView   := texObj.view;
+          sampler     := _Samplr.Handle;
+          imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+     end;
+
+     V.Info.texture_data.image_info := _Descri;
 end;
 
 constructor TVkTextur<TVkDevice_>.Create( const Device_:TVkDevice_ );
 begin
-     Create( ( TVkDevice( Device_ ).Texturs ) );
+     Create( TVkTexturs_( TVkDevice( Device_ ).Texturs ) );
 end;
 
 destructor TVkTextur<TVkDevice_>.Destroy;
 begin
-     vkDestroySampler  ( TVkDevice( Device ).Handle, texObj.sampler      , nil );
+     _Samplr.Free;
+
      vkDestroyImageView( TVkDevice( Device ).Handle, texObj.view         , nil );
      vkDestroyImage    ( TVkDevice( Device ).Handle, texObj.image        , nil );
      vkFreeMemory      ( TVkDevice( Device ).Handle, texObj.image_memory , nil );
@@ -343,7 +370,6 @@ begin
      vkFreeMemory      ( TVkDevice( Device ).Handle, texObj.buffer_memory, nil );
 
      _Imager.Free;
-     _Samplr.Free;
 
      inherited;
 end;
