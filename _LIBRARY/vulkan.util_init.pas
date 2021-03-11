@@ -99,8 +99,6 @@ procedure destroy_pipeline_cache( const Vulkan_:TVulkan );
 procedure init_buffer( const Vulkan_:TVulkan; var texObj_:T_texture_object );
 procedure init_image( const Vulkan_:TVulkan; var texObj_:T_texture_object; const textureName_:String; extraUsages_:VkImageUsageFlags; extraFeatures_:VkFormatFeatureFlags );
 procedure init_sampler( const Vulkan_:TVulkan; var sampler_:VkSampler );
-procedure init_texture( const Vulkan_:TVulkan; const textureName_:String = ''; extraUsages_:VkImageUsageFlags = 0; extraFeatures_:VkFormatFeatureFlags = 0 );
-procedure destroy_textures( const Vulkan_:TVulkan );
 
 implementation //############################################################### ■
 
@@ -894,39 +892,6 @@ begin
      (* create sampler *)
      res := vkCreateSampler( Vulkan_.Instans[0].Devices[0].Handle, @samplerCreateInfo, nil, @sampler_ );
      Assert( res = VK_SUCCESS );
-end;
-
-procedure init_texture( const Vulkan_:TVulkan; const textureName_:String = ''; extraUsages_:VkImageUsageFlags = 0; extraFeatures_:VkFormatFeatureFlags = 0 );
-var
-   texObj :T_texture_object;
-begin
-     (* create image *)
-     init_image( Vulkan_, texObj, textureName_, extraUsages_, extraFeatures_ );
-
-     (* create sampler *)
-     init_sampler( Vulkan_, texObj.sampler );
-
-     Vulkan_.Info.textures := Vulkan_.Info.textures + [ texObj ];
-
-     (* track a description of the texture *)
-     Vulkan_.Info.texture_data.image_info.imageView   := Vulkan_.Info.textures[ High( Vulkan_.Info.textures ) ].view;
-     Vulkan_.Info.texture_data.image_info.sampler     := Vulkan_.Info.textures[ High( Vulkan_.Info.textures ) ].sampler;
-     Vulkan_.Info.texture_data.image_info.imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-end;
-
-procedure destroy_textures( const Vulkan_:TVulkan );
-var
-   i :T_size_t;
-begin
-     for i := 0 to Length( Vulkan_.Info.textures )-1 do
-     begin
-          vkDestroySampler  ( Vulkan_.Instans[0].Devices[0].Handle, Vulkan_.Info.textures[i].sampler      , nil );
-          vkDestroyImageView( Vulkan_.Instans[0].Devices[0].Handle, Vulkan_.Info.textures[i].view         , nil );
-          vkDestroyImage    ( Vulkan_.Instans[0].Devices[0].Handle, Vulkan_.Info.textures[i].image        , nil );
-          vkFreeMemory      ( Vulkan_.Instans[0].Devices[0].Handle, Vulkan_.Info.textures[i].image_memory , nil );
-          vkDestroyBuffer   ( Vulkan_.Instans[0].Devices[0].Handle, Vulkan_.Info.textures[i].buffer       , nil );
-          vkFreeMemory      ( Vulkan_.Instans[0].Devices[0].Handle, Vulkan_.Info.textures[i].buffer_memory, nil );
-     end;
 end;
 
 end. //######################################################################### ■
