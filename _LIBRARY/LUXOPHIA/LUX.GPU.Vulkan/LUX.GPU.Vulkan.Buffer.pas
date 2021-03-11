@@ -22,7 +22,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        type TVkBuffer_ = TVkBuffer<TVkDevice_>;
      protected
        _Buffer :TVkBuffer_;
-       _Requir :VkMemoryRequirements;
        _Inform :VkMemoryAllocateInfo;
        _Handle :VkDeviceMemory;
        ///// アクセス
@@ -38,7 +37,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// プロパティ
        property Device :TVkDevice_           read GetDevice;
        property Buffer :TVkBuffer_           read   _Buffer;
-       property Requir :VkMemoryRequirements read   _Requir;
        property Inform :VkMemoryAllocateInfo read   _Inform;
        property Handle :VkDeviceMemory       read GetHandle write SetHandle;
        ///// メソッド
@@ -147,16 +145,18 @@ end;
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkMemory<TVkDevice_>.CreateHandle;
+var
+   R :VkMemoryRequirements;
 begin
-     _Requir := TVkBuffer( _Buffer ).GetRequir;
+     R := TVkBuffer( _Buffer ).GetRequir;
 
      _Inform                 := Default( VkMemoryAllocateInfo );
      _Inform.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
      _Inform.pNext           := nil;
      _Inform.memoryTypeIndex := 0;
-     _Inform.allocationSize  := _Requir.size;
+     _Inform.allocationSize  := R.size;
 
-     Assert( TVkDevice( Device ).memory_type_from_properties( _Requir.memoryTypeBits,
+     Assert( TVkDevice( Device ).memory_type_from_properties( R.memoryTypeBits,
                   Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
                   _Inform.memoryTypeIndex ),
              'No mappable, coherent memory' );
@@ -198,7 +198,7 @@ end;
 
 function TVkMemory<TVkDevice_>.Map( var Pointer_:PByte ) :Boolean;
 begin
-     Result := vkMapMemory( TVkDevice( Device ).Handle, Handle, 0, _Requir.size, 0, @Pointer_ ) = VK_SUCCESS;
+     Result := vkMapMemory( TVkDevice( Device ).Handle, Handle, 0, _Inform.allocationSize, 0, @Pointer_ ) = VK_SUCCESS;
 end;
 
 procedure TVkMemory<TVkDevice_>.Unmap;
