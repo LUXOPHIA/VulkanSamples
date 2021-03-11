@@ -10,7 +10,8 @@ uses System.Classes, System.Generics.Collections,
      LUX.GPU.Vulkan.Pooler,
      LUX.GPU.Vulkan.Buffer,
      LUX.GPU.Vulkan.Swapch,
-     LUX.GPU.Vulkan.Depthr;
+     LUX.GPU.Vulkan.Depthr,
+     LUX.GPU.Vulkan.Textur;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -33,6 +34,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             TVkPoolers_ = TVkPoolers<TVkDevice_>;
             TVkSwapchs_ = TVkSwapchs<TVkDevice_>;
             TVkDepthr_  = TVkDepthr <TVkDevice_>;
+            TVkTexturs_ = TVkTexturs<TVkDevice_>;
      protected
        _Extenss  :TStringList;
        _Physic   :VkPhysicalDevice;
@@ -54,6 +56,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Buffers  :TVkBuffers_;
        _Swapchs  :TVkSwapchs_;
        _Depthr   :TVkDepthr_;
+       _Texturs  :TVkTexturs_;
        ///// アクセス
        function GetInstan :TVkInstan_;
        function GetFamilys( const I_:Integer ) :VkQueueFamilyProperties;
@@ -97,6 +100,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Buffers                     :TVkBuffers_                      read   _Buffers                  ;
        property Swapchs                     :TVkSwapchs_                      read   _Swapchs                  ;
        property Depthr                      :TVkDepthr_                       read   _Depthr   write   _Depthr ;
+       property Texturs                     :TVkTexturs_                      read   _Texturs                  ;
        ///// メソッド
        function memory_type_from_properties( typeBits:UInt32; const requirements_mask:VkFlags; var typeIndex:UInt32 ) :Boolean;
      end;
@@ -372,6 +376,7 @@ begin
      _Poolers := TVkPoolers_.Create( Self );
      _Buffers := TVkBuffers_.Create( Self );
      _Swapchs := TVkSwapchs_.Create( Self );
+     _Texturs := TVkTexturs_.Create( Self );
 
      _Extenss.Add( VK_KHR_SWAPCHAIN_EXTENSION_NAME );
 end;
@@ -411,6 +416,7 @@ begin
      _Poolers.Free;
      _Buffers.Free;
      _Swapchs.Free;
+     _Texturs.Free;
 
      if Assigned( _Depthr ) then _Depthr.Free;
 
