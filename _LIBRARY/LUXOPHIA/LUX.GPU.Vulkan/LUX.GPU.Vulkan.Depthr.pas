@@ -20,10 +20,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        type TVkDepthr_ = TVkDepthr<TVkDevice_>;
      protected
-       _Device :TVkDevice_;
+       _Depthr :TVkDepthr_;
        _Inform :VkImageCreateInfo;
        _Handle :VkImage;
        ///// アクセス
+       function GetDevice :TVkDevice_;
        function GetHandle :VkImage;
        procedure SetHandle( const Handle_:VkImage );
        ///// メソッド
@@ -31,10 +32,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DestroHandle;
      public
        constructor Create; overload;
-       constructor Create( const Device_:TVkDevice_ ); overload;
+       constructor Create( const Depthr_:TVkDepthr_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
-       property Device  :TVkDevice_        read   _Device                ;
+       property Device  :TVkDevice_        read GetDevice                ;
+       property Depthr  :TVkDepthr_        read   _Depthr                ;
        property Inform  :VkImageCreateInfo read   _Inform                ;
        property Handle  :VkImage           read GetHandle write SetHandle;
      end;
@@ -45,10 +47,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        type TVkDepthr_ = TVkDepthr<TVkDevice_>;
      protected
-       _Device :TVkDevice_;
+       _Depthr :TVkDepthr_;
        _Inform :VkImageCreateInfo;
        _Handle :VkImage;
        ///// アクセス
+       function GetDevice :TVkDevice_;
        function GetHandle :VkImage;
        procedure SetHandle( const Handle_:VkImage );
        ///// メソッド
@@ -56,10 +59,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DestroHandle;
      public
        constructor Create; overload;
-       constructor Create( const Device_:TVkDevice_ ); overload;
+       constructor Create( const Depthr_:TVkDepthr_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
-       property Device  :TVkDevice_        read   _Device                ;
+       property Device  :TVkDevice_        read GetDevice                ;
+       property Depthr  :TVkDepthr_        read   _Depthr                ;
        property Inform  :VkImageCreateInfo read   _Inform                ;
        property Handle  :VkImage           read GetHandle write SetHandle;
      end;
@@ -115,6 +119,13 @@ uses System.SysUtils,
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
 /////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkDepVie<TVkDevice_>.GetDevice :TVkDevice_;
+begin
+     Result := _Depthr.Device;
+end;
+
+//------------------------------------------------------------------------------
 
 function TVkDepVie<TVkDevice_>.GetHandle :VkImage;
 begin
@@ -193,13 +204,13 @@ begin
      _Handle := 0;
 end;
 
-constructor TVkDepVie<TVkDevice_>.Create( const Device_:TVkDevice_ );
+constructor TVkDepVie<TVkDevice_>.Create( const Depthr_:TVkDepthr_ );
 var
    P :VkFormatProperties;
 begin
      Create;
 
-     _Device := Device_;
+     _Depthr := Depthr_;
 end;
 
 destructor TVkDepVie<TVkDevice_>.Destroy;
@@ -216,6 +227,13 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
 /////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkDepMem<TVkDevice_>.GetDevice :TVkDevice_;
+begin
+     Result := _Depthr.Device;
+end;
+
+//------------------------------------------------------------------------------
 
 function TVkDepMem<TVkDevice_>.GetHandle :VkImage;
 begin
@@ -294,13 +312,13 @@ begin
      _Handle := 0;
 end;
 
-constructor TVkDepMem<TVkDevice_>.Create( const Device_:TVkDevice_ );
+constructor TVkDepMem<TVkDevice_>.Create( const Depthr_:TVkDepthr_ );
 var
    P :VkFormatProperties;
 begin
      Create;
 
-     _Device := Device_;
+     _Depthr := Depthr_;
 end;
 
 destructor TVkDepMem<TVkDevice_>.Destroy;
