@@ -66,6 +66,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Depthr :TVkDepthr_           read   _Depthr                ;
        property Inform :VkMemoryAllocateInfo read   _Inform                ;
        property Handle :VkDeviceMemory       read GetHandle write SetHandle;
+       ///// メソッド
+       function Bind :Boolean;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDepthr
@@ -99,7 +101,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Viewer :TVkDepVie_        read   _Viewer                ;
        ///// メソッド
        function GetRequir :VkMemoryRequirements;
-       function Bind( const Memory_:TVkDepMem_ ) :Boolean;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -235,7 +236,12 @@ end;
 
 function TVkDepMem<TVkDevice_>.GetHandle :VkDeviceMemory;
 begin
-     if _Handle = 0 then CreateHandle;
+     if _Handle = 0 then
+     begin
+          CreateHandle;
+
+          Assert( Bind );
+     end;
 
      Result := _Handle;
 end;
@@ -294,6 +300,13 @@ begin
      inherited;
 end;
 
+/////////////////////////////////////////////////////////////////////// メソッド
+
+function TVkDepMem<TVkDevice_>.Bind :Boolean;
+begin
+     Result := vkBindImageMemory( TVkDevice( Device ).Handle, TVkDepthr( Depthr ).Handle, Handle, 0 ) = VK_SUCCESS;
+end;
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDepthr
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -308,7 +321,7 @@ begin
      begin
           CreateHandle;
 
-          Bind( _Memory );
+          Assert( _Memory.Bind );
      end;
 
      Result := _Handle;
@@ -316,7 +329,12 @@ end;
 
 procedure TVkDepthr<TVkDevice_>.SetHandle( const Handle_:VkImage );
 begin
-     if _Handle <> 0 then DestroHandle;
+     if _Handle <> 0 then
+     begin
+          _Memory.Handle := 0;
+
+          DestroHandle;
+     end;
 
      _Handle := Handle_;
 end;
@@ -405,11 +423,6 @@ end;
 function TVkDepthr<TVkDevice_>.GetRequir :VkMemoryRequirements;
 begin
      vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, Handle, @Result );
-end;
-
-function TVkDepthr<TVkDevice_>.Bind( const Memory_:TVkDepMem_ ) :Boolean;
-begin
-     Result := vkBindImageMemory( TVkDevice( Device ).Handle, Handle, Memory_.Handle, 0 ) = VK_SUCCESS;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
