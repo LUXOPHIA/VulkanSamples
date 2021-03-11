@@ -98,7 +98,6 @@ procedure destroy_pipeline_cache( const Vulkan_:TVulkan );
 
 procedure init_buffer( const Vulkan_:TVulkan; var texObj_:T_texture_object );
 procedure init_image( const Vulkan_:TVulkan; var texObj_:T_texture_object; const textureName_:String; extraUsages_:VkImageUsageFlags; extraFeatures_:VkFormatFeatureFlags );
-procedure init_sampler( const Vulkan_:TVulkan; var sampler_:VkSampler );
 
 implementation //############################################################### ■
 
@@ -864,33 +863,6 @@ begin
      (* create image view *)
      view_info.image := texObj_.image;
      res := vkCreateImageView( Vulkan_.Instans[0].Devices[0].Handle, @view_info, nil, @texObj_.view );
-     Assert( res = VK_SUCCESS );
-end;
-
-procedure init_sampler( const Vulkan_:TVulkan; var sampler_:VkSampler );
-var
-   res               :VkResult;
-   samplerCreateInfo :VkSamplerCreateInfo;
-begin
-     samplerCreateInfo                  := Default( VkSamplerCreateInfo );
-     samplerCreateInfo.sType            := VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-     samplerCreateInfo.magFilter        := VK_FILTER_NEAREST;
-     samplerCreateInfo.minFilter        := VK_FILTER_NEAREST;
-     samplerCreateInfo.mipmapMode       := VK_SAMPLER_MIPMAP_MODE_NEAREST;
-     samplerCreateInfo.addressModeU     := VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
-     samplerCreateInfo.addressModeV     := VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
-     samplerCreateInfo.addressModeW     := VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
-     samplerCreateInfo.mipLodBias       := 0.0;
-     samplerCreateInfo.anisotropyEnable := VK_FALSE;
-     samplerCreateInfo.maxAnisotropy    := 1;
-     samplerCreateInfo.compareOp        := VK_COMPARE_OP_NEVER;
-     samplerCreateInfo.minLod           := 0.0;
-     samplerCreateInfo.maxLod           := 0.0;
-     samplerCreateInfo.compareEnable    := VK_FALSE;
-     samplerCreateInfo.borderColor      := VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE;
-
-     (* create sampler *)
-     res := vkCreateSampler( Vulkan_.Instans[0].Devices[0].Handle, @samplerCreateInfo, nil, @sampler_ );
      Assert( res = VK_SUCCESS );
 end;
 
