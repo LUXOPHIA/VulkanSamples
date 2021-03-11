@@ -53,6 +53,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Textur :TVkTextur_;
        _Inform :VkImageCreateInfo;
        _Handle :VkImage;
+        texObj :T_texture_object;
        ///// アクセス
        function GetDevice :TVkDevice_;
        function GetHandle :VkImage;
@@ -83,7 +84,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Imager  :TVkImager_;
        _Samplr  :TVkSamplr_;
        _Descri  :VkDescriptorImageInfo;
-        texObj  :T_texture_object;
        ///// アクセス
        function GetDevice :TVkDevice_;
        ///// メソッド
@@ -251,13 +251,28 @@ end;
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkImager<TVkDevice_>.CreateHandle;
+var
+   textureName   :String;
+   extraUsages   :VkImageUsageFlags;
+   extraFeatures :VkFormatFeatureFlags;
 begin
+     textureName   := '';
+     extraUsages   := 0;
+     extraFeatures := 0;
 
+     (* create image *)
+     init_image( TVkDevice( Device ).Instan.Vulkan, texObj, textureName, extraUsages, extraFeatures );
+
+     _Handle := texObj.image;
 end;
 
 procedure TVkImager<TVkDevice_>.DestroHandle;
 begin
-
+     vkDestroyImageView( TVkDevice( Device ).Handle, texObj.view         , nil );
+     vkDestroyImage    ( TVkDevice( Device ).Handle, texObj.image        , nil );
+     vkFreeMemory      ( TVkDevice( Device ).Handle, texObj.image_memory , nil );
+     vkDestroyBuffer   ( TVkDevice( Device ).Handle, texObj.buffer       , nil );
+     vkFreeMemory      ( TVkDevice( Device ).Handle, texObj.buffer_memory, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -319,12 +334,6 @@ begin
 end;
 
 constructor TVkTextur<TVkDevice_>.Create( const Texturs_:TVkTexturs_ );
-var
-   V :TVulkan;
-   textureName_   :String;
-   extraUsages_   :VkImageUsageFlags;
-   extraFeatures_ :VkFormatFeatureFlags;
-   texObj         :T_texture_object;
 begin
      Create;
 
@@ -334,24 +343,16 @@ begin
 
      //////////
 
-     textureName_   := '';
-     extraUsages_   := 0;
-     extraFeatures_ := 0;
-
-     V := TVkDevice( Device ).Instan.Vulkan;
-
-     (* create image *)
-     init_image( V, texObj, textureName_, extraUsages_, extraFeatures_ );
-
      (* track a description of the texture *)
      with _Descri do
      begin
-          imageView   := texObj.view;
+          _Imager.Handle;
+          imageView   := _Imager.texObj.view;
           sampler     := _Samplr.Handle;
           imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
      end;
 
-     V.Info.texture_data.image_info := _Descri;
+     TVkDevice( Device ).Instan.Vulkan.Info.texture_data.image_info := _Descri;
 end;
 
 constructor TVkTextur<TVkDevice_>.Create( const Device_:TVkDevice_ );
@@ -362,13 +363,6 @@ end;
 destructor TVkTextur<TVkDevice_>.Destroy;
 begin
      _Samplr.Free;
-
-     vkDestroyImageView( TVkDevice( Device ).Handle, texObj.view         , nil );
-     vkDestroyImage    ( TVkDevice( Device ).Handle, texObj.image        , nil );
-     vkFreeMemory      ( TVkDevice( Device ).Handle, texObj.image_memory , nil );
-     vkDestroyBuffer   ( TVkDevice( Device ).Handle, texObj.buffer       , nil );
-     vkFreeMemory      ( TVkDevice( Device ).Handle, texObj.buffer_memory, nil );
-
      _Imager.Free;
 
      inherited;
