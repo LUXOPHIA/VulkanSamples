@@ -363,7 +363,7 @@ begin
      (* DEPENDS on init_depth_buffer(), init_renderpass() and
       * init_swapchain_extension() *)
 
-     attachments[1] := Vulkan_.Instans[0].Devices[0].Depthr.view;
+     attachments[1] := Vulkan_.Instans[0].Devices[0].Depthr.Viewer.Handle;
 
      fb_info                      := Default( VkFramebufferCreateInfo );
      fb_info.sType                := VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
