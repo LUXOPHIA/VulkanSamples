@@ -3,7 +3,8 @@
 interface //#################################################################### ■
 
 uses System.Generics.Collections,
-     vulkan_core;
+     vulkan_core,
+     vulkan.util;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -81,6 +82,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Texturs :TVkTexturs_;
        _Imager  :TVkImager_;
        _Samplr  :TVkSamplr_;
+        texObj  :T_texture_object;
        ///// アクセス
        function GetDevice :TVkDevice_;
        ///// メソッド
@@ -89,6 +91,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create; overload;
        constructor Create( const Texturs_:TVkTexturs_ ); overload;
+       constructor Create( const Device_:TVkDevice_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
        property Device  :TVkDevice_  read GetDevice ;
@@ -292,16 +295,53 @@ begin
 end;
 
 constructor TVkTextur<TVkDevice_>.Create( const Texturs_:TVkTexturs_ );
+var
+   V :TVulkan;
+   textureName_   :String;
+   extraUsages_   :VkImageUsageFlags;
+   extraFeatures_ :VkFormatFeatureFlags;
+   texObj         :T_texture_object;
 begin
      Create;
 
      _Texturs := Texturs_;
 
      TVkTexturs( _Texturs ).Add( TVkTextur( Self ) );
+
+     //////////
+
+     textureName_   := '';
+     extraUsages_   := 0;
+     extraFeatures_ := 0;
+
+     V := TVkDevice( Device ).Instan.Vulkan;
+
+     (* create image *)
+     init_image( V, texObj, textureName_, extraUsages_, extraFeatures_ );
+
+     (* create sampler *)
+     init_sampler( V, texObj.sampler );
+
+     (* track a description of the texture *)
+     V.Info.texture_data.image_info.imageView   := texObj.view;
+     V.Info.texture_data.image_info.sampler     := texObj.sampler;
+     V.Info.texture_data.image_info.imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+end;
+
+constructor TVkTextur<TVkDevice_>.Create( const Device_:TVkDevice_ );
+begin
+     Create( ( TVkDevice( Device_ ).Texturs ) );
 end;
 
 destructor TVkTextur<TVkDevice_>.Destroy;
 begin
+     vkDestroySampler  ( TVkDevice( Device ).Handle, texObj.sampler      , nil );
+     vkDestroyImageView( TVkDevice( Device ).Handle, texObj.view         , nil );
+     vkDestroyImage    ( TVkDevice( Device ).Handle, texObj.image        , nil );
+     vkFreeMemory      ( TVkDevice( Device ).Handle, texObj.image_memory , nil );
+     vkDestroyBuffer   ( TVkDevice( Device ).Handle, texObj.buffer       , nil );
+     vkFreeMemory      ( TVkDevice( Device ).Handle, texObj.buffer_memory, nil );
+
      _Imager.Free;
      _Samplr.Free;
 
