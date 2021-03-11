@@ -230,7 +230,7 @@ begin
 
      if include_depth_ then
      begin
-          attachments[1].format         := Vulkan_.Instans[0].Devices[0].Depthr.format;
+          attachments[1].format         := Vulkan_.Instans[0].Devices[0].Depthr.image_info.format;
           attachments[1].samples        := NUM_SAMPLES;
           if clear_
           then attachments[1].loadOp    := VK_ATTACHMENT_LOAD_OP_CLEAR
