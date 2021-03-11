@@ -24,15 +24,16 @@ type
     procedure DestroWindow( const Window_:HWND );
   public
     { public 宣言 }
+    _Window  :HWND;
     _Vulkan  :TVulkan;
     _Instan  :TVkInstan;
-    _Window  :HWND;
     _Surfac  :TVkSurfac;
     _Device  :TVkDevice;
     _Pooler  :TVkPooler;
     _Comman  :TVkComman;
     _Swapch  :TVkSwapch;
     _Depthr  :TVkDepthr;
+    _Textur  :TVkTextur;
     _Buffer  :TVkBuffer;
     _Pipeli  :TVkPipeline;
     _ShaderV :TVkShaderVert;
@@ -162,10 +163,10 @@ var
    submit_info                      :array [ 0..1-1 ] of VkSubmitInfo;
    present                          :VkPresentInfoKHR;
 begin
+     _Window  := CreateWindow( 500, 500 );
      _Vulkan  := TVulkan.Create;
      _Instan  := TVkInstan.Create( _Vulkan );  //= _Vulkan.Instans.Add;
      _Device  := _Instan.Devices[0];
-     _Window  := CreateWindow( 500, 500 );
      _Surfac  := TVkSurfac.Create( _Instan, _Window );
      _Device.Surfac := _Surfac;
      _Pooler  := TVkPooler.Create( _Device );
@@ -173,7 +174,7 @@ begin
      _Comman.BeginRecord;
      _Swapch  := TVkSwapch.Create( _Device );
      _Depthr  := TVkDepthr.Create( _Device );
-     init_texture( _Vulkan );
+     _Textur  := TVkTextur.Create( _Device );
      _Buffer  := TVkBuffer.Create( _Device );
      init_descriptor_and_pipeline_layouts( _Vulkan, true );
      init_renderpass( _Vulkan, depthPresent );
@@ -290,14 +291,13 @@ begin
      vkDestroySemaphore( _Device.Handle, imageAcquiredSemaphore, nil );
      _Pipeli.Free;
      destroy_pipeline_cache( _Vulkan );
-     destroy_textures( _Vulkan );
      destroy_descriptor_pool( _Vulkan );
      destroy_vertex_buffer( _Vulkan );
      destroy_framebuffers( _Vulkan );
      destroy_renderpass( _Vulkan );
      destroy_descriptor_and_pipeline_layouts( _Vulkan );
-     DestroWindow( _Window );
      _Vulkan.Free;
+     DestroWindow( _Window );
 end;
 
 end. //######################################################################### ■
