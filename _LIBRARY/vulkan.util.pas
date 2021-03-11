@@ -76,13 +76,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
        framebuffers  :TArray<VkFramebuffer>;
 
-       depth :record
-                format :VkFormat;
-                image  :VkImage;
-                mem    :VkDeviceMemory;
-                view   :VkImageView;
-              end;
-
        textures :TArray<T_texture_object>;
 
        texture_data :record

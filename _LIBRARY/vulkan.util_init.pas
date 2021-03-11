@@ -230,7 +230,7 @@ begin
 
      if include_depth_ then
      begin
-          attachments[1].format         := Vulkan_.Info.depth.format;
+          attachments[1].format         := Vulkan_.Instans[0].Devices[0].Depthr.format;
           attachments[1].samples        := NUM_SAMPLES;
           if clear_
           then attachments[1].loadOp    := VK_ATTACHMENT_LOAD_OP_CLEAR
@@ -363,7 +363,7 @@ begin
      (* DEPENDS on init_depth_buffer(), init_renderpass() and
       * init_swapchain_extension() *)
 
-     attachments[1] := Vulkan_.Info.depth.view;
+     attachments[1] := Vulkan_.Instans[0].Devices[0].Depthr.view;
 
      fb_info                      := Default( VkFramebufferCreateInfo );
      fb_info.sType                := VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
