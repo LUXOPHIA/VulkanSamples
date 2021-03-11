@@ -6,11 +6,63 @@ uses vulkan_core;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkDepthr<TVkDevice_:class> = class;
+     TVkDepthr<TVkDevice_:class>   = class;
+       TVkDepMem<TVkDevice_:class> = class;
+       TVkDepVie<TVkDevice_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDepVie
+
+     TVkDepVie<TVkDevice_:class> = class
+     private
+       type TVkDepthr_ = TVkDepthr<TVkDevice_>;
+     protected
+       _Device :TVkDevice_;
+       _Inform :VkImageCreateInfo;
+       _Handle :VkImage;
+       ///// アクセス
+       function GetHandle :VkImage;
+       procedure SetHandle( const Handle_:VkImage );
+       ///// メソッド
+       procedure CreateHandle;
+       procedure DestroHandle;
+     public
+       constructor Create; overload;
+       constructor Create( const Device_:TVkDevice_ ); overload;
+       destructor Destroy; override;
+       ///// プロパティ
+       property Device  :TVkDevice_        read   _Device                ;
+       property Inform  :VkImageCreateInfo read   _Inform                ;
+       property Handle  :VkImage           read GetHandle write SetHandle;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDepMem
+
+     TVkDepMem<TVkDevice_:class> = class
+     private
+       type TVkDepthr_ = TVkDepthr<TVkDevice_>;
+     protected
+       _Device :TVkDevice_;
+       _Inform :VkImageCreateInfo;
+       _Handle :VkImage;
+       ///// アクセス
+       function GetHandle :VkImage;
+       procedure SetHandle( const Handle_:VkImage );
+       ///// メソッド
+       procedure CreateHandle;
+       procedure DestroHandle;
+     public
+       constructor Create; overload;
+       constructor Create( const Device_:TVkDevice_ ); overload;
+       destructor Destroy; override;
+       ///// プロパティ
+       property Device  :TVkDevice_        read   _Device                ;
+       property Inform  :VkImageCreateInfo read   _Inform                ;
+       property Handle  :VkImage           read GetHandle write SetHandle;
+     end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDepthr
 
@@ -56,6 +108,208 @@ uses System.SysUtils,
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDepVie
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkDepVie<TVkDevice_>.GetHandle :VkImage;
+begin
+     if _Handle = 0 then CreateHandle;
+
+     Result := _Handle;
+end;
+
+procedure TVkDepVie<TVkDevice_>.SetHandle( const Handle_:VkImage );
+begin
+     if _Handle <> 0 then DestroHandle;
+
+     _Handle := Handle_;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TVkDepVie<TVkDevice_>.CreateHandle;
+var
+   mem_reqs  :VkMemoryRequirements;
+   mem_alloc :VkMemoryAllocateInfo;
+   view_info :VkImageViewCreateInfo;
+begin
+     Assert( vkCreateImage( TVkDevice( Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
+
+     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, _Handle, @mem_reqs );
+
+     mem_alloc.sType          := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+     mem_alloc.pNext          := nil;
+     mem_alloc.allocationSize := mem_reqs.size;
+     Assert( TVkDevice( Device ).memory_type_from_properties( mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex ) );
+
+     (* Allocate memory *)
+     Assert( vkAllocateMemory( TVkDevice( Device ).Handle, @mem_alloc, nil, @TVkDevice( Device ).Depthr.mem ) = VK_SUCCESS );
+
+     (* Bind memory *)
+     Assert( vkBindImageMemory( TVkDevice( Device ).Handle, _Handle, TVkDevice( Device ).Depthr.mem, 0 ) = VK_SUCCESS );
+
+     view_info.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+     view_info.pNext                           := nil;
+     view_info.flags                           := 0;
+     view_info.image                           := _Handle;
+     view_info.viewType                        := VK_IMAGE_VIEW_TYPE_2D;
+     view_info.format                          := _Inform.format;
+     view_info.components.r                    := VK_COMPONENT_SWIZZLE_R;
+     view_info.components.g                    := VK_COMPONENT_SWIZZLE_G;
+     view_info.components.b                    := VK_COMPONENT_SWIZZLE_B;
+     view_info.components.a                    := VK_COMPONENT_SWIZZLE_A;
+     view_info.subresourceRange.aspectMask     := Ord( VK_IMAGE_ASPECT_DEPTH_BIT );
+     if ( _Inform.format = VK_FORMAT_D16_UNORM_S8_UINT  )
+     or ( _Inform.format = VK_FORMAT_D24_UNORM_S8_UINT  )
+     or ( _Inform.format = VK_FORMAT_D32_SFLOAT_S8_UINT ) then
+     view_info.subresourceRange.aspectMask     := view_info.subresourceRange.aspectMask or Ord( VK_IMAGE_ASPECT_STENCIL_BIT );
+     view_info.subresourceRange.baseMipLevel   := 0;
+     view_info.subresourceRange.levelCount     := 1;
+     view_info.subresourceRange.baseArrayLayer := 0;
+     view_info.subresourceRange.layerCount     := 1;
+
+     (* Create image view *)
+     Assert( vkCreateImageView( TVkDevice( Device ).Handle, @view_info, nil, @TVkDevice( Device ).Depthr.view ) = VK_SUCCESS );
+end;
+
+procedure TVkDepVie<TVkDevice_>.DestroHandle;
+begin
+     vkDestroyImageView( TVkDevice( Device ).Handle, TVkDevice( Device ).Depthr.view , nil );
+     vkFreeMemory      ( TVkDevice( Device ).Handle, TVkDevice( Device ).Depthr.mem  , nil );
+     vkDestroyImage    ( TVkDevice( Device ).Handle, _Handle, nil );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkDepVie<TVkDevice_>.Create;
+begin
+     inherited Create;
+
+     _Handle := 0;
+end;
+
+constructor TVkDepVie<TVkDevice_>.Create( const Device_:TVkDevice_ );
+var
+   P :VkFormatProperties;
+begin
+     Create;
+
+     _Device := Device_;
+end;
+
+destructor TVkDepVie<TVkDevice_>.Destroy;
+begin
+      Handle := 0;
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDepMem
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkDepMem<TVkDevice_>.GetHandle :VkImage;
+begin
+     if _Handle = 0 then CreateHandle;
+
+     Result := _Handle;
+end;
+
+procedure TVkDepMem<TVkDevice_>.SetHandle( const Handle_:VkImage );
+begin
+     if _Handle <> 0 then DestroHandle;
+
+     _Handle := Handle_;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TVkDepMem<TVkDevice_>.CreateHandle;
+var
+   mem_reqs  :VkMemoryRequirements;
+   mem_alloc :VkMemoryAllocateInfo;
+   view_info :VkImageViewCreateInfo;
+begin
+     Assert( vkCreateImage( TVkDevice( Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
+
+     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, _Handle, @mem_reqs );
+
+     mem_alloc.sType          := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+     mem_alloc.pNext          := nil;
+     mem_alloc.allocationSize := mem_reqs.size;
+     Assert( TVkDevice( Device ).memory_type_from_properties( mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex ) );
+
+     (* Allocate memory *)
+     Assert( vkAllocateMemory( TVkDevice( Device ).Handle, @mem_alloc, nil, @TVkDevice( Device ).Depthr.mem ) = VK_SUCCESS );
+
+     (* Bind memory *)
+     Assert( vkBindImageMemory( TVkDevice( Device ).Handle, _Handle, TVkDevice( Device ).Depthr.mem, 0 ) = VK_SUCCESS );
+
+     view_info.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+     view_info.pNext                           := nil;
+     view_info.flags                           := 0;
+     view_info.image                           := _Handle;
+     view_info.viewType                        := VK_IMAGE_VIEW_TYPE_2D;
+     view_info.format                          := _Inform.format;
+     view_info.components.r                    := VK_COMPONENT_SWIZZLE_R;
+     view_info.components.g                    := VK_COMPONENT_SWIZZLE_G;
+     view_info.components.b                    := VK_COMPONENT_SWIZZLE_B;
+     view_info.components.a                    := VK_COMPONENT_SWIZZLE_A;
+     view_info.subresourceRange.aspectMask     := Ord( VK_IMAGE_ASPECT_DEPTH_BIT );
+     if ( _Inform.format = VK_FORMAT_D16_UNORM_S8_UINT  )
+     or ( _Inform.format = VK_FORMAT_D24_UNORM_S8_UINT  )
+     or ( _Inform.format = VK_FORMAT_D32_SFLOAT_S8_UINT ) then
+     view_info.subresourceRange.aspectMask     := view_info.subresourceRange.aspectMask or Ord( VK_IMAGE_ASPECT_STENCIL_BIT );
+     view_info.subresourceRange.baseMipLevel   := 0;
+     view_info.subresourceRange.levelCount     := 1;
+     view_info.subresourceRange.baseArrayLayer := 0;
+     view_info.subresourceRange.layerCount     := 1;
+
+     (* Create image view *)
+     Assert( vkCreateImageView( TVkDevice( Device ).Handle, @view_info, nil, @TVkDevice( Device ).Depthr.view ) = VK_SUCCESS );
+end;
+
+procedure TVkDepMem<TVkDevice_>.DestroHandle;
+begin
+     vkDestroyImageView( TVkDevice( Device ).Handle, TVkDevice( Device ).Depthr.view , nil );
+     vkFreeMemory      ( TVkDevice( Device ).Handle, TVkDevice( Device ).Depthr.mem  , nil );
+     vkDestroyImage    ( TVkDevice( Device ).Handle, _Handle, nil );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkDepMem<TVkDevice_>.Create;
+begin
+     inherited Create;
+
+     _Handle := 0;
+end;
+
+constructor TVkDepMem<TVkDevice_>.Create( const Device_:TVkDevice_ );
+var
+   P :VkFormatProperties;
+begin
+     Create;
+
+     _Device := Device_;
+end;
+
+destructor TVkDepMem<TVkDevice_>.Destroy;
+begin
+      Handle := 0;
+
+     inherited;
+end;
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDepthr
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -82,62 +336,47 @@ end;
 
 procedure TVkDepthr<TVkDevice_>.CreateHandle;
 var
-   res          :VkResult;
-   pass         :Boolean;
-   mem_alloc    :VkMemoryAllocateInfo;
-   view_info    :VkImageViewCreateInfo;
-   mem_reqs     :VkMemoryRequirements;
+   mem_reqs  :VkMemoryRequirements;
+   mem_alloc :VkMemoryAllocateInfo;
+   view_info :VkImageViewCreateInfo;
 begin
-     mem_alloc                 := Default( VkMemoryAllocateInfo );
-     mem_alloc.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-     mem_alloc.pNext           := nil;
-     mem_alloc.allocationSize  := 0;
-     mem_alloc.memoryTypeIndex := 0;
+     Assert( vkCreateImage( TVkDevice( Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 
-     view_info                                 := Default( VkImageViewCreateInfo );
+     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, _Handle, @mem_reqs );
+
+     mem_alloc.sType          := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+     mem_alloc.pNext          := nil;
+     mem_alloc.allocationSize := mem_reqs.size;
+     Assert( TVkDevice( Device ).memory_type_from_properties( mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex ) );
+
+     (* Allocate memory *)
+     Assert( vkAllocateMemory( TVkDevice( Device ).Handle, @mem_alloc, nil, @TVkDevice( Device ).Depthr.mem ) = VK_SUCCESS );
+
+     (* Bind memory *)
+     Assert( vkBindImageMemory( TVkDevice( Device ).Handle, _Handle, TVkDevice( Device ).Depthr.mem, 0 ) = VK_SUCCESS );
+
      view_info.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
      view_info.pNext                           := nil;
-     view_info.image                           := VK_NULL_HANDLE;
+     view_info.flags                           := 0;
+     view_info.image                           := _Handle;
+     view_info.viewType                        := VK_IMAGE_VIEW_TYPE_2D;
      view_info.format                          := _Inform.format;
      view_info.components.r                    := VK_COMPONENT_SWIZZLE_R;
      view_info.components.g                    := VK_COMPONENT_SWIZZLE_G;
      view_info.components.b                    := VK_COMPONENT_SWIZZLE_B;
      view_info.components.a                    := VK_COMPONENT_SWIZZLE_A;
      view_info.subresourceRange.aspectMask     := Ord( VK_IMAGE_ASPECT_DEPTH_BIT );
+     if ( _Inform.format = VK_FORMAT_D16_UNORM_S8_UINT  )
+     or ( _Inform.format = VK_FORMAT_D24_UNORM_S8_UINT  )
+     or ( _Inform.format = VK_FORMAT_D32_SFLOAT_S8_UINT ) then
+     view_info.subresourceRange.aspectMask     := view_info.subresourceRange.aspectMask or Ord( VK_IMAGE_ASPECT_STENCIL_BIT );
      view_info.subresourceRange.baseMipLevel   := 0;
      view_info.subresourceRange.levelCount     := 1;
      view_info.subresourceRange.baseArrayLayer := 0;
      view_info.subresourceRange.layerCount     := 1;
-     view_info.viewType                        := VK_IMAGE_VIEW_TYPE_2D;
-     view_info.flags                           := 0;
-
-     if ( _Inform.format = VK_FORMAT_D16_UNORM_S8_UINT ) or ( _Inform.format = VK_FORMAT_D24_UNORM_S8_UINT ) or
-        ( _Inform.format = VK_FORMAT_D32_SFLOAT_S8_UINT )
-     then view_info.subresourceRange.aspectMask := view_info.subresourceRange.aspectMask or Ord( VK_IMAGE_ASPECT_STENCIL_BIT );
-
-     (* Create image *)
-     res := vkCreateImage( TVkDevice( Device ).Handle, @_Inform, nil, @_Handle );
-     Assert( res = VK_SUCCESS );
-
-     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, _Handle, @mem_reqs );
-
-     mem_alloc.allocationSize := mem_reqs.size;
-     (* Use the memory properties to determine the type of memory required *)
-     pass := TVkDevice( Device ).memory_type_from_properties( mem_reqs.memoryTypeBits, Ord( VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT ), mem_alloc.memoryTypeIndex );
-     Assert( pass );
-
-     (* Allocate memory *)
-     res := vkAllocateMemory( TVkDevice( Device ).Handle, @mem_alloc, nil, @TVkDevice( Device ).Depthr.mem );
-     Assert( res = VK_SUCCESS );
-
-     (* Bind memory *)
-     res := vkBindImageMemory( TVkDevice( Device ).Handle, _Handle, TVkDevice( Device ).Depthr.mem, 0 );
-     Assert( res = VK_SUCCESS );
 
      (* Create image view *)
-     view_info.image := _Handle;
-     res := vkCreateImageView( TVkDevice( Device ).Handle, @view_info, nil, @TVkDevice( Device ).Depthr.view );
-     Assert( res = VK_SUCCESS );
+     Assert( vkCreateImageView( TVkDevice( Device ).Handle, @view_info, nil, @TVkDevice( Device ).Depthr.view ) = VK_SUCCESS );
 end;
 
 procedure TVkDepthr<TVkDevice_>.DestroHandle;

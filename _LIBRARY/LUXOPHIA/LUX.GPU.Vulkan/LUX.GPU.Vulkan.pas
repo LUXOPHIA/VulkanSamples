@@ -45,6 +45,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                    TVkFramers  = TVkFramers<TVkSwapch>;
                      TVkFramer = TVkFramer<TVkSwapch>;
                TVkDepthr       = TVkDepthr<TVkDevice>;
+                 TVkDepMem     = TVkDepMem<TVkDevice>;
+                 TVkDepVie     = TVkDepVie<TVkDevice>;
                TVkPipeline     = TVkPipeline<TVkDevice>;
                  TVkShader     = TVkShader<TVkPipeline>;
                  TVkShaderVert = TVkShaderVert<TVkPipeline>;
