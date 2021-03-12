@@ -55,10 +55,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
        framebuffers  :TArray<VkFramebuffer>;
 
-       texture_data :record
-                       image_info :VkDescriptorImageInfo;
-                     end;
-
        vertex_buffer :record
                         buf         :VkBuffer;
                         mem         :VkDeviceMemory;
