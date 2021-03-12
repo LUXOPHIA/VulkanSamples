@@ -30,27 +30,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% T_texture_object
-     (*
-      * structure to track all objects related to a texture.
-      *)
-     T_texture_object = record
-       sampler       :VkSampler;
-
-       image         :VkImage;
-       imageLayout   :VkImageLayout;
-
-       needs_staging :T_bool;
-       buffer        :VkBuffer;
-       buffer_size   :VkDeviceSize;
-
-       image_memory  :VkDeviceMemory;
-       buffer_memory :VkDeviceMemory;
-       //view          :VkImageView;
-       tex_width     :T_int32_t;
-       tex_height    :T_int32_t;
-     end;
-
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% T_layer_properties
      (*
       * A layer can expose extensions, keep track of those
