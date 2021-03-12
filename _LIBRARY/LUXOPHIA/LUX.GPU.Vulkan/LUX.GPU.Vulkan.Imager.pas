@@ -298,12 +298,16 @@ begin
           end;
      end;
 
+     //////////
+
      vkGetPhysicalDeviceFormatProperties( TVkDevice( Device ).Physic, VK_FORMAT_R8G8B8A8_UNORM, @formatProps );
 
      (* See if we can use a linear tiled image for a texture, if not, we will
       * need a staging buffer for the texture data *)
      allFeatures := Ord( VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT ) or extraFeatures;
      _needs_staging := ( ( formatProps.linearTilingFeatures and allFeatures ) <> allFeatures );
+
+     //////////
 
      if _needs_staging then
      begin
@@ -316,6 +320,8 @@ begin
           _Buffer       := VK_NULL_HANDLE;
           _BufferMemory := VK_NULL_HANDLE;
      end;
+
+     //////////
 
      image_create_info                       := Default( VkImageCreateInfo );
      image_create_info.sType                 := VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -340,32 +346,34 @@ begin
      image_create_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
      image_create_info.flags                 := 0;
 
+     Assert( vkCreateImage( TVkDevice( Device ).Handle, @image_create_info, nil, @_Handle ) = VK_SUCCESS );
+
+     //////////
+
+     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, _Handle, @mem_reqs );
+
      mem_alloc                 := Default( VkMemoryAllocateInfo );
      mem_alloc.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
      mem_alloc.pNext           := nil;
      mem_alloc.allocationSize  := 0;
      mem_alloc.memoryTypeIndex := 0;
-
-     res := vkCreateImage( TVkDevice( Device ).Handle, @image_create_info, nil, @_Handle );
-     Assert( res = VK_SUCCESS );
-
-     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, _Handle, @mem_reqs );
-
-     mem_alloc.allocationSize := mem_reqs.size;
+     mem_alloc.allocationSize  := mem_reqs.size;
 
      if _needs_staging
      then requirements := 0
      else requirements := Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
-     pass := TVkDevice( Device ).memory_type_from_properties( mem_reqs.memoryTypeBits, requirements, mem_alloc.memoryTypeIndex );
-     Assert( pass );
+     Assert( TVkDevice( Device ).memory_type_from_properties( mem_reqs.memoryTypeBits, requirements, mem_alloc.memoryTypeIndex ) );
 
      (* allocate memory *)
-     res := vkAllocateMemory(TVkDevice( Device ).Handle, @mem_alloc, nil, @( _Memory) );
-     Assert( res = VK_SUCCESS );
+     Assert( vkAllocateMemory(TVkDevice( Device ).Handle, @mem_alloc, nil, @( _Memory) ) = VK_SUCCESS );
+
+     //////////
 
      (* bind memory *)
      res := vkBindImageMemory( TVkDevice( Device ).Handle, _Handle, _Memory, 0 );
      Assert( res = VK_SUCCESS );
+
+     //////////
 
      TVkDevice( Device ).Poolers[0].Commans[0].EndRecord;
      cmd_bufs[0] := TVkDevice( Device ).Poolers[0].Commans[0].Handle;
@@ -386,8 +394,7 @@ begin
      submit_info[0].pSignalSemaphores    := nil;
 
      (* Queue the command buffer for execution *)
-     res := vkQueueSubmit( TVkDevice( Device ).QueuerG, 1, @submit_info[0], cmdFence );
-     Assert( res = VK_SUCCESS );
+     Assert( vkQueueSubmit( TVkDevice( Device ).QueuerG, 1, @submit_info[0], cmdFence ) = VK_SUCCESS );
 
      subres            := Default( VkImageSubresource );
      subres.aspectMask := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
@@ -410,6 +417,8 @@ begin
 
      vkDestroyFence( TVkDevice( Device ).Handle, cmdFence, nil );
 
+     //////////
+
      if _needs_staging
      then res := vkMapMemory( TVkDevice( Device ).Handle, _BufferMemory, 0, _BufferSize, 0, @data )
      else res := vkMapMemory( TVkDevice( Device ).Handle, _Memory , 0, mem_reqs.size, 0, @data );
@@ -428,8 +437,9 @@ begin
      then vkUnmapMemory( TVkDevice( Device ).Handle, _BufferMemory )
      else vkUnmapMemory( TVkDevice( Device ).Handle, _Memory );
 
-     res := vkResetCommandBuffer( TVkDevice( Device ).Poolers[0].Commans[0].Handle, 0 );
-     Assert( res = VK_SUCCESS );
+     //////////
+
+     Assert( vkResetCommandBuffer( TVkDevice( Device ).Poolers[0].Commans[0].Handle, 0 ) = VK_SUCCESS );
      TVkDevice( Device ).Poolers[0].Commans[0].BeginRecord;
 
      if not _needs_staging then
