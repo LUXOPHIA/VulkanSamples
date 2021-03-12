@@ -159,7 +159,7 @@ end;
 
 constructor TVkSamplr<TVkDevice_>.Create;
 begin
-     inherited Create;
+     inherited;
 
      _Handle := 0;
 
@@ -188,7 +188,7 @@ end;
 
 constructor TVkSamplr<TVkDevice_>.Create( const Textur_:TVkTextur_ );
 begin
-     inherited Create;
+     Create;
 
      _Textur := Textur_;
 end;
@@ -263,8 +263,7 @@ begin
      (* track a description of the texture *)
      with _Descri do
      begin
-          _Imager.Handle;
-          imageView   := _Imager.texObj.view;
+          imageView   := _Imager.Viewer.Handle;
           sampler     := _Samplr.Handle;
           imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
      end;
