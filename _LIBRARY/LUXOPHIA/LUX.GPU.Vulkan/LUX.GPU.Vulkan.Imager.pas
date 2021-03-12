@@ -49,7 +49,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        type TVkViewer_ = TVkViewer<TVkDevice_,TParent_>;
        ///// メソッド
        procedure init_buffer;
-       procedure init_image;
      protected
        _Parent  :TParent_;
        _PixelsW :Int32;
@@ -239,7 +238,27 @@ begin
      Assert( res = VK_SUCCESS );
 end;
 
-procedure TVkImager<TVkDevice_,TParent_>.init_image;
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkImager<TVkDevice_,TParent_>.GetHandle :VkImage;
+begin
+     if _Handle = 0 then CreateHandle;
+
+     Result := _Handle;
+end;
+
+procedure TVkImager<TVkDevice_,TParent_>.SetHandle( const Handle_:VkImage );
+begin
+     if _Handle <> 0 then DestroHandle;
+
+     _Handle := Handle_;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TVkImager<TVkDevice_,TParent_>.CreateHandle;
 var
    res               :VkResult;
    pass              :Boolean;
@@ -450,31 +469,6 @@ begin
           set_image_layout( TVkDevice( Device ).Instan.Vulkan, _Handle, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, _imageLayout,
                             Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ), Ord( VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT ) );
      end;
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-/////////////////////////////////////////////////////////////////////// アクセス
-
-function TVkImager<TVkDevice_,TParent_>.GetHandle :VkImage;
-begin
-     if _Handle = 0 then CreateHandle;
-
-     Result := _Handle;
-end;
-
-procedure TVkImager<TVkDevice_,TParent_>.SetHandle( const Handle_:VkImage );
-begin
-     if _Handle <> 0 then DestroHandle;
-
-     _Handle := Handle_;
-end;
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-procedure TVkImager<TVkDevice_,TParent_>.CreateHandle;
-begin
-     init_image;
 end;
 
 procedure TVkImager<TVkDevice_,TParent_>.DestroHandle;
