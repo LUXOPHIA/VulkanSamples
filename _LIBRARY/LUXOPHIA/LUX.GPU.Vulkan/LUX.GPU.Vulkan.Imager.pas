@@ -64,7 +64,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
        _BufferInform       :VkBufferCreateInfo;
        _BufferHandle       :VkBuffer;
-       _BufferSize         :VkDeviceSize;
        _BufferMemoryInform :VkMemoryAllocateInfo;
        _BufferMemoryHandle :VkDeviceMemory;
 
@@ -230,7 +229,6 @@ begin
      _BufferMemoryInform.allocationSize  := 0;
      _BufferMemoryInform.memoryTypeIndex := 0;
      _BufferMemoryInform.allocationSize := mem_reqs.size;
-     _BufferSize := mem_reqs.size;
 
      requirements := Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
      Assert( TVkDevice( Device ).memory_type_from_properties( mem_reqs.memoryTypeBits, requirements, _BufferMemoryInform.memoryTypeIndex ), '"No mappable, coherent memory' );
@@ -475,7 +473,7 @@ begin
      //////////
 
      if _needs_staging
-     then res := vkMapMemory( TVkDevice( Device ).Handle, _BufferMemoryHandle, 0, _BufferSize, 0, @data )
+     then res := vkMapMemory( TVkDevice( Device ).Handle, _BufferMemoryHandle, 0, _BufferMemoryInform.allocationSize, 0, @data )
      else res := vkMapMemory( TVkDevice( Device ).Handle, _MemoryHandle , 0, _MemoryInform.allocationSize, 0, @data );
      Assert( res = VK_SUCCESS );
 
