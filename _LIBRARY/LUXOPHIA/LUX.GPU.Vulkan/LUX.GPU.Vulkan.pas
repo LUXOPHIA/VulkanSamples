@@ -15,6 +15,7 @@ uses vulkan_core,
          LUX.GPU.Vulkan.Swapch,
            LUX.GPU.Vulkan.Framer,
          LUX.GPU.Vulkan.Depthr,
+         LUX.GPU.Vulkan.Imager,
          LUX.GPU.Vulkan.Textur,
          LUX.GPU.Vulkan.Pipeline,
            LUX.GPU.Vulkan.Shader;
@@ -48,9 +49,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                TVkDepthr       = TVkDepthr<TVkDevice>;
                  TVkDepMem     = TVkDepMem<TVkDevice>;
                  TVkDepVie     = TVkDepVie<TVkDevice>;
+               TVkImager       = TVkImager<TVkDevice>;
                TVkTexturs      = TVkTexturs<TVkDevice>;
                  TVkTextur     = TVkTextur<TVkDevice>;
-                   TVkImager   = TVkImager<TVkDevice>;
+                   TVkTexIma   = TVkTexIma<TVkDevice>;
                    TVkSamplr   = TVkSamplr<TVkDevice>;
                TVkPipeline     = TVkPipeline<TVkDevice>;
                  TVkShader     = TVkShader<TVkPipeline>;
