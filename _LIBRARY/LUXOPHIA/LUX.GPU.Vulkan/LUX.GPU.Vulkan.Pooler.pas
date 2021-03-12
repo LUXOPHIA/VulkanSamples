@@ -111,7 +111,7 @@ end;
 
 constructor TVkPooler<TVkDevice_>.Create;
 begin
-     inherited Create;
+     inherited;
 
      _Handle := 0;
 end;

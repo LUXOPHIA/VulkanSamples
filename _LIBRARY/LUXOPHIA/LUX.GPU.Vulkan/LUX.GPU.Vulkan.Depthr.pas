@@ -200,7 +200,7 @@ end;
 
 constructor TVkDepVie<TVkDevice_>.Create;
 begin
-     inherited Create;
+     inherited;
 
      _Handle := 0;
 end;
@@ -281,7 +281,7 @@ end;
 
 constructor TVkDepMem<TVkDevice_>.Create;
 begin
-     inherited Create;
+     inherited;
 
      _Handle := 0;
 end;
@@ -355,7 +355,7 @@ end;
 
 constructor TVkDepthr<TVkDevice_>.Create;
 begin
-     inherited Create;
+     inherited;
 
      _Handle := 0;
 

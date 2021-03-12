@@ -49,7 +49,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                TVkDepthr       = TVkDepthr<TVkDevice>;
                  TVkDepMem     = TVkDepMem<TVkDevice>;
                  TVkDepVie     = TVkDepVie<TVkDevice>;
-               TVkImager       = TVkImager<TVkDevice>;
                TVkTexturs      = TVkTexturs<TVkDevice>;
                  TVkTextur     = TVkTextur<TVkDevice>;
                    TVkTexIma   = TVkTexIma<TVkDevice>;
