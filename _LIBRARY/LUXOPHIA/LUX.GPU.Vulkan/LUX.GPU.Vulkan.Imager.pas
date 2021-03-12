@@ -56,7 +56,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Handle :VkImage;
        _Viewer :TVkViewer_;
 
-       _image         :VkImage;
        _needs_staging :Boolean;
        _buffer        :VkBuffer;
        _buffer_size   :VkDeviceSize;
@@ -328,10 +327,10 @@ begin
      mem_alloc.allocationSize  := 0;
      mem_alloc.memoryTypeIndex := 0;
 
-     res := vkCreateImage( TVkDevice( Device ).Handle, @image_create_info, nil, @_image );
+     res := vkCreateImage( TVkDevice( Device ).Handle, @image_create_info, nil, @_Handle );
      Assert( res = VK_SUCCESS );
 
-     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, _image, @mem_reqs );
+     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, _Handle, @mem_reqs );
 
      mem_alloc.allocationSize := mem_reqs.size;
 
@@ -346,7 +345,7 @@ begin
      Assert( res = VK_SUCCESS );
 
      (* bind memory *)
-     res := vkBindImageMemory( TVkDevice( Device ).Handle, _image, _image_memory, 0 );
+     res := vkBindImageMemory( TVkDevice( Device ).Handle, _Handle, _image_memory, 0 );
      Assert( res = VK_SUCCESS );
 
      TVkDevice( Device ).Poolers[0].Commans[0].EndRecord;
@@ -380,7 +379,7 @@ begin
      if not _needs_staging then
      begin
           (* Get the subresource layout so we know what the row pitch is *)
-          vkGetImageSubresourceLayout( TVkDevice( Device ).Handle, _image, @subres, @layout );
+          vkGetImageSubresourceLayout( TVkDevice( Device ).Handle, _Handle, @subres, @layout );
      end;
 
      (* Make sure command buffer is finished before mapping *)
@@ -418,14 +417,14 @@ begin
      begin
           (* If we can use the linear tiled image as a texture, just do it *)
           _imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-          set_image_layout( TVkDevice( Device ).Instan.Vulkan, _image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_PREINITIALIZED, _imageLayout,
+          set_image_layout( TVkDevice( Device ).Instan.Vulkan, _Handle, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_PREINITIALIZED, _imageLayout,
                             Ord( VK_PIPELINE_STAGE_HOST_BIT ), Ord( VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT ) );
      end
      else
      begin
           (* Since we're going to blit to the texture image, set its layout to
            * DESTINATION_OPTIMAL *)
-          set_image_layout( TVkDevice( Device ).Instan.Vulkan, _image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_UNDEFINED,
+          set_image_layout( TVkDevice( Device ).Instan.Vulkan, _Handle, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_UNDEFINED,
                             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, Ord( VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT ), Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ) );
 
           copy_region.bufferOffset                    := 0;
@@ -443,12 +442,12 @@ begin
           copy_region.imageExtent.depth               := 1;
 
           (* Put the copy command into the command buffer *)
-          vkCmdCopyBufferToImage( TVkDevice( Device ).Poolers[0].Commans[0].Handle, _buffer, _image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
+          vkCmdCopyBufferToImage( TVkDevice( Device ).Poolers[0].Commans[0].Handle, _buffer, _Handle, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
 
           (* Set the layout for the texture image from DESTINATION_OPTIMAL to
            * SHADER_READ_ONLY *)
           _imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-          set_image_layout( TVkDevice( Device ).Instan.Vulkan, _image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, _imageLayout,
+          set_image_layout( TVkDevice( Device ).Instan.Vulkan, _Handle, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, _imageLayout,
                             Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ), Ord( VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT ) );
      end;
 end;
@@ -475,19 +474,12 @@ end;
 
 procedure TVkImager<TVkDevice_,TParent_>.CreateHandle;
 begin
-     textureName   := '';
-     extraUsages   := 0;
-     extraFeatures := 0;
-
-     (* create image *)
      init_image;
-
-     _Handle := _image;
 end;
 
 procedure TVkImager<TVkDevice_,TParent_>.DestroHandle;
 begin
-     vkDestroyImage ( TVkDevice( Device ).Handle, _image        , nil );
+     vkDestroyImage ( TVkDevice( Device ).Handle, _Handle       , nil );
      vkFreeMemory   ( TVkDevice( Device ).Handle, _image_memory , nil );
      vkDestroyBuffer( TVkDevice( Device ).Handle, _buffer       , nil );
      vkFreeMemory   ( TVkDevice( Device ).Handle, _buffer_memory, nil );
@@ -502,6 +494,10 @@ begin
      _Handle := 0;
 
      _Viewer := TVkViewer_.Create( Self );
+
+     textureName   := '';
+     extraUsages   := 0;
+     extraFeatures := 0;
 end;
 
 constructor TVkImager<TVkDevice_,TParent_>.Create( const Parent_:TParent_ );
