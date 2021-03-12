@@ -52,8 +52,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _Parent  :TParent_;
        _Inform  :VkImageCreateInfo;
-       _PixelsW :Int32;
-       _PixelsH :Int32;
        _Handle  :VkImage;
        _MemoryInform :VkMemoryAllocateInfo;
        _MemoryHandle :VkDeviceMemory;
@@ -214,7 +212,7 @@ begin
      _BufferInform.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
      _BufferInform.pNext                 := nil;
      _BufferInform.flags                 := 0;
-     _BufferInform.size                  := _PixelsW * _PixelsH * 4;
+     _BufferInform.size                  := PixelsW * PixelsH * 4;
      _BufferInform.usage                 := Ord( VK_BUFFER_USAGE_TRANSFER_SRC_BIT );
      _BufferInform.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
      _BufferInform.queueFamilyIndexCount := 0;
@@ -251,7 +249,7 @@ end;
 
 procedure TVkImager<TVkDevice_,TParent_>.SetPixelsW( const PixelsW_:UInt32 );
 begin
-     _Inform.extent.width := _PixelsW;
+     _Inform.extent.width := PixelsW_;
 
      Handle := VK_NULL_HANDLE;
 end;
@@ -316,28 +314,33 @@ begin
 
      //////////
 
-     _Inform                       := Default( VkImageCreateInfo );
-     _Inform.sType                 := VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-     _Inform.pNext                 := nil;
-     _Inform.imageType             := VK_IMAGE_TYPE_2D;
-     _Inform.format                := VK_FORMAT_R8G8B8A8_UNORM;
-     _Inform.extent.width          := _PixelsW;
-     _Inform.extent.height         := _PixelsH;
-     _Inform.extent.depth          := 1;
-     _Inform.mipLevels             := 1;
-     _Inform.arrayLayers           := 1;
-     _Inform.samples               := NUM_SAMPLES;
-     if _needs_staging
-     then _Inform.tiling           := VK_IMAGE_TILING_OPTIMAL
-     else _Inform.tiling           := VK_IMAGE_TILING_LINEAR;
-     if _needs_staging
-     then _Inform.initialLayout    := VK_IMAGE_LAYOUT_UNDEFINED
-     else _Inform.initialLayout    := VK_IMAGE_LAYOUT_PREINITIALIZED;
-     _Inform.usage                 := Ord( VK_IMAGE_USAGE_SAMPLED_BIT ) or extraUsages;
-     _Inform.queueFamilyIndexCount := 0;
-     _Inform.pQueueFamilyIndices   := nil;
-     _Inform.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
-     _Inform.flags                 := 0;
+     with _Inform do
+     begin
+          sType                 := VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+          pNext                 := nil;
+          flags                 := 0;
+          imageType             := VK_IMAGE_TYPE_2D;
+          format                := VK_FORMAT_R8G8B8A8_UNORM;
+          with extent do
+          begin
+            // width             = PixelsW;
+            // height            = PixelsH;
+               depth            := 1;
+          end;
+          mipLevels             := 1;
+          arrayLayers           := 1;
+          samples               := NUM_SAMPLES;
+          if _needs_staging
+          then tiling           := VK_IMAGE_TILING_OPTIMAL
+          else tiling           := VK_IMAGE_TILING_LINEAR;
+          usage                 := Ord( VK_IMAGE_USAGE_SAMPLED_BIT ) or extraUsages;
+          sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
+          queueFamilyIndexCount := 0;
+          pQueueFamilyIndices   := nil;
+          if _needs_staging
+          then initialLayout    := VK_IMAGE_LAYOUT_UNDEFINED
+          else initialLayout    := VK_IMAGE_LAYOUT_PREINITIALIZED;
+     end;
 
      Assert( vkCreateImage( TVkDevice( Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 
@@ -407,24 +410,29 @@ end;
 
 procedure TVkImager<TVkDevice_,TParent_>.LoadFromFile( const FileName_:String );
 var
-   res               :VkResult;
-   pass              :Boolean;
-   cmd_bufs          :array [ 0..1-1 ] of VkCommandBuffer;
-   fenceInfo         :VkFenceCreateInfo;
-   cmdFence          :VkFence;
-   submit_info       :array [ 0..1-1 ] of VkSubmitInfo;
-   subres            :VkImageSubresource;
-   layout            :VkSubresourceLayout;
-   data              :Pointer;
-   rowPitch          :UInt64;
-   copy_region       :VkBufferImageCopy;
-   _imageLayout      :VkImageLayout;
+   PsW          :Int32;
+   PsH          :Int32;
+   res          :VkResult;
+   pass         :Boolean;
+   cmd_bufs     :array [ 0..1-1 ] of VkCommandBuffer;
+   fenceInfo    :VkFenceCreateInfo;
+   cmdFence     :VkFence;
+   submit_info  :array [ 0..1-1 ] of VkSubmitInfo;
+   subres       :VkImageSubresource;
+   layout       :VkSubresourceLayout;
+   data         :Pointer;
+   rowPitch     :UInt64;
+   copy_region  :VkBufferImageCopy;
+   _imageLayout :VkImageLayout;
 begin
-     if not read_ppm( FileName_, _PixelsW, _PixelsH, 0, nil ) then
+     if not read_ppm( FileName_, PsW, PsH, 0, nil ) then
      begin
           Log.d( 'Could not read texture file ' + FileName_ );
           RunError( 256-1 );
      end;
+
+     PixelsW := PsW;
+     PixelsH := PsH;
 
      //////////
 
@@ -478,9 +486,9 @@ begin
      Assert( res = VK_SUCCESS );
 
      (* Read the ppm file into the mappable image's memory *)
-     if _needs_staging then rowPitch := _PixelsW * 4
+     if _needs_staging then rowPitch := PixelsW * 4
                        else rowPitch := layout.rowPitch;
-     if not read_ppm( FileName_, _PixelsW, _PixelsH, rowPitch, data ) then
+     if not read_ppm( FileName_, PsW, PsH, rowPitch, data ) then
      begin
           Log.d( 'Could not load texture file lunarg.ppm' );
           RunError( 256-1 );
@@ -510,8 +518,8 @@ begin
                             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, Ord( VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT ), Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ) );
 
           copy_region.bufferOffset                    := 0;
-          copy_region.bufferRowLength                 := _PixelsW;
-          copy_region.bufferImageHeight               := _PixelsH;
+          copy_region.bufferRowLength                 := PixelsW;
+          copy_region.bufferImageHeight               := PixelsH;
           copy_region.imageSubresource.aspectMask     := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
           copy_region.imageSubresource.mipLevel       := 0;
           copy_region.imageSubresource.baseArrayLayer := 0;
@@ -519,8 +527,8 @@ begin
           copy_region.imageOffset.x                   := 0;
           copy_region.imageOffset.y                   := 0;
           copy_region.imageOffset.z                   := 0;
-          copy_region.imageExtent.width               := _PixelsW;
-          copy_region.imageExtent.height              := _PixelsH;
+          copy_region.imageExtent.width               := PixelsW;
+          copy_region.imageExtent.height              := PixelsH;
           copy_region.imageExtent.depth               := 1;
 
           (* Put the copy command into the command buffer *)
