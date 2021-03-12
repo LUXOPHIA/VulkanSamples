@@ -175,6 +175,7 @@ begin
      _Swapch  := TVkSwapch.Create( _Device );
      _Depthr  := TVkDepthr.Create( _Device );
      _Textur  := TVkTextur.Create( _Device );
+     _Textur.LoadFromFile( '../../_DATA/lunarg.ppm' );
      _Buffer  := TVkBuffer.Create( _Device );
      init_descriptor_and_pipeline_layouts( _Vulkan, true );
      init_renderpass( _Vulkan, depthPresent );
