@@ -522,7 +522,7 @@ begin
           writes[1].dstBinding      := 1;
           writes[1].descriptorCount := 1;
           writes[1].descriptorType  := VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-          writes[1].pImageInfo      := @Vulkan_.Info.texture_data.image_info;
+          writes[1].pImageInfo      := Vulkan_.Instans[0].Devices[0].Texturs[0].Handle;
           writes[1].dstArrayElement := 0;
      end;
 
