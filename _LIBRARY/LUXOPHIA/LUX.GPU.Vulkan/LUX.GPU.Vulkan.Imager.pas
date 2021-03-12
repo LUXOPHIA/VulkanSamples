@@ -8,17 +8,45 @@ uses System.Generics.Collections,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkImager<TVkDevice_,TParent_:class> = class;
-       TVkImager<TVkDevice_:class>        = class;
+     TVkImager<TVkDevice_,TParent_:class>   = class;
+       TVkViewer<TVkDevice_,TParent_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkViewer<TVkDevice,TParent>
+
+     TVkViewer<TVkDevice_,TParent_:class> = class
+     private
+       type TVkImager_ = TVkImager<TVkDevice_,TParent_>;
+     protected
+       _Parent :TVkImager_;
+       _Inform :VkImageViewCreateInfo;
+       _Handle :VkImageView;
+       ///// アクセス
+       function GetDevice :TVkDevice_;
+       function GetHandle :VkImageView;
+       procedure SetHandle( const Handle_:VkImageView );
+       ///// メソッド
+       procedure CreateHandle;
+       procedure DestroHandle;
+     public
+       constructor Create; overload;
+       constructor Create( const Parent_:TVkImager_ ); overload;
+       destructor Destroy; override;
+       ///// プロパティ
+       property Device :TVkDevice_            read GetDevice;
+       property Parent :TVkImager_            read   _Parent;
+       property Inform :VkImageViewCreateInfo read   _Inform;
+       property Handle :VkImageView           read GetHandle write SetHandle;
+     end;
+
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImager<TVkDevice,TParent>
 
      TVkImager<TVkDevice_,TParent_:class> = class
      private
+       type TVkViewer_ = TVkViewer<TVkDevice_,TParent_>;
        ///// メソッド
        procedure init_buffer;
        procedure init_image;
@@ -26,6 +54,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Parent :TParent_;
        _Inform :VkImageCreateInfo;
        _Handle :VkImage;
+       _Viewer :TVkViewer_;
         texObj :T_texture_object;
         textureName   :String;
         extraUsages   :VkImageUsageFlags;
@@ -46,16 +75,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Parent :TParent_          read   _Parent;
        property Inform :VkImageCreateInfo read   _Inform;
        property Handle :VkImage           read GetHandle write SetHandle;
-     end;
-
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImager<TVkDevice>
-
-     TVkImager<TVkDevice_:class> = class( TVkImager<TVkDevice_,TVkDevice_> )
-     private
-     protected
-       ///// アクセス
-       function GetDevice :TVkDevice_; override;
-     public
+       property Viewer :TVkViewer_        read   _Viewer;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -73,6 +93,95 @@ uses FMX.Types,
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkViewer<TVkDevice,TParent>
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkViewer<TVkDevice_,TParent_>.GetDevice :TVkDevice_;
+begin
+     Result := _Parent.Device;
+end;
+
+//------------------------------------------------------------------------------
+
+function TVkViewer<TVkDevice_,TParent_>.GetHandle :VkImageView;
+begin
+     if _Handle = 0 then CreateHandle;
+
+     Result := _Handle;
+end;
+
+procedure TVkViewer<TVkDevice_,TParent_>.SetHandle( const Handle_:VkImageView );
+begin
+     if _Handle <> 0 then DestroHandle;
+
+     _Handle := Handle_;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TVkViewer<TVkDevice_,TParent_>.CreateHandle;
+begin
+     with _Inform do
+     begin
+          sType    := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+          pNext    := nil;
+          flags    := 0;
+          image    := _Parent.Handle;
+          viewType := VK_IMAGE_VIEW_TYPE_2D;
+          format   := VK_FORMAT_R8G8B8A8_UNORM;
+          with components do
+          begin
+               r := VK_COMPONENT_SWIZZLE_R;
+               g := VK_COMPONENT_SWIZZLE_G;
+               b := VK_COMPONENT_SWIZZLE_B;
+               a := VK_COMPONENT_SWIZZLE_A;
+          end;
+          with subresourceRange do
+          begin
+               aspectMask     := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
+               baseMipLevel   := 0;
+               levelCount     := 1;
+               baseArrayLayer := 0;
+               layerCount     := 1;
+          end;
+     end;
+
+     Assert( vkCreateImageView( TVkDevice( Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
+end;
+
+procedure TVkViewer<TVkDevice_,TParent_>.DestroHandle;
+begin
+     vkDestroyImageView( TVkDevice( Device ).Handle, _Handle, nil );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkViewer<TVkDevice_,TParent_>.Create;
+begin
+     inherited;
+
+     _Handle := 0;
+end;
+
+constructor TVkViewer<TVkDevice_,TParent_>.Create( const Parent_:TVkImager_ );
+begin
+     Create;
+
+     _Parent := Parent_;
+end;
+
+destructor TVkViewer<TVkDevice_,TParent_>.Destroy;
+begin
+      Handle := 0;
+
+     inherited;
+end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImager<TVkDevice,TParent>
 
@@ -142,7 +251,6 @@ var
    data              :Pointer;
    rowPitch          :UInt64;
    copy_region       :VkBufferImageCopy;
-   view_info         :VkImageViewCreateInfo;
 begin
      filename := '../../_DATA/';
 
@@ -333,27 +441,6 @@ begin
           set_image_layout( TVkDevice( Device ).Instan.Vulkan, texObj.image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, texObj.imageLayout,
                             Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ), Ord( VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT ) );
      end;
-
-     view_info                                 := Default( VkImageViewCreateInfo );
-     view_info.sType                           := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-     view_info.pNext                           := nil;
-     view_info.image                           := VK_NULL_HANDLE;
-     view_info.viewType                        := VK_IMAGE_VIEW_TYPE_2D;
-     view_info.format                          := VK_FORMAT_R8G8B8A8_UNORM;
-     view_info.components.r                    := VK_COMPONENT_SWIZZLE_R;
-     view_info.components.g                    := VK_COMPONENT_SWIZZLE_G;
-     view_info.components.b                    := VK_COMPONENT_SWIZZLE_B;
-     view_info.components.a                    := VK_COMPONENT_SWIZZLE_A;
-     view_info.subresourceRange.aspectMask     := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
-     view_info.subresourceRange.baseMipLevel   := 0;
-     view_info.subresourceRange.levelCount     := 1;
-     view_info.subresourceRange.baseArrayLayer := 0;
-     view_info.subresourceRange.layerCount     := 1;
-
-     (* create image view *)
-     view_info.image := texObj.image;
-     res := vkCreateImageView( TVkDevice( Device ).Handle, @view_info, nil, @texObj.view );
-     Assert( res = VK_SUCCESS );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
@@ -390,47 +477,37 @@ end;
 
 procedure TVkImager<TVkDevice_,TParent_>.DestroHandle;
 begin
-     vkDestroyImageView( TVkDevice( Device ).Handle, texObj.view         , nil );
-     vkDestroyImage    ( TVkDevice( Device ).Handle, texObj.image        , nil );
-     vkFreeMemory      ( TVkDevice( Device ).Handle, texObj.image_memory , nil );
-     vkDestroyBuffer   ( TVkDevice( Device ).Handle, texObj.buffer       , nil );
-     vkFreeMemory      ( TVkDevice( Device ).Handle, texObj.buffer_memory, nil );
+     vkDestroyImage ( TVkDevice( Device ).Handle, texObj.image        , nil );
+     vkFreeMemory   ( TVkDevice( Device ).Handle, texObj.image_memory , nil );
+     vkDestroyBuffer( TVkDevice( Device ).Handle, texObj.buffer       , nil );
+     vkFreeMemory   ( TVkDevice( Device ).Handle, texObj.buffer_memory, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TVkImager<TVkDevice_,TParent_>.Create;
 begin
-     inherited Create;
+     inherited;
 
      _Handle := 0;
+
+     _Viewer := TVkViewer_.Create( Self );
 end;
 
 constructor TVkImager<TVkDevice_,TParent_>.Create( const Parent_:TParent_ );
 begin
-     inherited Create;
+     Create;
 
      _Parent := Parent_;
 end;
 
 destructor TVkImager<TVkDevice_,TParent_>.Destroy;
 begin
+     _Viewer.Free;
+
       Handle := 0;
 
      inherited;
-end;
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImager<TVkDevice>
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-/////////////////////////////////////////////////////////////////////// アクセス
-
-function TVkImager<TVkDevice_>.GetDevice :TVkDevice_;
-begin
-     Result := _Parent;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
