@@ -55,7 +55,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Inform :VkImageCreateInfo;
        _Handle :VkImage;
        _Viewer :TVkViewer_;
-        texObj :T_texture_object;
+
+       _image         :VkImage;
+       _needs_staging :Boolean;
+       _buffer        :VkBuffer;
+       _buffer_size   :VkDeviceSize;
+       _image_memory  :VkDeviceMemory;
+       _buffer_memory :VkDeviceMemory;
+       _tex_width     :Int32;
+       _tex_height    :Int32;
+
         textureName   :String;
         extraUsages   :VkImageUsageFlags;
         extraFeatures :VkFormatFeatureFlags;
@@ -200,12 +209,12 @@ begin
      buffer_create_info.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
      buffer_create_info.pNext                 := nil;
      buffer_create_info.flags                 := 0;
-     buffer_create_info.size                  := texObj.tex_width * texObj.tex_height * 4;
+     buffer_create_info.size                  := _tex_width * _tex_height * 4;
      buffer_create_info.usage                 := Ord( VK_BUFFER_USAGE_TRANSFER_SRC_BIT );
      buffer_create_info.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
      buffer_create_info.queueFamilyIndexCount := 0;
      buffer_create_info.pQueueFamilyIndices   := nil;
-     res := vkCreateBuffer( TVkDevice( Device ).Handle, @buffer_create_info, nil, @texObj.buffer );
+     res := vkCreateBuffer( TVkDevice( Device ).Handle, @buffer_create_info, nil, @_buffer );
      Assert( res = VK_SUCCESS );
 
      mem_alloc                 := Default( VkMemoryAllocateInfo );
@@ -214,20 +223,20 @@ begin
      mem_alloc.allocationSize  := 0;
      mem_alloc.memoryTypeIndex := 0;
 
-     vkGetBufferMemoryRequirements( TVkDevice( Device ).Handle, texObj.buffer, @mem_reqs );
+     vkGetBufferMemoryRequirements( TVkDevice( Device ).Handle, _buffer, @mem_reqs );
      mem_alloc.allocationSize := mem_reqs.size;
-     texObj.buffer_size := mem_reqs.size;
+     _buffer_size := mem_reqs.size;
 
      requirements := Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
      pass := TVkDevice( Device ).memory_type_from_properties( mem_reqs.memoryTypeBits, requirements, mem_alloc.memoryTypeIndex );
      Assert( pass, '"No mappable, coherent memory' );
 
      (* allocate memory *)
-     res := vkAllocateMemory(TVkDevice( Device ).Handle, @mem_alloc, nil, @( texObj.buffer_memory) );
+     res := vkAllocateMemory(TVkDevice( Device ).Handle, @mem_alloc, nil, @( _buffer_memory) );
      Assert( res = VK_SUCCESS );
 
      (* bind memory *)
-     res := vkBindBufferMemory( TVkDevice( Device ).Handle, texObj.buffer, texObj.buffer_memory, 0 );
+     res := vkBindBufferMemory( TVkDevice( Device ).Handle, _buffer, _buffer_memory, 0 );
      Assert( res = VK_SUCCESS );
 end;
 
@@ -251,19 +260,20 @@ var
    data              :Pointer;
    rowPitch          :UInt64;
    copy_region       :VkBufferImageCopy;
+   _imageLayout      :VkImageLayout;
 begin
      filename := '../../_DATA/';
 
      if textureName = '' then filename := filename + 'lunarg.ppm'
                          else filename := filename + textureName;
 
-     if not read_ppm( filename, texObj.tex_width, texObj.tex_height, 0, nil ) then
+     if not read_ppm( filename, _tex_width, _tex_height, 0, nil ) then
      begin
           Log.d( 'Try relative path' );
           filename := '../../_DATA/';
           if textureName ='' then filename := filename + 'lunarg.ppm'
                              else filename := filename + textureName;
-          if not read_ppm( filename, texObj.tex_width, texObj.tex_height, 0, nil ) then
+          if not read_ppm( filename, _tex_width, _tex_height, 0, nil ) then
           begin
                Log.d( 'Could not read texture file ' + filename );
                RunError( 256-1 );
@@ -275,9 +285,9 @@ begin
      (* See if we can use a linear tiled image for a texture, if not, we will
       * need a staging buffer for the texture data *)
      allFeatures := Ord( VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT ) or extraFeatures;
-     texObj.needs_staging := ( ( formatProps.linearTilingFeatures and allFeatures ) <> allFeatures );
+     _needs_staging := ( ( formatProps.linearTilingFeatures and allFeatures ) <> allFeatures );
 
-     if texObj.needs_staging then
+     if _needs_staging then
      begin
           Assert( ( formatProps.optimalTilingFeatures and allFeatures ) = allFeatures );
           init_buffer;
@@ -285,8 +295,8 @@ begin
      end
      else
      begin
-          texObj.buffer        := VK_NULL_HANDLE;
-          texObj.buffer_memory := VK_NULL_HANDLE;
+          _buffer        := VK_NULL_HANDLE;
+          _buffer_memory := VK_NULL_HANDLE;
      end;
 
      image_create_info                       := Default( VkImageCreateInfo );
@@ -294,16 +304,16 @@ begin
      image_create_info.pNext                 := nil;
      image_create_info.imageType             := VK_IMAGE_TYPE_2D;
      image_create_info.format                := VK_FORMAT_R8G8B8A8_UNORM;
-     image_create_info.extent.width          := texObj.tex_width;
-     image_create_info.extent.height         := texObj.tex_height;
+     image_create_info.extent.width          := _tex_width;
+     image_create_info.extent.height         := _tex_height;
      image_create_info.extent.depth          := 1;
      image_create_info.mipLevels             := 1;
      image_create_info.arrayLayers           := 1;
      image_create_info.samples               := NUM_SAMPLES;
-     if texObj.needs_staging
+     if _needs_staging
      then image_create_info.tiling           := VK_IMAGE_TILING_OPTIMAL
      else image_create_info.tiling           := VK_IMAGE_TILING_LINEAR;
-     if texObj.needs_staging
+     if _needs_staging
      then image_create_info.initialLayout    := VK_IMAGE_LAYOUT_UNDEFINED
      else image_create_info.initialLayout    := VK_IMAGE_LAYOUT_PREINITIALIZED;
      image_create_info.usage                 := Ord( VK_IMAGE_USAGE_SAMPLED_BIT ) or extraUsages;
@@ -318,25 +328,25 @@ begin
      mem_alloc.allocationSize  := 0;
      mem_alloc.memoryTypeIndex := 0;
 
-     res := vkCreateImage( TVkDevice( Device ).Handle, @image_create_info, nil, @texObj.image );
+     res := vkCreateImage( TVkDevice( Device ).Handle, @image_create_info, nil, @_image );
      Assert( res = VK_SUCCESS );
 
-     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, texObj.image, @mem_reqs );
+     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, _image, @mem_reqs );
 
      mem_alloc.allocationSize := mem_reqs.size;
 
-     if texObj.needs_staging
+     if _needs_staging
      then requirements := 0
      else requirements := Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
      pass := TVkDevice( Device ).memory_type_from_properties( mem_reqs.memoryTypeBits, requirements, mem_alloc.memoryTypeIndex );
      Assert( pass );
 
      (* allocate memory *)
-     res := vkAllocateMemory(TVkDevice( Device ).Handle, @mem_alloc, nil, @( texObj.image_memory) );
+     res := vkAllocateMemory(TVkDevice( Device ).Handle, @mem_alloc, nil, @( _image_memory) );
      Assert( res = VK_SUCCESS );
 
      (* bind memory *)
-     res := vkBindImageMemory( TVkDevice( Device ).Handle, texObj.image, texObj.image_memory, 0 );
+     res := vkBindImageMemory( TVkDevice( Device ).Handle, _image, _image_memory, 0 );
      Assert( res = VK_SUCCESS );
 
      TVkDevice( Device ).Poolers[0].Commans[0].EndRecord;
@@ -367,10 +377,10 @@ begin
      subres.arrayLayer := 0;
 
      layout := Default( VkSubresourceLayout );
-     if not texObj.needs_staging then
+     if not _needs_staging then
      begin
           (* Get the subresource layout so we know what the row pitch is *)
-          vkGetImageSubresourceLayout( TVkDevice( Device ).Handle, texObj.image, @subres, @layout );
+          vkGetImageSubresourceLayout( TVkDevice( Device ).Handle, _image, @subres, @layout );
      end;
 
      (* Make sure command buffer is finished before mapping *)
@@ -382,45 +392,45 @@ begin
 
      vkDestroyFence( TVkDevice( Device ).Handle, cmdFence, nil );
 
-     if texObj.needs_staging
-     then res := vkMapMemory( TVkDevice( Device ).Handle, texObj.buffer_memory, 0, texObj.buffer_size, 0, @data )
-     else res := vkMapMemory( TVkDevice( Device ).Handle, texObj.image_memory , 0, mem_reqs.size     , 0, @data );
+     if _needs_staging
+     then res := vkMapMemory( TVkDevice( Device ).Handle, _buffer_memory, 0, _buffer_size, 0, @data )
+     else res := vkMapMemory( TVkDevice( Device ).Handle, _image_memory , 0, mem_reqs.size     , 0, @data );
      Assert( res = VK_SUCCESS );
 
      (* Read the ppm file into the mappable image's memory *)
-     if texObj.needs_staging then rowPitch := texObj.tex_width * 4
+     if _needs_staging then rowPitch := _tex_width * 4
                              else rowPitch := layout.rowPitch;
-     if not read_ppm( filename, texObj.tex_width, texObj.tex_height, rowPitch, data ) then
+     if not read_ppm( filename, _tex_width, _tex_height, rowPitch, data ) then
      begin
           Log.d( 'Could not load texture file lunarg.ppm' );
           RunError( 256-1 );
      end;
 
-     if texObj.needs_staging
-     then vkUnmapMemory( TVkDevice( Device ).Handle, texObj.buffer_memory )
-     else vkUnmapMemory( TVkDevice( Device ).Handle, texObj.image_memory  );
+     if _needs_staging
+     then vkUnmapMemory( TVkDevice( Device ).Handle, _buffer_memory )
+     else vkUnmapMemory( TVkDevice( Device ).Handle, _image_memory  );
 
      res := vkResetCommandBuffer( TVkDevice( Device ).Poolers[0].Commans[0].Handle, 0 );
      Assert( res = VK_SUCCESS );
      TVkDevice( Device ).Poolers[0].Commans[0].BeginRecord;
 
-     if not texObj.needs_staging then
+     if not _needs_staging then
      begin
           (* If we can use the linear tiled image as a texture, just do it *)
-          texObj.imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-          set_image_layout( TVkDevice( Device ).Instan.Vulkan, texObj.image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_PREINITIALIZED, texObj.imageLayout,
+          _imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+          set_image_layout( TVkDevice( Device ).Instan.Vulkan, _image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_PREINITIALIZED, _imageLayout,
                             Ord( VK_PIPELINE_STAGE_HOST_BIT ), Ord( VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT ) );
      end
      else
      begin
           (* Since we're going to blit to the texture image, set its layout to
            * DESTINATION_OPTIMAL *)
-          set_image_layout( TVkDevice( Device ).Instan.Vulkan, texObj.image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_UNDEFINED,
+          set_image_layout( TVkDevice( Device ).Instan.Vulkan, _image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_UNDEFINED,
                             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, Ord( VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT ), Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ) );
 
           copy_region.bufferOffset                    := 0;
-          copy_region.bufferRowLength                 := texObj.tex_width;
-          copy_region.bufferImageHeight               := texObj.tex_height;
+          copy_region.bufferRowLength                 := _tex_width;
+          copy_region.bufferImageHeight               := _tex_height;
           copy_region.imageSubresource.aspectMask     := Ord( VK_IMAGE_ASPECT_COLOR_BIT );
           copy_region.imageSubresource.mipLevel       := 0;
           copy_region.imageSubresource.baseArrayLayer := 0;
@@ -428,17 +438,17 @@ begin
           copy_region.imageOffset.x                   := 0;
           copy_region.imageOffset.y                   := 0;
           copy_region.imageOffset.z                   := 0;
-          copy_region.imageExtent.width               := texObj.tex_width;
-          copy_region.imageExtent.height              := texObj.tex_height;
+          copy_region.imageExtent.width               := _tex_width;
+          copy_region.imageExtent.height              := _tex_height;
           copy_region.imageExtent.depth               := 1;
 
           (* Put the copy command into the command buffer *)
-          vkCmdCopyBufferToImage( TVkDevice( Device ).Poolers[0].Commans[0].Handle, texObj.buffer, texObj.image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
+          vkCmdCopyBufferToImage( TVkDevice( Device ).Poolers[0].Commans[0].Handle, _buffer, _image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
 
           (* Set the layout for the texture image from DESTINATION_OPTIMAL to
            * SHADER_READ_ONLY *)
-          texObj.imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-          set_image_layout( TVkDevice( Device ).Instan.Vulkan, texObj.image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, texObj.imageLayout,
+          _imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+          set_image_layout( TVkDevice( Device ).Instan.Vulkan, _image, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, _imageLayout,
                             Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ), Ord( VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT ) );
      end;
 end;
@@ -472,15 +482,15 @@ begin
      (* create image *)
      init_image;
 
-     _Handle := texObj.image;
+     _Handle := _image;
 end;
 
 procedure TVkImager<TVkDevice_,TParent_>.DestroHandle;
 begin
-     vkDestroyImage ( TVkDevice( Device ).Handle, texObj.image        , nil );
-     vkFreeMemory   ( TVkDevice( Device ).Handle, texObj.image_memory , nil );
-     vkDestroyBuffer( TVkDevice( Device ).Handle, texObj.buffer       , nil );
-     vkFreeMemory   ( TVkDevice( Device ).Handle, texObj.buffer_memory, nil );
+     vkDestroyImage ( TVkDevice( Device ).Handle, _image        , nil );
+     vkFreeMemory   ( TVkDevice( Device ).Handle, _image_memory , nil );
+     vkDestroyBuffer( TVkDevice( Device ).Handle, _buffer       , nil );
+     vkFreeMemory   ( TVkDevice( Device ).Handle, _buffer_memory, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
