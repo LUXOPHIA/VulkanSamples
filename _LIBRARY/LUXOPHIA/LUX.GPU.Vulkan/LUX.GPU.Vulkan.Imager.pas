@@ -53,8 +53,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Parent  :TParent_;
        _PixelsW :Int32;
        _PixelsH :Int32;
-       _Inform  :VkImageCreateInfo;
+       image_create_info :VkImageCreateInfo;
        _Handle  :VkImage;
+       mem_alloc :VkMemoryAllocateInfo;
        _Memory  :VkDeviceMemory;
        _Viewer  :TVkViewer_;
 
@@ -63,11 +64,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _BufferSize    :VkDeviceSize;
        _BufferMemory  :VkDeviceMemory;
 
-        textureName   :String;
         extraUsages   :VkImageUsageFlags;
         extraFeatures :VkFormatFeatureFlags;
        ///// アクセス
        function GetDevice :TVkDevice_; virtual; abstract;
+       function GetPixelsW :UInt32;
+       procedure SetPixelsW( const PixelsW_:UInt32 );
+       function GetPixelsH :UInt32;
+       procedure SetPixelsH( const PixelsH_:UInt32 );
        function GetHandle :VkImage;
        procedure SetHandle( const Handle_:VkImage );
        ///// メソッド
@@ -78,11 +82,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Parent_:TParent_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
-       property Device :TVkDevice_        read GetDevice;
-       property Parent :TParent_          read   _Parent;
-       property Inform :VkImageCreateInfo read   _Inform;
-       property Handle :VkImage           read GetHandle write SetHandle;
-       property Viewer :TVkViewer_        read   _Viewer;
+       property Device  :TVkDevice_        read GetDevice ;
+       property Parent  :TParent_          read   _Parent ;
+       property Inform  :VkImageCreateInfo read   image_create_info ;
+       property PixelsW :UInt32            read GetPixelsW write SetPixelsW;
+       property PixelsH :UInt32            read GetPixelsH write SetPixelsH;
+       property Handle  :VkImage           read GetHandle  write SetHandle;
+       property Viewer  :TVkViewer_        read   _Viewer ;
+       ///// メソッド
+       procedure LoadFromFile( const FileName_:String );
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -118,14 +126,14 @@ end;
 
 function TVkViewer<TVkDevice_,TParent_>.GetHandle :VkImageView;
 begin
-     if _Handle = 0 then CreateHandle;
+     if _Handle = VK_NULL_HANDLE then CreateHandle;
 
      Result := _Handle;
 end;
 
 procedure TVkViewer<TVkDevice_,TParent_>.SetHandle( const Handle_:VkImageView );
 begin
-     if _Handle <> 0 then DestroHandle;
+     if _Handle <> VK_NULL_HANDLE then DestroHandle;
 
      _Handle := Handle_;
 end;
@@ -173,7 +181,7 @@ constructor TVkViewer<TVkDevice_,TParent_>.Create;
 begin
      inherited;
 
-     _Handle := 0;
+     _Handle := VK_NULL_HANDLE;
 end;
 
 constructor TVkViewer<TVkDevice_,TParent_>.Create( const Parent_:TVkImager_ );
@@ -185,7 +193,7 @@ end;
 
 destructor TVkViewer<TVkDevice_,TParent_>.Destroy;
 begin
-      Handle := 0;
+      Handle := VK_NULL_HANDLE;
 
      inherited;
 end;
@@ -242,16 +250,42 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
+function TVkImager<TVkDevice_,TParent_>.GetPixelsW :UInt32;
+begin
+     Result := image_create_info.extent.width;
+end;
+
+procedure TVkImager<TVkDevice_,TParent_>.SetPixelsW( const PixelsW_:UInt32 );
+begin
+     image_create_info.extent.width := _PixelsW;
+
+     Handle := VK_NULL_HANDLE;
+end;
+
+function TVkImager<TVkDevice_,TParent_>.GetPixelsH :UInt32;
+begin
+     Result := image_create_info.extent.height;
+end;
+
+procedure TVkImager<TVkDevice_,TParent_>.SetPixelsH( const PixelsH_:UInt32 );
+begin
+     image_create_info.extent.height := PixelsH_;
+
+     Handle := VK_NULL_HANDLE;
+end;
+
+//------------------------------------------------------------------------------
+
 function TVkImager<TVkDevice_,TParent_>.GetHandle :VkImage;
 begin
-     if _Handle = 0 then CreateHandle;
+     if _Handle = VK_NULL_HANDLE then CreateHandle;
 
      Result := _Handle;
 end;
 
 procedure TVkImager<TVkDevice_,TParent_>.SetHandle( const Handle_:VkImage );
 begin
-     if _Handle <> 0 then DestroHandle;
+     if _Handle <> VK_NULL_HANDLE then DestroHandle;
 
      _Handle := Handle_;
 end;
@@ -260,46 +294,11 @@ end;
 
 procedure TVkImager<TVkDevice_,TParent_>.CreateHandle;
 var
-   res               :VkResult;
-   pass              :Boolean;
-   filename          :String;
-   formatProps       :VkFormatProperties;
-   allFeatures       :VkFormatFeatureFlags;
-   image_create_info :VkImageCreateInfo;
-   mem_alloc         :VkMemoryAllocateInfo;
-   mem_reqs          :VkMemoryRequirements;
-   requirements      :VkFlags;
-   cmd_bufs          :array [ 0..1-1 ] of VkCommandBuffer;
-   fenceInfo         :VkFenceCreateInfo;
-   cmdFence          :VkFence;
-   submit_info       :array [ 0..1-1 ] of VkSubmitInfo;
-   subres            :VkImageSubresource;
-   layout            :VkSubresourceLayout;
-   data              :Pointer;
-   rowPitch          :UInt64;
-   copy_region       :VkBufferImageCopy;
-   _imageLayout      :VkImageLayout;
+   formatProps  :VkFormatProperties;
+   allFeatures  :VkFormatFeatureFlags;
+   mem_reqs     :VkMemoryRequirements;
+   requirements :VkFlags;
 begin
-     filename := '../../_DATA/';
-
-     if textureName = '' then filename := filename + 'lunarg.ppm'
-                         else filename := filename + textureName;
-
-     if not read_ppm( filename, _PixelsW, _PixelsH, 0, nil ) then
-     begin
-          Log.d( 'Try relative path' );
-          filename := '../../_DATA/';
-          if textureName ='' then filename := filename + 'lunarg.ppm'
-                             else filename := filename + textureName;
-          if not read_ppm( filename, _PixelsW, _PixelsH, 0, nil ) then
-          begin
-               Log.d( 'Could not read texture file ' + filename );
-               RunError( 256-1 );
-          end;
-     end;
-
-     //////////
-
      vkGetPhysicalDeviceFormatProperties( TVkDevice( Device ).Physic, VK_FORMAT_R8G8B8A8_UNORM, @formatProps );
 
      (* See if we can use a linear tiled image for a texture, if not, we will
@@ -358,7 +357,6 @@ begin
      mem_alloc.allocationSize  := 0;
      mem_alloc.memoryTypeIndex := 0;
      mem_alloc.allocationSize  := mem_reqs.size;
-
      if _needs_staging
      then requirements := 0
      else requirements := Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
@@ -370,8 +368,69 @@ begin
      //////////
 
      (* bind memory *)
-     res := vkBindImageMemory( TVkDevice( Device ).Handle, _Handle, _Memory, 0 );
-     Assert( res = VK_SUCCESS );
+     Assert( vkBindImageMemory( TVkDevice( Device ).Handle, _Handle, _Memory, 0 ) = VK_SUCCESS );
+end;
+
+procedure TVkImager<TVkDevice_,TParent_>.DestroHandle;
+begin
+     vkDestroyImage ( TVkDevice( Device ).Handle, _Handle      , nil );
+     vkFreeMemory   ( TVkDevice( Device ).Handle, _Memory      , nil );
+     vkDestroyBuffer( TVkDevice( Device ).Handle, _Buffer      , nil );
+     vkFreeMemory   ( TVkDevice( Device ).Handle, _BufferMemory, nil );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkImager<TVkDevice_,TParent_>.Create;
+begin
+     inherited;
+
+     _Handle := VK_NULL_HANDLE;
+
+     _Viewer := TVkViewer_.Create( Self );
+
+     extraUsages   := 0;
+     extraFeatures := 0;
+end;
+
+constructor TVkImager<TVkDevice_,TParent_>.Create( const Parent_:TParent_ );
+begin
+     Create;
+
+     _Parent := Parent_;
+end;
+
+destructor TVkImager<TVkDevice_,TParent_>.Destroy;
+begin
+     _Viewer.Free;
+
+      Handle := VK_NULL_HANDLE;
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TVkImager<TVkDevice_,TParent_>.LoadFromFile( const FileName_:String );
+var
+   res               :VkResult;
+   pass              :Boolean;
+   cmd_bufs          :array [ 0..1-1 ] of VkCommandBuffer;
+   fenceInfo         :VkFenceCreateInfo;
+   cmdFence          :VkFence;
+   submit_info       :array [ 0..1-1 ] of VkSubmitInfo;
+   subres            :VkImageSubresource;
+   layout            :VkSubresourceLayout;
+   data              :Pointer;
+   rowPitch          :UInt64;
+   copy_region       :VkBufferImageCopy;
+   _imageLayout      :VkImageLayout;
+begin
+     if not read_ppm( FileName_, _PixelsW, _PixelsH, 0, nil ) then
+     begin
+          Log.d( 'Could not read texture file ' + FileName_ );
+          RunError( 256-1 );
+     end;
 
      //////////
 
@@ -405,7 +464,7 @@ begin
      if not _needs_staging then
      begin
           (* Get the subresource layout so we know what the row pitch is *)
-          vkGetImageSubresourceLayout( TVkDevice( Device ).Handle, _Handle, @subres, @layout );
+          vkGetImageSubresourceLayout( TVkDevice( Device ).Handle, Handle, @subres, @layout );
      end;
 
      (* Make sure command buffer is finished before mapping *)
@@ -421,13 +480,13 @@ begin
 
      if _needs_staging
      then res := vkMapMemory( TVkDevice( Device ).Handle, _BufferMemory, 0, _BufferSize, 0, @data )
-     else res := vkMapMemory( TVkDevice( Device ).Handle, _Memory , 0, mem_reqs.size, 0, @data );
+     else res := vkMapMemory( TVkDevice( Device ).Handle, _Memory , 0, mem_alloc.allocationSize, 0, @data );
      Assert( res = VK_SUCCESS );
 
      (* Read the ppm file into the mappable image's memory *)
      if _needs_staging then rowPitch := _PixelsW * 4
                        else rowPitch := layout.rowPitch;
-     if not read_ppm( filename, _PixelsW, _PixelsH, rowPitch, data ) then
+     if not read_ppm( FileName_, _PixelsW, _PixelsH, rowPitch, data ) then
      begin
           Log.d( 'Could not load texture file lunarg.ppm' );
           RunError( 256-1 );
@@ -446,14 +505,14 @@ begin
      begin
           (* If we can use the linear tiled image as a texture, just do it *)
           _imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-          set_image_layout( TVkDevice( Device ).Instan.Vulkan, _Handle, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_PREINITIALIZED, _imageLayout,
+          set_image_layout( TVkDevice( Device ).Instan.Vulkan, Handle, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_PREINITIALIZED, _imageLayout,
                             Ord( VK_PIPELINE_STAGE_HOST_BIT ), Ord( VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT ) );
      end
      else
      begin
           (* Since we're going to blit to the texture image, set its layout to
            * DESTINATION_OPTIMAL *)
-          set_image_layout( TVkDevice( Device ).Instan.Vulkan, _Handle, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_UNDEFINED,
+          set_image_layout( TVkDevice( Device ).Instan.Vulkan, Handle, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_UNDEFINED,
                             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, Ord( VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT ), Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ) );
 
           copy_region.bufferOffset                    := 0;
@@ -471,53 +530,14 @@ begin
           copy_region.imageExtent.depth               := 1;
 
           (* Put the copy command into the command buffer *)
-          vkCmdCopyBufferToImage( TVkDevice( Device ).Poolers[0].Commans[0].Handle, _Buffer, _Handle, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
+          vkCmdCopyBufferToImage( TVkDevice( Device ).Poolers[0].Commans[0].Handle, _Buffer, Handle, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
 
           (* Set the layout for the texture image from DESTINATION_OPTIMAL to
            * SHADER_READ_ONLY *)
           _imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-          set_image_layout( TVkDevice( Device ).Instan.Vulkan, _Handle, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, _imageLayout,
+          set_image_layout( TVkDevice( Device ).Instan.Vulkan, Handle, Ord( VK_IMAGE_ASPECT_COLOR_BIT ), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, _imageLayout,
                             Ord( VK_PIPELINE_STAGE_TRANSFER_BIT ), Ord( VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT ) );
      end;
-end;
-
-procedure TVkImager<TVkDevice_,TParent_>.DestroHandle;
-begin
-     vkDestroyImage ( TVkDevice( Device ).Handle, _Handle      , nil );
-     vkFreeMemory   ( TVkDevice( Device ).Handle, _Memory      , nil );
-     vkDestroyBuffer( TVkDevice( Device ).Handle, _Buffer      , nil );
-     vkFreeMemory   ( TVkDevice( Device ).Handle, _BufferMemory, nil );
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TVkImager<TVkDevice_,TParent_>.Create;
-begin
-     inherited;
-
-     _Handle := 0;
-
-     _Viewer := TVkViewer_.Create( Self );
-
-     textureName   := '';
-     extraUsages   := 0;
-     extraFeatures := 0;
-end;
-
-constructor TVkImager<TVkDevice_,TParent_>.Create( const Parent_:TParent_ );
-begin
-     Create;
-
-     _Parent := Parent_;
-end;
-
-destructor TVkImager<TVkDevice_,TParent_>.Destroy;
-begin
-     _Viewer.Free;
-
-      Handle := 0;
-
-     inherited;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
