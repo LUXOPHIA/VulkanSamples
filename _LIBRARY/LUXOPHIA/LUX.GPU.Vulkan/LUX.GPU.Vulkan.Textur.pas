@@ -66,8 +66,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Imager  :TVkTexIma_;
        _Samplr  :TVkSamplr_;
        _Descri  :VkDescriptorImageInfo;
+       _Handle  :P_VkDescriptorImageInfo;
        ///// アクセス
        function GetDevice :TVkDevice_;
+       function GetHandle :P_VkDescriptorImageInfo;
+       procedure SetHandle( const Handle_:P_VkDescriptorImageInfo );
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -77,11 +80,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Device_:TVkDevice_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
-       property Device  :TVkDevice_            read GetDevice ;
-       property Texturs :TVkTexturs_           read   _Texturs;
-       property Imager  :TVkTexIma_            read   _Imager ;
-       property Samplr  :TVkSamplr_            read   _Samplr ;
-       property Descri  :VkDescriptorImageInfo read   _Descri ;
+       property Device  :TVkDevice_              read GetDevice ;
+       property Texturs :TVkTexturs_             read   _Texturs;
+       property Imager  :TVkTexIma_              read   _Imager ;
+       property Samplr  :TVkSamplr_              read   _Samplr ;
+       property Descri  :VkDescriptorImageInfo   read   _Descri ;
+       property Handle  :P_VkDescriptorImageInfo read GetHandle write SetHandle;
+       ///// メソッド
+       procedure LoadFromFile( const FileName_:String );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkTexturs
@@ -131,14 +137,14 @@ end;
 
 function TVkSamplr<TVkDevice_>.GetHandle :VkSampler;
 begin
-     if _Handle = 0 then CreateHandle;
+     if _Handle = VK_NULL_HANDLE then CreateHandle;
 
      Result := _Handle;
 end;
 
 procedure TVkSamplr<TVkDevice_>.SetHandle( const Handle_:VkSampler );
 begin
-     if _Handle <> 0 then DestroHandle;
+     if _Handle <> VK_NULL_HANDLE then DestroHandle;
 
      _Handle := Handle_;
 end;
@@ -161,7 +167,7 @@ constructor TVkSamplr<TVkDevice_>.Create;
 begin
      inherited;
 
-     _Handle := 0;
+     _Handle := VK_NULL_HANDLE;
 
      with _Inform do
      begin
@@ -195,7 +201,7 @@ end;
 
 destructor TVkSamplr<TVkDevice_>.Destroy;
 begin
-      Handle := 0;
+      Handle := VK_NULL_HANDLE;
 
      inherited;
 end;
@@ -228,16 +234,40 @@ begin
      Result := _Texturs.Device;
 end;
 
+//------------------------------------------------------------------------------
+
+function TVkTextur<TVkDevice_>.GetHandle :P_VkDescriptorImageInfo;
+begin
+     if not Assigned( _Handle ) then CreateHandle;
+
+     Result := _Handle;
+end;
+
+procedure TVkTextur<TVkDevice_>.SetHandle( const Handle_:P_VkDescriptorImageInfo );
+begin
+     if Assigned( _Handle ) then DestroHandle;
+
+     _Handle := Handle_;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkTextur<TVkDevice_>.CreateHandle;
 begin
+     with _Descri do
+     begin
+          imageView   := _Imager.Viewer.Handle;
+          sampler     := _Samplr       .Handle;
+          imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+     end;
 
+     _Handle := @_Descri;
 end;
 
 procedure TVkTextur<TVkDevice_>.DestroHandle;
 begin
-
+     _Imager.Viewer.Handle := VK_NULL_HANDLE;
+     _Samplr       .Handle := VK_NULL_HANDLE;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -245,6 +275,8 @@ end;
 constructor TVkTextur<TVkDevice_>.Create;
 begin
      inherited;
+
+     _Handle := nil;
 
      _Imager := TVkTexIma_.Create( Self );
      _Samplr := TVkSamplr_.Create( Self );
@@ -257,18 +289,6 @@ begin
      _Texturs := Texturs_;
 
      _Texturs.Add( Self );
-
-     //////////
-
-     (* track a description of the texture *)
-     with _Descri do
-     begin
-          imageView   := _Imager.Viewer.Handle;
-          sampler     := _Samplr.Handle;
-          imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-     end;
-
-     TVkDevice( Device ).Instan.Vulkan.Info.texture_data.image_info := _Descri;
 end;
 
 constructor TVkTextur<TVkDevice_>.Create( const Device_:TVkDevice_ );
@@ -281,7 +301,16 @@ begin
      _Samplr.Free;
      _Imager.Free;
 
+      Handle := nil;
+
      inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TVkTextur<TVkDevice_>.LoadFromFile( const FileName_:String );
+begin
+     _Imager.LoadFromFile( FileName_ );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkTexturs
