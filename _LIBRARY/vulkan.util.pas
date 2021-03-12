@@ -46,7 +46,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
        image_memory  :VkDeviceMemory;
        buffer_memory :VkDeviceMemory;
-       view          :VkImageView;
+       //view          :VkImageView;
        tex_width     :T_int32_t;
        tex_height    :T_int32_t;
      end;
