@@ -35,7 +35,7 @@ type
     _Swapch  :TVkSwapch;
     _Depthr  :TVkDepthr;
     _Textur  :TVkTextur;
-    _Buffer  :TVkBuffer<TSingleM4>;
+    _Buffer  :TVkUniBuf<TSingleM4>;
     _Pipeli  :TVkPipeline;
     _ShaderV :TVkShaderVert;
     _ShaderF :TVkShaderFrag;
@@ -204,7 +204,7 @@ begin
      _Depthr  := TVkDepthr.Create( _Device );
      _Textur  := TVkTextur.Create( _Device );
      _Textur.LoadFromFile( '../../_DATA/lunarg.ppm' );
-     _Buffer  := TVkBuffer<TSingleM4>.Create( _Device );
+     _Buffer  := TVkUniBuf<TSingleM4>.Create( _Device );
      _Buffer.Value := CalcMatrix;
      init_descriptor_and_pipeline_layouts( _Vulkan, true );
      init_renderpass( _Vulkan, depthPresent );
