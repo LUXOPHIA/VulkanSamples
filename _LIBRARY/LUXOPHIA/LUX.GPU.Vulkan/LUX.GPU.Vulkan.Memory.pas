@@ -68,7 +68,13 @@ uses LUX.GPU.Vulkan;
 
 function TVkMemory<TVkDevice_,TVkParent_>.GetInform :VkMemoryAllocateInfo;
 begin
-     Result := _Inform;
+     with Result do
+     begin
+          sType           := _Inform.sType;
+          pNext           := _Inform.pNext;
+          allocationSize  := Size;
+          memoryTypeIndex := TypeI;
+     end;
 end;
 
 //------------------------------------------------------------------------------
@@ -118,8 +124,12 @@ end;
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkMemory<TVkDevice_,TVkParent_>.CreateHandle;
+var
+   F :VkMemoryAllocateInfo;
 begin
-     Assert( vkAllocateMemory( TVkDevice( Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
+     F := Inform;
+
+     Assert( vkAllocateMemory( TVkDevice( Device ).Handle, @F, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkMemory<TVkDevice_,TVkParent_>.DestroHandle;
