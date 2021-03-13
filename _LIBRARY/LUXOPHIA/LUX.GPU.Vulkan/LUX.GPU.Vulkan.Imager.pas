@@ -4,7 +4,8 @@ interface //####################################################################
 
 uses System.Generics.Collections,
      vulkan_core,
-     vulkan.util;
+     vulkan.util,
+     LUX.GPU.Vulkan.root;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -17,27 +18,24 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkViewer<TVkDevice,TParent>
 
-     TVkViewer<TVkDevice_,TParent_:class> = class
+     TVkViewer<TVkDevice_,TParent_:class> = class( TVkDeviceObject<TVkDevice_,TVkImager<TVkDevice_,TParent_>> )
      private
        type TVkImager_ = TVkImager<TVkDevice_,TParent_>;
      protected
-       _Imager :TVkImager_;
        _Inform :VkImageViewCreateInfo;
        _Handle :VkImageView;
        ///// アクセス
-       function GetDevice :TVkDevice_;
+       function GetDevice :TVkDevice_; override;
        function GetHandle :VkImageView;
        procedure SetHandle( const Handle_:VkImageView );
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create; overload;
-       constructor Create( const Parent_:TVkImager_ ); overload;
+       constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Device :TVkDevice_            read GetDevice;
-       property Imager :TVkImager_            read   _Imager;
+       property Imager :TVkImager_            read GetParent;
        property Inform :VkImageViewCreateInfo read   _Inform;
        property Handle :VkImageView           read GetHandle write SetHandle;
      end;
@@ -122,7 +120,7 @@ uses FMX.Types,
 
 function TVkViewer<TVkDevice_,TParent_>.GetDevice :TVkDevice_;
 begin
-     Result := _Imager.Device;
+     Result := Imager.Device;
 end;
 
 //------------------------------------------------------------------------------
@@ -150,7 +148,7 @@ begin
           sType    := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
           pNext    := nil;
           flags    := 0;
-          image    := _Imager.Handle;
+          image    := Imager.Handle;
           viewType := VK_IMAGE_VIEW_TYPE_2D;
           format   := VK_FORMAT_R8G8B8A8_UNORM;
           with components do
@@ -185,13 +183,6 @@ begin
      inherited;
 
      _Handle := VK_NULL_HANDLE;
-end;
-
-constructor TVkViewer<TVkDevice_,TParent_>.Create( const Parent_:TVkImager_ );
-begin
-     Create;
-
-     _Imager := Parent_;
 end;
 
 destructor TVkViewer<TVkDevice_,TParent_>.Destroy;
@@ -553,11 +544,5 @@ begin
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
-
-//############################################################################## □
-
-initialization //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 初期化
-
-finalization //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 最終化
 
 end. //######################################################################### ■
