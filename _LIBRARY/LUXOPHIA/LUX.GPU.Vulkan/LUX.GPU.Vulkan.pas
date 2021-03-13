@@ -41,7 +41,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                      TVkComman = TVkComman<TVkPooler>;
                TVkBuffers      = TVkBuffers<TVkDevice>;
                  TVkBuffer     = TVkBuffer<TVkDevice>;
-                   TVkMemory   = TVkMemory<TVkDevice>;
+                   TVkBufMem   = TVkBufMem<TVkDevice>;
                TVkSwapchs      = TVkSwapchs<TVkDevice>;
                  TVkSwapch     = TVkSwapch<TVkDevice>;
                    TVkFramers  = TVkFramers<TVkSwapch>;

@@ -8,9 +8,11 @@ uses System.Generics.Collections,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
+     TVkMemory<TVkDevice_,TVkParent_:class> = class;
+
      TVkBuffers<TVkDevice_:class>    = class;
        TVkBuffer<TVkDevice_:class>   = class;
-         TVkMemory<TVkDevice_:class> = class;
+         TVkBufMem<TVkDevice_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -18,44 +20,61 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkMemory
 
-     TVkMemory<TVkDevice_:class> = class( TVkDeviceChildr<TVkDevice_,TVkBuffer<TVkDevice_>> )
+     TVkMemory<TVkDevice_,TVkParent_:class> = class( TVkDeviceChildr<TVkDevice_,TVkParent_> )
      private
-       type TVkBuffer_ = TVkBuffer<TVkDevice_>;
      protected
        _Inform :VkMemoryAllocateInfo;
        _Handle :VkDeviceMemory;
        ///// アクセス
-       function GetDevice :TVkDevice_; override;
-       function GetHandle :VkDeviceMemory;
-       procedure SetHandle( const Handle_:VkDeviceMemory );
+       function GetInform :VkMemoryAllocateInfo; virtual;
+       function GetSize :VkDeviceSize; virtual;
+       procedure SetSize( const Size_:VkDeviceSize ); virtual;
+       function GetTypeI :UInt32; virtual;
+       procedure SetTypeI( const TypeI_:UInt32 ); virtual;
+       function GetHandle :VkDeviceMemory; virtual;
+       procedure SetHandle( const Handle_:VkDeviceMemory ); virtual;
        ///// メソッド
-       procedure CreateHandle;
-       procedure DestroHandle;
+       procedure CreateHandle; virtual;
+       procedure DestroHandle; virtual;
      public
        constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Device :TVkDevice_           read GetDevice;
-       property Buffer :TVkBuffer_           read GetParent;
-       property Inform :VkMemoryAllocateInfo read   _Inform;
+       property Inform :VkMemoryAllocateInfo read GetInform                ;
+       property Size   :VkDeviceSize         read GetSize   write SetSize  ;
+       property TypeI  :UInt32               read GetTypeI  write SetTypeI ;
        property Handle :VkDeviceMemory       read GetHandle write SetHandle;
        ///// メソッド
-       function Bind :Boolean;
        function Map( var Pointer_:PByte ) :Boolean;
        procedure Unmap;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBufMem
+
+     TVkBufMem<TVkDevice_:class> = class( TVkMemory<TVkDevice_,TVkBuffer<TVkDevice_>> )
+     private
+       type TVkBuffer_ = TVkBuffer<TVkDevice_>;
+     protected
+       ///// アクセス
+       function GetDevice :TVkDevice_; override;
+       ///// メソッド
+       procedure CreateHandle; override;
+     public
+       ///// プロパティ
+       property Buffer :TVkBuffer_ read GetParent;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer
 
      TVkBuffer<TVkDevice_:class> = class
      private
-       type TVkMemory_ = TVkMemory<TVkDevice_>;
+       type TVkBufMem_ = TVkBufMem<TVkDevice_>;
      protected
        _Device :TVkDevice_;
        _Inform :VkBufferCreateInfo;
        _Handle :VkBuffer;
        _Descri :VkDescriptorBufferInfo;
-       _Memory :TVkMemory_;
+       _Memory :TVkBufMem_;
        ///// アクセス
        function GetHandle :VkBuffer;
        procedure SetHandle( const Handle_:VkBuffer );
@@ -71,9 +90,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Inform :VkBufferCreateInfo     read   _Inform;
        property Handle :VkBuffer               read GetHandle write SetHandle;
        property Descri :VkDescriptorBufferInfo read   _Descri;
-       property Memory :TVkMemory_             read   _Memory;
+       property Memory :TVkBufMem_             read   _Memory;
        ///// メソッド
        function GetRequir :VkMemoryRequirements;
+       function Bind( const Memory_:TVkBufMem_ ) :Boolean;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffers
@@ -116,69 +136,88 @@ uses System.Math,
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkMemory<TVkDevice_>.GetDevice :TVkDevice_;
+function TVkMemory<TVkDevice_,TVkParent_>.GetInform :VkMemoryAllocateInfo;
 begin
-     Result := Buffer.Device;
+     Result := _Inform;
 end;
 
 //------------------------------------------------------------------------------
 
-function TVkMemory<TVkDevice_>.GetHandle :VkDeviceMemory;
+function TVkMemory<TVkDevice_,TVkParent_>.GetSize :VkDeviceSize;
 begin
-     if _Handle = 0 then
-     begin
-          CreateHandle;
+     Result := _Inform.allocationSize;
+end;
 
-          Assert( Bind );
-     end;
+procedure TVkMemory<TVkDevice_,TVkParent_>.SetSize( const Size_:VkDeviceSize );
+begin
+     _Inform.allocationSize := Size_;
+
+     Handle := VK_NULL_HANDLE;
+end;
+
+//------------------------------------------------------------------------------
+
+function TVkMemory<TVkDevice_,TVkParent_>.GetTypeI :UInt32;
+begin
+     Result := _Inform.memoryTypeIndex;
+end;
+
+procedure TVkMemory<TVkDevice_,TVkParent_>.SetTypeI( const TypeI_:UInt32 );
+begin
+     _Inform.memoryTypeIndex := TypeI_;
+
+     Handle := VK_NULL_HANDLE;
+end;
+
+//------------------------------------------------------------------------------
+
+function TVkMemory<TVkDevice_,TVkParent_>.GetHandle :VkDeviceMemory;
+begin
+     if _Handle = VK_NULL_HANDLE then CreateHandle;
 
      Result := _Handle;
 end;
 
-procedure TVkMemory<TVkDevice_>.SetHandle( const Handle_:VkDeviceMemory );
+procedure TVkMemory<TVkDevice_,TVkParent_>.SetHandle( const Handle_:VkDeviceMemory );
 begin
-     if _Handle <> 0 then DestroHandle;
+     if _Handle <> VK_NULL_HANDLE then DestroHandle;
 
      _Handle := Handle_;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkMemory<TVkDevice_>.CreateHandle;
-var
-   R :VkMemoryRequirements;
+procedure TVkMemory<TVkDevice_,TVkParent_>.CreateHandle;
 begin
-     R := TVkBuffer( Buffer ).GetRequir;
-
-     _Inform                 := Default( VkMemoryAllocateInfo );
-     _Inform.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-     _Inform.pNext           := nil;
-     _Inform.memoryTypeIndex := 0;
-     _Inform.allocationSize  := R.size;
-
-     Assert( TVkDevice( Device ).memory_type_from_properties( R.memoryTypeBits,
-                  Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
-                  _Inform.memoryTypeIndex ),
-             'No mappable, coherent memory' );
-
      Assert( vkAllocateMemory( TVkDevice( Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
-procedure TVkMemory<TVkDevice_>.DestroHandle;
+procedure TVkMemory<TVkDevice_,TVkParent_>.DestroHandle;
 begin
      vkFreeMemory( TVkDevice( Device ).Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkMemory<TVkDevice_>.Create;
+constructor TVkMemory<TVkDevice_,TVkParent_>.Create;
 begin
      inherited;
 
      _Handle := VK_NULL_HANDLE;
+
+     with _Inform do
+     begin
+          sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+          pNext           := nil;
+       // allocationSize  :
+       // memoryTypeIndex :
+     end;
+
+     Size  := 0;
+     TypeI := 0;
 end;
 
-destructor TVkMemory<TVkDevice_>.Destroy;
+destructor TVkMemory<TVkDevice_,TVkParent_>.Destroy;
 begin
       Handle := VK_NULL_HANDLE;
 
@@ -187,22 +226,54 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-function TVkMemory<TVkDevice_>.Bind :Boolean;
-begin
-     Result := vkBindBufferMemory( TVkDevice( Device ).Handle, TVkBuffer( Buffer ).Handle, Handle, 0 ) = VK_SUCCESS;
-end;
-
-//------------------------------------------------------------------------------
-
-function TVkMemory<TVkDevice_>.Map( var Pointer_:PByte ) :Boolean;
+function TVkMemory<TVkDevice_,TVkParent_>.Map( var Pointer_:PByte ) :Boolean;
 begin
      Result := vkMapMemory( TVkDevice( Device ).Handle, Handle, 0, _Inform.allocationSize, 0, @Pointer_ ) = VK_SUCCESS;
 end;
 
-procedure TVkMemory<TVkDevice_>.Unmap;
+procedure TVkMemory<TVkDevice_,TVkParent_>.Unmap;
 begin
      vkUnmapMemory( TVkDevice( Device ).Handle, Handle );
 end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBufMem
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkBufMem<TVkDevice_>.GetDevice :TVkDevice_;
+begin
+     Result := Buffer.Device;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TVkBufMem<TVkDevice_>.CreateHandle;
+var
+   R :VkMemoryRequirements;
+   I :UInt32;
+begin
+     R := Buffer.GetRequir;
+
+     Size := R.size;
+
+     Assert( TVkDevice( Device ).memory_type_from_properties(
+                  R.memoryTypeBits,
+                  Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
+                  I ),
+             'No mappable, coherent memory' );
+
+     TypeI := I;
+
+     inherited;
+
+     Buffer.Bind( Self );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer
 
@@ -214,24 +285,16 @@ end;
 
 function TVkBuffer<TVkDevice_>.GetHandle :VkBuffer;
 begin
-     if _Handle = 0 then
-     begin
-          CreateHandle;
-
-          Assert( _Memory.Bind );
-     end;
+     if _Handle = VK_NULL_HANDLE then CreateHandle;
 
      Result := _Handle;
 end;
 
 procedure TVkBuffer<TVkDevice_>.SetHandle( const Handle_:VkBuffer );
 begin
-     if _Handle <> 0 then
-     begin
-          _Memory.Handle := 0;
+     _Memory.Handle := VK_NULL_HANDLE;
 
-          DestroHandle;
-     end;
+     if _Handle <> VK_NULL_HANDLE then DestroHandle;
 
      _Handle := Handle_;
 end;
@@ -241,6 +304,8 @@ end;
 procedure TVkBuffer<TVkDevice_>.CreateHandle;
 begin
      Assert( vkCreateBuffer( TVkDevice( _Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
+
+     Assert( Bind( _Memory ) );
 
      with _Descri do
      begin
@@ -263,7 +328,7 @@ begin
 
      _Handle := 0;
 
-     _Memory := TVkMemory_.Create( Self );
+     _Memory := TVkBufMem_.Create( Self );
 
      with _Inform do
      begin
@@ -332,6 +397,13 @@ end;
 function TVkBuffer<TVkDevice_>.GetRequir :VkMemoryRequirements;
 begin
      vkGetBufferMemoryRequirements( TVkDevice( Device ).Handle, Handle, @Result );
+end;
+
+//------------------------------------------------------------------------------
+
+function TVkBuffer<TVkDevice_>.Bind( const Memory_:TVkBufMem_ ) :Boolean;
+begin
+     Result := vkBindBufferMemory( TVkDevice( Device ).Handle, Handle, Memory_.Handle, 0 ) = VK_SUCCESS;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffers
