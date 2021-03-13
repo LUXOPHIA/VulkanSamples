@@ -4,6 +4,7 @@ interface //####################################################################
 
 uses System.Generics.Collections,
      vulkan_core,
+     LUX.GPU.Vulkan.root,
      LUX.GPU.Vulkan.Memory;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -65,18 +66,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffers
 
-     TVkBuffers<TVkDevice_:class> = class( TObjectList<TVkBuffer<TVkDevice_>> )
+     TVkBuffers<TVkDevice_:class> = class( TVkDeviceLister<TVkDevice_,TVkBuffer<TVkDevice_>> )
      private
        type TVkBuffer_ = TVkBuffer<TVkDevice_>;
      protected
-       _Device :TVkDevice_;
      public
-       constructor Create( const Device_:TVkDevice_ );
-       destructor Destroy; override;
-       ///// プロパティ
-       property Device :TVkDevice_ read _Device;
        ///// メソッド
        function Add :TVkBuffer_; overload;
+       procedure FreeHandles;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -185,7 +182,7 @@ constructor TVkBuffer<TVkDevice_>.Create;
 begin
      inherited;
 
-     _Handle := 0;
+     _Handle := VK_NULL_HANDLE;
 
      _Memory := TVkBufMem_.Create( Self );
 
@@ -246,7 +243,7 @@ destructor TVkBuffer<TVkDevice_>.Destroy;
 begin
      _Memory.Free;
 
-      Handle := 0;
+      Handle := VK_NULL_HANDLE;
 
      inherited;
 end;
@@ -273,32 +270,22 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkBuffers<TVkDevice_>.Create( const Device_:TVkDevice_ );
-begin
-     inherited Create;
-
-     _Device := Device_;
-end;
-
-destructor TVkBuffers<TVkDevice_>.Destroy;
-begin
-
-     inherited;
-end;
-
 /////////////////////////////////////////////////////////////////////// メソッド
 
 function TVkBuffers<TVkDevice_>.Add :TVkBuffer_;
 begin
-     Result := TVkBuffer_.Create( _Device );
+     Result := TVkBuffer_.Create( Device );
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TVkBuffers<TVkDevice_>.FreeHandles;
+var
+   B :TVkBuffer_;
+begin
+     for B in Self do B.Handle := VK_NULL_HANDLE;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
-
-//############################################################################## □
-
-initialization //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 初期化
-
-finalization //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 最終化
 
 end. //######################################################################### ■
