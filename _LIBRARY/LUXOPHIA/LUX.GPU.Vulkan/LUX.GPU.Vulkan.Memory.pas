@@ -15,7 +15,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkMemory
 
-     TVkMemory<TVkDevice_,TVkParent_:class> = class( TVkDeviceChildr<TVkDevice_,TVkParent_> )
+     TVkMemory<TVkDevice_,TVkParent_:class> = class( TVkDeviceObject<TVkDevice_,TVkParent_> )
      private
      protected
        _Inform :VkMemoryAllocateInfo;

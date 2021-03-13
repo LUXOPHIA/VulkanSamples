@@ -6,7 +6,7 @@ uses SYstem.Generics.Collections;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkDeviceChildr<TVkDevice_,TVkParent_:class>            = class;
+     TVkDeviceObject<TVkDevice_,TVkParent_:class>            = class;
 
      TVkDeviceLister<TVkDevice_,TVkParent_,TVkChildr_:class> = class;
      TVkDeviceLister<TVkDevice_,TVkChildr_:class>            = class;
@@ -17,7 +17,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDeviceChildr<TVkDevice_,TVkParent_>
 
-     TVkDeviceChildr<TVkDevice_,TVkParent_:class> = class
+     TVkDeviceObject<TVkDevice_,TVkParent_:class> = class
      private
      protected
        _Parent :TVkParent_;
@@ -77,20 +77,20 @@ implementation //###############################################################
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-function TVkDeviceChildr<TVkDevice_,TVkParent_>.GetParent :TVkParent_;
+function TVkDeviceObject<TVkDevice_,TVkParent_>.GetParent :TVkParent_;
 begin
      Result := _Parent;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkDeviceChildr<TVkDevice_,TVkParent_>.Create;
+constructor TVkDeviceObject<TVkDevice_,TVkParent_>.Create;
 begin
      inherited;
 
 end;
 
-constructor TVkDeviceChildr<TVkDevice_,TVkParent_>.Create( const Parent_:TVkParent_ );
+constructor TVkDeviceObject<TVkDevice_,TVkParent_>.Create( const Parent_:TVkParent_ );
 begin
      Create;
 
