@@ -3,12 +3,13 @@
 interface //#################################################################### ■
 
 uses System.Generics.Collections,
-     vulkan_core, vulkan_win32;
+     vulkan_core,
+     LUX.GPU.Vulkan.root;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkBuffers<TVkDevice_:class>      = class;
-       TVkBuffer<TVkDevice_:class>     = class;
+     TVkBuffers<TVkDevice_:class>    = class;
+       TVkBuffer<TVkDevice_:class>   = class;
          TVkMemory<TVkDevice_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
@@ -17,26 +18,25 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkMemory
 
-     TVkMemory<TVkDevice_:class> = class
+     TVkMemory<TVkDevice_:class> = class( TVkDeviceChildr<TVkDevice_,TVkBuffer<TVkDevice_>> )
      private
        type TVkBuffer_ = TVkBuffer<TVkDevice_>;
      protected
-       _Buffer :TVkBuffer_;
        _Inform :VkMemoryAllocateInfo;
        _Handle :VkDeviceMemory;
        ///// アクセス
-       function GetDevice :TVkDevice_;
+       function GetDevice :TVkDevice_; override;
        function GetHandle :VkDeviceMemory;
        procedure SetHandle( const Handle_:VkDeviceMemory );
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create( const Buffer_:TVkBuffer_ );
+       constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
        property Device :TVkDevice_           read GetDevice;
-       property Buffer :TVkBuffer_           read   _Buffer;
+       property Buffer :TVkBuffer_           read GetParent;
        property Inform :VkMemoryAllocateInfo read   _Inform;
        property Handle :VkDeviceMemory       read GetHandle write SetHandle;
        ///// メソッド
@@ -118,7 +118,7 @@ uses System.Math,
 
 function TVkMemory<TVkDevice_>.GetDevice :TVkDevice_;
 begin
-     Result := _Buffer.Device;
+     Result := Buffer.Device;
 end;
 
 //------------------------------------------------------------------------------
@@ -148,7 +148,7 @@ procedure TVkMemory<TVkDevice_>.CreateHandle;
 var
    R :VkMemoryRequirements;
 begin
-     R := TVkBuffer( _Buffer ).GetRequir;
+     R := TVkBuffer( Buffer ).GetRequir;
 
      _Inform                 := Default( VkMemoryAllocateInfo );
      _Inform.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
@@ -171,18 +171,16 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkMemory<TVkDevice_>.Create( const Buffer_:TVkBuffer_ );
+constructor TVkMemory<TVkDevice_>.Create;
 begin
-     inherited Create;
+     inherited;
 
-     _Handle := 0;
-
-     _Buffer := Buffer_;
+     _Handle := VK_NULL_HANDLE;
 end;
 
 destructor TVkMemory<TVkDevice_>.Destroy;
 begin
-      Handle := 0;
+      Handle := VK_NULL_HANDLE;
 
      inherited;
 end;
@@ -191,7 +189,7 @@ end;
 
 function TVkMemory<TVkDevice_>.Bind :Boolean;
 begin
-     Result := vkBindBufferMemory( TVkDevice( Device ).Handle, TVkBuffer( _Buffer ).Handle, Handle, 0 ) = VK_SUCCESS;
+     Result := vkBindBufferMemory( TVkDevice( Device ).Handle, TVkBuffer( Buffer ).Handle, Handle, 0 ) = VK_SUCCESS;
 end;
 
 //------------------------------------------------------------------------------
