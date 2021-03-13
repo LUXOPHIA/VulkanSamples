@@ -490,6 +490,7 @@ procedure init_descriptor_set( const Vulkan_:TVulkan; use_texture_:T_bool );
 var
    res        :VkResult;
    alloc_info :array [ 0..1-1 ] of VkDescriptorSetAllocateInfo;
+   D          :VkDescriptorBufferInfo;
    writes     :array [ 0..2-1 ] of VkWriteDescriptorSet;
 begin
      (* DEPENDS on init_descriptor_pool() *)
@@ -510,7 +511,8 @@ begin
      writes[0].dstSet          := Vulkan_.Info.desc_set[0];
      writes[0].descriptorCount := 1;
      writes[0].descriptorType  := VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-     writes[0].pBufferInfo     := @Vulkan_.Instans[0].Devices[0].Buffers[0].Descri;
+     D := Vulkan_.Instans[0].Devices[0].Buffers[0].Descri;
+     writes[0].pBufferInfo     := @D;
      writes[0].dstArrayElement := 0;
      writes[0].dstBinding      := 0;
 
