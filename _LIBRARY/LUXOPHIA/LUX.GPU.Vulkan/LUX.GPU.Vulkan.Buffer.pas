@@ -12,6 +12,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        TVkBuffer<TVkDevice_:class>   = class;
          TVkBufMem<TVkDevice_:class> = class;
 
+       TVkUniBuf<TVkDevice_:class>                = class;
        TVkBuffer<TVkDevice_:class;TValue_:record> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
@@ -50,6 +51,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// アクセス
        function GetSize :VkDeviceSize; virtual;
        procedure SetSize( const Size_:VkDeviceSize ); virtual;
+       function GetUsage :VkBufferUsageFlags; virtual;
+       procedure SetUsage( const Usage_:VkBufferUsageFlags ); virtual;
+       function GetSharingMode :VkSharingMode; virtual;
+       procedure SetSharingMode( const SharingMode_:VkSharingMode ); virtual;
        function GetHandle :VkBuffer; virtual;
        procedure SetHandle( const Handle_:VkBuffer ); virtual;
        function GetDescri :VkDescriptorBufferInfo; virtual;
@@ -62,20 +67,31 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Device_:TVkDevice_ ); overload; virtual;
        destructor Destroy; override;
        ///// プロパティ
-       property Device :TVkDevice_             read   _Device;
-       property Inform :VkBufferCreateInfo     read   _Inform;
-       property Size   :VkDeviceSize           read GetSize   write SetSize  ;
-       property Handle :VkBuffer               read GetHandle write SetHandle;
-       property Descri :VkDescriptorBufferInfo read GetDescri;
-       property Requir :VkMemoryRequirements   read GetRequir;
-       property Memory :TVkBufMem_             read   _Memory;
+       property Device      :TVkDevice_             read   _Device                          ;
+       property Inform      :VkBufferCreateInfo     read   _Inform                          ;
+       property Size        :VkDeviceSize           read GetSize        write SetSize       ;
+       property Usage       :VkBufferUsageFlags     read GetUsage       write SetUsage      ;
+       property SharingMode :VkSharingMode          read GetSharingMode write SetSharingMode;
+       property Handle      :VkBuffer               read GetHandle      write SetHandle     ;
+       property Descri      :VkDescriptorBufferInfo read GetDescri                          ;
+       property Requir      :VkMemoryRequirements   read GetRequir                          ;
+       property Memory      :TVkBufMem_             read   _Memory                          ;
        ///// メソッド
        function Bind( const Memory_:TVkBufMem_ ) :Boolean;
      end;
 
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkUniBuf<TVkDevice_>
+
+     TVkUniBuf<TVkDevice_:class> = class( TVkBuffer<TVkDevice_> )
+     private
+     protected
+     public
+       constructor Create; override;
+     end;
+
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_,TValue_>
 
-     TVkBuffer<TVkDevice_:class;TValue_:record> = class( TVkBuffer<TVkDevice_> )
+     TVkBuffer<TVkDevice_:class;TValue_:record> = class( TVkUniBuf<TVkDevice_> )
      private
      protected
        _Value :TValue_;
@@ -180,6 +196,34 @@ end;
 
 //------------------------------------------------------------------------------
 
+function TVkBuffer<TVkDevice_>.GetUsage :VkBufferUsageFlags;
+begin
+     Result := _Inform.usage;
+end;
+
+procedure TVkBuffer<TVkDevice_>.SetUsage( const Usage_:VkBufferUsageFlags );
+begin
+     _Inform.usage := Usage_;
+
+     Handle := VK_NULL_HANDLE;
+end;
+
+//------------------------------------------------------------------------------
+
+function TVkBuffer<TVkDevice_>.GetSharingMode :VkSharingMode;
+begin
+     Result := _Inform.sharingMode;
+end;
+
+procedure TVkBuffer<TVkDevice_>.SetSharingMode( const SharingMode_:VkSharingMode );
+begin
+     _Inform.sharingMode := SharingMode_;
+
+     Handle := VK_NULL_HANDLE;
+end;
+
+//------------------------------------------------------------------------------
+
 function TVkBuffer<TVkDevice_>.GetHandle :VkBuffer;
 begin
      if _Handle = VK_NULL_HANDLE then CreateHandle;
@@ -244,14 +288,16 @@ begin
           sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
           pNext                 := nil;
           flags                 := 0;
-       // size                  :
-          usage                 := Ord( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
-          sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
+       // size                   = Size
+       // usage                  = Usage
+       // sharingMode            = SharingMode
           queueFamilyIndexCount := 0;
           pQueueFamilyIndices   := nil;
      end;
 
-     Size := 0;
+     Size        := 0;
+     Usage       := 0;
+     SharingMode := VK_SHARING_MODE_EXCLUSIVE;
 end;
 
 constructor TVkBuffer<TVkDevice_>.Create( const Device_:TVkDevice_ );
@@ -277,6 +323,21 @@ end;
 function TVkBuffer<TVkDevice_>.Bind( const Memory_:TVkBufMem_ ) :Boolean;
 begin
      Result := vkBindBufferMemory( TVkDevice( Device ).Handle, Handle, Memory_.Handle, 0 ) = VK_SUCCESS;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkUniBuf<TVkDevice_>
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkUniBuf<TVkDevice_>.Create;
+begin
+     inherited;
+
+     Usage := Ord( VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_,TValue_>
