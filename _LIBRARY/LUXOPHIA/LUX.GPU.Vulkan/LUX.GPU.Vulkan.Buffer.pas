@@ -2,8 +2,7 @@
 
 interface //#################################################################### ■
 
-uses System.Generics.Collections,
-     vulkan_core,
+uses vulkan_core,
      LUX.GPU.Vulkan.root,
      LUX.GPU.Vulkan.Memory;
 
@@ -13,11 +12,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        TVkBuffer<TVkDevice_:class>   = class;
          TVkBufMem<TVkDevice_:class> = class;
 
+       TVkBuffer<TVkDevice_:class;TValue_:record> = class;
+
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBufMem
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBufMem<TVkDevice_>
 
      TVkBufMem<TVkDevice_:class> = class( TVkMemory<TVkDevice_,TVkBuffer<TVkDevice_>> )
      private
@@ -36,7 +37,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property TypeI  :UInt32       read GetTypeI ;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_>
 
      TVkBuffer<TVkDevice_:class> = class
      private
@@ -52,12 +53,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetHandle :VkBuffer; virtual;
        procedure SetHandle( const Handle_:VkBuffer ); virtual;
        function GetDescri :VkDescriptorBufferInfo; virtual;
+       function GetRequir :VkMemoryRequirements; virtual;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create; overload;
-       constructor Create( const Device_:TVkDevice_ ); overload;
+       constructor Create; overload; virtual;
+       constructor Create( const Device_:TVkDevice_ ); overload; virtual;
        destructor Destroy; override;
        ///// プロパティ
        property Device :TVkDevice_             read   _Device;
@@ -65,16 +67,30 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Size   :VkDeviceSize           read GetSize   write SetSize  ;
        property Handle :VkBuffer               read GetHandle write SetHandle;
        property Descri :VkDescriptorBufferInfo read GetDescri;
+       property Requir :VkMemoryRequirements   read GetRequir;
        property Memory :TVkBufMem_             read   _Memory;
        ///// メソッド
-       function GetRequir :VkMemoryRequirements;
        function Bind( const Memory_:TVkBufMem_ ) :Boolean;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_:class;TItemer_:>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_,TValue_>
 
+     TVkBuffer<TVkDevice_:class;TValue_:record> = class( TVkBuffer<TVkDevice_> )
+     private
+     protected
+       _Value :TValue_;
+       ///// アクセス
+       function GetValue :TValue_; virtual;
+       procedure SetValue( const Value_:TValue_ ); virtual;
+       ///// プロパティ
+       property Size :VkDeviceSize read GetSize write SetSize;
+     public
+       constructor Create; override;
+       ///// プロパティ
+       property Value :TValue_ read GetValue write SetValue;
+     end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffers
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffers<TVkDevice_>
 
      TVkBuffers<TVkDevice_:class> = class( TVkDeviceLister<TVkDevice_,TVkBuffer<TVkDevice_>> )
      private
@@ -94,15 +110,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
-uses System.Math,
-     LUX, LUX.D1, LUX.D2, LUX.D3, LUX.D4, LUX.D4x4,
-     LUX.GPU.Vulkan;
+uses LUX.GPU.Vulkan;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBufMem
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBufMem<TVkDevice_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -119,7 +133,7 @@ end;
 
 function TVkBufMem<TVkDevice_>.GetSize :VkDeviceSize;
 begin
-     Result := Buffer.GetRequir.size;
+     Result := Buffer.Requir.size;
 end;
 
 //------------------------------------------------------------------------------
@@ -127,7 +141,7 @@ end;
 function TVkBufMem<TVkDevice_>.GetTypeI :UInt32;
 begin
      Assert( TVkDevice( Device ).memory_type_from_properties(
-                  Buffer.GetRequir.memoryTypeBits,
+                  Buffer.Requir.memoryTypeBits,
                   Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT ),
                   Result ),
              'No mappable, coherent memory' );
@@ -144,7 +158,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -192,6 +206,13 @@ begin
      end;
 end;
 
+//------------------------------------------------------------------------------
+
+function TVkBuffer<TVkDevice_>.GetRequir :VkMemoryRequirements;
+begin
+     vkGetBufferMemoryRequirements( TVkDevice( Device ).Handle, Handle, @Result );
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkBuffer<TVkDevice_>.CreateHandle;
@@ -230,47 +251,16 @@ begin
           pQueueFamilyIndices   := nil;
      end;
 
-     Size := SizeOf( TSingleM4 );
+     Size := 0;
 end;
 
 constructor TVkBuffer<TVkDevice_>.Create( const Device_:TVkDevice_ );
-var
-   fov        :Single;
-   Projection :TSingleM4;
-   View       :TSingleM4;
-   Model      :TSingleM4;
-   Clip       :TSingleM4;
-   MVP        :TSingleM4;
-   pData      :PByte;
 begin
      Create;
 
      _Device := Device_;
 
      TVkDevice( _Device ).Buffers.Add( TVkBuffer( Self ) );
-
-     //////////////////////////////
-
-     fov := DegToRad( 45 );
-     Projection := TSingleM4.ProjPersH( fov, 1, 0.1, 100 );
-     View := TSingleM4.LookAt( TSingle3D.Create( -5, +3, -10 ),    // Camera is at (-5,3,-10), in World Space
-                               TSingle3D.Create(  0,  0,   0 ),    // and looks at the origin
-                               TSingle3D.Create(  0, -1,   0 ) );  // Head is up (set to 0,-1,0 to look upside-down)
-
-     Model := TSingleM4.Identity;
-     // Vulkan clip space has inverted Y and half Z.
-     Clip := TSingleM4.Create( +1.0,  0.0,  0.0,  0.0,
-                                0.0, -1.0,  0.0,  0.0,
-                                0.0,  0.0, +0.5, +0.5,
-                                0.0,  0.0,  0.0, +1.0 );
-
-     MVP := Clip * Projection *View * Model;
-
-     _Memory.Map( pData );
-
-     Move( MVP, pData^, SizeOf( MVP ) );
-
-     _Memory.Unmap;
 end;
 
 destructor TVkBuffer<TVkDevice_>.Destroy;
@@ -284,19 +274,47 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-function TVkBuffer<TVkDevice_>.GetRequir :VkMemoryRequirements;
-begin
-     vkGetBufferMemoryRequirements( TVkDevice( Device ).Handle, Handle, @Result );
-end;
-
-//------------------------------------------------------------------------------
-
 function TVkBuffer<TVkDevice_>.Bind( const Memory_:TVkBufMem_ ) :Boolean;
 begin
      Result := vkBindBufferMemory( TVkDevice( Device ).Handle, Handle, Memory_.Handle, 0 ) = VK_SUCCESS;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffers
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_,TValue_>
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkBuffer<TVkDevice_,TValue_>.GetValue :TValue_;
+begin
+     Result := _Value;
+end;
+
+procedure TVkBuffer<TVkDevice_,TValue_>.SetValue( const Value_:TValue_ );
+var
+   P :PByte;
+begin
+     _Value := Value_;
+
+     _Memory.Map( P );
+
+     Move( _Value, P^, Size );
+
+     _Memory.Unmap;
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkBuffer<TVkDevice_,TValue_>.Create;
+begin
+     inherited;
+
+     Size := SizeOf( TValue_ );
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffers<TVkDevice_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 

@@ -23,41 +23,42 @@ uses vulkan_core,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVulkan                   = class;
-       TVkLayeres              = TVkLayeres<TVulkan>;
-         TVkLayere             = TVkLayere<TVulkan>;
-       TVkInstans              = TVkInstans<TVulkan>;
-         TVkInstan             = TVkInstan<TVulkan>;
-           TVkInstanInform     = TVkInstanInform<TVkInstan>;
-             TVkApplicInform   = TVkApplicInform<TVkInstanInform>;
-           TVkSurfacs          = TVkSurfacs<TVkInstan>;
-             TVkSurfac         = TVkSurfac<TVkInstan>;
-           TVkDevices          = TVkDevices<TVkInstan>;
-             TVkDevice         = TVkDevice<TVkInstan>;
-               TVkDevLays      = TVkDevLays<TVkDevice>;
-                 TVkDevLay     = TVkDevLay<TVkDevice>;
-               TVkPoolers      = TVkPoolers<TVkDevice>;
-                 TVkPooler     = TVkPooler<TVkDevice>;
-                   TVkCommans  = TVkCommans<TVkPooler>;
-                     TVkComman = TVkComman<TVkPooler>;
-               TVkBuffers      = TVkBuffers<TVkDevice>;
-                 TVkBuffer     = TVkBuffer<TVkDevice>;
-                   TVkBufMem   = TVkBufMem<TVkDevice>;
-               TVkSwapchs      = TVkSwapchs<TVkDevice>;
-                 TVkSwapch     = TVkSwapch<TVkDevice>;
-                   TVkFramers  = TVkFramers<TVkSwapch>;
-                     TVkFramer = TVkFramer<TVkSwapch>;
-               TVkDepthr       = TVkDepthr<TVkDevice>;
-                 TVkDepMem     = TVkDepMem<TVkDevice>;
-                 TVkDepVie     = TVkDepVie<TVkDevice>;
-               TVkTexturs      = TVkTexturs<TVkDevice>;
-                 TVkTextur     = TVkTextur<TVkDevice>;
-                   TVkTexIma   = TVkTexIma<TVkDevice>;
-                   TVkSamplr   = TVkSamplr<TVkDevice>;
-               TVkPipeline     = TVkPipeline<TVkDevice>;
-                 TVkShader     = TVkShader<TVkPipeline>;
-                 TVkShaderVert = TVkShaderVert<TVkPipeline>;
-                 TVkShaderFrag = TVkShaderFrag<TVkPipeline>;
+     TVulkan                               = class;
+       TVkLayeres                          = TVkLayeres<TVulkan>;
+         TVkLayere                         = TVkLayere<TVulkan>;
+       TVkInstans                          = TVkInstans<TVulkan>;
+         TVkInstan                         = TVkInstan<TVulkan>;
+           TVkInstanInform                 = TVkInstanInform<TVkInstan>;
+             TVkApplicInform               = TVkApplicInform<TVkInstanInform>;
+           TVkSurfacs                      = TVkSurfacs<TVkInstan>;
+             TVkSurfac                     = TVkSurfac<TVkInstan>;
+           TVkDevices                      = TVkDevices<TVkInstan>;
+             TVkDevice                     = TVkDevice<TVkInstan>;
+               TVkDevLays                  = TVkDevLays<TVkDevice>;
+                 TVkDevLay                 = TVkDevLay<TVkDevice>;
+               TVkPoolers                  = TVkPoolers<TVkDevice>;
+                 TVkPooler                 = TVkPooler<TVkDevice>;
+                   TVkCommans              = TVkCommans<TVkPooler>;
+                     TVkComman             = TVkComman<TVkPooler>;
+               TVkBuffers                  = TVkBuffers<TVkDevice>;
+                 TVkBuffer                 = TVkBuffer<TVkDevice>;
+                   TVkBufMem               = TVkBufMem<TVkDevice>;
+                 TVkBuffer<TValue_:record> = class( TVkBuffer<TVkDevice,TValue_> );
+               TVkSwapchs                  = TVkSwapchs<TVkDevice>;
+                 TVkSwapch                 = TVkSwapch<TVkDevice>;
+                   TVkFramers              = TVkFramers<TVkSwapch>;
+                     TVkFramer             = TVkFramer<TVkSwapch>;
+               TVkDepthr                   = TVkDepthr<TVkDevice>;
+                 TVkDepMem                 = TVkDepMem<TVkDevice>;
+                 TVkDepVie                 = TVkDepVie<TVkDevice>;
+               TVkTexturs                  = TVkTexturs<TVkDevice>;
+                 TVkTextur                 = TVkTextur<TVkDevice>;
+                   TVkTexIma               = TVkTexIma<TVkDevice>;
+                   TVkSamplr               = TVkSamplr<TVkDevice>;
+               TVkPipeline                 = TVkPipeline<TVkDevice>;
+                 TVkShader                 = TVkShader<TVkPipeline>;
+                 TVkShaderVert             = TVkShaderVert<TVkPipeline>;
+                 TVkShaderFrag             = TVkShaderFrag<TVkPipeline>;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
