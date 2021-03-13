@@ -42,13 +42,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImager<TVkDevice,TParent>
 
-     TVkImager<TVkDevice_,TParent_:class> = class
+     TVkImager<TVkDevice_,TParent_:class> = class( TVkDeviceObject<TVkDevice_,TParent_> )
      private
        type TVkViewer_ = TVkViewer<TVkDevice_,TParent_>;
        ///// メソッド
        procedure init_buffer;
      protected
-       _Parent  :TParent_;
        _Usagers :VkImageUsageFlags;
        _Featurs :VkFormatFeatureFlags;
        _Inform  :VkImageCreateInfo;
@@ -64,7 +63,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _BufferMemoryHandle :VkDeviceMemory;
 
        ///// アクセス
-       function GetDevice :TVkDevice_; virtual; abstract;
        function GetStaging :Boolean;
        function GetPixelsW :UInt32;
        procedure SetPixelsW( const PixelsW_:UInt32 );
@@ -76,12 +74,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create; overload;
-       constructor Create( const Parent_:TParent_ ); overload;
+       constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Device  :TVkDevice_           read GetDevice ;
-       property Parent  :TParent_             read   _Parent ;
        property Usagers :VkImageUsageFlags    read   _Usagers write   _Usagers;
        property Featurs :VkFormatFeatureFlags read   _Featurs write   _Featurs;
        property Staging :Boolean              read GetStaging;
@@ -389,13 +384,6 @@ begin
 
      Usagers := 0;
      Featurs := 0;
-end;
-
-constructor TVkImager<TVkDevice_,TParent_>.Create( const Parent_:TParent_ );
-begin
-     Create;
-
-     _Parent := Parent_;
 end;
 
 destructor TVkImager<TVkDevice_,TParent_>.Destroy;
