@@ -8,10 +8,11 @@ uses vulkan_core,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkBuffers<TVkDevice_:class>    = class;
-       TVkBuffer<TVkDevice_:class>   = class;
-         TVkBufMem<TVkDevice_:class> = class;
+     TVkBuffers<TVkDevice_:class>               = class;
+       TVkBuffer<TVkDevice_,TVkParent_:class>   = class;
+         TVkBufMem<TVkDevice_,TVkParent_:class> = class;
 
+       TVkBuffer<TVkDevice_:class>                = class;
        TVkUniBuf<TVkDevice_:class>                = class;
        TVkUniBuf<TVkDevice_:class;TValue_:record> = class;
 
@@ -19,11 +20,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBufMem<TVkDevice_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBufMem<TVkDevice_,TVkParent_>
 
-     TVkBufMem<TVkDevice_:class> = class( TVkMemory<TVkDevice_,TVkBuffer<TVkDevice_>> )
+     TVkBufMem<TVkDevice_,TVkParent_:class> = class( TVkMemory<TVkDevice_,TVkBuffer<TVkDevice_,TVkParent_>> )
      private
-       type TVkBuffer_ = TVkBuffer<TVkDevice_>;
+       type TVkBuffer_ = TVkBuffer<TVkDevice_,TVkParent_>;
      protected
        ///// アクセス
        function GetDevice :TVkDevice_; override;
@@ -38,18 +39,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property TypeI  :UInt32       read GetTypeI ;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_,TVkParent_>
 
-     TVkBuffer<TVkDevice_:class> = class( TVkDeviceObject<TVkDevice_,TVkBuffers<TVkDevice_>> )
+     TVkBuffer<TVkDevice_,TVkParent_:class> = class( TVkDeviceObject<TVkDevice_,TVkParent_> )
      private
-       type TVkBuffers_ = TVkBuffers<TVkDevice_>;
-            TVkBufMem_  = TVkBufMem <TVkDevice_>;
+       type TVkBufMem_ = TVkBufMem <TVkDevice_,TVkParent_>;
      protected
        _Inform :VkBufferCreateInfo;
        _Handle :VkBuffer;
        _Memory :TVkBufMem_;
        ///// アクセス
-       function GetDevice :TVkDevice_; override;
        function GetSize :VkDeviceSize; virtual;
        procedure SetSize( const Size_:VkDeviceSize ); virtual;
        function GetUsage :VkBufferUsageFlags; virtual;
@@ -65,11 +64,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DestroHandle;
      public
        constructor Create; override;
-       constructor Create( const Buffers_:TVkBuffers_ ); override;
-       constructor Create( const Device_:TVkDevice_ ); overload; virtual;
        destructor Destroy; override;
        ///// プロパティ
-       property Buffers     :TVkBuffers_            read GetParent                          ;
        property Inform      :VkBufferCreateInfo     read   _Inform                          ;
        property Size        :VkDeviceSize           read GetSize        write SetSize       ;
        property Usage       :VkBufferUsageFlags     read GetUsage       write SetUsage      ;
@@ -80,6 +76,21 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Memory      :TVkBufMem_             read   _Memory                          ;
        ///// メソッド
        function Bind( const Memory_:TVkBufMem_ ) :Boolean;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_>
+
+     TVkBuffer<TVkDevice_:class> = class( TVkBuffer<TVkDevice_,TVkBuffers<TVkDevice_>> )
+     private
+       type TVkBuffers_ = TVkBuffers<TVkDevice_>;
+     protected
+       ///// アクセス
+       function GetDevice :TVkDevice_; override;
+     public
+       constructor Create( const Buffers_:TVkBuffers_ ); override;
+       constructor Create( const Device_:TVkDevice_ ); overload; virtual;
+       ///// プロパティ
+       property Buffers :TVkBuffers_ read GetParent;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkUniBuf<TVkDevice_>
@@ -134,7 +145,7 @@ uses LUX.GPU.Vulkan;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBufMem<TVkDevice_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBufMem<TVkDevice_,TVkParent_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -142,21 +153,21 @@ uses LUX.GPU.Vulkan;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkBufMem<TVkDevice_>.GetDevice :TVkDevice_;
+function TVkBufMem<TVkDevice_,TVkParent_>.GetDevice :TVkDevice_;
 begin
      Result := Buffer.Device;
 end;
 
 //------------------------------------------------------------------------------
 
-function TVkBufMem<TVkDevice_>.GetSize :VkDeviceSize;
+function TVkBufMem<TVkDevice_,TVkParent_>.GetSize :VkDeviceSize;
 begin
      Result := Buffer.Requir.size;
 end;
 
 //------------------------------------------------------------------------------
 
-function TVkBufMem<TVkDevice_>.GetTypeI :UInt32;
+function TVkBufMem<TVkDevice_,TVkParent_>.GetTypeI :UInt32;
 begin
      Assert( TVkDevice( Device ).memory_type_from_properties(
                   Buffer.Requir.memoryTypeBits,
@@ -167,7 +178,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkBufMem<TVkDevice_>.CreateHandle;
+procedure TVkBufMem<TVkDevice_,TVkParent_>.CreateHandle;
 begin
      inherited;
 
@@ -176,7 +187,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_,TVkParent_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -184,19 +195,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkBuffer<TVkDevice_>.GetDevice :TVkDevice_;
-begin
-     Result := Buffers.Device;
-end;
-
-//------------------------------------------------------------------------------
-
-function TVkBuffer<TVkDevice_>.GetSize :VkDeviceSize;
+function TVkBuffer<TVkDevice_,TVkParent_>.GetSize :VkDeviceSize;
 begin
      Result := _Inform.size;
 end;
 
-procedure TVkBuffer<TVkDevice_>.SetSize( const Size_:VkDeviceSize );
+procedure TVkBuffer<TVkDevice_,TVkParent_>.SetSize( const Size_:VkDeviceSize );
 begin
      _Inform.size := Size_;
 
@@ -205,12 +209,12 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TVkBuffer<TVkDevice_>.GetUsage :VkBufferUsageFlags;
+function TVkBuffer<TVkDevice_,TVkParent_>.GetUsage :VkBufferUsageFlags;
 begin
      Result := _Inform.usage;
 end;
 
-procedure TVkBuffer<TVkDevice_>.SetUsage( const Usage_:VkBufferUsageFlags );
+procedure TVkBuffer<TVkDevice_,TVkParent_>.SetUsage( const Usage_:VkBufferUsageFlags );
 begin
      _Inform.usage := Usage_;
 
@@ -219,12 +223,12 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TVkBuffer<TVkDevice_>.GetSharingMode :VkSharingMode;
+function TVkBuffer<TVkDevice_,TVkParent_>.GetSharingMode :VkSharingMode;
 begin
      Result := _Inform.sharingMode;
 end;
 
-procedure TVkBuffer<TVkDevice_>.SetSharingMode( const SharingMode_:VkSharingMode );
+procedure TVkBuffer<TVkDevice_,TVkParent_>.SetSharingMode( const SharingMode_:VkSharingMode );
 begin
      _Inform.sharingMode := SharingMode_;
 
@@ -233,14 +237,14 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TVkBuffer<TVkDevice_>.GetHandle :VkBuffer;
+function TVkBuffer<TVkDevice_,TVkParent_>.GetHandle :VkBuffer;
 begin
      if _Handle = VK_NULL_HANDLE then CreateHandle;
 
      Result := _Handle;
 end;
 
-procedure TVkBuffer<TVkDevice_>.SetHandle( const Handle_:VkBuffer );
+procedure TVkBuffer<TVkDevice_,TVkParent_>.SetHandle( const Handle_:VkBuffer );
 begin
      if _Handle <> VK_NULL_HANDLE then DestroHandle;
 
@@ -249,7 +253,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TVkBuffer<TVkDevice_>.GetDescri :VkDescriptorBufferInfo;
+function TVkBuffer<TVkDevice_,TVkParent_>.GetDescri :VkDescriptorBufferInfo;
 begin
      with Result do
      begin
@@ -261,21 +265,21 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TVkBuffer<TVkDevice_>.GetRequir :VkMemoryRequirements;
+function TVkBuffer<TVkDevice_,TVkParent_>.GetRequir :VkMemoryRequirements;
 begin
      vkGetBufferMemoryRequirements( TVkDevice( Device ).Handle, Handle, @Result );
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkBuffer<TVkDevice_>.CreateHandle;
+procedure TVkBuffer<TVkDevice_,TVkParent_>.CreateHandle;
 begin
      Assert( vkCreateBuffer( TVkDevice( Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 
      Assert( Bind( _Memory ) );
 end;
 
-procedure TVkBuffer<TVkDevice_>.DestroHandle;
+procedure TVkBuffer<TVkDevice_,TVkParent_>.DestroHandle;
 begin
      _Memory.Handle := VK_NULL_HANDLE;
 
@@ -284,7 +288,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkBuffer<TVkDevice_>.Create;
+constructor TVkBuffer<TVkDevice_,TVkParent_>.Create;
 begin
      inherited;
 
@@ -309,19 +313,7 @@ begin
      SharingMode := VK_SHARING_MODE_EXCLUSIVE;
 end;
 
-constructor TVkBuffer<TVkDevice_>.Create( const Buffers_:TVkBuffers_ );
-begin
-     inherited;
-
-     Buffers.Add( Self );
-end;
-
-constructor TVkBuffer<TVkDevice_>.Create( const Device_:TVkDevice_ );
-begin
-     Create( TVkBuffers_( TVkDevice( Device_ ).Buffers ) );
-end;
-
-destructor TVkBuffer<TVkDevice_>.Destroy;
+destructor TVkBuffer<TVkDevice_,TVkParent_>.Destroy;
 begin
      _Memory.Free;
 
@@ -332,9 +324,35 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-function TVkBuffer<TVkDevice_>.Bind( const Memory_:TVkBufMem_ ) :Boolean;
+function TVkBuffer<TVkDevice_,TVkParent_>.Bind( const Memory_:TVkBufMem_ ) :Boolean;
 begin
      Result := vkBindBufferMemory( TVkDevice( Device ).Handle, Handle, Memory_.Handle, 0 ) = VK_SUCCESS;
+end;
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_>
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkBuffer<TVkDevice_>.GetDevice :TVkDevice_;
+begin
+     Result := Buffers.Device;
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkBuffer<TVkDevice_>.Create( const Buffers_:TVkBuffers_ );
+begin
+     inherited;
+
+     Buffers.Add( Self );
+end;
+
+constructor TVkBuffer<TVkDevice_>.Create( const Device_:TVkDevice_ );
+begin
+     Create( TVkBuffers_( TVkDevice( Device_ ).Buffers ) );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkUniBuf<TVkDevice_>

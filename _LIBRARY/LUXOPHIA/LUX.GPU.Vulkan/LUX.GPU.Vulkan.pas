@@ -42,7 +42,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                      TVkComman             = TVkComman<TVkPooler>;
                TVkBuffers                  = TVkBuffers<TVkDevice>;
                  TVkBuffer                 = TVkBuffer<TVkDevice>;
-                   TVkBufMem               = TVkBufMem<TVkDevice>;
+                 TVkUniBuf                 = TVkUniBuf<TVkDevice>;
                  TVkUniBuf<TValue_:record> = class( TVkUniBuf<TVkDevice,TValue_> );
                TVkSwapchs                  = TVkSwapchs<TVkDevice>;
                  TVkSwapch                 = TVkSwapch<TVkDevice>;
