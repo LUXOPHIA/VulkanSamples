@@ -51,6 +51,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure init_buffer;
      protected
        _Parent  :TParent_;
+       _Usagers :VkImageUsageFlags;
+       _Featurs :VkFormatFeatureFlags;
        _Inform  :VkImageCreateInfo;
        _Handle  :VkImage;
        _MemoryInform :VkMemoryAllocateInfo;
@@ -58,17 +60,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
        _Viewer  :TVkViewer_;
 
-       _needs_staging :Boolean;
-
        _BufferInform       :VkBufferCreateInfo;
        _BufferHandle       :VkBuffer;
        _BufferMemoryInform :VkMemoryAllocateInfo;
        _BufferMemoryHandle :VkDeviceMemory;
 
-        extraUsages   :VkImageUsageFlags;
-        extraFeatures :VkFormatFeatureFlags;
        ///// アクセス
        function GetDevice :TVkDevice_; virtual; abstract;
+       function GetStaging :Boolean;
        function GetPixelsW :UInt32;
        procedure SetPixelsW( const PixelsW_:UInt32 );
        function GetPixelsH :UInt32;
@@ -83,13 +82,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Parent_:TParent_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
-       property Device  :TVkDevice_        read GetDevice ;
-       property Parent  :TParent_          read   _Parent ;
-       property Inform  :VkImageCreateInfo read   _Inform ;
-       property PixelsW :UInt32            read GetPixelsW write SetPixelsW;
-       property PixelsH :UInt32            read GetPixelsH write SetPixelsH;
-       property Handle  :VkImage           read GetHandle  write SetHandle;
-       property Viewer  :TVkViewer_        read   _Viewer ;
+       property Device  :TVkDevice_           read GetDevice ;
+       property Parent  :TParent_             read   _Parent ;
+       property Usagers :VkImageUsageFlags    read   _Usagers write   _Usagers;
+       property Featurs :VkFormatFeatureFlags read   _Featurs write   _Featurs;
+       property Staging :Boolean              read GetStaging;
+       property Inform  :VkImageCreateInfo    read   _Inform ;
+       property PixelsW :UInt32               read GetPixelsW write SetPixelsW;
+       property PixelsH :UInt32               read GetPixelsH write SetPixelsH;
+       property Handle  :VkImage              read GetHandle  write SetHandle ;
+       property Viewer  :TVkViewer_           read   _Viewer ;
        ///// メソッド
        procedure LoadFromFile( const FileName_:String );
      end;
@@ -242,6 +244,24 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
+function TVkImager<TVkDevice_,TParent_>.GetStaging :Boolean;
+var
+   Ps :VkFormatProperties;
+   Fs :VkFormatFeatureFlags;
+begin
+     vkGetPhysicalDeviceFormatProperties( TVkDevice( Device ).Physic, VK_FORMAT_R8G8B8A8_UNORM, @Ps );
+
+     (* See if we can use a linear tiled image for a texture, if not, we will
+      * need a staging buffer for the texture data *)
+     Fs := Ord( VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT ) or Featurs;
+
+     Result := ( Ps.linearTilingFeatures and Fs ) <> Fs;
+
+     if Result then Assert( ( Ps.optimalTilingFeatures and Fs ) = Fs );
+end;
+
+//------------------------------------------------------------------------------
+
 function TVkImager<TVkDevice_,TParent_>.GetPixelsW :UInt32;
 begin
      Result := _Inform.extent.width;
@@ -286,25 +306,15 @@ end;
 
 procedure TVkImager<TVkDevice_,TParent_>.CreateHandle;
 var
-   formatProps  :VkFormatProperties;
-   allFeatures  :VkFormatFeatureFlags;
    mem_reqs     :VkMemoryRequirements;
    requirements :VkFlags;
 begin
-     vkGetPhysicalDeviceFormatProperties( TVkDevice( Device ).Physic, VK_FORMAT_R8G8B8A8_UNORM, @formatProps );
-
-     (* See if we can use a linear tiled image for a texture, if not, we will
-      * need a staging buffer for the texture data *)
-     allFeatures := Ord( VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT ) or extraFeatures;
-     _needs_staging := ( ( formatProps.linearTilingFeatures and allFeatures ) <> allFeatures );
-
      //////////
 
-     if _needs_staging then
+     if Staging then
      begin
-          Assert( ( formatProps.optimalTilingFeatures and allFeatures ) = allFeatures );
           init_buffer;
-          extraUsages := extraUsages or Ord( VK_IMAGE_USAGE_TRANSFER_DST_BIT );
+          Usagers := Usagers or Ord( VK_IMAGE_USAGE_TRANSFER_DST_BIT );
      end
      else
      begin
@@ -330,14 +340,14 @@ begin
           mipLevels             := 1;
           arrayLayers           := 1;
           samples               := NUM_SAMPLES;
-          if _needs_staging
+          if Staging
           then tiling           := VK_IMAGE_TILING_OPTIMAL
           else tiling           := VK_IMAGE_TILING_LINEAR;
-          usage                 := Ord( VK_IMAGE_USAGE_SAMPLED_BIT ) or extraUsages;
+          usage                 := Ord( VK_IMAGE_USAGE_SAMPLED_BIT ) or Usagers;
           sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
           queueFamilyIndexCount := 0;
           pQueueFamilyIndices   := nil;
-          if _needs_staging
+          if Staging
           then initialLayout    := VK_IMAGE_LAYOUT_UNDEFINED
           else initialLayout    := VK_IMAGE_LAYOUT_PREINITIALIZED;
      end;
@@ -354,7 +364,7 @@ begin
      _MemoryInform.allocationSize  := 0;
      _MemoryInform.memoryTypeIndex := 0;
      _MemoryInform.allocationSize  := mem_reqs.size;
-     if _needs_staging
+     if Staging
      then requirements := 0
      else requirements := Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
      Assert( TVkDevice( Device ).memory_type_from_properties( mem_reqs.memoryTypeBits, requirements, _MemoryInform.memoryTypeIndex ) );
@@ -386,8 +396,8 @@ begin
 
      _Viewer := TVkViewer_.Create( Self );
 
-     extraUsages   := 0;
-     extraFeatures := 0;
+     Usagers := 0;
+     Featurs := 0;
 end;
 
 constructor TVkImager<TVkDevice_,TParent_>.Create( const Parent_:TParent_ );
@@ -463,7 +473,7 @@ begin
      subres.arrayLayer := 0;
 
      layout := Default( VkSubresourceLayout );
-     if not _needs_staging then
+     if not Staging then
      begin
           (* Get the subresource layout so we know what the row pitch is *)
           vkGetImageSubresourceLayout( TVkDevice( Device ).Handle, Handle, @subres, @layout );
@@ -480,13 +490,13 @@ begin
 
      //////////
 
-     if _needs_staging
+     if Staging
      then res := vkMapMemory( TVkDevice( Device ).Handle, _BufferMemoryHandle, 0, _BufferMemoryInform.allocationSize, 0, @data )
      else res := vkMapMemory( TVkDevice( Device ).Handle, _MemoryHandle , 0, _MemoryInform.allocationSize, 0, @data );
      Assert( res = VK_SUCCESS );
 
      (* Read the ppm file into the mappable image's memory *)
-     if _needs_staging then rowPitch := PixelsW * 4
+     if Staging then rowPitch := PixelsW * 4
                        else rowPitch := layout.rowPitch;
      if not read_ppm( FileName_, PsW, PsH, rowPitch, data ) then
      begin
@@ -494,7 +504,7 @@ begin
           RunError( 256-1 );
      end;
 
-     if _needs_staging
+     if Staging
      then vkUnmapMemory( TVkDevice( Device ).Handle, _BufferMemoryHandle )
      else vkUnmapMemory( TVkDevice( Device ).Handle, _MemoryHandle );
 
@@ -503,7 +513,7 @@ begin
      Assert( vkResetCommandBuffer( TVkDevice( Device ).Poolers[0].Commans[0].Handle, 0 ) = VK_SUCCESS );
      TVkDevice( Device ).Poolers[0].Commans[0].BeginRecord;
 
-     if not _needs_staging then
+     if not Staging then
      begin
           (* If we can use the linear tiled image as a texture, just do it *)
           _imageLayout := VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
