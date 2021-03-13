@@ -21,7 +21,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        type TVkImager_ = TVkImager<TVkDevice_,TParent_>;
      protected
-       _Parent :TVkImager_;
+       _Imager :TVkImager_;
        _Inform :VkImageViewCreateInfo;
        _Handle :VkImageView;
        ///// アクセス
@@ -37,7 +37,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
        ///// プロパティ
        property Device :TVkDevice_            read GetDevice;
-       property Parent :TVkImager_            read   _Parent;
+       property Imager :TVkImager_            read   _Imager;
        property Inform :VkImageViewCreateInfo read   _Inform;
        property Handle :VkImageView           read GetHandle write SetHandle;
      end;
@@ -120,7 +120,7 @@ uses FMX.Types,
 
 function TVkViewer<TVkDevice_,TParent_>.GetDevice :TVkDevice_;
 begin
-     Result := _Parent.Device;
+     Result := _Imager.Device;
 end;
 
 //------------------------------------------------------------------------------
@@ -148,7 +148,7 @@ begin
           sType    := VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
           pNext    := nil;
           flags    := 0;
-          image    := _Parent.Handle;
+          image    := _Imager.Handle;
           viewType := VK_IMAGE_VIEW_TYPE_2D;
           format   := VK_FORMAT_R8G8B8A8_UNORM;
           with components do
@@ -189,7 +189,7 @@ constructor TVkViewer<TVkDevice_,TParent_>.Create( const Parent_:TVkImager_ );
 begin
      Create;
 
-     _Parent := Parent_;
+     _Imager := Parent_;
 end;
 
 destructor TVkViewer<TVkDevice_,TParent_>.Destroy;
