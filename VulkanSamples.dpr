@@ -37,7 +37,8 @@ uses
   LUX.GPU.Vulkan.Framer in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Framer.pas',
   LUX.GPU.Vulkan.Depthr in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Depthr.pas',
   LUX.GPU.Vulkan.Textur in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Textur.pas',
-  LUX.GPU.Vulkan.Imager in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Imager.pas';
+  LUX.GPU.Vulkan.Imager in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Imager.pas',
+  LUX.GPU.Vulkan.root in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.root.pas';
 
 {$R *.res}
 
