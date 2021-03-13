@@ -43,7 +43,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                TVkBuffers                  = TVkBuffers<TVkDevice>;
                  TVkBuffer                 = TVkBuffer<TVkDevice>;
                    TVkBufMem               = TVkBufMem<TVkDevice>;
-                 TVkBuffer<TValue_:record> = class( TVkBuffer<TVkDevice,TValue_> );
+                 TVkUniBuf<TValue_:record> = class( TVkUniBuf<TVkDevice,TValue_> );
                TVkSwapchs                  = TVkSwapchs<TVkDevice>;
                  TVkSwapch                 = TVkSwapch<TVkDevice>;
                    TVkFramers              = TVkFramers<TVkSwapch>;

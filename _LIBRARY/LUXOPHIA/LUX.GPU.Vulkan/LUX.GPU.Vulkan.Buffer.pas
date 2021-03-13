@@ -13,7 +13,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
          TVkBufMem<TVkDevice_:class> = class;
 
        TVkUniBuf<TVkDevice_:class>                = class;
-       TVkBuffer<TVkDevice_:class;TValue_:record> = class;
+       TVkUniBuf<TVkDevice_:class;TValue_:record> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -91,7 +91,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkBuffer<TVkDevice_,TValue_>
 
-     TVkBuffer<TVkDevice_:class;TValue_:record> = class( TVkUniBuf<TVkDevice_> )
+     TVkUniBuf<TVkDevice_:class;TValue_:record> = class( TVkUniBuf<TVkDevice_> )
      private
      protected
        _Value :TValue_;
@@ -348,12 +348,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkBuffer<TVkDevice_,TValue_>.GetValue :TValue_;
+function TVkUniBuf<TVkDevice_,TValue_>.GetValue :TValue_;
 begin
      Result := _Value;
 end;
 
-procedure TVkBuffer<TVkDevice_,TValue_>.SetValue( const Value_:TValue_ );
+procedure TVkUniBuf<TVkDevice_,TValue_>.SetValue( const Value_:TValue_ );
 var
    P :PByte;
 begin
@@ -368,7 +368,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkBuffer<TVkDevice_,TValue_>.Create;
+constructor TVkUniBuf<TVkDevice_,TValue_>.Create;
 begin
      inherited;
 
