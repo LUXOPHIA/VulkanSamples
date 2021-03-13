@@ -9,7 +9,7 @@ uses
   WinApi.Windows,
   vulkan_core,
   vulkan.util, vulkan.util_init,
-  LUX, LUX.Code.C,
+  LUX, LUX.D3, LUX.D4x4,
   LUX.GPU.Vulkan;
 
 type
@@ -22,6 +22,7 @@ type
     const sample_title = 'Draw Textured Cube';
     function CreateWindow( const ClientW_,ClientH_:Integer ) :HWND;
     procedure DestroWindow( const Window_:HWND );
+    function CalcMatrix :TSingleM4;
   public
     { public 宣言 }
     _Window  :HWND;
@@ -34,7 +35,7 @@ type
     _Swapch  :TVkSwapch;
     _Depthr  :TVkDepthr;
     _Textur  :TVkTextur;
-    _Buffer  :TVkBuffer;
+    _Buffer  :TVkBuffer<TSingleM4>;
     _Pipeli  :TVkPipeline;
     _ShaderV :TVkShaderVert;
     _ShaderF :TVkShaderFrag;
@@ -50,7 +51,8 @@ implementation //###############################################################
 
 {$R *.fmx}
 
-uses WinApi.Messages,
+uses System.Math,
+     WinApi.Messages,
      cube_data;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -146,11 +148,37 @@ begin
      DestroyWindow( Window_ );
 end;
 
+//------------------------------------------------------------------------------
+
+function TForm1.CalcMatrix :TSingleM4;
+var
+   fov        :Single;
+   Projection :TSingleM4;
+   View       :TSingleM4;
+   Model      :TSingleM4;
+   Clip       :TSingleM4;
+begin
+     fov := DegToRad( 45 );
+     Projection := TSingleM4.ProjPersH( fov, 1, 0.1, 100 );
+     View := TSingleM4.LookAt( TSingle3D.Create( -5, +3, -10 ),    // Camera is at (-5,3,-10), in World Space
+                               TSingle3D.Create(  0,  0,   0 ),    // and looks at the origin
+                               TSingle3D.Create(  0, -1,   0 ) );  // Head is up (set to 0,-1,0 to look upside-down)
+
+     Model := TSingleM4.Identity;
+     // Vulkan clip space has inverted Y and half Z.
+     Clip := TSingleM4.Create( +1.0,  0.0,  0.0,  0.0,
+                                0.0, -1.0,  0.0,  0.0,
+                                0.0,  0.0, +0.5, +0.5,
+                                0.0,  0.0,  0.0, +1.0 );
+
+     Result := Clip * Projection *View * Model;
+end;
+
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 procedure TForm1.FormCreate(Sender: TObject);
 const
-     depthPresent :T_bool = True;
+     depthPresent :Boolean = True;
 var
    res                              :VkResult;
    clear_values                     :array [ 0..2-1 ] of VkClearValue;
@@ -176,7 +204,8 @@ begin
      _Depthr  := TVkDepthr.Create( _Device );
      _Textur  := TVkTextur.Create( _Device );
      _Textur.LoadFromFile( '../../_DATA/lunarg.ppm' );
-     _Buffer  := TVkBuffer.Create( _Device );
+     _Buffer  := TVkBuffer<TSingleM4>.Create( _Device );
+     _Buffer.Value := CalcMatrix;
      init_descriptor_and_pipeline_layouts( _Vulkan, true );
      init_renderpass( _Vulkan, depthPresent );
      init_framebuffers( _Vulkan, depthPresent );
@@ -207,7 +236,7 @@ begin
      Assert( res = VK_SUCCESS );
 
      // Get the index of the next available swapchain image:
-     res := vkAcquireNextImageKHR( _Device.Handle,  _Swapch.Handle, UINT64_MAX, imageAcquiredSemaphore, VK_NULL_HANDLE,
+     res := vkAcquireNextImageKHR( _Device.Handle,  _Swapch.Handle, UINT64.MaxValue, imageAcquiredSemaphore, VK_NULL_HANDLE,
                                    @_Swapch.Framers.SelectI );
      // TODO: Deal with the VK_SUBOPTIMAL_KHR and VK_ERROR_OUT_OF_DATE_KHR
      // return codes
