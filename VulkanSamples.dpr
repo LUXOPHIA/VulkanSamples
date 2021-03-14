@@ -39,7 +39,8 @@ uses
   LUX.GPU.Vulkan.Textur in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Textur.pas',
   LUX.GPU.Vulkan.Imager in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Imager.pas',
   LUX.GPU.Vulkan.root in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.root.pas',
-  LUX.GPU.Vulkan.Memory in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Memory.pas';
+  LUX.GPU.Vulkan.Memory in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Memory.pas',
+  LUX.GPU.Vulkan.Buffer.Unifor in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Buffer.Unifor.pas';
 
 {$R *.res}
 
