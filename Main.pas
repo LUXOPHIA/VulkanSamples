@@ -36,7 +36,7 @@ type
     _Depthr  :TVkDepthr;
     _Textur  :TVkTextur;
     _Buffer  :TVkUniBuf<TSingleM4>;
-    _Pipeli  :TVkPipeline;
+    _Pipeli  :TVkPipeli;
     _ShaderV :TVkShaderVert;
     _ShaderF :TVkShaderFrag;
 
@@ -213,7 +213,7 @@ begin
      init_descriptor_pool( _Vulkan, True );
      init_descriptor_set( _Vulkan, True );
      init_pipeline_cache( _Vulkan );
-     _Pipeli  := TVkPipeline.Create( _Device, depthPresent );
+     _Pipeli  := TVkPipeli.Create( _Device, depthPresent );
      _ShaderV := TVkShaderVert.Create( _Pipeli );
      _ShaderF := TVkShaderFrag.Create( _Pipeli );
      _ShaderV.LoadFromFile( '../../_DATA/draw_textured_cube.vert' );
