@@ -6482,57 +6482,57 @@ type PFN_vkCreateDisplayPlaneSurfaceKHR               = function( instance_:VkIn
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkGetPhysicalDeviceDisplayPropertiesKHR(
-    physicalDevice_:VkPhysicalDevice;
-    pPropertyCount_:P_uint32_t;
-    pProperties_:P_VkDisplayPropertiesKHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_ :VkPhysicalDevice;
+    pPropertyCount_ :P_uint32_t;
+    pProperties_    :P_VkDisplayPropertiesKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetPhysicalDeviceDisplayPlanePropertiesKHR(
-    physicalDevice_:VkPhysicalDevice;
-    pPropertyCount_:P_uint32_t;
-    pProperties_:P_VkDisplayPlanePropertiesKHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_ :VkPhysicalDevice;
+    pPropertyCount_ :P_uint32_t;
+    pProperties_    :P_VkDisplayPlanePropertiesKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetDisplayPlaneSupportedDisplaysKHR(
-    physicalDevice_:VkPhysicalDevice;
-    planeIndex_:T_uint32_t;
-    pDisplayCount_:P_uint32_t;
-    pDisplays_:P_VkDisplayKHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_ :VkPhysicalDevice;
+    planeIndex_     :T_uint32_t;
+    pDisplayCount_  :P_uint32_t;
+    pDisplays_      :P_VkDisplayKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetDisplayModePropertiesKHR(
-    physicalDevice_:VkPhysicalDevice;
-    display_:VkDisplayKHR;
-    pPropertyCount_:P_uint32_t;
-    pProperties_:P_VkDisplayModePropertiesKHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_ :VkPhysicalDevice;
+    display_        :VkDisplayKHR;
+    pPropertyCount_ :P_uint32_t;
+    pProperties_    :P_VkDisplayModePropertiesKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkCreateDisplayModeKHR(
-    physicalDevice_:VkPhysicalDevice;
-    display_:VkDisplayKHR;
-    pCreateInfo_:P_VkDisplayModeCreateInfoKHR;
-    pAllocator_:P_VkAllocationCallbacks;
-    pMode_:P_VkDisplayModeKHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_ :VkPhysicalDevice;
+    display_        :VkDisplayKHR;
+    pCreateInfo_    :P_VkDisplayModeCreateInfoKHR;
+    pAllocator_     :P_VkAllocationCallbacks;
+    pMode_          :P_VkDisplayModeKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetDisplayPlaneCapabilitiesKHR(
-    physicalDevice_:VkPhysicalDevice;
-    mode_:VkDisplayModeKHR;
-    planeIndex_:T_uint32_t;
-    pCapabilities_:P_VkDisplayPlaneCapabilitiesKHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_ :VkPhysicalDevice;
+    mode_           :VkDisplayModeKHR;
+    planeIndex_     :T_uint32_t;
+    pCapabilities_  :P_VkDisplayPlaneCapabilitiesKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkCreateDisplayPlaneSurfaceKHR(
-    instance_:VkInstance;
-    pCreateInfo_:P_VkDisplaySurfaceCreateInfoKHR;
-    pAllocator_:P_VkAllocationCallbacks;
-    pSurface_:P_VkSurfaceKHR ) :VkResult; stdcall; external DLLNAME;
+    instance_    :VkInstance;
+    pCreateInfo_ :P_VkDisplaySurfaceCreateInfoKHR;
+    pAllocator_  :P_VkAllocationCallbacks;
+    pSurface_    :P_VkSurfaceKHR ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_display_swapchain = 1;
-const VK_KHR_DISPLAY_SWAPCHAIN_SPEC_VERSION = 10;
+const VK_KHR_display_swapchain                = 1;
+const VK_KHR_DISPLAY_SWAPCHAIN_SPEC_VERSION   = 10;
 const VK_KHR_DISPLAY_SWAPCHAIN_EXTENSION_NAME = 'VK_KHR_display_swapchain';
 type P_VkDisplayPresentInfoKHR = ^VkDisplayPresentInfoKHR;
      VkDisplayPresentInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       srcRect :VkRect2D;
-       dstRect :VkRect2D;
+       sType      :VkStructureType;
+       pNext      :P_void;
+       srcRect    :VkRect2D;
+       dstRect    :VkRect2D;
        persistent :VkBool32;
      end;
 
@@ -6540,21 +6540,21 @@ type PFN_vkCreateSharedSwapchainsKHR = function( device_:VkDevice; swapchainCoun
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkCreateSharedSwapchainsKHR(
-    device_:VkDevice;
-    swapchainCount_:T_uint32_t;
-    pCreateInfos_:P_VkSwapchainCreateInfoKHR;
-    pAllocator_:P_VkAllocationCallbacks;
-    pSwapchains_:P_VkSwapchainKHR ) :VkResult; stdcall; external DLLNAME;
+    device_         :VkDevice;
+    swapchainCount_ :T_uint32_t;
+    pCreateInfos_   :P_VkSwapchainCreateInfoKHR;
+    pAllocator_     :P_VkAllocationCallbacks;
+    pSwapchains_    :P_VkSwapchainKHR ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_sampler_mirror_clamp_to_edge = 1;
-const VK_KHR_SAMPLER_MIRROR_CLAMP_TO_EDGE_SPEC_VERSION = 3;
+const VK_KHR_sampler_mirror_clamp_to_edge                = 1;
+const VK_KHR_SAMPLER_MIRROR_CLAMP_TO_EDGE_SPEC_VERSION   = 3;
 const VK_KHR_SAMPLER_MIRROR_CLAMP_TO_EDGE_EXTENSION_NAME = 'VK_KHR_sampler_mirror_clamp_to_edge';
 
 
-const VK_KHR_multiview = 1;
-const VK_KHR_MULTIVIEW_SPEC_VERSION     = 1;
+const VK_KHR_multiview                = 1;
+const VK_KHR_MULTIVIEW_SPEC_VERSION   = 1;
 const VK_KHR_MULTIVIEW_EXTENSION_NAME = 'VK_KHR_multiview';
 type P_VkRenderPassMultiviewCreateInfoKHR = ^VkRenderPassMultiviewCreateInfoKHR;
      VkRenderPassMultiviewCreateInfoKHR = VkRenderPassMultiviewCreateInfo;
@@ -6567,8 +6567,8 @@ type P_VkPhysicalDeviceMultiviewPropertiesKHR = ^VkPhysicalDeviceMultiviewProper
 
 
 
-const VK_KHR_get_physical_device_properties2 = 1;
-const VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_SPEC_VERSION = 2;
+const VK_KHR_get_physical_device_properties2                 = 1;
+const VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_SPEC_VERSION   = 2;
 const VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME = 'VK_KHR_get_physical_device_properties2';
 type P_VkPhysicalDeviceFeatures2KHR = ^VkPhysicalDeviceFeatures2KHR;
      VkPhysicalDeviceFeatures2KHR = VkPhysicalDeviceFeatures2;
@@ -6597,52 +6597,52 @@ type P_VkSparseImageFormatProperties2KHR = ^VkSparseImageFormatProperties2KHR;
 type P_VkPhysicalDeviceSparseImageFormatInfo2KHR = ^VkPhysicalDeviceSparseImageFormatInfo2KHR;
      VkPhysicalDeviceSparseImageFormatInfo2KHR = VkPhysicalDeviceSparseImageFormatInfo2;
 
-type PFN_vkGetPhysicalDeviceFeatures2KHR = procedure( physicalDevice_:VkPhysicalDevice; pFeatures_:P_VkPhysicalDeviceFeatures2 );
-type PFN_vkGetPhysicalDeviceProperties2KHR = procedure( physicalDevice_:VkPhysicalDevice; pProperties_:P_VkPhysicalDeviceProperties2 );
-type PFN_vkGetPhysicalDeviceFormatProperties2KHR = procedure( physicalDevice_:VkPhysicalDevice; format_:VkFormat; pFormatProperties_:P_VkFormatProperties2 );
-type PFN_vkGetPhysicalDeviceImageFormatProperties2KHR = function( physicalDevice_:VkPhysicalDevice; const pImageFormatInfo_:P_VkPhysicalDeviceImageFormatInfo2; pImageFormatProperties_:P_VkImageFormatProperties2 ) :VkResult;
-type PFN_vkGetPhysicalDeviceQueueFamilyProperties2KHR = procedure( physicalDevice_:VkPhysicalDevice; pQueueFamilyPropertyCount_:P_uint32_t; pQueueFamilyProperties_:P_VkQueueFamilyProperties2 );
-type PFN_vkGetPhysicalDeviceMemoryProperties2KHR = procedure( physicalDevice_:VkPhysicalDevice; pMemoryProperties_:P_VkPhysicalDeviceMemoryProperties2 );
+type PFN_vkGetPhysicalDeviceFeatures2KHR                    = procedure( physicalDevice_:VkPhysicalDevice; pFeatures_:P_VkPhysicalDeviceFeatures2 );
+type PFN_vkGetPhysicalDeviceProperties2KHR                  = procedure( physicalDevice_:VkPhysicalDevice; pProperties_:P_VkPhysicalDeviceProperties2 );
+type PFN_vkGetPhysicalDeviceFormatProperties2KHR            = procedure( physicalDevice_:VkPhysicalDevice; format_:VkFormat; pFormatProperties_:P_VkFormatProperties2 );
+type PFN_vkGetPhysicalDeviceImageFormatProperties2KHR       = function( physicalDevice_:VkPhysicalDevice; const pImageFormatInfo_:P_VkPhysicalDeviceImageFormatInfo2; pImageFormatProperties_:P_VkImageFormatProperties2 ) :VkResult;
+type PFN_vkGetPhysicalDeviceQueueFamilyProperties2KHR       = procedure( physicalDevice_:VkPhysicalDevice; pQueueFamilyPropertyCount_:P_uint32_t; pQueueFamilyProperties_:P_VkQueueFamilyProperties2 );
+type PFN_vkGetPhysicalDeviceMemoryProperties2KHR            = procedure( physicalDevice_:VkPhysicalDevice; pMemoryProperties_:P_VkPhysicalDeviceMemoryProperties2 );
 type PFN_vkGetPhysicalDeviceSparseImageFormatProperties2KHR = procedure( physicalDevice_:VkPhysicalDevice; const pFormatInfo_:P_VkPhysicalDeviceSparseImageFormatInfo2; pPropertyCount_:P_uint32_t; pProperties_:P_VkSparseImageFormatProperties2 );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 procedure vkGetPhysicalDeviceFeatures2KHR(
-    physicalDevice_:VkPhysicalDevice;
-    pFeatures_:P_VkPhysicalDeviceFeatures2 ); stdcall; external DLLNAME;
+    physicalDevice_ :VkPhysicalDevice;
+    pFeatures_      :P_VkPhysicalDeviceFeatures2 ); stdcall; external DLLNAME;
 
 procedure vkGetPhysicalDeviceProperties2KHR(
-    physicalDevice_:VkPhysicalDevice;
-    pProperties_:P_VkPhysicalDeviceProperties2 ); stdcall; external DLLNAME;
+    physicalDevice_ :VkPhysicalDevice;
+    pProperties_    :P_VkPhysicalDeviceProperties2 ); stdcall; external DLLNAME;
 
 procedure vkGetPhysicalDeviceFormatProperties2KHR(
-    physicalDevice_:VkPhysicalDevice;
-    format_:VkFormat;
-    pFormatProperties_:P_VkFormatProperties2 ); stdcall; external DLLNAME;
+    physicalDevice_    :VkPhysicalDevice;
+    format_            :VkFormat;
+    pFormatProperties_ :P_VkFormatProperties2 ); stdcall; external DLLNAME;
 
 function vkGetPhysicalDeviceImageFormatProperties2KHR(
-    physicalDevice_:VkPhysicalDevice;
-    pImageFormatInfo_:P_VkPhysicalDeviceImageFormatInfo2;
-    pImageFormatProperties_:P_VkImageFormatProperties2 ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_         :VkPhysicalDevice;
+    pImageFormatInfo_       :P_VkPhysicalDeviceImageFormatInfo2;
+    pImageFormatProperties_ :P_VkImageFormatProperties2 ) :VkResult; stdcall; external DLLNAME;
 
 procedure vkGetPhysicalDeviceQueueFamilyProperties2KHR(
-    physicalDevice_:VkPhysicalDevice;
-    pQueueFamilyPropertyCount_:P_uint32_t;
-    pQueueFamilyProperties_:P_VkQueueFamilyProperties2 ); stdcall; external DLLNAME;
+    physicalDevice_            :VkPhysicalDevice;
+    pQueueFamilyPropertyCount_ :P_uint32_t;
+    pQueueFamilyProperties_    :P_VkQueueFamilyProperties2 ); stdcall; external DLLNAME;
 
 procedure vkGetPhysicalDeviceMemoryProperties2KHR(
-    physicalDevice_:VkPhysicalDevice;
-    pMemoryProperties_:P_VkPhysicalDeviceMemoryProperties2 ); stdcall; external DLLNAME;
+    physicalDevice_    :VkPhysicalDevice;
+    pMemoryProperties_ :P_VkPhysicalDeviceMemoryProperties2 ); stdcall; external DLLNAME;
 
 procedure vkGetPhysicalDeviceSparseImageFormatProperties2KHR(
-    physicalDevice_:VkPhysicalDevice;
-    pFormatInfo_:P_VkPhysicalDeviceSparseImageFormatInfo2;
-    pPropertyCount_:P_uint32_t;
-    pProperties_:P_VkSparseImageFormatProperties2 ); stdcall; external DLLNAME;
+    physicalDevice_ :VkPhysicalDevice;
+    pFormatInfo_    :P_VkPhysicalDeviceSparseImageFormatInfo2;
+    pPropertyCount_ :P_uint32_t;
+    pProperties_    :P_VkSparseImageFormatProperties2 ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_device_group = 1;
-const VK_KHR_DEVICE_GROUP_SPEC_VERSION  = 4;
+const VK_KHR_device_group                = 1;
+const VK_KHR_DEVICE_GROUP_SPEC_VERSION   = 4;
 const VK_KHR_DEVICE_GROUP_EXTENSION_NAME = 'VK_KHR_device_group';
 type P_VkPeerMemoryFeatureFlagsKHR = ^VkPeerMemoryFeatureFlagsKHR;
      VkPeerMemoryFeatureFlagsKHR = VkPeerMemoryFeatureFlags;
@@ -6678,39 +6678,39 @@ type P_VkBindImageMemoryDeviceGroupInfoKHR = ^VkBindImageMemoryDeviceGroupInfoKH
      VkBindImageMemoryDeviceGroupInfoKHR = VkBindImageMemoryDeviceGroupInfo;
 
 type PFN_vkGetDeviceGroupPeerMemoryFeaturesKHR = procedure( device_:VkDevice; heapIndex_:T_uint32_t; localDeviceIndex_:T_uint32_t; remoteDeviceIndex_:T_uint32_t; pPeerMemoryFeatures_:P_VkPeerMemoryFeatureFlags );
-type PFN_vkCmdSetDeviceMaskKHR = procedure( commandBuffer_:VkCommandBuffer; deviceMask_:T_uint32_t );
-type PFN_vkCmdDispatchBaseKHR = procedure( commandBuffer_:VkCommandBuffer; baseGroupX_:T_uint32_t; baseGroupY_:T_uint32_t; baseGroupZ_:T_uint32_t; groupCountX_:T_uint32_t; groupCountY_:T_uint32_t; groupCountZ_:T_uint32_t );
+type PFN_vkCmdSetDeviceMaskKHR                 = procedure( commandBuffer_:VkCommandBuffer; deviceMask_:T_uint32_t );
+type PFN_vkCmdDispatchBaseKHR                  = procedure( commandBuffer_:VkCommandBuffer; baseGroupX_:T_uint32_t; baseGroupY_:T_uint32_t; baseGroupZ_:T_uint32_t; groupCountX_:T_uint32_t; groupCountY_:T_uint32_t; groupCountZ_:T_uint32_t );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 procedure vkGetDeviceGroupPeerMemoryFeaturesKHR(
-    device_:VkDevice;
-    heapIndex_:T_uint32_t;
-    localDeviceIndex_:T_uint32_t;
-    remoteDeviceIndex_:T_uint32_t;
-    pPeerMemoryFeatures_:P_VkPeerMemoryFeatureFlags ); stdcall; external DLLNAME;
+    device_              :VkDevice;
+    heapIndex_           :T_uint32_t;
+    localDeviceIndex_    :T_uint32_t;
+    remoteDeviceIndex_   :T_uint32_t;
+    pPeerMemoryFeatures_ :P_VkPeerMemoryFeatureFlags ); stdcall; external DLLNAME;
 
 procedure vkCmdSetDeviceMaskKHR(
-    commandBuffer_:VkCommandBuffer;
-    deviceMask_:T_uint32_t ); stdcall; external DLLNAME;
+    commandBuffer_ :VkCommandBuffer;
+    deviceMask_    :T_uint32_t ); stdcall; external DLLNAME;
 
 procedure vkCmdDispatchBaseKHR(
-    commandBuffer_:VkCommandBuffer;
-    baseGroupX_:T_uint32_t;
-    baseGroupY_:T_uint32_t;
-    baseGroupZ_:T_uint32_t;
-    groupCountX_:T_uint32_t;
-    groupCountY_:T_uint32_t;
-    groupCountZ_:T_uint32_t ); stdcall; external DLLNAME;
+    commandBuffer_ :VkCommandBuffer;
+    baseGroupX_    :T_uint32_t;
+    baseGroupY_    :T_uint32_t;
+    baseGroupZ_    :T_uint32_t;
+    groupCountX_   :T_uint32_t;
+    groupCountY_   :T_uint32_t;
+    groupCountZ_   :T_uint32_t ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_shader_draw_parameters = 1;
-const VK_KHR_SHADER_DRAW_PARAMETERS_SPEC_VERSION = 1;
+const VK_KHR_shader_draw_parameters                = 1;
+const VK_KHR_SHADER_DRAW_PARAMETERS_SPEC_VERSION   = 1;
 const VK_KHR_SHADER_DRAW_PARAMETERS_EXTENSION_NAME = 'VK_KHR_shader_draw_parameters';
 
 
-const VK_KHR_maintenance1 = 1;
-const VK_KHR_MAINTENANCE1_SPEC_VERSION  = 2;
+const VK_KHR_maintenance1                = 1;
+const VK_KHR_MAINTENANCE1_SPEC_VERSION   = 2;
 const VK_KHR_MAINTENANCE1_EXTENSION_NAME = 'VK_KHR_maintenance1';
 type P_VkCommandPoolTrimFlagsKHR = ^VkCommandPoolTrimFlagsKHR;
      VkCommandPoolTrimFlagsKHR = VkCommandPoolTrimFlags;
@@ -6719,14 +6719,14 @@ type PFN_vkTrimCommandPoolKHR = procedure( device_:VkDevice; commandPool_:VkComm
 
 {$IFNDEF VK_NO_PROTOTYPES }
 procedure vkTrimCommandPoolKHR(
-    device_:VkDevice;
-    commandPool_:VkCommandPool;
-    flags_:VkCommandPoolTrimFlags ); stdcall; external DLLNAME;
+    device_      :VkDevice;
+    commandPool_ :VkCommandPool;
+    flags_       :VkCommandPoolTrimFlags ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_device_group_creation = 1;
-const VK_KHR_DEVICE_GROUP_CREATION_SPEC_VERSION = 1;
+const VK_KHR_device_group_creation                = 1;
+const VK_KHR_DEVICE_GROUP_CREATION_SPEC_VERSION   = 1;
 const VK_KHR_DEVICE_GROUP_CREATION_EXTENSION_NAME = 'VK_KHR_device_group_creation';
 const VK_MAX_DEVICE_GROUP_SIZE_KHR      = VK_MAX_DEVICE_GROUP_SIZE;
 type P_VkPhysicalDeviceGroupPropertiesKHR = ^VkPhysicalDeviceGroupPropertiesKHR;
@@ -6739,16 +6739,16 @@ type PFN_vkEnumeratePhysicalDeviceGroupsKHR = function( instance_:VkInstance; pP
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkEnumeratePhysicalDeviceGroupsKHR(
-    instance_:VkInstance;
-    pPhysicalDeviceGroupCount_:P_uint32_t;
-    pPhysicalDeviceGroupProperties_:P_VkPhysicalDeviceGroupProperties ) :VkResult; stdcall; external DLLNAME;
+    instance_                       :VkInstance;
+    pPhysicalDeviceGroupCount_      :P_uint32_t;
+    pPhysicalDeviceGroupProperties_ :P_VkPhysicalDeviceGroupProperties ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_external_memory_capabilities = 1;
-const VK_KHR_EXTERNAL_MEMORY_CAPABILITIES_SPEC_VERSION = 1;
+const VK_KHR_external_memory_capabilities                = 1;
+const VK_KHR_EXTERNAL_MEMORY_CAPABILITIES_SPEC_VERSION   = 1;
 const VK_KHR_EXTERNAL_MEMORY_CAPABILITIES_EXTENSION_NAME = 'VK_KHR_external_memory_capabilities';
-const VK_LUID_SIZE_KHR                  = VK_LUID_SIZE;
+const VK_LUID_SIZE_KHR                                   = VK_LUID_SIZE;
 type P_VkExternalMemoryHandleTypeFlagsKHR = ^VkExternalMemoryHandleTypeFlagsKHR;
      VkExternalMemoryHandleTypeFlagsKHR = VkExternalMemoryHandleTypeFlags;
 
@@ -6783,16 +6783,16 @@ type PFN_vkGetPhysicalDeviceExternalBufferPropertiesKHR = procedure( physicalDev
 
 {$IFNDEF VK_NO_PROTOTYPES }
 procedure vkGetPhysicalDeviceExternalBufferPropertiesKHR(
-    physicalDevice_:VkPhysicalDevice;
-    pExternalBufferInfo_:P_VkPhysicalDeviceExternalBufferInfo;
-    pExternalBufferProperties_:P_VkExternalBufferProperties ); stdcall; external DLLNAME;
+    physicalDevice_            :VkPhysicalDevice;
+    pExternalBufferInfo_       :P_VkPhysicalDeviceExternalBufferInfo;
+    pExternalBufferProperties_ :P_VkExternalBufferProperties ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_external_memory = 1;
-const VK_KHR_EXTERNAL_MEMORY_SPEC_VERSION = 1;
+const VK_KHR_external_memory                = 1;
+const VK_KHR_EXTERNAL_MEMORY_SPEC_VERSION   = 1;
 const VK_KHR_EXTERNAL_MEMORY_EXTENSION_NAME = 'VK_KHR_external_memory';
-const VK_QUEUE_FAMILY_EXTERNAL_KHR      = VK_QUEUE_FAMILY_EXTERNAL;
+const VK_QUEUE_FAMILY_EXTERNAL_KHR          = VK_QUEUE_FAMILY_EXTERNAL;
 type P_VkExternalMemoryImageCreateInfoKHR = ^VkExternalMemoryImageCreateInfoKHR;
      VkExternalMemoryImageCreateInfoKHR = VkExternalMemoryImageCreateInfo;
 
@@ -6804,8 +6804,8 @@ type P_VkExportMemoryAllocateInfoKHR = ^VkExportMemoryAllocateInfoKHR;
 
 
 
-const VK_KHR_external_memory_fd = 1;
-const VK_KHR_EXTERNAL_MEMORY_FD_SPEC_VERSION = 1;
+const VK_KHR_external_memory_fd                = 1;
+const VK_KHR_EXTERNAL_MEMORY_FD_SPEC_VERSION   = 1;
 const VK_KHR_EXTERNAL_MEMORY_FD_EXTENSION_NAME = 'VK_KHR_external_memory_fd';
 type P_VkImportMemoryFdInfoKHR = ^VkImportMemoryFdInfoKHR;
      VkImportMemoryFdInfoKHR = record
@@ -6830,25 +6830,25 @@ type P_VkMemoryGetFdInfoKHR = ^VkMemoryGetFdInfoKHR;
        handleType :VkExternalMemoryHandleTypeFlagBits;
      end;
 
-type PFN_vkGetMemoryFdKHR = function( device_:VkDevice; const pGetFdInfo_:P_VkMemoryGetFdInfoKHR; pFd_:P_int ) :VkResult;
+type PFN_vkGetMemoryFdKHR           = function( device_:VkDevice; const pGetFdInfo_:P_VkMemoryGetFdInfoKHR; pFd_:P_int ) :VkResult;
 type PFN_vkGetMemoryFdPropertiesKHR = function( device_:VkDevice; handleType_:VkExternalMemoryHandleTypeFlagBits; fd_:T_int; pMemoryFdProperties_:P_VkMemoryFdPropertiesKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkGetMemoryFdKHR(
-    device_:VkDevice;
-    pGetFdInfo_:P_VkMemoryGetFdInfoKHR;
-    pFd_:P_int ) :VkResult; stdcall; external DLLNAME;
+    device_     :VkDevice;
+    pGetFdInfo_ :P_VkMemoryGetFdInfoKHR;
+    pFd_        :P_int ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetMemoryFdPropertiesKHR(
-    device_:VkDevice;
-    handleType_:VkExternalMemoryHandleTypeFlagBits;
-    fd_:T_int;
-    pMemoryFdProperties_:P_VkMemoryFdPropertiesKHR ) :VkResult; stdcall; external DLLNAME;
+    device_              :VkDevice;
+    handleType_          :VkExternalMemoryHandleTypeFlagBits;
+    fd_                  :T_int;
+    pMemoryFdProperties_ :P_VkMemoryFdPropertiesKHR ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_external_semaphore_capabilities = 1;
-const VK_KHR_EXTERNAL_SEMAPHORE_CAPABILITIES_SPEC_VERSION = 1;
+const VK_KHR_external_semaphore_capabilities                = 1;
+const VK_KHR_EXTERNAL_SEMAPHORE_CAPABILITIES_SPEC_VERSION   = 1;
 const VK_KHR_EXTERNAL_SEMAPHORE_CAPABILITIES_EXTENSION_NAME = 'VK_KHR_external_semaphore_capabilities';
 type P_VkExternalSemaphoreHandleTypeFlagsKHR = ^VkExternalSemaphoreHandleTypeFlagsKHR;
      VkExternalSemaphoreHandleTypeFlagsKHR = VkExternalSemaphoreHandleTypeFlags;
@@ -6872,14 +6872,14 @@ type PFN_vkGetPhysicalDeviceExternalSemaphorePropertiesKHR = procedure( physical
 
 {$IFNDEF VK_NO_PROTOTYPES }
 procedure vkGetPhysicalDeviceExternalSemaphorePropertiesKHR(
-    physicalDevice_:VkPhysicalDevice;
-    pExternalSemaphoreInfo_:P_VkPhysicalDeviceExternalSemaphoreInfo;
-    pExternalSemaphoreProperties_:P_VkExternalSemaphoreProperties ); stdcall; external DLLNAME;
+    physicalDevice_               :VkPhysicalDevice;
+    pExternalSemaphoreInfo_       :P_VkPhysicalDeviceExternalSemaphoreInfo;
+    pExternalSemaphoreProperties_ :P_VkExternalSemaphoreProperties ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_external_semaphore = 1;
-const VK_KHR_EXTERNAL_SEMAPHORE_SPEC_VERSION = 1;
+const VK_KHR_external_semaphore                = 1;
+const VK_KHR_EXTERNAL_SEMAPHORE_SPEC_VERSION   = 1;
 const VK_KHR_EXTERNAL_SEMAPHORE_EXTENSION_NAME = 'VK_KHR_external_semaphore';
 type P_VkSemaphoreImportFlagsKHR = ^VkSemaphoreImportFlagsKHR;
      VkSemaphoreImportFlagsKHR = VkSemaphoreImportFlags;
@@ -6892,75 +6892,75 @@ type P_VkExportSemaphoreCreateInfoKHR = ^VkExportSemaphoreCreateInfoKHR;
 
 
 
-const VK_KHR_external_semaphore_fd = 1;
-const VK_KHR_EXTERNAL_SEMAPHORE_FD_SPEC_VERSION = 1;
+const VK_KHR_external_semaphore_fd                = 1;
+const VK_KHR_EXTERNAL_SEMAPHORE_FD_SPEC_VERSION   = 1;
 const VK_KHR_EXTERNAL_SEMAPHORE_FD_EXTENSION_NAME = 'VK_KHR_external_semaphore_fd';
 type P_VkImportSemaphoreFdInfoKHR = ^VkImportSemaphoreFdInfoKHR;
      VkImportSemaphoreFdInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       semaphore :VkSemaphore;
-       flags :VkSemaphoreImportFlags;
+       sType      :VkStructureType;
+       pNext      :P_void;
+       semaphore  :VkSemaphore;
+       flags      :VkSemaphoreImportFlags;
        handleType :VkExternalSemaphoreHandleTypeFlagBits;
-       fd :T_int;
+       fd         :T_int;
      end;
 
 type P_VkSemaphoreGetFdInfoKHR = ^VkSemaphoreGetFdInfoKHR;
      VkSemaphoreGetFdInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       semaphore :VkSemaphore;
+       sType      :VkStructureType;
+       pNext      :P_void;
+       semaphore  :VkSemaphore;
        handleType :VkExternalSemaphoreHandleTypeFlagBits;
      end;
 
 type PFN_vkImportSemaphoreFdKHR = function( device_:VkDevice; const pImportSemaphoreFdInfo_:P_VkImportSemaphoreFdInfoKHR ) :VkResult;
-type PFN_vkGetSemaphoreFdKHR = function( device_:VkDevice; const pGetFdInfo_:P_VkSemaphoreGetFdInfoKHR; pFd_:P_int ) :VkResult;
+type PFN_vkGetSemaphoreFdKHR    = function( device_:VkDevice; const pGetFdInfo_:P_VkSemaphoreGetFdInfoKHR; pFd_:P_int ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkImportSemaphoreFdKHR(
-    device_:VkDevice;
-    pImportSemaphoreFdInfo_:P_VkImportSemaphoreFdInfoKHR ) :VkResult; stdcall; external DLLNAME;
+    device_                 :VkDevice;
+    pImportSemaphoreFdInfo_ :P_VkImportSemaphoreFdInfoKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetSemaphoreFdKHR(
-    device_:VkDevice;
-    pGetFdInfo_:P_VkSemaphoreGetFdInfoKHR;
-    pFd_:P_int ) :VkResult; stdcall; external DLLNAME;
+    device_     :VkDevice;
+    pGetFdInfo_ :P_VkSemaphoreGetFdInfoKHR;
+    pFd_        :P_int ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_push_descriptor = 1;
-const VK_KHR_PUSH_DESCRIPTOR_SPEC_VERSION = 2;
+const VK_KHR_push_descriptor                = 1;
+const VK_KHR_PUSH_DESCRIPTOR_SPEC_VERSION   = 2;
 const VK_KHR_PUSH_DESCRIPTOR_EXTENSION_NAME = 'VK_KHR_push_descriptor';
 type P_VkPhysicalDevicePushDescriptorPropertiesKHR = ^VkPhysicalDevicePushDescriptorPropertiesKHR;
      VkPhysicalDevicePushDescriptorPropertiesKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType              :VkStructureType;
+       pNext              :P_void;
        maxPushDescriptors :T_uint32_t;
      end;
 
-type PFN_vkCmdPushDescriptorSetKHR = procedure( commandBuffer_:VkCommandBuffer; pipelineBindPoint_:VkPipelineBindPoint; layout_:VkPipelineLayout; set_:T_uint32_t; descriptorWriteCount_:T_uint32_t; const pDescriptorWrites_:P_VkWriteDescriptorSet );
+type PFN_vkCmdPushDescriptorSetKHR             = procedure( commandBuffer_:VkCommandBuffer; pipelineBindPoint_:VkPipelineBindPoint; layout_:VkPipelineLayout; set_:T_uint32_t; descriptorWriteCount_:T_uint32_t; const pDescriptorWrites_:P_VkWriteDescriptorSet );
 type PFN_vkCmdPushDescriptorSetWithTemplateKHR = procedure( commandBuffer_:VkCommandBuffer; descriptorUpdateTemplate_:VkDescriptorUpdateTemplate; layout_:VkPipelineLayout; set_:T_uint32_t; const pData_:P_void );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 procedure vkCmdPushDescriptorSetKHR(
-    commandBuffer_:VkCommandBuffer;
-    pipelineBindPoint_:VkPipelineBindPoint;
-    layout_:VkPipelineLayout;
-    set_:T_uint32_t;
-    descriptorWriteCount_:T_uint32_t;
-    pDescriptorWrites_:P_VkWriteDescriptorSet ); stdcall; external DLLNAME;
+    commandBuffer_        :VkCommandBuffer;
+    pipelineBindPoint_    :VkPipelineBindPoint;
+    layout_               :VkPipelineLayout;
+    set_                  :T_uint32_t;
+    descriptorWriteCount_ :T_uint32_t;
+    pDescriptorWrites_    :P_VkWriteDescriptorSet ); stdcall; external DLLNAME;
 
 procedure vkCmdPushDescriptorSetWithTemplateKHR(
-    commandBuffer_:VkCommandBuffer;
-    descriptorUpdateTemplate_:VkDescriptorUpdateTemplate;
-    layout_:VkPipelineLayout;
-    set_:T_uint32_t;
-    pData_:P_void ); stdcall; external DLLNAME;
+    commandBuffer_            :VkCommandBuffer;
+    descriptorUpdateTemplate_ :VkDescriptorUpdateTemplate;
+    layout_                   :VkPipelineLayout;
+    set_                      :T_uint32_t;
+    pData_                    :P_void ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_shader_float16_int8 = 1;
-const VK_KHR_SHADER_FLOAT16_INT8_SPEC_VERSION = 1;
+const VK_KHR_shader_float16_int8                = 1;
+const VK_KHR_SHADER_FLOAT16_INT8_SPEC_VERSION   = 1;
 const VK_KHR_SHADER_FLOAT16_INT8_EXTENSION_NAME = 'VK_KHR_shader_float16_int8';
 type P_VkPhysicalDeviceShaderFloat16Int8FeaturesKHR = ^VkPhysicalDeviceShaderFloat16Int8FeaturesKHR;
      VkPhysicalDeviceShaderFloat16Int8FeaturesKHR = VkPhysicalDeviceShaderFloat16Int8Features;
@@ -6970,36 +6970,36 @@ type P_VkPhysicalDeviceFloat16Int8FeaturesKHR = ^VkPhysicalDeviceFloat16Int8Feat
 
 
 
-const VK_KHR_16bit_storage = 1;
-const VK_KHR_16BIT_STORAGE_SPEC_VERSION = 1;
+const VK_KHR_16bit_storage                = 1;
+const VK_KHR_16BIT_STORAGE_SPEC_VERSION   = 1;
 const VK_KHR_16BIT_STORAGE_EXTENSION_NAME = 'VK_KHR_16bit_storage';
 type P_VkPhysicalDevice16BitStorageFeaturesKHR = ^VkPhysicalDevice16BitStorageFeaturesKHR;
      VkPhysicalDevice16BitStorageFeaturesKHR = VkPhysicalDevice16BitStorageFeatures;
 
 
 
-const VK_KHR_incremental_present = 1;
-const VK_KHR_INCREMENTAL_PRESENT_SPEC_VERSION = 1;
+const VK_KHR_incremental_present                = 1;
+const VK_KHR_INCREMENTAL_PRESENT_SPEC_VERSION   = 1;
 const VK_KHR_INCREMENTAL_PRESENT_EXTENSION_NAME = 'VK_KHR_incremental_present';
 type P_VkRectLayerKHR = ^VkRectLayerKHR;
      VkRectLayerKHR = record
        offset :VkOffset2D;
        extent :VkExtent2D;
-       layer :T_uint32_t;
+       layer  :T_uint32_t;
      end;
 
 type P_VkPresentRegionKHR = ^VkPresentRegionKHR;
      VkPresentRegionKHR = record
        rectangleCount :T_uint32_t;
-       pRectangles :P_VkRectLayerKHR;
+       pRectangles    :P_VkRectLayerKHR;
      end;
 
 type P_VkPresentRegionsKHR = ^VkPresentRegionsKHR;
      VkPresentRegionsKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType          :VkStructureType;
+       pNext          :P_void;
        swapchainCount :T_uint32_t;
-       pRegions :P_VkPresentRegionKHR;
+       pRegions       :P_VkPresentRegionKHR;
      end;
 
 
@@ -7008,7 +7008,7 @@ const VK_KHR_descriptor_update_template = 1;
 type P_VkDescriptorUpdateTemplateKHR = ^VkDescriptorUpdateTemplateKHR;
      VkDescriptorUpdateTemplateKHR = VkDescriptorUpdateTemplate;
 
-const VK_KHR_DESCRIPTOR_UPDATE_TEMPLATE_SPEC_VERSION = 1;
+const VK_KHR_DESCRIPTOR_UPDATE_TEMPLATE_SPEC_VERSION   = 1;
 const VK_KHR_DESCRIPTOR_UPDATE_TEMPLATE_EXTENSION_NAME = 'VK_KHR_descriptor_update_template';
 type P_VkDescriptorUpdateTemplateTypeKHR = ^VkDescriptorUpdateTemplateTypeKHR;
      VkDescriptorUpdateTemplateTypeKHR = VkDescriptorUpdateTemplateType;
@@ -7022,32 +7022,32 @@ type P_VkDescriptorUpdateTemplateEntryKHR = ^VkDescriptorUpdateTemplateEntryKHR;
 type P_VkDescriptorUpdateTemplateCreateInfoKHR = ^VkDescriptorUpdateTemplateCreateInfoKHR;
      VkDescriptorUpdateTemplateCreateInfoKHR = VkDescriptorUpdateTemplateCreateInfo;
 
-type PFN_vkCreateDescriptorUpdateTemplateKHR = function( device_:VkDevice; const pCreateInfo_:P_VkDescriptorUpdateTemplateCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pDescriptorUpdateTemplate_:P_VkDescriptorUpdateTemplate ) :VkResult;
+type PFN_vkCreateDescriptorUpdateTemplateKHR  = function( device_:VkDevice; const pCreateInfo_:P_VkDescriptorUpdateTemplateCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pDescriptorUpdateTemplate_:P_VkDescriptorUpdateTemplate ) :VkResult;
 type PFN_vkDestroyDescriptorUpdateTemplateKHR = procedure( device_:VkDevice; descriptorUpdateTemplate_:VkDescriptorUpdateTemplate; const pAllocator_:P_VkAllocationCallbacks );
 type PFN_vkUpdateDescriptorSetWithTemplateKHR = procedure( device_:VkDevice; descriptorSet_:VkDescriptorSet; descriptorUpdateTemplate_:VkDescriptorUpdateTemplate; const pData_:P_void );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkCreateDescriptorUpdateTemplateKHR(
-    device_:VkDevice;
-    pCreateInfo_:P_VkDescriptorUpdateTemplateCreateInfo;
-    pAllocator_:P_VkAllocationCallbacks;
-    pDescriptorUpdateTemplate_:P_VkDescriptorUpdateTemplate ) :VkResult; stdcall; external DLLNAME;
+    device_                    :VkDevice;
+    pCreateInfo_               :P_VkDescriptorUpdateTemplateCreateInfo;
+    pAllocator_                :P_VkAllocationCallbacks;
+    pDescriptorUpdateTemplate_ :P_VkDescriptorUpdateTemplate ) :VkResult; stdcall; external DLLNAME;
 
 procedure vkDestroyDescriptorUpdateTemplateKHR(
-    device_:VkDevice;
-    descriptorUpdateTemplate_:VkDescriptorUpdateTemplate;
-    pAllocator_:P_VkAllocationCallbacks ); stdcall; external DLLNAME;
+    device_                   :VkDevice;
+    descriptorUpdateTemplate_ :VkDescriptorUpdateTemplate;
+    pAllocator_               :P_VkAllocationCallbacks ); stdcall; external DLLNAME;
 
 procedure vkUpdateDescriptorSetWithTemplateKHR(
-    device_:VkDevice;
-    descriptorSet_:VkDescriptorSet;
-    descriptorUpdateTemplate_:VkDescriptorUpdateTemplate;
-    pData_:P_void ); stdcall; external DLLNAME;
+    device_                   :VkDevice;
+    descriptorSet_            :VkDescriptorSet;
+    descriptorUpdateTemplate_ :VkDescriptorUpdateTemplate;
+    pData_                    :P_void ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_imageless_framebuffer = 1;
-const VK_KHR_IMAGELESS_FRAMEBUFFER_SPEC_VERSION = 1;
+const VK_KHR_imageless_framebuffer                = 1;
+const VK_KHR_IMAGELESS_FRAMEBUFFER_SPEC_VERSION   = 1;
 const VK_KHR_IMAGELESS_FRAMEBUFFER_EXTENSION_NAME = 'VK_KHR_imageless_framebuffer';
 type P_VkPhysicalDeviceImagelessFramebufferFeaturesKHR = ^VkPhysicalDeviceImagelessFramebufferFeaturesKHR;
      VkPhysicalDeviceImagelessFramebufferFeaturesKHR = VkPhysicalDeviceImagelessFramebufferFeatures;
@@ -7063,8 +7063,8 @@ type P_VkRenderPassAttachmentBeginInfoKHR = ^VkRenderPassAttachmentBeginInfoKHR;
 
 
 
-const VK_KHR_create_renderpass2 = 1;
-const VK_KHR_CREATE_RENDERPASS_2_SPEC_VERSION = 1;
+const VK_KHR_create_renderpass2                 = 1;
+const VK_KHR_CREATE_RENDERPASS_2_SPEC_VERSION   = 1;
 const VK_KHR_CREATE_RENDERPASS_2_EXTENSION_NAME = 'VK_KHR_create_renderpass2';
 type P_VkRenderPassCreateInfo2KHR = ^VkRenderPassCreateInfo2KHR;
      VkRenderPassCreateInfo2KHR = VkRenderPassCreateInfo2;
@@ -7087,41 +7087,41 @@ type P_VkSubpassBeginInfoKHR = ^VkSubpassBeginInfoKHR;
 type P_VkSubpassEndInfoKHR = ^VkSubpassEndInfoKHR;
      VkSubpassEndInfoKHR = VkSubpassEndInfo;
 
-type PFN_vkCreateRenderPass2KHR = function( device_:VkDevice; const pCreateInfo_:P_VkRenderPassCreateInfo2; const pAllocator_:P_VkAllocationCallbacks; pRenderPass_:P_VkRenderPass ) :VkResult;
+type PFN_vkCreateRenderPass2KHR   = function( device_:VkDevice; const pCreateInfo_:P_VkRenderPassCreateInfo2; const pAllocator_:P_VkAllocationCallbacks; pRenderPass_:P_VkRenderPass ) :VkResult;
 type PFN_vkCmdBeginRenderPass2KHR = procedure( commandBuffer_:VkCommandBuffer; const pRenderPassBegin_:P_VkRenderPassBeginInfo; const pSubpassBeginInfo_:P_VkSubpassBeginInfo );
-type PFN_vkCmdNextSubpass2KHR = procedure( commandBuffer_:VkCommandBuffer; const pSubpassBeginInfo_:P_VkSubpassBeginInfo; const pSubpassEndInfo_:P_VkSubpassEndInfo );
-type PFN_vkCmdEndRenderPass2KHR = procedure( commandBuffer_:VkCommandBuffer; const pSubpassEndInfo_:P_VkSubpassEndInfo );
+type PFN_vkCmdNextSubpass2KHR     = procedure( commandBuffer_:VkCommandBuffer; const pSubpassBeginInfo_:P_VkSubpassBeginInfo; const pSubpassEndInfo_:P_VkSubpassEndInfo );
+type PFN_vkCmdEndRenderPass2KHR   = procedure( commandBuffer_:VkCommandBuffer; const pSubpassEndInfo_:P_VkSubpassEndInfo );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkCreateRenderPass2KHR(
-    device_:VkDevice;
-    pCreateInfo_:P_VkRenderPassCreateInfo2;
-    pAllocator_:P_VkAllocationCallbacks;
-    pRenderPass_:P_VkRenderPass ) :VkResult; stdcall; external DLLNAME;
+    device_      :VkDevice;
+    pCreateInfo_ :P_VkRenderPassCreateInfo2;
+    pAllocator_  :P_VkAllocationCallbacks;
+    pRenderPass_ :P_VkRenderPass ) :VkResult; stdcall; external DLLNAME;
 
 procedure vkCmdBeginRenderPass2KHR(
-    commandBuffer_:VkCommandBuffer;
-    pRenderPassBegin_:P_VkRenderPassBeginInfo;
-    pSubpassBeginInfo_:P_VkSubpassBeginInfo ); stdcall; external DLLNAME;
+    commandBuffer_     :VkCommandBuffer;
+    pRenderPassBegin_  :P_VkRenderPassBeginInfo;
+    pSubpassBeginInfo_ :P_VkSubpassBeginInfo ); stdcall; external DLLNAME;
 
 procedure vkCmdNextSubpass2KHR(
-    commandBuffer_:VkCommandBuffer;
-    pSubpassBeginInfo_:P_VkSubpassBeginInfo;
-    pSubpassEndInfo_:P_VkSubpassEndInfo ); stdcall; external DLLNAME;
+    commandBuffer_     :VkCommandBuffer;
+    pSubpassBeginInfo_ :P_VkSubpassBeginInfo;
+    pSubpassEndInfo_   :P_VkSubpassEndInfo ); stdcall; external DLLNAME;
 
 procedure vkCmdEndRenderPass2KHR(
-    commandBuffer_:VkCommandBuffer;
-    pSubpassEndInfo_:P_VkSubpassEndInfo ); stdcall; external DLLNAME;
+    commandBuffer_   :VkCommandBuffer;
+    pSubpassEndInfo_ :P_VkSubpassEndInfo ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_shared_presentable_image = 1;
-const VK_KHR_SHARED_PRESENTABLE_IMAGE_SPEC_VERSION = 1;
+const VK_KHR_shared_presentable_image                = 1;
+const VK_KHR_SHARED_PRESENTABLE_IMAGE_SPEC_VERSION   = 1;
 const VK_KHR_SHARED_PRESENTABLE_IMAGE_EXTENSION_NAME = 'VK_KHR_shared_presentable_image';
 type P_VkSharedPresentSurfaceCapabilitiesKHR = ^VkSharedPresentSurfaceCapabilitiesKHR;
      VkSharedPresentSurfaceCapabilitiesKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                            :VkStructureType;
+       pNext                            :P_void;
        sharedPresentSupportedUsageFlags :VkImageUsageFlags;
      end;
 
@@ -7129,13 +7129,13 @@ type PFN_vkGetSwapchainStatusKHR = function( device_:VkDevice; swapchain_:VkSwap
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkGetSwapchainStatusKHR(
-    device_:VkDevice;
-    swapchain_:VkSwapchainKHR ) :VkResult; stdcall; external DLLNAME;
+    device_    :VkDevice;
+    swapchain_ :VkSwapchainKHR ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_external_fence_capabilities = 1;
-const VK_KHR_EXTERNAL_FENCE_CAPABILITIES_SPEC_VERSION = 1;
+const VK_KHR_external_fence_capabilities                = 1;
+const VK_KHR_EXTERNAL_FENCE_CAPABILITIES_SPEC_VERSION   = 1;
 const VK_KHR_EXTERNAL_FENCE_CAPABILITIES_EXTENSION_NAME = 'VK_KHR_external_fence_capabilities';
 type P_VkExternalFenceHandleTypeFlagsKHR = ^VkExternalFenceHandleTypeFlagsKHR;
      VkExternalFenceHandleTypeFlagsKHR = VkExternalFenceHandleTypeFlags;
@@ -7159,14 +7159,14 @@ type PFN_vkGetPhysicalDeviceExternalFencePropertiesKHR = procedure( physicalDevi
 
 {$IFNDEF VK_NO_PROTOTYPES }
 procedure vkGetPhysicalDeviceExternalFencePropertiesKHR(
-    physicalDevice_:VkPhysicalDevice;
-    pExternalFenceInfo_:P_VkPhysicalDeviceExternalFenceInfo;
-    pExternalFenceProperties_:P_VkExternalFenceProperties ); stdcall; external DLLNAME;
+    physicalDevice_           :VkPhysicalDevice;
+    pExternalFenceInfo_       :P_VkPhysicalDeviceExternalFenceInfo;
+    pExternalFenceProperties_ :P_VkExternalFenceProperties ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_external_fence = 1;
-const VK_KHR_EXTERNAL_FENCE_SPEC_VERSION = 1;
+const VK_KHR_external_fence                = 1;
+const VK_KHR_EXTERNAL_FENCE_SPEC_VERSION   = 1;
 const VK_KHR_EXTERNAL_FENCE_EXTENSION_NAME = 'VK_KHR_external_fence';
 type P_VkFenceImportFlagsKHR = ^VkFenceImportFlagsKHR;
      VkFenceImportFlagsKHR = VkFenceImportFlags;
@@ -7179,81 +7179,81 @@ type P_VkExportFenceCreateInfoKHR = ^VkExportFenceCreateInfoKHR;
 
 
 
-const VK_KHR_external_fence_fd = 1;
-const VK_KHR_EXTERNAL_FENCE_FD_SPEC_VERSION = 1;
+const VK_KHR_external_fence_fd                = 1;
+const VK_KHR_EXTERNAL_FENCE_FD_SPEC_VERSION   = 1;
 const VK_KHR_EXTERNAL_FENCE_FD_EXTENSION_NAME = 'VK_KHR_external_fence_fd';
 type P_VkImportFenceFdInfoKHR = ^VkImportFenceFdInfoKHR;
      VkImportFenceFdInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       fence :VkFence;
-       flags :VkFenceImportFlags;
+       sType      :VkStructureType;
+       pNext      :P_void;
+       fence      :VkFence;
+       flags      :VkFenceImportFlags;
        handleType :VkExternalFenceHandleTypeFlagBits;
-       fd :T_int;
+       fd         :T_int;
      end;
 
 type P_VkFenceGetFdInfoKHR = ^VkFenceGetFdInfoKHR;
      VkFenceGetFdInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       fence :VkFence;
+       sType      :VkStructureType;
+       pNext      :P_void;
+       fence      :VkFence;
        handleType :VkExternalFenceHandleTypeFlagBits;
      end;
 
 type PFN_vkImportFenceFdKHR = function( device_:VkDevice; const pImportFenceFdInfo_:P_VkImportFenceFdInfoKHR ) :VkResult;
-type PFN_vkGetFenceFdKHR = function( device_:VkDevice; const pGetFdInfo_:P_VkFenceGetFdInfoKHR; pFd_:P_int ) :VkResult;
+type PFN_vkGetFenceFdKHR    = function( device_:VkDevice; const pGetFdInfo_:P_VkFenceGetFdInfoKHR; pFd_:P_int ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkImportFenceFdKHR(
-    device_:VkDevice;
-    pImportFenceFdInfo_:P_VkImportFenceFdInfoKHR ) :VkResult; stdcall; external DLLNAME;
+    device_             :VkDevice;
+    pImportFenceFdInfo_ :P_VkImportFenceFdInfoKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetFenceFdKHR(
-    device_:VkDevice;
-    pGetFdInfo_:P_VkFenceGetFdInfoKHR;
-    pFd_:P_int ) :VkResult; stdcall; external DLLNAME;
+    device_     :VkDevice;
+    pGetFdInfo_ :P_VkFenceGetFdInfoKHR;
+    pFd_        :P_int ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_performance_query = 1;
-const VK_KHR_PERFORMANCE_QUERY_SPEC_VERSION = 1;
+const VK_KHR_performance_query                = 1;
+const VK_KHR_PERFORMANCE_QUERY_SPEC_VERSION   = 1;
 const VK_KHR_PERFORMANCE_QUERY_EXTENSION_NAME = 'VK_KHR_performance_query';
 
 type P_VkPerformanceCounterUnitKHR = ^VkPerformanceCounterUnitKHR;
      VkPerformanceCounterUnitKHR = (
-       VK_PERFORMANCE_COUNTER_UNIT_GENERIC_KHR = 0,
-       VK_PERFORMANCE_COUNTER_UNIT_PERCENTAGE_KHR = 1,
-       VK_PERFORMANCE_COUNTER_UNIT_NANOSECONDS_KHR = 2,
-       VK_PERFORMANCE_COUNTER_UNIT_BYTES_KHR = 3,
+       VK_PERFORMANCE_COUNTER_UNIT_GENERIC_KHR          = 0,
+       VK_PERFORMANCE_COUNTER_UNIT_PERCENTAGE_KHR       = 1,
+       VK_PERFORMANCE_COUNTER_UNIT_NANOSECONDS_KHR      = 2,
+       VK_PERFORMANCE_COUNTER_UNIT_BYTES_KHR            = 3,
        VK_PERFORMANCE_COUNTER_UNIT_BYTES_PER_SECOND_KHR = 4,
-       VK_PERFORMANCE_COUNTER_UNIT_KELVIN_KHR = 5,
-       VK_PERFORMANCE_COUNTER_UNIT_WATTS_KHR = 6,
-       VK_PERFORMANCE_COUNTER_UNIT_VOLTS_KHR = 7,
-       VK_PERFORMANCE_COUNTER_UNIT_AMPS_KHR = 8,
-       VK_PERFORMANCE_COUNTER_UNIT_HERTZ_KHR = 9,
-       VK_PERFORMANCE_COUNTER_UNIT_CYCLES_KHR = 10,
-       VK_PERFORMANCE_COUNTER_UNIT_MAX_ENUM_KHR = $7FFFFFFF
+       VK_PERFORMANCE_COUNTER_UNIT_KELVIN_KHR           = 5,
+       VK_PERFORMANCE_COUNTER_UNIT_WATTS_KHR            = 6,
+       VK_PERFORMANCE_COUNTER_UNIT_VOLTS_KHR            = 7,
+       VK_PERFORMANCE_COUNTER_UNIT_AMPS_KHR             = 8,
+       VK_PERFORMANCE_COUNTER_UNIT_HERTZ_KHR            = 9,
+       VK_PERFORMANCE_COUNTER_UNIT_CYCLES_KHR           = 10,
+       VK_PERFORMANCE_COUNTER_UNIT_MAX_ENUM_KHR         = $7FFFFFFF
      );
 
 type P_VkPerformanceCounterScopeKHR = ^VkPerformanceCounterScopeKHR;
      VkPerformanceCounterScopeKHR = (
        VK_PERFORMANCE_COUNTER_SCOPE_COMMAND_BUFFER_KHR = 0,
-       VK_PERFORMANCE_COUNTER_SCOPE_RENDER_PASS_KHR = 1,
-       VK_PERFORMANCE_COUNTER_SCOPE_COMMAND_KHR = 2,
-       VK_QUERY_SCOPE_COMMAND_BUFFER_KHR = VK_PERFORMANCE_COUNTER_SCOPE_COMMAND_BUFFER_KHR,
-       VK_QUERY_SCOPE_RENDER_PASS_KHR = VK_PERFORMANCE_COUNTER_SCOPE_RENDER_PASS_KHR,
-       VK_QUERY_SCOPE_COMMAND_KHR = VK_PERFORMANCE_COUNTER_SCOPE_COMMAND_KHR,
-       VK_PERFORMANCE_COUNTER_SCOPE_MAX_ENUM_KHR = $7FFFFFFF
+       VK_PERFORMANCE_COUNTER_SCOPE_RENDER_PASS_KHR    = 1,
+       VK_PERFORMANCE_COUNTER_SCOPE_COMMAND_KHR        = 2,
+       VK_QUERY_SCOPE_COMMAND_BUFFER_KHR               = VK_PERFORMANCE_COUNTER_SCOPE_COMMAND_BUFFER_KHR,
+       VK_QUERY_SCOPE_RENDER_PASS_KHR                  = VK_PERFORMANCE_COUNTER_SCOPE_RENDER_PASS_KHR,
+       VK_QUERY_SCOPE_COMMAND_KHR                      = VK_PERFORMANCE_COUNTER_SCOPE_COMMAND_KHR,
+       VK_PERFORMANCE_COUNTER_SCOPE_MAX_ENUM_KHR       = $7FFFFFFF
      );
 
 type P_VkPerformanceCounterStorageKHR = ^VkPerformanceCounterStorageKHR;
      VkPerformanceCounterStorageKHR = (
-       VK_PERFORMANCE_COUNTER_STORAGE_INT32_KHR = 0,
-       VK_PERFORMANCE_COUNTER_STORAGE_INT64_KHR = 1,
-       VK_PERFORMANCE_COUNTER_STORAGE_UINT32_KHR = 2,
-       VK_PERFORMANCE_COUNTER_STORAGE_UINT64_KHR = 3,
-       VK_PERFORMANCE_COUNTER_STORAGE_FLOAT32_KHR = 4,
-       VK_PERFORMANCE_COUNTER_STORAGE_FLOAT64_KHR = 5,
+       VK_PERFORMANCE_COUNTER_STORAGE_INT32_KHR    = 0,
+       VK_PERFORMANCE_COUNTER_STORAGE_INT64_KHR    = 1,
+       VK_PERFORMANCE_COUNTER_STORAGE_UINT32_KHR   = 2,
+       VK_PERFORMANCE_COUNTER_STORAGE_UINT64_KHR   = 3,
+       VK_PERFORMANCE_COUNTER_STORAGE_FLOAT32_KHR  = 4,
+       VK_PERFORMANCE_COUNTER_STORAGE_FLOAT64_KHR  = 5,
        VK_PERFORMANCE_COUNTER_STORAGE_MAX_ENUM_KHR = $7FFFFFFF
      );
 
@@ -7261,9 +7261,9 @@ type P_VkPerformanceCounterDescriptionFlagBitsKHR = ^VkPerformanceCounterDescrip
      VkPerformanceCounterDescriptionFlagBitsKHR = (
        VK_PERFORMANCE_COUNTER_DESCRIPTION_PERFORMANCE_IMPACTING_BIT_KHR = $00000001,
        VK_PERFORMANCE_COUNTER_DESCRIPTION_CONCURRENTLY_IMPACTED_BIT_KHR = $00000002,
-       VK_PERFORMANCE_COUNTER_DESCRIPTION_PERFORMANCE_IMPACTING_KHR = VK_PERFORMANCE_COUNTER_DESCRIPTION_PERFORMANCE_IMPACTING_BIT_KHR,
-       VK_PERFORMANCE_COUNTER_DESCRIPTION_CONCURRENTLY_IMPACTED_KHR = VK_PERFORMANCE_COUNTER_DESCRIPTION_CONCURRENTLY_IMPACTED_BIT_KHR,
-       VK_PERFORMANCE_COUNTER_DESCRIPTION_FLAG_BITS_MAX_ENUM_KHR = $7FFFFFFF
+       VK_PERFORMANCE_COUNTER_DESCRIPTION_PERFORMANCE_IMPACTING_KHR     = VK_PERFORMANCE_COUNTER_DESCRIPTION_PERFORMANCE_IMPACTING_BIT_KHR,
+       VK_PERFORMANCE_COUNTER_DESCRIPTION_CONCURRENTLY_IMPACTED_KHR     = VK_PERFORMANCE_COUNTER_DESCRIPTION_CONCURRENTLY_IMPACTED_BIT_KHR,
+       VK_PERFORMANCE_COUNTER_DESCRIPTION_FLAG_BITS_MAX_ENUM_KHR        = $7FFFFFFF
      );
 type P_VkPerformanceCounterDescriptionFlagsKHR = ^VkPerformanceCounterDescriptionFlagsKHR;
      VkPerformanceCounterDescriptionFlagsKHR = VkFlags;
@@ -7276,46 +7276,46 @@ type P_VkAcquireProfilingLockFlagsKHR = ^VkAcquireProfilingLockFlagsKHR;
      VkAcquireProfilingLockFlagsKHR = VkFlags;
 type P_VkPhysicalDevicePerformanceQueryFeaturesKHR = ^VkPhysicalDevicePerformanceQueryFeaturesKHR;
      VkPhysicalDevicePerformanceQueryFeaturesKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       performanceCounterQueryPools :VkBool32;
+       sType                                :VkStructureType;
+       pNext                                :P_void;
+       performanceCounterQueryPools         :VkBool32;
        performanceCounterMultipleQueryPools :VkBool32;
      end;
 
 type P_VkPhysicalDevicePerformanceQueryPropertiesKHR = ^VkPhysicalDevicePerformanceQueryPropertiesKHR;
      VkPhysicalDevicePerformanceQueryPropertiesKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                         :VkStructureType;
+       pNext                         :P_void;
        allowCommandBufferQueryCopies :VkBool32;
      end;
 
 type P_VkPerformanceCounterKHR = ^VkPerformanceCounterKHR;
      VkPerformanceCounterKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       unit_ :VkPerformanceCounterUnitKHR;
-       scope :VkPerformanceCounterScopeKHR;
+       sType   :VkStructureType;
+       pNext   :P_void;
+       unit_   :VkPerformanceCounterUnitKHR;
+       scope   :VkPerformanceCounterScopeKHR;
        storage :VkPerformanceCounterStorageKHR;
-       uuid :array [ 0..VK_UUID_SIZE-1 ] of T_uint8_t;
+       uuid    :array [ 0..VK_UUID_SIZE-1 ] of T_uint8_t;
      end;
 
 type P_VkPerformanceCounterDescriptionKHR = ^VkPerformanceCounterDescriptionKHR;
      VkPerformanceCounterDescriptionKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       flags :VkPerformanceCounterDescriptionFlagsKHR;
-       name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
-       category :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
+       sType       :VkStructureType;
+       pNext       :P_void;
+       flags       :VkPerformanceCounterDescriptionFlagsKHR;
+       name        :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
+       category    :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
        description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
      end;
 
 type P_VkQueryPoolPerformanceCreateInfoKHR = ^VkQueryPoolPerformanceCreateInfoKHR;
      VkQueryPoolPerformanceCreateInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       queueFamilyIndex :T_uint32_t;
+       sType             :VkStructureType;
+       pNext             :P_void;
+       queueFamilyIndex  :T_uint32_t;
        counterIndexCount :T_uint32_t;
-       pCounterIndices :P_uint32_t;
+       pCounterIndices   :P_uint32_t;
      end;
 
 type P_VkPerformanceCounterResultKHR = ^VkPerformanceCounterResultKHR;
@@ -7326,53 +7326,53 @@ type P_VkPerformanceCounterResultKHR = ^VkPerformanceCounterResultKHR;
        2:( uint32  :T_uint32_t );
        3:( uint64  :T_uint64_t );
        4:( float32 :T_float    );
-       5:( float64 :double   );
+       5:( float64 :double     );
      end;
 
 type P_VkAcquireProfilingLockInfoKHR = ^VkAcquireProfilingLockInfoKHR;
      VkAcquireProfilingLockInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       flags :VkAcquireProfilingLockFlagsKHR;
+       sType   :VkStructureType;
+       pNext   :P_void;
+       flags   :VkAcquireProfilingLockFlagsKHR;
        timeout :T_uint64_t;
      end;
 
 type P_VkPerformanceQuerySubmitInfoKHR = ^VkPerformanceQuerySubmitInfoKHR;
      VkPerformanceQuerySubmitInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType            :VkStructureType;
+       pNext            :P_void;
        counterPassIndex :T_uint32_t;
      end;
 
 type PFN_vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR = function( physicalDevice_:VkPhysicalDevice; queueFamilyIndex_:T_uint32_t; pCounterCount_:P_uint32_t; pCounters_:P_VkPerformanceCounterKHR; pCounterDescriptions_:P_VkPerformanceCounterDescriptionKHR ) :VkResult;
-type PFN_vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR = procedure( physicalDevice_:VkPhysicalDevice; const pPerformanceQueryCreateInfo_:P_VkQueryPoolPerformanceCreateInfoKHR; pNumPasses_:P_uint32_t );
-type PFN_vkAcquireProfilingLockKHR = function( device_:VkDevice; const pInfo_:P_VkAcquireProfilingLockInfoKHR ) :VkResult;
-type PFN_vkReleaseProfilingLockKHR = procedure( device_:VkDevice );
+type PFN_vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR         = procedure( physicalDevice_:VkPhysicalDevice; const pPerformanceQueryCreateInfo_:P_VkQueryPoolPerformanceCreateInfoKHR; pNumPasses_:P_uint32_t );
+type PFN_vkAcquireProfilingLockKHR                                       = function( device_:VkDevice; const pInfo_:P_VkAcquireProfilingLockInfoKHR ) :VkResult;
+type PFN_vkReleaseProfilingLockKHR                                       = procedure( device_:VkDevice );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR(
-    physicalDevice_:VkPhysicalDevice;
-    queueFamilyIndex_:T_uint32_t;
-    pCounterCount_:P_uint32_t;
-    pCounters_:P_VkPerformanceCounterKHR;
-    pCounterDescriptions_:P_VkPerformanceCounterDescriptionKHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_       :VkPhysicalDevice;
+    queueFamilyIndex_     :T_uint32_t;
+    pCounterCount_        :P_uint32_t;
+    pCounters_            :P_VkPerformanceCounterKHR;
+    pCounterDescriptions_ :P_VkPerformanceCounterDescriptionKHR ) :VkResult; stdcall; external DLLNAME;
 
 procedure vkGetPhysicalDeviceQueueFamilyPerformanceQueryPassesKHR(
-    physicalDevice_:VkPhysicalDevice;
-    pPerformanceQueryCreateInfo_:P_VkQueryPoolPerformanceCreateInfoKHR;
-    pNumPasses_:P_uint32_t ); stdcall; external DLLNAME;
+    physicalDevice_              :VkPhysicalDevice;
+    pPerformanceQueryCreateInfo_ :P_VkQueryPoolPerformanceCreateInfoKHR;
+    pNumPasses_                  :P_uint32_t ); stdcall; external DLLNAME;
 
 function vkAcquireProfilingLockKHR(
-    device_:VkDevice;
-    pInfo_:P_VkAcquireProfilingLockInfoKHR ) :VkResult; stdcall; external DLLNAME;
+    device_ :VkDevice;
+    pInfo_  :P_VkAcquireProfilingLockInfoKHR ) :VkResult; stdcall; external DLLNAME;
 
 procedure vkReleaseProfilingLockKHR(
-    device_:VkDevice ); stdcall; external DLLNAME;
+    device_ :VkDevice ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_maintenance2 = 1;
-const VK_KHR_MAINTENANCE2_SPEC_VERSION  = 1;
+const VK_KHR_maintenance2                = 1;
+const VK_KHR_MAINTENANCE2_SPEC_VERSION   = 1;
 const VK_KHR_MAINTENANCE2_EXTENSION_NAME = 'VK_KHR_maintenance2';
 type P_VkPointClippingBehaviorKHR = ^VkPointClippingBehaviorKHR;
      VkPointClippingBehaviorKHR = VkPointClippingBehavior;
@@ -7397,49 +7397,49 @@ type P_VkPipelineTessellationDomainOriginStateCreateInfoKHR = ^VkPipelineTessell
 
 
 
-const VK_KHR_get_surface_capabilities2 = 1;
-const VK_KHR_GET_SURFACE_CAPABILITIES_2_SPEC_VERSION = 1;
+const VK_KHR_get_surface_capabilities2                 = 1;
+const VK_KHR_GET_SURFACE_CAPABILITIES_2_SPEC_VERSION   = 1;
 const VK_KHR_GET_SURFACE_CAPABILITIES_2_EXTENSION_NAME = 'VK_KHR_get_surface_capabilities2';
 type P_VkPhysicalDeviceSurfaceInfo2KHR = ^VkPhysicalDeviceSurfaceInfo2KHR;
      VkPhysicalDeviceSurfaceInfo2KHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType   :VkStructureType;
+       pNext   :P_void;
        surface :VkSurfaceKHR;
      end;
 
 type P_VkSurfaceCapabilities2KHR = ^VkSurfaceCapabilities2KHR;
      VkSurfaceCapabilities2KHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType               :VkStructureType;
+       pNext               :P_void;
        surfaceCapabilities :VkSurfaceCapabilitiesKHR;
      end;
 
 type P_VkSurfaceFormat2KHR = ^VkSurfaceFormat2KHR;
      VkSurfaceFormat2KHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType         :VkStructureType;
+       pNext         :P_void;
        surfaceFormat :VkSurfaceFormatKHR;
      end;
 
 type PFN_vkGetPhysicalDeviceSurfaceCapabilities2KHR = function( physicalDevice_:VkPhysicalDevice; const pSurfaceInfo_:P_VkPhysicalDeviceSurfaceInfo2KHR; pSurfaceCapabilities_:P_VkSurfaceCapabilities2KHR ) :VkResult;
-type PFN_vkGetPhysicalDeviceSurfaceFormats2KHR = function( physicalDevice_:VkPhysicalDevice; const pSurfaceInfo_:P_VkPhysicalDeviceSurfaceInfo2KHR; pSurfaceFormatCount_:P_uint32_t; pSurfaceFormats_:P_VkSurfaceFormat2KHR ) :VkResult;
+type PFN_vkGetPhysicalDeviceSurfaceFormats2KHR      = function( physicalDevice_:VkPhysicalDevice; const pSurfaceInfo_:P_VkPhysicalDeviceSurfaceInfo2KHR; pSurfaceFormatCount_:P_uint32_t; pSurfaceFormats_:P_VkSurfaceFormat2KHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkGetPhysicalDeviceSurfaceCapabilities2KHR(
-    physicalDevice_:VkPhysicalDevice;
-    pSurfaceInfo_:P_VkPhysicalDeviceSurfaceInfo2KHR;
-    pSurfaceCapabilities_:P_VkSurfaceCapabilities2KHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_       :VkPhysicalDevice;
+    pSurfaceInfo_         :P_VkPhysicalDeviceSurfaceInfo2KHR;
+    pSurfaceCapabilities_ :P_VkSurfaceCapabilities2KHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetPhysicalDeviceSurfaceFormats2KHR(
-    physicalDevice_:VkPhysicalDevice;
-    pSurfaceInfo_:P_VkPhysicalDeviceSurfaceInfo2KHR;
-    pSurfaceFormatCount_:P_uint32_t;
-    pSurfaceFormats_:P_VkSurfaceFormat2KHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_      :VkPhysicalDevice;
+    pSurfaceInfo_        :P_VkPhysicalDeviceSurfaceInfo2KHR;
+    pSurfaceFormatCount_ :P_uint32_t;
+    pSurfaceFormats_     :P_VkSurfaceFormat2KHR ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_variable_pointers = 1;
-const VK_KHR_VARIABLE_POINTERS_SPEC_VERSION = 1;
+const VK_KHR_variable_pointers                = 1;
+const VK_KHR_VARIABLE_POINTERS_SPEC_VERSION   = 1;
 const VK_KHR_VARIABLE_POINTERS_EXTENSION_NAME = 'VK_KHR_variable_pointers';
 type P_VkPhysicalDeviceVariablePointerFeaturesKHR = ^VkPhysicalDeviceVariablePointerFeaturesKHR;
      VkPhysicalDeviceVariablePointerFeaturesKHR = VkPhysicalDeviceVariablePointersFeatures;
@@ -7449,76 +7449,76 @@ type P_VkPhysicalDeviceVariablePointersFeaturesKHR = ^VkPhysicalDeviceVariablePo
 
 
 
-const VK_KHR_get_display_properties2 = 1;
-const VK_KHR_GET_DISPLAY_PROPERTIES_2_SPEC_VERSION = 1;
+const VK_KHR_get_display_properties2                 = 1;
+const VK_KHR_GET_DISPLAY_PROPERTIES_2_SPEC_VERSION   = 1;
 const VK_KHR_GET_DISPLAY_PROPERTIES_2_EXTENSION_NAME = 'VK_KHR_get_display_properties2';
 type P_VkDisplayProperties2KHR = ^VkDisplayProperties2KHR;
      VkDisplayProperties2KHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType             :VkStructureType;
+       pNext             :P_void;
        displayProperties :VkDisplayPropertiesKHR;
      end;
 
 type P_VkDisplayPlaneProperties2KHR = ^VkDisplayPlaneProperties2KHR;
      VkDisplayPlaneProperties2KHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                  :VkStructureType;
+       pNext                  :P_void;
        displayPlaneProperties :VkDisplayPlanePropertiesKHR;
      end;
 
 type P_VkDisplayModeProperties2KHR = ^VkDisplayModeProperties2KHR;
      VkDisplayModeProperties2KHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                 :VkStructureType;
+       pNext                 :P_void;
        displayModeProperties :VkDisplayModePropertiesKHR;
      end;
 
 type P_VkDisplayPlaneInfo2KHR = ^VkDisplayPlaneInfo2KHR;
      VkDisplayPlaneInfo2KHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       mode :VkDisplayModeKHR;
+       sType      :VkStructureType;
+       pNext      :P_void;
+       mode       :VkDisplayModeKHR;
        planeIndex :T_uint32_t;
      end;
 
 type P_VkDisplayPlaneCapabilities2KHR = ^VkDisplayPlaneCapabilities2KHR;
      VkDisplayPlaneCapabilities2KHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType        :VkStructureType;
+       pNext        :P_void;
        capabilities :VkDisplayPlaneCapabilitiesKHR;
      end;
 
-type PFN_vkGetPhysicalDeviceDisplayProperties2KHR = function( physicalDevice_:VkPhysicalDevice; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayProperties2KHR ) :VkResult;
+type PFN_vkGetPhysicalDeviceDisplayProperties2KHR      = function( physicalDevice_:VkPhysicalDevice; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayProperties2KHR ) :VkResult;
 type PFN_vkGetPhysicalDeviceDisplayPlaneProperties2KHR = function( physicalDevice_:VkPhysicalDevice; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayPlaneProperties2KHR ) :VkResult;
-type PFN_vkGetDisplayModeProperties2KHR = function( physicalDevice_:VkPhysicalDevice; display_:VkDisplayKHR; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayModeProperties2KHR ) :VkResult;
-type PFN_vkGetDisplayPlaneCapabilities2KHR = function( physicalDevice_:VkPhysicalDevice; const pDisplayPlaneInfo_:P_VkDisplayPlaneInfo2KHR; pCapabilities_:P_VkDisplayPlaneCapabilities2KHR ) :VkResult;
+type PFN_vkGetDisplayModeProperties2KHR                = function( physicalDevice_:VkPhysicalDevice; display_:VkDisplayKHR; pPropertyCount_:P_uint32_t; pProperties_:P_VkDisplayModeProperties2KHR ) :VkResult;
+type PFN_vkGetDisplayPlaneCapabilities2KHR             = function( physicalDevice_:VkPhysicalDevice; const pDisplayPlaneInfo_:P_VkDisplayPlaneInfo2KHR; pCapabilities_:P_VkDisplayPlaneCapabilities2KHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkGetPhysicalDeviceDisplayProperties2KHR(
-    physicalDevice_:VkPhysicalDevice;
-    pPropertyCount_:P_uint32_t;
-    pProperties_:P_VkDisplayProperties2KHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_ :VkPhysicalDevice;
+    pPropertyCount_ :P_uint32_t;
+    pProperties_    :P_VkDisplayProperties2KHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetPhysicalDeviceDisplayPlaneProperties2KHR(
-    physicalDevice_:VkPhysicalDevice;
-    pPropertyCount_:P_uint32_t;
-    pProperties_:P_VkDisplayPlaneProperties2KHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_ :VkPhysicalDevice;
+    pPropertyCount_ :P_uint32_t;
+    pProperties_    :P_VkDisplayPlaneProperties2KHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetDisplayModeProperties2KHR(
-    physicalDevice_:VkPhysicalDevice;
-    display_:VkDisplayKHR;
-    pPropertyCount_:P_uint32_t;
-    pProperties_:P_VkDisplayModeProperties2KHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_ :VkPhysicalDevice;
+    display_        :VkDisplayKHR;
+    pPropertyCount_ :P_uint32_t;
+    pProperties_    :P_VkDisplayModeProperties2KHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetDisplayPlaneCapabilities2KHR(
-    physicalDevice_:VkPhysicalDevice;
-    pDisplayPlaneInfo_:P_VkDisplayPlaneInfo2KHR;
-    pCapabilities_:P_VkDisplayPlaneCapabilities2KHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_    :VkPhysicalDevice;
+    pDisplayPlaneInfo_ :P_VkDisplayPlaneInfo2KHR;
+    pCapabilities_     :P_VkDisplayPlaneCapabilities2KHR ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_dedicated_allocation = 1;
-const VK_KHR_DEDICATED_ALLOCATION_SPEC_VERSION = 3;
+const VK_KHR_dedicated_allocation                = 1;
+const VK_KHR_DEDICATED_ALLOCATION_SPEC_VERSION   = 3;
 const VK_KHR_DEDICATED_ALLOCATION_EXTENSION_NAME = 'VK_KHR_dedicated_allocation';
 type P_VkMemoryDedicatedRequirementsKHR = ^VkMemoryDedicatedRequirementsKHR;
      VkMemoryDedicatedRequirementsKHR = VkMemoryDedicatedRequirements;
@@ -7528,18 +7528,18 @@ type P_VkMemoryDedicatedAllocateInfoKHR = ^VkMemoryDedicatedAllocateInfoKHR;
 
 
 
-const VK_KHR_storage_buffer_storage_class = 1;
-const VK_KHR_STORAGE_BUFFER_STORAGE_CLASS_SPEC_VERSION = 1;
+const VK_KHR_storage_buffer_storage_class                = 1;
+const VK_KHR_STORAGE_BUFFER_STORAGE_CLASS_SPEC_VERSION   = 1;
 const VK_KHR_STORAGE_BUFFER_STORAGE_CLASS_EXTENSION_NAME = 'VK_KHR_storage_buffer_storage_class';
 
 
-const VK_KHR_relaxed_block_layout = 1;
-const VK_KHR_RELAXED_BLOCK_LAYOUT_SPEC_VERSION = 1;
+const VK_KHR_relaxed_block_layout                = 1;
+const VK_KHR_RELAXED_BLOCK_LAYOUT_SPEC_VERSION   = 1;
 const VK_KHR_RELAXED_BLOCK_LAYOUT_EXTENSION_NAME = 'VK_KHR_relaxed_block_layout';
 
 
-const VK_KHR_get_memory_requirements2 = 1;
-const VK_KHR_GET_MEMORY_REQUIREMENTS_2_SPEC_VERSION = 1;
+const VK_KHR_get_memory_requirements2                 = 1;
+const VK_KHR_GET_MEMORY_REQUIREMENTS_2_SPEC_VERSION   = 1;
 const VK_KHR_GET_MEMORY_REQUIREMENTS_2_EXTENSION_NAME = 'VK_KHR_get_memory_requirements2';
 type P_VkBufferMemoryRequirementsInfo2KHR = ^VkBufferMemoryRequirementsInfo2KHR;
      VkBufferMemoryRequirementsInfo2KHR = VkBufferMemoryRequirementsInfo2;
@@ -7556,31 +7556,31 @@ type P_VkMemoryRequirements2KHR = ^VkMemoryRequirements2KHR;
 type P_VkSparseImageMemoryRequirements2KHR = ^VkSparseImageMemoryRequirements2KHR;
      VkSparseImageMemoryRequirements2KHR = VkSparseImageMemoryRequirements2;
 
-type PFN_vkGetImageMemoryRequirements2KHR = procedure( device_:VkDevice; const pInfo_:P_VkImageMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
-type PFN_vkGetBufferMemoryRequirements2KHR = procedure( device_:VkDevice; const pInfo_:P_VkBufferMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
+type PFN_vkGetImageMemoryRequirements2KHR       = procedure( device_:VkDevice; const pInfo_:P_VkImageMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
+type PFN_vkGetBufferMemoryRequirements2KHR      = procedure( device_:VkDevice; const pInfo_:P_VkBufferMemoryRequirementsInfo2; pMemoryRequirements_:P_VkMemoryRequirements2 );
 type PFN_vkGetImageSparseMemoryRequirements2KHR = procedure( device_:VkDevice; const pInfo_:P_VkImageSparseMemoryRequirementsInfo2; pSparseMemoryRequirementCount_:P_uint32_t; pSparseMemoryRequirements_:P_VkSparseImageMemoryRequirements2 );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 procedure vkGetImageMemoryRequirements2KHR(
-    device_:VkDevice;
-    pInfo_:P_VkImageMemoryRequirementsInfo2;
-    pMemoryRequirements_:P_VkMemoryRequirements2 ); stdcall; external DLLNAME;
+    device_              :VkDevice;
+    pInfo_               :P_VkImageMemoryRequirementsInfo2;
+    pMemoryRequirements_ :P_VkMemoryRequirements2 ); stdcall; external DLLNAME;
 
 procedure vkGetBufferMemoryRequirements2KHR(
-    device_:VkDevice;
-    pInfo_:P_VkBufferMemoryRequirementsInfo2;
-    pMemoryRequirements_:P_VkMemoryRequirements2 ); stdcall; external DLLNAME;
+    device_              :VkDevice;
+    pInfo_               :P_VkBufferMemoryRequirementsInfo2;
+    pMemoryRequirements_ :P_VkMemoryRequirements2 ); stdcall; external DLLNAME;
 
 procedure vkGetImageSparseMemoryRequirements2KHR(
-    device_:VkDevice;
-    pInfo_:P_VkImageSparseMemoryRequirementsInfo2;
-    pSparseMemoryRequirementCount_:P_uint32_t;
-    pSparseMemoryRequirements_:P_VkSparseImageMemoryRequirements2 ); stdcall; external DLLNAME;
+    device_                        :VkDevice;
+    pInfo_                         :P_VkImageSparseMemoryRequirementsInfo2;
+    pSparseMemoryRequirementCount_ :P_uint32_t;
+    pSparseMemoryRequirements_     :P_VkSparseImageMemoryRequirements2 ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_image_format_list = 1;
-const VK_KHR_IMAGE_FORMAT_LIST_SPEC_VERSION = 1;
+const VK_KHR_image_format_list                = 1;
+const VK_KHR_IMAGE_FORMAT_LIST_SPEC_VERSION   = 1;
 const VK_KHR_IMAGE_FORMAT_LIST_EXTENSION_NAME = 'VK_KHR_image_format_list';
 type P_VkImageFormatListCreateInfoKHR = ^VkImageFormatListCreateInfoKHR;
      VkImageFormatListCreateInfoKHR = VkImageFormatListCreateInfo;
@@ -7591,7 +7591,7 @@ const VK_KHR_sampler_ycbcr_conversion = 1;
 type P_VkSamplerYcbcrConversionKHR = ^VkSamplerYcbcrConversionKHR;
      VkSamplerYcbcrConversionKHR = VkSamplerYcbcrConversion;
 
-const VK_KHR_SAMPLER_YCBCR_CONVERSION_SPEC_VERSION = 14;
+const VK_KHR_SAMPLER_YCBCR_CONVERSION_SPEC_VERSION   = 14;
 const VK_KHR_SAMPLER_YCBCR_CONVERSION_EXTENSION_NAME = 'VK_KHR_sampler_ycbcr_conversion';
 type P_VkSamplerYcbcrModelConversionKHR = ^VkSamplerYcbcrModelConversionKHR;
      VkSamplerYcbcrModelConversionKHR = VkSamplerYcbcrModelConversion;
@@ -7620,25 +7620,25 @@ type P_VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR = ^VkPhysicalDeviceSamp
 type P_VkSamplerYcbcrConversionImageFormatPropertiesKHR = ^VkSamplerYcbcrConversionImageFormatPropertiesKHR;
      VkSamplerYcbcrConversionImageFormatPropertiesKHR = VkSamplerYcbcrConversionImageFormatProperties;
 
-type PFN_vkCreateSamplerYcbcrConversionKHR = function( device_:VkDevice; const pCreateInfo_:P_VkSamplerYcbcrConversionCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pYcbcrConversion_:P_VkSamplerYcbcrConversion ) :VkResult;
+type PFN_vkCreateSamplerYcbcrConversionKHR  = function( device_:VkDevice; const pCreateInfo_:P_VkSamplerYcbcrConversionCreateInfo; const pAllocator_:P_VkAllocationCallbacks; pYcbcrConversion_:P_VkSamplerYcbcrConversion ) :VkResult;
 type PFN_vkDestroySamplerYcbcrConversionKHR = procedure( device_:VkDevice; ycbcrConversion_:VkSamplerYcbcrConversion; const pAllocator_:P_VkAllocationCallbacks );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkCreateSamplerYcbcrConversionKHR(
-    device_:VkDevice;
-    pCreateInfo_:P_VkSamplerYcbcrConversionCreateInfo;
-    pAllocator_:P_VkAllocationCallbacks;
-    pYcbcrConversion_:P_VkSamplerYcbcrConversion ) :VkResult; stdcall; external DLLNAME;
+    device_           :VkDevice;
+    pCreateInfo_      :P_VkSamplerYcbcrConversionCreateInfo;
+    pAllocator_       :P_VkAllocationCallbacks;
+    pYcbcrConversion_ :P_VkSamplerYcbcrConversion ) :VkResult; stdcall; external DLLNAME;
 
 procedure vkDestroySamplerYcbcrConversionKHR(
-    device_:VkDevice;
-    ycbcrConversion_:VkSamplerYcbcrConversion;
-    pAllocator_:P_VkAllocationCallbacks ); stdcall; external DLLNAME;
+    device_          :VkDevice;
+    ycbcrConversion_ :VkSamplerYcbcrConversion;
+    pAllocator_      :P_VkAllocationCallbacks ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_bind_memory2 = 1;
-const VK_KHR_BIND_MEMORY_2_SPEC_VERSION = 1;
+const VK_KHR_bind_memory2                 = 1;
+const VK_KHR_BIND_MEMORY_2_SPEC_VERSION   = 1;
 const VK_KHR_BIND_MEMORY_2_EXTENSION_NAME = 'VK_KHR_bind_memory2';
 type P_VkBindBufferMemoryInfoKHR = ^VkBindBufferMemoryInfoKHR;
      VkBindBufferMemoryInfoKHR = VkBindBufferMemoryInfo;
@@ -7647,23 +7647,23 @@ type P_VkBindImageMemoryInfoKHR = ^VkBindImageMemoryInfoKHR;
      VkBindImageMemoryInfoKHR = VkBindImageMemoryInfo;
 
 type PFN_vkBindBufferMemory2KHR = function( device_:VkDevice; bindInfoCount_:T_uint32_t; const pBindInfos_:P_VkBindBufferMemoryInfo ) :VkResult;
-type PFN_vkBindImageMemory2KHR = function( device_:VkDevice; bindInfoCount_:T_uint32_t; const pBindInfos_:P_VkBindImageMemoryInfo ) :VkResult;
+type PFN_vkBindImageMemory2KHR  = function( device_:VkDevice; bindInfoCount_:T_uint32_t; const pBindInfos_:P_VkBindImageMemoryInfo ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkBindBufferMemory2KHR(
-    device_:VkDevice;
-    bindInfoCount_:T_uint32_t;
-    pBindInfos_:P_VkBindBufferMemoryInfo ) :VkResult; stdcall; external DLLNAME;
+    device_        :VkDevice;
+    bindInfoCount_ :T_uint32_t;
+    pBindInfos_    :P_VkBindBufferMemoryInfo ) :VkResult; stdcall; external DLLNAME;
 
 function vkBindImageMemory2KHR(
-    device_:VkDevice;
-    bindInfoCount_:T_uint32_t;
-    pBindInfos_:P_VkBindImageMemoryInfo ) :VkResult; stdcall; external DLLNAME;
+    device_        :VkDevice;
+    bindInfoCount_ :T_uint32_t;
+    pBindInfos_    :P_VkBindImageMemoryInfo ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_maintenance3 = 1;
-const VK_KHR_MAINTENANCE3_SPEC_VERSION  = 1;
+const VK_KHR_maintenance3                = 1;
+const VK_KHR_MAINTENANCE3_SPEC_VERSION   = 1;
 const VK_KHR_MAINTENANCE3_EXTENSION_NAME = 'VK_KHR_maintenance3';
 type P_VkPhysicalDeviceMaintenance3PropertiesKHR = ^VkPhysicalDeviceMaintenance3PropertiesKHR;
      VkPhysicalDeviceMaintenance3PropertiesKHR = VkPhysicalDeviceMaintenance3Properties;
@@ -7675,65 +7675,65 @@ type PFN_vkGetDescriptorSetLayoutSupportKHR = procedure( device_:VkDevice; const
 
 {$IFNDEF VK_NO_PROTOTYPES }
 procedure vkGetDescriptorSetLayoutSupportKHR(
-    device_:VkDevice;
-    pCreateInfo_:P_VkDescriptorSetLayoutCreateInfo;
-    pSupport_:P_VkDescriptorSetLayoutSupport ); stdcall; external DLLNAME;
+    device_      :VkDevice;
+    pCreateInfo_ :P_VkDescriptorSetLayoutCreateInfo;
+    pSupport_    :P_VkDescriptorSetLayoutSupport ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_draw_indirect_count = 1;
-const VK_KHR_DRAW_INDIRECT_COUNT_SPEC_VERSION = 1;
+const VK_KHR_draw_indirect_count                = 1;
+const VK_KHR_DRAW_INDIRECT_COUNT_SPEC_VERSION   = 1;
 const VK_KHR_DRAW_INDIRECT_COUNT_EXTENSION_NAME = 'VK_KHR_draw_indirect_count';
-type PFN_vkCmdDrawIndirectCountKHR = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; countBuffer_:VkBuffer; countBufferOffset_:VkDeviceSize; maxDrawCount_:T_uint32_t; stride_:T_uint32_t );
+type PFN_vkCmdDrawIndirectCountKHR        = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; countBuffer_:VkBuffer; countBufferOffset_:VkDeviceSize; maxDrawCount_:T_uint32_t; stride_:T_uint32_t );
 type PFN_vkCmdDrawIndexedIndirectCountKHR = procedure( commandBuffer_:VkCommandBuffer; buffer_:VkBuffer; offset_:VkDeviceSize; countBuffer_:VkBuffer; countBufferOffset_:VkDeviceSize; maxDrawCount_:T_uint32_t; stride_:T_uint32_t );
 
 {$IFNDEF VK_NO_PROTOTYPES }
 procedure vkCmdDrawIndirectCountKHR(
-    commandBuffer_:VkCommandBuffer;
-    buffer_:VkBuffer;
-    offset_:VkDeviceSize;
-    countBuffer_:VkBuffer;
-    countBufferOffset_:VkDeviceSize;
-    maxDrawCount_:T_uint32_t;
-    stride_:T_uint32_t ); stdcall; external DLLNAME;
+    commandBuffer_     :VkCommandBuffer;
+    buffer_            :VkBuffer;
+    offset_            :VkDeviceSize;
+    countBuffer_       :VkBuffer;
+    countBufferOffset_ :VkDeviceSize;
+    maxDrawCount_      :T_uint32_t;
+    stride_            :T_uint32_t ); stdcall; external DLLNAME;
 
 procedure vkCmdDrawIndexedIndirectCountKHR(
-    commandBuffer_:VkCommandBuffer;
-    buffer_:VkBuffer;
-    offset_:VkDeviceSize;
-    countBuffer_:VkBuffer;
-    countBufferOffset_:VkDeviceSize;
-    maxDrawCount_:T_uint32_t;
-    stride_:T_uint32_t ); stdcall; external DLLNAME;
+    commandBuffer_     :VkCommandBuffer;
+    buffer_            :VkBuffer;
+    offset_            :VkDeviceSize;
+    countBuffer_       :VkBuffer;
+    countBufferOffset_ :VkDeviceSize;
+    maxDrawCount_      :T_uint32_t;
+    stride_            :T_uint32_t ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_shader_subgroup_extended_types = 1;
-const VK_KHR_SHADER_SUBGROUP_EXTENDED_TYPES_SPEC_VERSION = 1;
+const VK_KHR_shader_subgroup_extended_types                = 1;
+const VK_KHR_SHADER_SUBGROUP_EXTENDED_TYPES_SPEC_VERSION   = 1;
 const VK_KHR_SHADER_SUBGROUP_EXTENDED_TYPES_EXTENSION_NAME = 'VK_KHR_shader_subgroup_extended_types';
 type P_VkPhysicalDeviceShaderSubgroupExtendedTypesFeaturesKHR = ^VkPhysicalDeviceShaderSubgroupExtendedTypesFeaturesKHR;
      VkPhysicalDeviceShaderSubgroupExtendedTypesFeaturesKHR = VkPhysicalDeviceShaderSubgroupExtendedTypesFeatures;
 
 
 
-const VK_KHR_8bit_storage = 1;
-const VK_KHR_8BIT_STORAGE_SPEC_VERSION  = 1;
+const VK_KHR_8bit_storage                = 1;
+const VK_KHR_8BIT_STORAGE_SPEC_VERSION   = 1;
 const VK_KHR_8BIT_STORAGE_EXTENSION_NAME = 'VK_KHR_8bit_storage';
 type P_VkPhysicalDevice8BitStorageFeaturesKHR = ^VkPhysicalDevice8BitStorageFeaturesKHR;
      VkPhysicalDevice8BitStorageFeaturesKHR = VkPhysicalDevice8BitStorageFeatures;
 
 
 
-const VK_KHR_shader_atomic_int64 = 1;
-const VK_KHR_SHADER_ATOMIC_INT64_SPEC_VERSION = 1;
+const VK_KHR_shader_atomic_int64                = 1;
+const VK_KHR_SHADER_ATOMIC_INT64_SPEC_VERSION   = 1;
 const VK_KHR_SHADER_ATOMIC_INT64_EXTENSION_NAME = 'VK_KHR_shader_atomic_int64';
 type P_VkPhysicalDeviceShaderAtomicInt64FeaturesKHR = ^VkPhysicalDeviceShaderAtomicInt64FeaturesKHR;
      VkPhysicalDeviceShaderAtomicInt64FeaturesKHR = VkPhysicalDeviceShaderAtomicInt64Features;
 
 
 
-const VK_KHR_shader_clock = 1;
-const VK_KHR_SHADER_CLOCK_SPEC_VERSION  = 1;
+const VK_KHR_shader_clock                = 1;
+const VK_KHR_SHADER_CLOCK_SPEC_VERSION   = 1;
 const VK_KHR_SHADER_CLOCK_EXTENSION_NAME = 'VK_KHR_shader_clock';
 type P_VkPhysicalDeviceShaderClockFeaturesKHR = ^VkPhysicalDeviceShaderClockFeaturesKHR;
      VkPhysicalDeviceShaderClockFeaturesKHR = record
@@ -7745,11 +7745,11 @@ type P_VkPhysicalDeviceShaderClockFeaturesKHR = ^VkPhysicalDeviceShaderClockFeat
 
 
 
-const VK_KHR_driver_properties = 1;
-const VK_KHR_DRIVER_PROPERTIES_SPEC_VERSION = 1;
+const VK_KHR_driver_properties                = 1;
+const VK_KHR_DRIVER_PROPERTIES_SPEC_VERSION   = 1;
 const VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME = 'VK_KHR_driver_properties';
-const VK_MAX_DRIVER_NAME_SIZE_KHR       = VK_MAX_DRIVER_NAME_SIZE;
-const VK_MAX_DRIVER_INFO_SIZE_KHR       = VK_MAX_DRIVER_INFO_SIZE;
+const VK_MAX_DRIVER_NAME_SIZE_KHR             = VK_MAX_DRIVER_NAME_SIZE;
+const VK_MAX_DRIVER_INFO_SIZE_KHR             = VK_MAX_DRIVER_INFO_SIZE;
 type P_VkDriverIdKHR = ^VkDriverIdKHR;
      VkDriverIdKHR = VkDriverId;
 
@@ -7761,8 +7761,8 @@ type P_VkPhysicalDeviceDriverPropertiesKHR = ^VkPhysicalDeviceDriverPropertiesKH
 
 
 
-const VK_KHR_shader_float_controls = 1;
-const VK_KHR_SHADER_FLOAT_CONTROLS_SPEC_VERSION = 4;
+const VK_KHR_shader_float_controls                = 1;
+const VK_KHR_SHADER_FLOAT_CONTROLS_SPEC_VERSION   = 4;
 const VK_KHR_SHADER_FLOAT_CONTROLS_EXTENSION_NAME = 'VK_KHR_shader_float_controls';
 type P_VkShaderFloatControlsIndependenceKHR = ^VkShaderFloatControlsIndependenceKHR;
      VkShaderFloatControlsIndependenceKHR = VkShaderFloatControlsIndependence;
@@ -7772,8 +7772,8 @@ type P_VkPhysicalDeviceFloatControlsPropertiesKHR = ^VkPhysicalDeviceFloatContro
 
 
 
-const VK_KHR_depth_stencil_resolve = 1;
-const VK_KHR_DEPTH_STENCIL_RESOLVE_SPEC_VERSION = 1;
+const VK_KHR_depth_stencil_resolve                = 1;
+const VK_KHR_DEPTH_STENCIL_RESOLVE_SPEC_VERSION   = 1;
 const VK_KHR_DEPTH_STENCIL_RESOLVE_EXTENSION_NAME = 'VK_KHR_depth_stencil_resolve';
 type P_VkResolveModeFlagBitsKHR = ^VkResolveModeFlagBitsKHR;
      VkResolveModeFlagBitsKHR = VkResolveModeFlagBits;
@@ -7789,13 +7789,13 @@ type P_VkPhysicalDeviceDepthStencilResolvePropertiesKHR = ^VkPhysicalDeviceDepth
 
 
 
-const VK_KHR_swapchain_mutable_format = 1;
-const VK_KHR_SWAPCHAIN_MUTABLE_FORMAT_SPEC_VERSION = 1;
+const VK_KHR_swapchain_mutable_format                = 1;
+const VK_KHR_SWAPCHAIN_MUTABLE_FORMAT_SPEC_VERSION   = 1;
 const VK_KHR_SWAPCHAIN_MUTABLE_FORMAT_EXTENSION_NAME = 'VK_KHR_swapchain_mutable_format';
 
 
-const VK_KHR_timeline_semaphore = 1;
-const VK_KHR_TIMELINE_SEMAPHORE_SPEC_VERSION = 2;
+const VK_KHR_timeline_semaphore                = 1;
+const VK_KHR_TIMELINE_SEMAPHORE_SPEC_VERSION   = 2;
 const VK_KHR_TIMELINE_SEMAPHORE_EXTENSION_NAME = 'VK_KHR_timeline_semaphore';
 type P_VkSemaphoreTypeKHR = ^VkSemaphoreTypeKHR;
      VkSemaphoreTypeKHR = VkSemaphoreType;
@@ -7825,36 +7825,36 @@ type P_VkSemaphoreSignalInfoKHR = ^VkSemaphoreSignalInfoKHR;
      VkSemaphoreSignalInfoKHR = VkSemaphoreSignalInfo;
 
 type PFN_vkGetSemaphoreCounterValueKHR = function( device_:VkDevice; semaphore_:VkSemaphore; pValue_:P_uint64_t ) :VkResult;
-type PFN_vkWaitSemaphoresKHR = function( device_:VkDevice; const pWaitInfo_:P_VkSemaphoreWaitInfo; timeout_:T_uint64_t ) :VkResult;
-type PFN_vkSignalSemaphoreKHR = function( device_:VkDevice; const pSignalInfo_:P_VkSemaphoreSignalInfo ) :VkResult;
+type PFN_vkWaitSemaphoresKHR           = function( device_:VkDevice; const pWaitInfo_:P_VkSemaphoreWaitInfo; timeout_:T_uint64_t ) :VkResult;
+type PFN_vkSignalSemaphoreKHR          = function( device_:VkDevice; const pSignalInfo_:P_VkSemaphoreSignalInfo ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkGetSemaphoreCounterValueKHR(
-    device_:VkDevice;
-    semaphore_:VkSemaphore;
-    pValue_:P_uint64_t ) :VkResult; stdcall; external DLLNAME;
+    device_    :VkDevice;
+    semaphore_ :VkSemaphore;
+    pValue_    :P_uint64_t ) :VkResult; stdcall; external DLLNAME;
 
 function vkWaitSemaphoresKHR(
-    device_:VkDevice;
-    pWaitInfo_:P_VkSemaphoreWaitInfo;
-    timeout_:T_uint64_t ) :VkResult; stdcall; external DLLNAME;
+    device_    :VkDevice;
+    pWaitInfo_ :P_VkSemaphoreWaitInfo;
+    timeout_   :T_uint64_t ) :VkResult; stdcall; external DLLNAME;
 
 function vkSignalSemaphoreKHR(
-    device_:VkDevice;
-    pSignalInfo_:P_VkSemaphoreSignalInfo ) :VkResult; stdcall; external DLLNAME;
+    device_      :VkDevice;
+    pSignalInfo_ :P_VkSemaphoreSignalInfo ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_vulkan_memory_model = 1;
-const VK_KHR_VULKAN_MEMORY_MODEL_SPEC_VERSION = 3;
+const VK_KHR_vulkan_memory_model                = 1;
+const VK_KHR_VULKAN_MEMORY_MODEL_SPEC_VERSION   = 3;
 const VK_KHR_VULKAN_MEMORY_MODEL_EXTENSION_NAME = 'VK_KHR_vulkan_memory_model';
 type P_VkPhysicalDeviceVulkanMemoryModelFeaturesKHR = ^VkPhysicalDeviceVulkanMemoryModelFeaturesKHR;
      VkPhysicalDeviceVulkanMemoryModelFeaturesKHR = VkPhysicalDeviceVulkanMemoryModelFeatures;
 
 
 
-const VK_KHR_shader_terminate_invocation = 1;
-const VK_KHR_SHADER_TERMINATE_INVOCATION_SPEC_VERSION = 1;
+const VK_KHR_shader_terminate_invocation                = 1;
+const VK_KHR_SHADER_TERMINATE_INVOCATION_SPEC_VERSION   = 1;
 const VK_KHR_SHADER_TERMINATE_INVOCATION_EXTENSION_NAME = 'VK_KHR_shader_terminate_invocation';
 type P_VkPhysicalDeviceShaderTerminateInvocationFeaturesKHR = ^VkPhysicalDeviceShaderTerminateInvocationFeaturesKHR;
      VkPhysicalDeviceShaderTerminateInvocationFeaturesKHR = record
@@ -7865,71 +7865,71 @@ type P_VkPhysicalDeviceShaderTerminateInvocationFeaturesKHR = ^VkPhysicalDeviceS
 
 
 
-const VK_KHR_fragment_shading_rate = 1;
-const VK_KHR_FRAGMENT_SHADING_RATE_SPEC_VERSION = 1;
+const VK_KHR_fragment_shading_rate                = 1;
+const VK_KHR_FRAGMENT_SHADING_RATE_SPEC_VERSION   = 1;
 const VK_KHR_FRAGMENT_SHADING_RATE_EXTENSION_NAME = 'VK_KHR_fragment_shading_rate';
 
 type P_VkFragmentShadingRateCombinerOpKHR = ^VkFragmentShadingRateCombinerOpKHR;
      VkFragmentShadingRateCombinerOpKHR = (
-       VK_FRAGMENT_SHADING_RATE_COMBINER_OP_KEEP_KHR = 0,
-       VK_FRAGMENT_SHADING_RATE_COMBINER_OP_REPLACE_KHR = 1,
-       VK_FRAGMENT_SHADING_RATE_COMBINER_OP_MIN_KHR = 2,
-       VK_FRAGMENT_SHADING_RATE_COMBINER_OP_MAX_KHR = 3,
-       VK_FRAGMENT_SHADING_RATE_COMBINER_OP_MUL_KHR = 4,
+       VK_FRAGMENT_SHADING_RATE_COMBINER_OP_KEEP_KHR     = 0,
+       VK_FRAGMENT_SHADING_RATE_COMBINER_OP_REPLACE_KHR  = 1,
+       VK_FRAGMENT_SHADING_RATE_COMBINER_OP_MIN_KHR      = 2,
+       VK_FRAGMENT_SHADING_RATE_COMBINER_OP_MAX_KHR      = 3,
+       VK_FRAGMENT_SHADING_RATE_COMBINER_OP_MUL_KHR      = 4,
        VK_FRAGMENT_SHADING_RATE_COMBINER_OP_MAX_ENUM_KHR = $7FFFFFFF
      );
 type P_VkFragmentShadingRateAttachmentInfoKHR = ^VkFragmentShadingRateAttachmentInfoKHR;
      VkFragmentShadingRateAttachmentInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                          :VkStructureType;
+       pNext                          :P_void;
        pFragmentShadingRateAttachment :P_VkAttachmentReference2;
        shadingRateAttachmentTexelSize :VkExtent2D;
      end;
 
 type P_VkPipelineFragmentShadingRateStateCreateInfoKHR = ^VkPipelineFragmentShadingRateStateCreateInfoKHR;
      VkPipelineFragmentShadingRateStateCreateInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType        :VkStructureType;
+       pNext        :P_void;
        fragmentSize :VkExtent2D;
-       combinerOps :array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR;
+       combinerOps  :array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR;
      end;
 
 type P_VkPhysicalDeviceFragmentShadingRateFeaturesKHR = ^VkPhysicalDeviceFragmentShadingRateFeaturesKHR;
      VkPhysicalDeviceFragmentShadingRateFeaturesKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       pipelineFragmentShadingRate :VkBool32;
-       primitiveFragmentShadingRate :VkBool32;
+       sType                         :VkStructureType;
+       pNext                         :P_void;
+       pipelineFragmentShadingRate   :VkBool32;
+       primitiveFragmentShadingRate  :VkBool32;
        attachmentFragmentShadingRate :VkBool32;
      end;
 
 type P_VkPhysicalDeviceFragmentShadingRatePropertiesKHR = ^VkPhysicalDeviceFragmentShadingRatePropertiesKHR;
      VkPhysicalDeviceFragmentShadingRatePropertiesKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       minFragmentShadingRateAttachmentTexelSize :VkExtent2D;
-       maxFragmentShadingRateAttachmentTexelSize :VkExtent2D;
+       sType                                                :VkStructureType;
+       pNext                                                :P_void;
+       minFragmentShadingRateAttachmentTexelSize            :VkExtent2D;
+       maxFragmentShadingRateAttachmentTexelSize            :VkExtent2D;
        maxFragmentShadingRateAttachmentTexelSizeAspectRatio :T_uint32_t;
-       primitiveFragmentShadingRateWithMultipleViewports :VkBool32;
-       layeredShadingRateAttachments :VkBool32;
-       fragmentShadingRateNonTrivialCombinerOps :VkBool32;
-       maxFragmentSize :VkExtent2D;
-       maxFragmentSizeAspectRatio :T_uint32_t;
-       maxFragmentShadingRateCoverageSamples :T_uint32_t;
-       maxFragmentShadingRateRasterizationSamples :VkSampleCountFlagBits;
-       fragmentShadingRateWithShaderDepthStencilWrites :VkBool32;
-       fragmentShadingRateWithSampleMask :VkBool32;
-       fragmentShadingRateWithShaderSampleMask :VkBool32;
-       fragmentShadingRateWithConservativeRasterization :VkBool32;
-       fragmentShadingRateWithFragmentShaderInterlock :VkBool32;
-       fragmentShadingRateWithCustomSampleLocations :VkBool32;
-       fragmentShadingRateStrictMultiplyCombiner :VkBool32;
+       primitiveFragmentShadingRateWithMultipleViewports    :VkBool32;
+       layeredShadingRateAttachments                        :VkBool32;
+       fragmentShadingRateNonTrivialCombinerOps             :VkBool32;
+       maxFragmentSize                                      :VkExtent2D;
+       maxFragmentSizeAspectRatio                           :T_uint32_t;
+       maxFragmentShadingRateCoverageSamples                :T_uint32_t;
+       maxFragmentShadingRateRasterizationSamples           :VkSampleCountFlagBits;
+       fragmentShadingRateWithShaderDepthStencilWrites      :VkBool32;
+       fragmentShadingRateWithSampleMask                    :VkBool32;
+       fragmentShadingRateWithShaderSampleMask              :VkBool32;
+       fragmentShadingRateWithConservativeRasterization     :VkBool32;
+       fragmentShadingRateWithFragmentShaderInterlock       :VkBool32;
+       fragmentShadingRateWithCustomSampleLocations         :VkBool32;
+       fragmentShadingRateStrictMultiplyCombiner            :VkBool32;
      end;
 
 type P_VkPhysicalDeviceFragmentShadingRateKHR = ^VkPhysicalDeviceFragmentShadingRateKHR;
      VkPhysicalDeviceFragmentShadingRateKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType        :VkStructureType;
+       pNext        :P_void;
        sampleCounts :VkSampleCountFlags;
        fragmentSize :VkExtent2D;
      end;
@@ -7940,36 +7940,36 @@ type T_combinerOps = array [ 0..2-1 ] of VkFragmentShadingRateCombinerOpKHR;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkGetPhysicalDeviceFragmentShadingRatesKHR(
-    physicalDevice_:VkPhysicalDevice;
-    pFragmentShadingRateCount_:P_uint32_t;
-    pFragmentShadingRates_:P_VkPhysicalDeviceFragmentShadingRateKHR ) :VkResult; stdcall; external DLLNAME;
+    physicalDevice_            :VkPhysicalDevice;
+    pFragmentShadingRateCount_ :P_uint32_t;
+    pFragmentShadingRates_     :P_VkPhysicalDeviceFragmentShadingRateKHR ) :VkResult; stdcall; external DLLNAME;
 
 procedure vkCmdSetFragmentShadingRateKHR(
-    commandBuffer_:VkCommandBuffer;
-    pFragmentSize_:P_VkExtent2D;
-    const combinerOps_:T_combinerOps ); stdcall; external DLLNAME;
+    commandBuffer_     :VkCommandBuffer;
+    pFragmentSize_     :P_VkExtent2D;
+    const combinerOps_ :T_combinerOps ); stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_spirv_1_4 = 1;
-const VK_KHR_SPIRV_1_4_SPEC_VERSION     = 1;
+const VK_KHR_spirv_1_4                = 1;
+const VK_KHR_SPIRV_1_4_SPEC_VERSION   = 1;
 const VK_KHR_SPIRV_1_4_EXTENSION_NAME = 'VK_KHR_spirv_1_4';
 
 
-const VK_KHR_surface_protected_capabilities = 1;
-const VK_KHR_SURFACE_PROTECTED_CAPABILITIES_SPEC_VERSION = 1;
+const VK_KHR_surface_protected_capabilities                = 1;
+const VK_KHR_SURFACE_PROTECTED_CAPABILITIES_SPEC_VERSION   = 1;
 const VK_KHR_SURFACE_PROTECTED_CAPABILITIES_EXTENSION_NAME = 'VK_KHR_surface_protected_capabilities';
 type P_VkSurfaceProtectedCapabilitiesKHR = ^VkSurfaceProtectedCapabilitiesKHR;
      VkSurfaceProtectedCapabilitiesKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType             :VkStructureType;
+       pNext             :P_void;
        supportsProtected :VkBool32;
      end;
 
 
 
-const VK_KHR_separate_depth_stencil_layouts = 1;
-const VK_KHR_SEPARATE_DEPTH_STENCIL_LAYOUTS_SPEC_VERSION = 1;
+const VK_KHR_separate_depth_stencil_layouts                = 1;
+const VK_KHR_SEPARATE_DEPTH_STENCIL_LAYOUTS_SPEC_VERSION   = 1;
 const VK_KHR_SEPARATE_DEPTH_STENCIL_LAYOUTS_EXTENSION_NAME = 'VK_KHR_separate_depth_stencil_layouts';
 type P_VkPhysicalDeviceSeparateDepthStencilLayoutsFeaturesKHR = ^VkPhysicalDeviceSeparateDepthStencilLayoutsFeaturesKHR;
      VkPhysicalDeviceSeparateDepthStencilLayoutsFeaturesKHR = VkPhysicalDeviceSeparateDepthStencilLayoutsFeatures;
@@ -7982,16 +7982,16 @@ type P_VkAttachmentDescriptionStencilLayoutKHR = ^VkAttachmentDescriptionStencil
 
 
 
-const VK_KHR_uniform_buffer_standard_layout = 1;
-const VK_KHR_UNIFORM_BUFFER_STANDARD_LAYOUT_SPEC_VERSION = 1;
+const VK_KHR_uniform_buffer_standard_layout                = 1;
+const VK_KHR_UNIFORM_BUFFER_STANDARD_LAYOUT_SPEC_VERSION   = 1;
 const VK_KHR_UNIFORM_BUFFER_STANDARD_LAYOUT_EXTENSION_NAME = 'VK_KHR_uniform_buffer_standard_layout';
 type P_VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR = ^VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR;
      VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR = VkPhysicalDeviceUniformBufferStandardLayoutFeatures;
 
 
 
-const VK_KHR_buffer_device_address = 1;
-const VK_KHR_BUFFER_DEVICE_ADDRESS_SPEC_VERSION = 1;
+const VK_KHR_buffer_device_address                = 1;
+const VK_KHR_BUFFER_DEVICE_ADDRESS_SPEC_VERSION   = 1;
 const VK_KHR_BUFFER_DEVICE_ADDRESS_EXTENSION_NAME = 'VK_KHR_buffer_device_address';
 type P_VkPhysicalDeviceBufferDeviceAddressFeaturesKHR = ^VkPhysicalDeviceBufferDeviceAddressFeaturesKHR;
      VkPhysicalDeviceBufferDeviceAddressFeaturesKHR = VkPhysicalDeviceBufferDeviceAddressFeatures;
@@ -8008,182 +8008,182 @@ type P_VkMemoryOpaqueCaptureAddressAllocateInfoKHR = ^VkMemoryOpaqueCaptureAddre
 type P_VkDeviceMemoryOpaqueCaptureAddressInfoKHR = ^VkDeviceMemoryOpaqueCaptureAddressInfoKHR;
      VkDeviceMemoryOpaqueCaptureAddressInfoKHR = VkDeviceMemoryOpaqueCaptureAddressInfo;
 
-type PFN_vkGetBufferDeviceAddressKHR = function( device_:VkDevice; const pInfo_:P_VkBufferDeviceAddressInfo ) :VkDeviceAddress;
-type PFN_vkGetBufferOpaqueCaptureAddressKHR = function( device_:VkDevice; const pInfo_:P_VkBufferDeviceAddressInfo ) :T_uint64_t;
+type PFN_vkGetBufferDeviceAddressKHR              = function( device_:VkDevice; const pInfo_:P_VkBufferDeviceAddressInfo ) :VkDeviceAddress;
+type PFN_vkGetBufferOpaqueCaptureAddressKHR       = function( device_:VkDevice; const pInfo_:P_VkBufferDeviceAddressInfo ) :T_uint64_t;
 type PFN_vkGetDeviceMemoryOpaqueCaptureAddressKHR = function( device_:VkDevice; const pInfo_:P_VkDeviceMemoryOpaqueCaptureAddressInfo ) :T_uint64_t;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkGetBufferDeviceAddressKHR(
-    device_:VkDevice;
-    pInfo_:P_VkBufferDeviceAddressInfo ) :VkDeviceAddress; stdcall; external DLLNAME;
+    device_ :VkDevice;
+    pInfo_  :P_VkBufferDeviceAddressInfo ) :VkDeviceAddress; stdcall; external DLLNAME;
 
 function vkGetBufferOpaqueCaptureAddressKHR(
-    device_:VkDevice;
-    pInfo_:P_VkBufferDeviceAddressInfo ) :T_uint64_t; stdcall; external DLLNAME;
+    device_ :VkDevice;
+    pInfo_  :P_VkBufferDeviceAddressInfo ) :T_uint64_t; stdcall; external DLLNAME;
 
 function vkGetDeviceMemoryOpaqueCaptureAddressKHR(
-    device_:VkDevice;
-    pInfo_:P_VkDeviceMemoryOpaqueCaptureAddressInfo ) :T_uint64_t; stdcall; external DLLNAME;
+    device_ :VkDevice;
+    pInfo_  :P_VkDeviceMemoryOpaqueCaptureAddressInfo ) :T_uint64_t; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_deferred_host_operations = 1;
+const VK_KHR_deferred_host_operations                = 1;
 type P_VkDeferredOperationKHR = ^VkDeferredOperationKHR;
      VkDeferredOperationKHR = VK_DEFINE_NON_DISPATCHABLE_HANDLE;
-const VK_KHR_DEFERRED_HOST_OPERATIONS_SPEC_VERSION = 4;
+const VK_KHR_DEFERRED_HOST_OPERATIONS_SPEC_VERSION   = 4;
 const VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME = 'VK_KHR_deferred_host_operations';
-type PFN_vkCreateDeferredOperationKHR = function( device_:VkDevice; const pAllocator_:P_VkAllocationCallbacks; pDeferredOperation_:P_VkDeferredOperationKHR ) :VkResult;
-type PFN_vkDestroyDeferredOperationKHR = procedure( device_:VkDevice; operation_:VkDeferredOperationKHR; const pAllocator_:P_VkAllocationCallbacks );
+type PFN_vkCreateDeferredOperationKHR            = function( device_:VkDevice; const pAllocator_:P_VkAllocationCallbacks; pDeferredOperation_:P_VkDeferredOperationKHR ) :VkResult;
+type PFN_vkDestroyDeferredOperationKHR           = procedure( device_:VkDevice; operation_:VkDeferredOperationKHR; const pAllocator_:P_VkAllocationCallbacks );
 type PFN_vkGetDeferredOperationMaxConcurrencyKHR = function( device_:VkDevice; operation_:VkDeferredOperationKHR ) :T_uint32_t;
-type PFN_vkGetDeferredOperationResultKHR = function( device_:VkDevice; operation_:VkDeferredOperationKHR ) :VkResult;
-type PFN_vkDeferredOperationJoinKHR = function( device_:VkDevice; operation_:VkDeferredOperationKHR ) :VkResult;
+type PFN_vkGetDeferredOperationResultKHR         = function( device_:VkDevice; operation_:VkDeferredOperationKHR ) :VkResult;
+type PFN_vkDeferredOperationJoinKHR              = function( device_:VkDevice; operation_:VkDeferredOperationKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkCreateDeferredOperationKHR(
-    device_:VkDevice;
-    pAllocator_:P_VkAllocationCallbacks;
-    pDeferredOperation_:P_VkDeferredOperationKHR ) :VkResult; stdcall; external DLLNAME;
+    device_             :VkDevice;
+    pAllocator_         :P_VkAllocationCallbacks;
+    pDeferredOperation_ :P_VkDeferredOperationKHR ) :VkResult; stdcall; external DLLNAME;
 
 procedure vkDestroyDeferredOperationKHR(
-    device_:VkDevice;
-    operation_:VkDeferredOperationKHR;
-    pAllocator_:P_VkAllocationCallbacks ); stdcall; external DLLNAME;
+    device_     :VkDevice;
+    operation_  :VkDeferredOperationKHR;
+    pAllocator_ :P_VkAllocationCallbacks ); stdcall; external DLLNAME;
 
 function vkGetDeferredOperationMaxConcurrencyKHR(
-    device_:VkDevice;
-    operation_:VkDeferredOperationKHR ) :T_uint32_t; stdcall; external DLLNAME;
+    device_    :VkDevice;
+    operation_ :VkDeferredOperationKHR ) :T_uint32_t; stdcall; external DLLNAME;
 
 function vkGetDeferredOperationResultKHR(
-    device_:VkDevice;
-    operation_:VkDeferredOperationKHR ) :VkResult; stdcall; external DLLNAME;
+    device_    :VkDevice;
+    operation_ :VkDeferredOperationKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkDeferredOperationJoinKHR(
-    device_:VkDevice;
-    operation_:VkDeferredOperationKHR ) :VkResult; stdcall; external DLLNAME;
+    device_    :VkDevice;
+    operation_ :VkDeferredOperationKHR ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_pipeline_executable_properties = 1;
-const VK_KHR_PIPELINE_EXECUTABLE_PROPERTIES_SPEC_VERSION = 1;
+const VK_KHR_pipeline_executable_properties                = 1;
+const VK_KHR_PIPELINE_EXECUTABLE_PROPERTIES_SPEC_VERSION   = 1;
 const VK_KHR_PIPELINE_EXECUTABLE_PROPERTIES_EXTENSION_NAME = 'VK_KHR_pipeline_executable_properties';
 
 type P_VkPipelineExecutableStatisticFormatKHR = ^VkPipelineExecutableStatisticFormatKHR;
      VkPipelineExecutableStatisticFormatKHR = (
-       VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_BOOL32_KHR = 0,
-       VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_INT64_KHR = 1,
-       VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_UINT64_KHR = 2,
-       VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_FLOAT64_KHR = 3,
+       VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_BOOL32_KHR   = 0,
+       VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_INT64_KHR    = 1,
+       VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_UINT64_KHR   = 2,
+       VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_FLOAT64_KHR  = 3,
        VK_PIPELINE_EXECUTABLE_STATISTIC_FORMAT_MAX_ENUM_KHR = $7FFFFFFF
      );
 type P_VkPhysicalDevicePipelineExecutablePropertiesFeaturesKHR = ^VkPhysicalDevicePipelineExecutablePropertiesFeaturesKHR;
      VkPhysicalDevicePipelineExecutablePropertiesFeaturesKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType                  :VkStructureType;
+       pNext                  :P_void;
        pipelineExecutableInfo :VkBool32;
      end;
 
 type P_VkPipelineInfoKHR = ^VkPipelineInfoKHR;
      VkPipelineInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType    :VkStructureType;
+       pNext    :P_void;
        pipeline :VkPipeline;
      end;
 
 type P_VkPipelineExecutablePropertiesKHR = ^VkPipelineExecutablePropertiesKHR;
      VkPipelineExecutablePropertiesKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       stages :VkShaderStageFlags;
-       name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
-       description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
+       sType        :VkStructureType;
+       pNext        :P_void;
+       stages       :VkShaderStageFlags;
+       name         :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
+       description  :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
        subgroupSize :T_uint32_t;
      end;
 
 type P_VkPipelineExecutableInfoKHR = ^VkPipelineExecutableInfoKHR;
      VkPipelineExecutableInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       pipeline :VkPipeline;
+       sType           :VkStructureType;
+       pNext           :P_void;
+       pipeline        :VkPipeline;
        executableIndex :T_uint32_t;
      end;
 
 type P_VkPipelineExecutableStatisticValueKHR = ^VkPipelineExecutableStatisticValueKHR;
      VkPipelineExecutableStatisticValueKHR = record
      case Byte of
-       0:( b32 :VkBool32 );
+       0:( b32 :VkBool32   );
        1:( i64 :T_int64_t  );
        2:( u64 :T_uint64_t );
-       3:( f64 :double   );
+       3:( f64 :double     );
      end;
 
 type P_VkPipelineExecutableStatisticKHR = ^VkPipelineExecutableStatisticKHR;
      VkPipelineExecutableStatisticKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
+       sType       :VkStructureType;
+       pNext       :P_void;
+       name        :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
        description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
-       format :VkPipelineExecutableStatisticFormatKHR;
-       value :VkPipelineExecutableStatisticValueKHR;
+       format      :VkPipelineExecutableStatisticFormatKHR;
+       value       :VkPipelineExecutableStatisticValueKHR;
      end;
 
 type P_VkPipelineExecutableInternalRepresentationKHR = ^VkPipelineExecutableInternalRepresentationKHR;
      VkPipelineExecutableInternalRepresentationKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
-       name :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
+       sType       :VkStructureType;
+       pNext       :P_void;
+       name        :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
        description :array [ 0..VK_MAX_DESCRIPTION_SIZE-1 ] of T_char;
-       isText :VkBool32;
-       dataSize :T_size_t;
-       pData :P_void;
+       isText      :VkBool32;
+       dataSize    :T_size_t;
+       pData       :P_void;
      end;
 
-type PFN_vkGetPipelineExecutablePropertiesKHR = function( device_:VkDevice; const pPipelineInfo_:P_VkPipelineInfoKHR; pExecutableCount_:P_uint32_t; pProperties_:P_VkPipelineExecutablePropertiesKHR ) :VkResult;
-type PFN_vkGetPipelineExecutableStatisticsKHR = function( device_:VkDevice; const pExecutableInfo_:P_VkPipelineExecutableInfoKHR; pStatisticCount_:P_uint32_t; pStatistics_:P_VkPipelineExecutableStatisticKHR ) :VkResult;
+type PFN_vkGetPipelineExecutablePropertiesKHR              = function( device_:VkDevice; const pPipelineInfo_:P_VkPipelineInfoKHR; pExecutableCount_:P_uint32_t; pProperties_:P_VkPipelineExecutablePropertiesKHR ) :VkResult;
+type PFN_vkGetPipelineExecutableStatisticsKHR              = function( device_:VkDevice; const pExecutableInfo_:P_VkPipelineExecutableInfoKHR; pStatisticCount_:P_uint32_t; pStatistics_:P_VkPipelineExecutableStatisticKHR ) :VkResult;
 type PFN_vkGetPipelineExecutableInternalRepresentationsKHR = function( device_:VkDevice; const pExecutableInfo_:P_VkPipelineExecutableInfoKHR; pInternalRepresentationCount_:P_uint32_t; pInternalRepresentations_:P_VkPipelineExecutableInternalRepresentationKHR ) :VkResult;
 
 {$IFNDEF VK_NO_PROTOTYPES }
 function vkGetPipelineExecutablePropertiesKHR(
-    device_:VkDevice;
-    pPipelineInfo_:P_VkPipelineInfoKHR;
-    pExecutableCount_:P_uint32_t;
-    pProperties_:P_VkPipelineExecutablePropertiesKHR ) :VkResult; stdcall; external DLLNAME;
+    device_           :VkDevice;
+    pPipelineInfo_    :P_VkPipelineInfoKHR;
+    pExecutableCount_ :P_uint32_t;
+    pProperties_      :P_VkPipelineExecutablePropertiesKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetPipelineExecutableStatisticsKHR(
-    device_:VkDevice;
-    pExecutableInfo_:P_VkPipelineExecutableInfoKHR;
-    pStatisticCount_:P_uint32_t;
-    pStatistics_:P_VkPipelineExecutableStatisticKHR ) :VkResult; stdcall; external DLLNAME;
+    device_          :VkDevice;
+    pExecutableInfo_ :P_VkPipelineExecutableInfoKHR;
+    pStatisticCount_ :P_uint32_t;
+    pStatistics_     :P_VkPipelineExecutableStatisticKHR ) :VkResult; stdcall; external DLLNAME;
 
 function vkGetPipelineExecutableInternalRepresentationsKHR(
-    device_:VkDevice;
-    pExecutableInfo_:P_VkPipelineExecutableInfoKHR;
-    pInternalRepresentationCount_:P_uint32_t;
-    pInternalRepresentations_:P_VkPipelineExecutableInternalRepresentationKHR ) :VkResult; stdcall; external DLLNAME;
+    device_                       :VkDevice;
+    pExecutableInfo_              :P_VkPipelineExecutableInfoKHR;
+    pInternalRepresentationCount_ :P_uint32_t;
+    pInternalRepresentations_     :P_VkPipelineExecutableInternalRepresentationKHR ) :VkResult; stdcall; external DLLNAME;
 {$ENDIF}
 
 
-const VK_KHR_pipeline_library = 1;
-const VK_KHR_PIPELINE_LIBRARY_SPEC_VERSION = 1;
+const VK_KHR_pipeline_library                = 1;
+const VK_KHR_PIPELINE_LIBRARY_SPEC_VERSION   = 1;
 const VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME = 'VK_KHR_pipeline_library';
 type P_VkPipelineLibraryCreateInfoKHR = ^VkPipelineLibraryCreateInfoKHR;
      VkPipelineLibraryCreateInfoKHR = record
-       sType :VkStructureType;
-       pNext :P_void;
+       sType        :VkStructureType;
+       pNext        :P_void;
        libraryCount :T_uint32_t;
-       pLibraries :P_VkPipeline;
+       pLibraries   :P_VkPipeline;
      end;
 
 
 
-const VK_KHR_shader_non_semantic_info = 1;
-const VK_KHR_SHADER_NON_SEMANTIC_INFO_SPEC_VERSION = 1;
+const VK_KHR_shader_non_semantic_info                = 1;
+const VK_KHR_SHADER_NON_SEMANTIC_INFO_SPEC_VERSION   = 1;
 const VK_KHR_SHADER_NON_SEMANTIC_INFO_EXTENSION_NAME = 'VK_KHR_shader_non_semantic_info';
 
 
-const VK_KHR_synchronization2 = 1;
+const VK_KHR_synchronization2                 = 1;
 type P_VkFlags64 = ^VkFlags64;
      VkFlags64 = T_uint64_t;
-const VK_KHR_SYNCHRONIZATION_2_SPEC_VERSION = 1;
+const VK_KHR_SYNCHRONIZATION_2_SPEC_VERSION   = 1;
 const VK_KHR_SYNCHRONIZATION_2_EXTENSION_NAME = 'VK_KHR_synchronization2';
 type P_VkPipelineStageFlags2KHR = ^VkPipelineStageFlags2KHR;
      VkPipelineStageFlags2KHR = VkFlags64;
