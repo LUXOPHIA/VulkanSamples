@@ -121,6 +121,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Viewer  :TVkViewer_           read   _Viewer                  ;
        ///// メソッド
        function Bind( const Memory_:TVkImaMem_ ) :Boolean;
+       function Map( var Pointer_:Pointer ) :Boolean;
+       procedure Unmap;
        procedure LoadFromFile( const FileName_:String );
      end;
 
@@ -452,6 +454,20 @@ end;
 
 //------------------------------------------------------------------------------
 
+function TVkImager<TVkDevice_,TVkParent_>.Map( var Pointer_:Pointer ) :Boolean;
+begin
+     if Staging then Result := _Buffer.Memory.Map( Pointer_ )
+                else Result :=        _Memory.Map( Pointer_ );
+end;
+
+procedure TVkImager<TVkDevice_,TVkParent_>.Unmap;
+begin
+     if Staging then _Buffer.Memory.Unmap
+                else        _Memory.Unmap;
+end;
+
+//------------------------------------------------------------------------------
+
 procedure TVkImager<TVkDevice_,TVkParent_>.LoadFromFile( const FileName_:String );
 var
    PsW          :Int32;
@@ -524,23 +540,18 @@ begin
 
      //////////
 
-     if Staging
-     then res := vkMapMemory( TVkDevice( Device ).Handle, _Buffer.Memory.Handle, 0, _Buffer.Memory.Size, 0, @data )
-     else res := vkMapMemory( TVkDevice( Device ).Handle, _Memory       .Handle, 0, _Memory       .Size, 0, @data );
-     Assert( res = VK_SUCCESS );
+     Map( data );
 
      (* Read the ppm file into the mappable image's memory *)
      if Staging then rowPitch := PixelsW * 4
-                       else rowPitch := layout.rowPitch;
+                else rowPitch := layout.rowPitch;
      if not read_ppm( FileName_, PsW, PsH, rowPitch, data ) then
      begin
           Log.d( 'Could not load texture file lunarg.ppm' );
           RunError( 256-1 );
      end;
 
-     if Staging
-     then vkUnmapMemory( TVkDevice( Device ).Handle, _Buffer.Memory.Handle )
-     else vkUnmapMemory( TVkDevice( Device ).Handle, _Memory       .Handle );
+     Unmap;
 
      //////////
 
