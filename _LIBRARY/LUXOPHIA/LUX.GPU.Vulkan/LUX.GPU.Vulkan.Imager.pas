@@ -6,6 +6,7 @@ uses System.Generics.Collections,
      vulkan_core,
      vulkan.util,
      LUX.GPU.Vulkan.root,
+     LUX.GPU.Vulkan.Memory,
      LUX.GPU.Vulkan.Buffer;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -56,11 +57,31 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Handle :VkImageView           read GetHandle write SetHandle;
      end;
 
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImaMem<TVkDevice_,TVkParent_>
+
+     TVkImaMem<TVkDevice_,TVkParent_:class> = class( TVkMemory<TVkDevice_,TVkImager<TVkDevice_,TVkParent_>> )
+     private
+       type TVkImager_ = TVkImager<TVkDevice_,TVkParent_>;
+     protected
+       ///// アクセス
+       function GetDevice :TVkDevice_; override;
+       function GetSize :VkDeviceSize; override;
+       function GetTypeI :UInt32; override;
+       ///// メソッド
+       procedure CreateHandle; override;
+     public
+       ///// プロパティ
+       property Imager :TVkImager_   read GetParent;
+       property Size   :VkDeviceSize read GetSize  ;
+       property TypeI  :UInt32       read GetTypeI ;
+     end;
+
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImager<TVkDevice_,TVkParent_>
 
      TVkImager<TVkDevice_,TVkParent_:class> = class( TVkDeviceObject<TVkDevice_,TVkParent_> )
      private
        type TVkViewer_ = TVkViewer<TVkDevice_,TVkParent_>;
+            TVkImaMem_ = TVkImaMem<TVkDevice_,TVkParent_>;
             TVkImaBuf_ = TVkImaBuf<TVkDevice_,TVkParent_>;
        ///// メソッド
        procedure InitBufferSize;
@@ -69,18 +90,18 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Featurs :VkFormatFeatureFlags;
        _Inform  :VkImageCreateInfo;
        _Handle  :VkImage;
-       _MemoryInform :VkMemoryAllocateInfo;
-       _MemoryHandle :VkDeviceMemory;
+       _Memory  :TVkImaMem_;
        _Viewer  :TVkViewer_;
        _Buffer :TVkImaBuf_;
        ///// アクセス
-       function GetStaging :Boolean;
-       function GetPixelsW :UInt32;
-       procedure SetPixelsW( const PixelsW_:UInt32 );
-       function GetPixelsH :UInt32;
-       procedure SetPixelsH( const PixelsH_:UInt32 );
-       function GetHandle :VkImage;
-       procedure SetHandle( const Handle_:VkImage );
+       function GetStaging :Boolean; virtual;
+       function GetPixelsW :UInt32; virtual;
+       procedure SetPixelsW( const PixelsW_:UInt32 ); virtual;
+       function GetPixelsH :UInt32; virtual;
+       procedure SetPixelsH( const PixelsH_:UInt32 ); virtual;
+       function GetHandle :VkImage; virtual;
+       procedure SetHandle( const Handle_:VkImage ); virtual;
+       function GetRequir :VkMemoryRequirements; virtual;
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
@@ -90,13 +111,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// プロパティ
        property Usagers :VkImageUsageFlags    read   _Usagers write   _Usagers;
        property Featurs :VkFormatFeatureFlags read   _Featurs write   _Featurs;
-       property Staging :Boolean              read GetStaging;
-       property Inform  :VkImageCreateInfo    read   _Inform ;
+       property Staging :Boolean              read GetStaging                 ;
+       property Inform  :VkImageCreateInfo    read   _Inform                  ;
        property PixelsW :UInt32               read GetPixelsW write SetPixelsW;
        property PixelsH :UInt32               read GetPixelsH write SetPixelsH;
        property Handle  :VkImage              read GetHandle  write SetHandle ;
-       property Viewer  :TVkViewer_           read   _Viewer ;
+       property Requir  :VkMemoryRequirements read GetRequir                  ;
+       property Memory  :TVkImaMem_           read   _Memory                  ;
+       property Viewer  :TVkViewer_           read   _Viewer                  ;
        ///// メソッド
+       function Bind( const Memory_:TVkImaMem_ ) :Boolean;
        procedure LoadFromFile( const FileName_:String );
      end;
 
@@ -220,6 +244,48 @@ begin
      inherited;
 end;
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImaMem<TVkDevice_,TVkParent_>
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TVkImaMem<TVkDevice_,TVkParent_>.GetDevice :TVkDevice_;
+begin
+     Result := Imager.Device;
+end;
+
+//------------------------------------------------------------------------------
+
+function TVkImaMem<TVkDevice_,TVkParent_>.GetSize :VkDeviceSize;
+begin
+     Result := Imager.Requir.size;
+end;
+
+//------------------------------------------------------------------------------
+
+function TVkImaMem<TVkDevice_,TVkParent_>.GetTypeI :UInt32;
+var
+   R :VkFlags;
+begin
+     if Imager.Staging then R := 0
+                       else R := Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT  )
+                              or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
+
+     Assert( TVkDevice( Device ).memory_type_from_properties( Imager.Requir.memoryTypeBits, R, Result ) );
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TVkImaMem<TVkDevice_,TVkParent_>.CreateHandle;
+begin
+     inherited;
+
+     Imager.Bind( Self );
+end;
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkImager<TVkDevice_,TVkParent_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -297,12 +363,16 @@ begin
      _Handle := Handle_;
 end;
 
+//------------------------------------------------------------------------------
+
+function TVkImager<TVkDevice_,TVkParent_>.GetRequir :VkMemoryRequirements;
+begin
+     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, Handle, @Result );
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TVkImager<TVkDevice_,TVkParent_>.CreateHandle;
-var
-   mem_reqs     :VkMemoryRequirements;
-   requirements :VkFlags;
 begin
      if Staging then Usagers := Usagers or Ord( VK_IMAGE_USAGE_TRANSFER_DST_BIT );
 
@@ -336,34 +406,14 @@ begin
 
      Assert( vkCreateImage( TVkDevice( Device ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 
-     //////////
-
-     vkGetImageMemoryRequirements( TVkDevice( Device ).Handle, _Handle, @mem_reqs );
-
-     _MemoryInform                 := Default( VkMemoryAllocateInfo );
-     _MemoryInform.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-     _MemoryInform.pNext           := nil;
-     _MemoryInform.allocationSize  := 0;
-     _MemoryInform.memoryTypeIndex := 0;
-     _MemoryInform.allocationSize  := mem_reqs.size;
-     if Staging
-     then requirements := 0
-     else requirements := Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
-     Assert( TVkDevice( Device ).memory_type_from_properties( mem_reqs.memoryTypeBits, requirements, _MemoryInform.memoryTypeIndex ) );
-
-     (* allocate memory *)
-     Assert( vkAllocateMemory(TVkDevice( Device ).Handle, @_MemoryInform, nil, @( _MemoryHandle) ) = VK_SUCCESS );
-
-     //////////
-
-     (* bind memory *)
-     Assert( vkBindImageMemory( TVkDevice( Device ).Handle, _Handle, _MemoryHandle, 0 ) = VK_SUCCESS );
+     Assert( Bind( _Memory ) );
 end;
 
 procedure TVkImager<TVkDevice_,TVkParent_>.DestroHandle;
 begin
-     vkDestroyImage ( TVkDevice( Device ).Handle, _Handle            , nil );
-     vkFreeMemory   ( TVkDevice( Device ).Handle, _MemoryHandle      , nil );
+     _Memory.Handle := VK_NULL_HANDLE;
+
+     vkDestroyImage( TVkDevice( Device ).Handle, _Handle      , nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -374,6 +424,7 @@ begin
 
      _Handle := VK_NULL_HANDLE;
 
+     _Memory := TVkImaMem_.Create( Self );
      _Viewer := TVkViewer_.Create( Self );
      _Buffer := TVkImaBuf_.Create( Self );
 
@@ -385,6 +436,7 @@ destructor TVkImager<TVkDevice_,TVkParent_>.Destroy;
 begin
      _Buffer.Free;
      _Viewer.Free;
+     _Memory.Free;
 
       Handle := VK_NULL_HANDLE;
 
@@ -392,6 +444,13 @@ begin
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
+
+function TVkImager<TVkDevice_,TVkParent_>.Bind( const Memory_:TVkImaMem_ ) :Boolean;
+begin
+     Result := vkBindImageMemory( TVkDevice( Device ).Handle, Handle, Memory_.Handle, 0 ) = VK_SUCCESS;
+end;
+
+//------------------------------------------------------------------------------
 
 procedure TVkImager<TVkDevice_,TVkParent_>.LoadFromFile( const FileName_:String );
 var
@@ -467,7 +526,7 @@ begin
 
      if Staging
      then res := vkMapMemory( TVkDevice( Device ).Handle, _Buffer.Memory.Handle, 0, _Buffer.Memory.Size, 0, @data )
-     else res := vkMapMemory( TVkDevice( Device ).Handle, _MemoryHandle , 0, _MemoryInform.allocationSize, 0, @data );
+     else res := vkMapMemory( TVkDevice( Device ).Handle, _Memory       .Handle, 0, _Memory       .Size, 0, @data );
      Assert( res = VK_SUCCESS );
 
      (* Read the ppm file into the mappable image's memory *)
@@ -481,7 +540,7 @@ begin
 
      if Staging
      then vkUnmapMemory( TVkDevice( Device ).Handle, _Buffer.Memory.Handle )
-     else vkUnmapMemory( TVkDevice( Device ).Handle, _MemoryHandle );
+     else vkUnmapMemory( TVkDevice( Device ).Handle, _Memory       .Handle );
 
      //////////
 
