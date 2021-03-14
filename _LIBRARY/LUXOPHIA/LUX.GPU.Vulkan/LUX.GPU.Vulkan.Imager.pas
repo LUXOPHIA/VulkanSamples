@@ -63,7 +63,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        type TVkViewer_ = TVkViewer<TVkDevice_,TVkParent_>;
             TVkImaBuf_ = TVkImaBuf<TVkDevice_,TVkParent_>;
        ///// メソッド
-       procedure init_buffer;
+       procedure InitBufferSize;
      protected
        _Usagers :VkImageUsageFlags;
        _Featurs :VkFormatFeatureFlags;
@@ -71,14 +71,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Handle  :VkImage;
        _MemoryInform :VkMemoryAllocateInfo;
        _MemoryHandle :VkDeviceMemory;
-
        _Viewer  :TVkViewer_;
-
-       _BufferInform       :VkBufferCreateInfo;
-       _BufferHandle       :VkBuffer;
-       _BufferMemoryInform :VkMemoryAllocateInfo;
-       _BufferMemoryHandle :VkDeviceMemory;
-
+       _Buffer :TVkImaBuf_;
        ///// アクセス
        function GetStaging :Boolean;
        function GetPixelsW :UInt32;
@@ -230,39 +224,11 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
-procedure TVkImager<TVkDevice_,TVkParent_>.init_buffer;
-var
-   mem_reqs           :VkMemoryRequirements;
-   requirements       :VkFlags;
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TVkImager<TVkDevice_,TVkParent_>.InitBufferSize;
 begin
-     _BufferInform                       := Default( VkBufferCreateInfo );
-     _BufferInform.sType                 := VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-     _BufferInform.pNext                 := nil;
-     _BufferInform.flags                 := 0;
-     _BufferInform.size                  := PixelsW * PixelsH * 4;
-     _BufferInform.usage                 := Ord( VK_BUFFER_USAGE_TRANSFER_SRC_BIT );
-     _BufferInform.sharingMode           := VK_SHARING_MODE_EXCLUSIVE;
-     _BufferInform.queueFamilyIndexCount := 0;
-     _BufferInform.pQueueFamilyIndices   := nil;
-     Assert( vkCreateBuffer( TVkDevice( Device ).Handle, @_BufferInform, nil, @_BufferHandle ) = VK_SUCCESS );
-
-     vkGetBufferMemoryRequirements( TVkDevice( Device ).Handle, _BufferHandle, @mem_reqs );
-
-     _BufferMemoryInform                 := Default( VkMemoryAllocateInfo );
-     _BufferMemoryInform.sType           := VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-     _BufferMemoryInform.pNext           := nil;
-     _BufferMemoryInform.allocationSize  := 0;
-     _BufferMemoryInform.memoryTypeIndex := 0;
-     _BufferMemoryInform.allocationSize := mem_reqs.size;
-
-     requirements := Ord( VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) or Ord( VK_MEMORY_PROPERTY_HOST_COHERENT_BIT );
-     Assert( TVkDevice( Device ).memory_type_from_properties( mem_reqs.memoryTypeBits, requirements, _BufferMemoryInform.memoryTypeIndex ), '"No mappable, coherent memory' );
-
-     (* allocate memory *)
-     Assert( vkAllocateMemory(TVkDevice( Device ).Handle, @_BufferMemoryInform, nil, @_BufferMemoryHandle ) = VK_SUCCESS );
-
-     (* bind memory *)
-     Assert( vkBindBufferMemory( TVkDevice( Device ).Handle, _BufferHandle, _BufferMemoryHandle, 0 ) = VK_SUCCESS );
+     _Buffer.Size := 4{Byte} * PixelsH * PixelsW;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
@@ -297,6 +263,8 @@ begin
      _Inform.extent.width := PixelsW_;
 
      Handle := VK_NULL_HANDLE;
+
+     InitBufferSize;
 end;
 
 function TVkImager<TVkDevice_,TVkParent_>.GetPixelsH :UInt32;
@@ -309,6 +277,8 @@ begin
      _Inform.extent.height := PixelsH_;
 
      Handle := VK_NULL_HANDLE;
+
+     InitBufferSize;
 end;
 
 //------------------------------------------------------------------------------
@@ -334,20 +304,7 @@ var
    mem_reqs     :VkMemoryRequirements;
    requirements :VkFlags;
 begin
-     //////////
-
-     if Staging then
-     begin
-          init_buffer;
-          Usagers := Usagers or Ord( VK_IMAGE_USAGE_TRANSFER_DST_BIT );
-     end
-     else
-     begin
-          _BufferHandle       := VK_NULL_HANDLE;
-          _BufferMemoryHandle := VK_NULL_HANDLE;
-     end;
-
-     //////////
+     if Staging then Usagers := Usagers or Ord( VK_IMAGE_USAGE_TRANSFER_DST_BIT );
 
      with _Inform do
      begin
@@ -407,8 +364,6 @@ procedure TVkImager<TVkDevice_,TVkParent_>.DestroHandle;
 begin
      vkDestroyImage ( TVkDevice( Device ).Handle, _Handle            , nil );
      vkFreeMemory   ( TVkDevice( Device ).Handle, _MemoryHandle      , nil );
-     vkDestroyBuffer( TVkDevice( Device ).Handle, _BufferHandle      , nil );
-     vkFreeMemory   ( TVkDevice( Device ).Handle, _BufferMemoryHandle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -420,6 +375,7 @@ begin
      _Handle := VK_NULL_HANDLE;
 
      _Viewer := TVkViewer_.Create( Self );
+     _Buffer := TVkImaBuf_.Create( Self );
 
      Usagers := 0;
      Featurs := 0;
@@ -427,6 +383,7 @@ end;
 
 destructor TVkImager<TVkDevice_,TVkParent_>.Destroy;
 begin
+     _Buffer.Free;
      _Viewer.Free;
 
       Handle := VK_NULL_HANDLE;
@@ -509,7 +466,7 @@ begin
      //////////
 
      if Staging
-     then res := vkMapMemory( TVkDevice( Device ).Handle, _BufferMemoryHandle, 0, _BufferMemoryInform.allocationSize, 0, @data )
+     then res := vkMapMemory( TVkDevice( Device ).Handle, _Buffer.Memory.Handle, 0, _Buffer.Memory.Size, 0, @data )
      else res := vkMapMemory( TVkDevice( Device ).Handle, _MemoryHandle , 0, _MemoryInform.allocationSize, 0, @data );
      Assert( res = VK_SUCCESS );
 
@@ -523,7 +480,7 @@ begin
      end;
 
      if Staging
-     then vkUnmapMemory( TVkDevice( Device ).Handle, _BufferMemoryHandle )
+     then vkUnmapMemory( TVkDevice( Device ).Handle, _Buffer.Memory.Handle )
      else vkUnmapMemory( TVkDevice( Device ).Handle, _MemoryHandle );
 
      //////////
@@ -560,7 +517,7 @@ begin
           copy_region.imageExtent.depth               := 1;
 
           (* Put the copy command into the command buffer *)
-          vkCmdCopyBufferToImage( TVkDevice( Device ).Poolers[0].Commans[0].Handle, _BufferHandle, Handle, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
+          vkCmdCopyBufferToImage( TVkDevice( Device ).Poolers[0].Commans[0].Handle, _Buffer.Handle, Handle, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, @copy_region );
 
           (* Set the layout for the texture image from DESTINATION_OPTIMAL to
            * SHADER_READ_ONLY *)
