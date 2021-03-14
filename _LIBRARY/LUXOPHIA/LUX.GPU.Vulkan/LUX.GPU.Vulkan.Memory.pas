@@ -40,7 +40,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property TypeI  :UInt32               read GetTypeI  write SetTypeI ;
        property Handle :VkDeviceMemory       read GetHandle write SetHandle;
        ///// メソッド
-       function Map( var Pointer_:PByte ) :Boolean;
+       function Map( var Pointer_:Pointer ) :Boolean;
        procedure Unmap;
      end;
 
@@ -166,7 +166,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-function TVkMemory<TVkDevice_,TVkParent_>.Map( var Pointer_:PByte ) :Boolean;
+function TVkMemory<TVkDevice_,TVkParent_>.Map( var Pointer_:Pointer ) :Boolean;
 begin
      Result := vkMapMemory( TVkDevice( Device ).Handle, Handle, 0, Size, 0, @Pointer_ ) = VK_SUCCESS;
 end;

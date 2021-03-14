@@ -386,7 +386,7 @@ end;
 
 procedure TVkUniBuf<TVkDevice_,TValue_>.SetValue( const Value_:TValue_ );
 var
-   P :PByte;
+   P :Pointer;
 begin
      _Value := Value_;
 
