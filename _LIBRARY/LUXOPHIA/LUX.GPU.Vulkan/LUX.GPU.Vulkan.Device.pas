@@ -5,7 +5,7 @@ interface //####################################################################
 uses System.Classes, System.Generics.Collections,
      vulkan_core,
      LUX.GPU.Vulkan.Layere,
-     LUX.GPU.Vulkan.Pipeline,
+     LUX.GPU.Vulkan.Pipeli,
      LUX.GPU.Vulkan.Surfac,
      LUX.GPU.Vulkan.Pooler,
      LUX.GPU.Vulkan.Buffer,

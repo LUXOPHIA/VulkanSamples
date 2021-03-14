@@ -19,7 +19,7 @@ uses vulkan_core,
          LUX.GPU.Vulkan.Depthr,
          LUX.GPU.Vulkan.Imager,
          LUX.GPU.Vulkan.Textur,
-         LUX.GPU.Vulkan.Pipeline,
+         LUX.GPU.Vulkan.Pipeli,
            LUX.GPU.Vulkan.Shader;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
