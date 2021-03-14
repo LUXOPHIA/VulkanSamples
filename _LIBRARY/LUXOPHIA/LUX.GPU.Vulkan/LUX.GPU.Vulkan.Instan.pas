@@ -97,17 +97,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TVkInstan<TVulkan_:class> = class
      private
-       type TVkInstan_       = TVkInstan<TVulkan_>;
+       type TVkInstans_      = TVkInstans     <TVulkan_>;
+            TVkInstan_       = TVkInstan      <TVulkan_>;
             TVkInstanInform_ = TVkInstanInform<TVulkan_>;
-            TVkSurfacs_      = TVkSurfacs<TVkInstan_>;
-            TVkDevices_      = TVkDevices<TVkInstan_>;
+            TVkSurfacs_      = TVkSurfacs     <TVkInstan_>;
+            TVkDevices_      = TVkDevices     <TVkInstan_>;
      protected
-       _Vulkan  :TVulkan_;
+       _Instans :TVkInstans_;
        _Inform  :TVkInstanInform_;
        _Handle  :VkInstance;
        _Surfacs :TVkSurfacs_;
        _Devices :TVkDevices_;
        ///// アクセス
+       function GetVulkan :TVulkan_;
        function GetHandle :VkInstance;
        procedure SetHandle( const Handle_:VkInstance );
        ///// メソッド
@@ -115,10 +117,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DestroHandle;
      public
        constructor Create; overload;
+       constructor Create( const Instans_:TVkInstans_ ); overload;
        constructor Create( const Vulkan_:TVulkan_ ); overload;
        destructor Destroy; override;
        ///// プロパティ
-       property Vulkan  :TVulkan_         read   _Vulkan                  ;
+       property Vulkan  :TVulkan_         read GetVulkan                  ;
+       property Instans :TVkInstans_      read   _Instans                 ;
        property Inform  :TVkInstanInform_ read   _Inform                  ;
        property Handle  :VkInstance       read GetHandle  write SetHandle ;
        property Surfacs :TVkSurfacs_      read   _Surfacs                 ;
@@ -390,6 +394,13 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
+function TVkInstan<TVulkan_>.GetVulkan :TVulkan_;
+begin
+     Result := _Instans.Vulkan;
+end;
+
+//------------------------------------------------------------------------------
+
 function TVkInstan<TVulkan_>.GetHandle :VkInstance;
 begin
      if not Assigned( _Handle ) then CreateHandle;
@@ -429,21 +440,25 @@ begin
      _Surfacs := TVkSurfacs_.Create( Self );
 end;
 
-constructor TVkInstan<TVulkan_>.Create( const Vulkan_:TVulkan_ );
+constructor TVkInstan<TVulkan_>.Create( const Instans_:TVkInstans_ );
 begin
      Create;
 
-     _Vulkan := Vulkan_;
+     _Instans := Instans_;
 
-     TVulkan( _Vulkan ).Instans.Add( TVkInstan( Self ) );
+     _Instans.Add( Self );
 
      _Devices := TVkDevices_.Create( Self );
+end;
+
+constructor TVkInstan<TVulkan_>.Create( const Vulkan_:TVulkan_ );
+begin
+     Create( TVkInstans_( TVulkan( Vulkan_ ).Instans ) );
 end;
 
 destructor TVkInstan<TVulkan_>.Destroy;
 begin
      _Devices.Free;
-
      _Surfacs.Free;
 
       Handle := nil;
