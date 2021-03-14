@@ -110,11 +110,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVkDevices<TVkInstan_:class> = class( TObjectList<TVkDevice<TVkInstan_>> )
      private
        type TVkDevices_ = TVkDevices<TVkInstan_>;
-            TVkDevice_  = TVkDevice<TVkInstan_>;
+            TVkDevice_  = TVkDevice <TVkInstan_>;
      protected
        _Instan :TVkInstan_;
-       ///// メソッド
-       procedure FindDevices;
      public
        constructor Create( const Instan_:TVkInstan_ );
        destructor Destroy; override;
@@ -122,6 +120,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Instan :TVkInstan_ read _Instan;
        ///// メソッド
        function Add( const Physic_:VkPhysicalDevice ) :TVkDevice_; overload;
+       procedure FindDevices;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -459,7 +458,31 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TVkDevices<TVkInstan_>.Create( const Instan_:TVkInstan_ );
+begin
+     inherited Create;
+
+     _Instan := Instan_;
+
+     TVkInstan( _Instan ).Devices := TVkDevices( Self );
+end;
+
+destructor TVkDevices<TVkInstan_>.Destroy;
+begin
+
+     inherited;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
+
+function TVkDevices<TVkInstan_>.Add( const Physic_:VkPhysicalDevice ) :TVkDevice_;
+begin
+     Result := TVkDevice_.Create( Physic_, Self );
+end;
+
+//------------------------------------------------------------------------------
 
 procedure TVkDevices<TVkInstan_>.FindDevices;
 var
@@ -476,32 +499,6 @@ begin
      Assert( PsN > 0 );
 
      for P in Ps do Add( P );
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TVkDevices<TVkInstan_>.Create( const Instan_:TVkInstan_ );
-begin
-     inherited Create;
-
-     _Instan := Instan_;
-
-     TVkInstan( _Instan ).Devices := TVkDevices( Self );
-
-     FindDevices;
-end;
-
-destructor TVkDevices<TVkInstan_>.Destroy;
-begin
-
-     inherited;
-end;
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-function TVkDevices<TVkInstan_>.Add( const Physic_:VkPhysicalDevice ) :TVkDevice_;
-begin
-     Result := TVkDevice_.Create( Physic_, Self );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】

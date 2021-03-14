@@ -438,6 +438,7 @@ begin
      _Handle := nil;
 
      _Surfacs := TVkSurfacs_.Create( Self );
+     _Devices := TVkDevices_.Create( Self );
 end;
 
 constructor TVkInstan<TVulkan_>.Create( const Instans_:TVkInstans_ );
@@ -448,7 +449,7 @@ begin
 
      _Instans.Add( Self );
 
-     _Devices := TVkDevices_.Create( Self );
+     _Devices.FindDevices;
 end;
 
 constructor TVkInstan<TVulkan_>.Create( const Vulkan_:TVulkan_ );
