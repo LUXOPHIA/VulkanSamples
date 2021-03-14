@@ -6,53 +6,54 @@ uses vulkan_core, vulkan_win32;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
+     TVkShader<TVkPipeli_:class>     = class;
+     TVkShaderVert<TVkPipeli_:class> = class;
+     TVkShaderFrag<TVkPipeli_:class> = class;
+
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkShader
 
-     TVkShader<TVkPipeline_:class> = class
+     TVkShader<TVkPipeli_:class> = class
      private
      protected
-       _Pipeline :TVkPipeline_;
-       _Module   :VkShaderModuleCreateInfo;
-       _Stage    :VkPipelineShaderStageCreateInfo;
+       _Pipeli :TVkPipeli_;
+       _Module :VkShaderModuleCreateInfo;
+       _Stage  :VkPipelineShaderStageCreateInfo;
        ///// アクセス
        ///// メソッド
        procedure CreateModule; virtual;
        procedure DestroModule; virtual;
      public
-       constructor Create( const Pipeline_:TVkPipeline_ );
-       procedure AfterConstruction; override;
+       constructor Create( const Pipeli_:TVkPipeli_ );
        destructor Destroy; override;
        ///// プロパティ
-       property Pipeline :TVkPipeline_                    read _Pipeline;
-       property Module   :VkShaderModuleCreateInfo        read _Module  ;
-       property Stage    :VkPipelineShaderStageCreateInfo read _Stage   ;
+       property Pipeli :TVkPipeli_                      read _Pipeli;
+       property Module :VkShaderModuleCreateInfo        read _Module;
+       property Stage  :VkPipelineShaderStageCreateInfo read _Stage ;
        ///// メソッド
        procedure LoadFromFile( const FileName_:String );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkShaderVert
 
-     TVkShaderVert<TVkPipeline_:class> = class( TVkShader<TVkPipeline_> )
+     TVkShaderVert<TVkPipeli_:class> = class( TVkShader<TVkPipeli_> )
      private
      protected
      public
-       constructor Create( const Pipeline_:TVkPipeline_ );
-       procedure AfterConstruction; override;
+       constructor Create( const Pipeli_:TVkPipeli_ );
        destructor Destroy; override;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkShaderFrag
 
-     TVkShaderFrag<TVkPipeline_:class> = class( TVkShader<TVkPipeline_> )
+     TVkShaderFrag<TVkPipeli_:class> = class( TVkShader<TVkPipeli_> )
      private
      protected
      public
-       constructor Create( const Pipeline_:TVkPipeline_ );
-       procedure AfterConstruction; override;
+       constructor Create( const Pipeli_:TVkPipeli_ );
        destructor Destroy; override;
      end;
 
@@ -81,25 +82,25 @@ uses System.Classes,
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkShader<TVkPipeline_>.CreateModule;
+procedure TVkShader<TVkPipeli_>.CreateModule;
 begin
-     Assert( vkCreateShaderModule( TVkPipeline( _Pipeline ).Device.Handle, @_Module, nil, @_Stage.module ) = VK_SUCCESS );
+     Assert( vkCreateShaderModule( TVkPipeli( _Pipeli ).Device.Handle, @_Module, nil, @_Stage.module ) = VK_SUCCESS );
 end;
 
-procedure TVkShader<TVkPipeline_>.DestroModule;
+procedure TVkShader<TVkPipeli_>.DestroModule;
 begin
-     vkDestroyShaderModule( TVkPipeline( _Pipeline ).Device.Handle, _Stage.module, nil );
+     vkDestroyShaderModule( TVkPipeli( _Pipeli ).Device.Handle, _Stage.module, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkShader<TVkPipeline_>.Create( const Pipeline_:TVkPipeline_ );
+constructor TVkShader<TVkPipeli_>.Create( const Pipeli_:TVkPipeli_ );
 begin
      inherited Create;
 
-     _Pipeline := Pipeline_;
+     _Pipeli := Pipeli_;
 
-     TVkPipeline( _Pipeline ).Shaders.Add( TVkShader( Self ) );
+     TVkPipeli( _Pipeli ).Shaders.Add( TVkShader( Self ) );
 
      _Module          := Default( VkShaderModuleCreateInfo );
      _Module.sType    := VkStructureType.VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
@@ -116,13 +117,7 @@ begin
      _Stage.pSpecializationInfo := nil;
 end;
 
-procedure TVkShader<TVkPipeline_>.AfterConstruction;
-begin
-     inherited;
-
-end;
-
-destructor TVkShader<TVkPipeline_>.Destroy;
+destructor TVkShader<TVkPipeli_>.Destroy;
 begin
      if _Stage.module > 0 then DestroModule;
 
@@ -131,7 +126,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkShader<TVkPipeline_>.LoadFromFile( const FileName_:String );
+procedure TVkShader<TVkPipeli_>.LoadFromFile( const FileName_:String );
 var
    F :TMemoryStream;
 begin
@@ -157,20 +152,14 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkShaderVert<TVkPipeline_>.Create( const Pipeline_:TVkPipeline_ );
+constructor TVkShaderVert<TVkPipeli_>.Create( const Pipeli_:TVkPipeli_ );
 begin
      inherited;
 
      _Stage.stage := VK_SHADER_STAGE_VERTEX_BIT;
 end;
 
-procedure TVkShaderVert<TVkPipeline_>.AfterConstruction;
-begin
-     inherited;
-
-end;
-
-destructor TVkShaderVert<TVkPipeline_>.Destroy;
+destructor TVkShaderVert<TVkPipeli_>.Destroy;
 begin
 
      inherited;
@@ -184,20 +173,14 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkShaderFrag<TVkPipeline_>.Create( const Pipeline_:TVkPipeline_ );
+constructor TVkShaderFrag<TVkPipeli_>.Create( const Pipeli_:TVkPipeli_ );
 begin
      inherited;
 
      _Stage.stage := VK_SHADER_STAGE_FRAGMENT_BIT;
 end;
 
-procedure TVkShaderFrag<TVkPipeline_>.AfterConstruction;
-begin
-     inherited;
-
-end;
-
-destructor TVkShaderFrag<TVkPipeline_>.Destroy;
+destructor TVkShaderFrag<TVkPipeli_>.Destroy;
 begin
 
      inherited;

@@ -56,10 +56,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                  TVkTextur                 = TVkTextur<TVkDevice>;
                    TVkTexIma               = TVkTexIma<TVkDevice>;
                    TVkSamplr               = TVkSamplr<TVkDevice>;
-               TVkPipeline                 = TVkPipeline<TVkDevice>;
-                 TVkShader                 = TVkShader<TVkPipeline>;
-                 TVkShaderVert             = TVkShaderVert<TVkPipeline>;
-                 TVkShaderFrag             = TVkShaderFrag<TVkPipeline>;
+               TVkPipeli                   = TVkPipeli<TVkDevice>;
+                 TVkShader                 = TVkShader<TVkPipeli>;
+                 TVkShaderVert             = TVkShaderVert<TVkPipeli>;
+                 TVkShaderFrag             = TVkShaderFrag<TVkPipeli>;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 

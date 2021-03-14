@@ -9,19 +9,19 @@ uses System.Generics.Collections,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TVkPipeline<TVkDevice_:class> = class;
+     TVkPipeli<TVkDevice_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkPipeline
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkPipeli
 
-     TVkPipeline<TVkDevice_:class> = class
+     TVkPipeli<TVkDevice_:class> = class
      private
-       type TVkPipeline_ = TVkPipeline<TVkDevice_>;
-            TVkShader_   = TVkShader<TVkPipeline_>;
-            TVkShaders_  = TObjectList<TVkShader_>;
+       type TVkPipeli_  = TVkPipeli<TVkDevice_>;
+            TVkShader_  = TVkShader<TVkPipeli_>;
+            TVkShaders_ = TObjectList<TVkShader_>;
             T_dynamicStateEnables = array [ 0..2-1 ] of VkDynamicState;
      protected
        _Device    :TVkDevice_;
@@ -35,8 +35,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create( const Device_:TVkDevice_; const DepthTest_:Boolean );
-       procedure AfterConstruction; override;
+       constructor Create; overload;
+       constructor Create( const Device_:TVkDevice_; const DepthTest_:Boolean ); overload;
        destructor Destroy; override;
        ///// プロパティ
        property Device  :TVkDevice_  read   _Device                 ;
@@ -58,7 +58,7 @@ uses LUX.GPU.Vulkan;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkPipeline
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkPipeli
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -66,14 +66,14 @@ uses LUX.GPU.Vulkan;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkPipeline<TVkDevice_>.GetHandle :VkPipeline;
+function TVkPipeli<TVkDevice_>.GetHandle :VkPipeline;
 begin
      if _Handle = 0 then CreateHandle;
 
      Result := _Handle;
 end;
 
-procedure TVkPipeline<TVkDevice_>.SetHandle( const Handle_:VkPipeline );
+procedure TVkPipeli<TVkDevice_>.SetHandle( const Handle_:VkPipeline );
 begin
      if _Handle <> 0 then DestroHandle;
 
@@ -82,7 +82,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TVkPipeline<TVkDevice_>.CreateHandle;
+procedure TVkPipeli<TVkDevice_>.CreateHandle;
 var
    res :VkResult;
    dynamicStateEnables :T_dynamicStateEnables;  // Viewport + Scissor
@@ -231,32 +231,31 @@ begin
      Assert( res = VK_SUCCESS );
 end;
 
-procedure TVkPipeline<TVkDevice_>.DestroHandle;
+procedure TVkPipeli<TVkDevice_>.DestroHandle;
 begin
      vkDestroyPipeline( TVkDevice( _Device ).Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkPipeline<TVkDevice_>.Create( const Device_:TVkDevice_; const DepthTest_:Boolean );
+constructor TVkPipeli<TVkDevice_>.Create;
 begin
-     inherited Create;
+     inherited;
 
      _Handle := 0;
 
      _Shaders := TVkShaders_.Create;
+end;
+
+constructor TVkPipeli<TVkDevice_>.Create( const Device_:TVkDevice_; const DepthTest_:Boolean );
+begin
+     Create;
 
      _Device    := Device_;
      _DepthTest := DepthTest_;
 end;
 
-procedure TVkPipeline<TVkDevice_>.AfterConstruction;
-begin
-     inherited;
-
-end;
-
-destructor TVkPipeline<TVkDevice_>.Destroy;
+destructor TVkPipeli<TVkDevice_>.Destroy;
 begin
      _Shaders.Free;
 
