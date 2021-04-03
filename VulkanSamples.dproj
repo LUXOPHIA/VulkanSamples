@@ -241,6 +241,8 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.root.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Memory.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Buffer.Unifor.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Data\List\LUX.Data.List.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Data\List\LUX.Data.List.core.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

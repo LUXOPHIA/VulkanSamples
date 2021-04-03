@@ -40,7 +40,9 @@ uses
   LUX.GPU.Vulkan.Imager in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Imager.pas',
   LUX.GPU.Vulkan.root in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.root.pas',
   LUX.GPU.Vulkan.Memory in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Memory.pas',
-  LUX.GPU.Vulkan.Buffer.Unifor in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Buffer.Unifor.pas';
+  LUX.GPU.Vulkan.Buffer.Unifor in '_LIBRARY\LUXOPHIA\LUX.GPU.Vulkan\LUX.GPU.Vulkan.Buffer.Unifor.pas',
+  LUX.Data.List in '_LIBRARY\LUXOPHIA\LUX\Data\List\LUX.Data.List.pas',
+  LUX.Data.List.core in '_LIBRARY\LUXOPHIA\LUX\Data\List\LUX.Data.List.core.pas';
 
 {$R *.res}
 
