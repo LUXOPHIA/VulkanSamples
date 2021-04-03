@@ -4,6 +4,7 @@ interface //####################################################################
 
 uses System.Classes, System.Generics.Collections,
      vulkan_core,
+     LUX.Data.List,
      LUX.GPU.Vulkan.Surfac,
      LUX.GPU.Vulkan.Device;
 
@@ -95,7 +96,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInstan
 
-     TVkInstan<TVulkan_:class> = class
+     TVkInstan<TVulkan_:class> = class( TListChildr<TVulkan_,TVkInstans<TVulkan_>> )
      private
        type TVkInstans_      = TVkInstans     <TVulkan_>;
             TVkInstan_       = TVkInstan      <TVulkan_>;
@@ -103,26 +104,24 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             TVkSurfacs_      = TVkSurfacs     <TVkInstan_>;
             TVkDevices_      = TVkDevices     <TVkInstan_>;
      protected
-       _Instans :TVkInstans_;
        _Inform  :TVkInstanInform_;
        _Handle  :VkInstance;
        _Surfacs :TVkSurfacs_;
        _Devices :TVkDevices_;
        ///// アクセス
-       function GetVulkan :TVulkan_;
        function GetHandle :VkInstance;
        procedure SetHandle( const Handle_:VkInstance );
        ///// メソッド
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create; overload;
-       constructor Create( const Instans_:TVkInstans_ ); overload;
-       constructor Create( const Vulkan_:TVulkan_ ); overload;
+       constructor Create; overload; override;
+       constructor Create( const Instans_:TVkInstans_ ); overload; override;
+       constructor Create( const Vulkan_:TVulkan_ ); overload; virtual;
        destructor Destroy; override;
        ///// プロパティ
-       property Vulkan  :TVulkan_         read GetVulkan                  ;
-       property Instans :TVkInstans_      read   _Instans                 ;
+       property Vulkan  :TVulkan_         read GetOwnere                  ;
+       property Instans :TVkInstans_      read GetParent                  ;
        property Inform  :TVkInstanInform_ read   _Inform                  ;
        property Handle  :VkInstance       read GetHandle  write SetHandle ;
        property Surfacs :TVkSurfacs_      read   _Surfacs                 ;
@@ -131,17 +130,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInstans
 
-     TVkInstans<TVulkan_:class> = class( TObjectList<TVkInstan<TVulkan_>> )
+     TVkInstans<TVulkan_:class> = class( TListParent<TVulkan_,TVkInstan<TVulkan_>> )
      private
-       type TVkInstans_ = TVkInstans<TVulkan_>;
-            TVkInstan_  = TVkInstan<TVulkan_>;
+       type TVkInstan_ = TVkInstan<TVulkan_>;
      protected
-       _Vulkan :TVulkan_;
      public
-       constructor Create( const Vulkan_:TVulkan_ );
-       destructor Destroy; override;
        ///// プロパティ
-       property Vulkan :TVulkan_ read _Vulkan;
+       property Vulkan :TVulkan_ read GetOwnere;
        ///// メソッド
        function Add :TVkInstan_; overload;
      end;
@@ -394,13 +389,6 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkInstan<TVulkan_>.GetVulkan :TVulkan_;
-begin
-     Result := _Instans.Vulkan;
-end;
-
-//------------------------------------------------------------------------------
-
 function TVkInstan<TVulkan_>.GetHandle :VkInstance;
 begin
      if not Assigned( _Handle ) then CreateHandle;
@@ -443,11 +431,7 @@ end;
 
 constructor TVkInstan<TVulkan_>.Create( const Instans_:TVkInstans_ );
 begin
-     Create;
-
-     _Instans := Instans_;
-
-     _Instans.Add( Self );
+     inherited;
 
      _Devices.FindDevices;
 end;
@@ -477,24 +461,11 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkInstans<TVulkan_>.Create( const Vulkan_:TVulkan_ );
-begin
-     inherited Create;
-
-     _Vulkan := Vulkan_;
-end;
-
-destructor TVkInstans<TVulkan_>.Destroy;
-begin
-
-     inherited;
-end;
-
 /////////////////////////////////////////////////////////////////////// メソッド
 
 function TVkInstans<TVulkan_>.Add :TVkInstan_;
 begin
-     Result := TVkInstan_.Create( _Vulkan );
+     Result := TVkInstan_.Create( Self );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
