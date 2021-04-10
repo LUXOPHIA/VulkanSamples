@@ -46,7 +46,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetHandle :P_VkApplicationInfo;
        procedure SetHandle( const Handle_:P_VkApplicationInfo );
      public
-       constructor Create( const Parent_:TVkInsInf_ );
+       constructor Create; overload; virtual;
+       constructor Create( const Parent_:TVkInsInf_ ); overload; virtual;
        destructor Destroy; override;
        ///// プロパティ
        property Parent              :TVkInsInf_          read   _Parent                                        ;
@@ -83,7 +84,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetHandle :P_VkInstanceCreateInfo;
        procedure SetHandle( const Handle_:P_VkInstanceCreateInfo );
      public
-       constructor Create( const Parent_:TVkInstan_ );
+       constructor Create; overload; virtual;
+       constructor Create( const Parent_:TVkInstan_ ); overload; virtual;
        destructor Destroy; override;
        ///// プロパティ
        property Parent  :TVkInstan_             read    _Parent                ;
@@ -250,16 +252,16 @@ procedure TVkAppInf<TVulkan_>.SetHandle( const Handle_:P_VkApplicationInfo );
 begin
      _Handle := Handle_;
 
-     TVkInsInf( _Parent ).Handle := nil;
+     if Assigned( _Parent ) then _Parent.Handle := nil;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkAppInf<TVulkan_>.Create( const Parent_:TVkInsInf_ );
+constructor TVkAppInf<TVulkan_>.Create;
 begin
-     inherited Create;
+     inherited;
 
-     _Parent := Parent_;
+     _Handle := nil;
 
      Type_               := VK_STRUCTURE_TYPE_APPLICATION_INFO;
      Next_               := nil;
@@ -268,8 +270,13 @@ begin
      EngineName_         := 'Engine';
      EngineVersion_      := 1;
      ApiVersion_         := VK_API_VERSION_1_0;
+end;
 
-     _Handle := nil;
+constructor TVkAppInf<TVulkan_>.Create( const Parent_:TVkInsInf_ );
+begin
+     Create;
+
+     _Parent := Parent_;
 end;
 
 destructor TVkAppInf<TVulkan_>.Destroy;
@@ -347,16 +354,16 @@ procedure TVkInsInf<TVulkan_>.SetHandle( const Handle_:P_VkInstanceCreateInfo );
 begin
      _Handle := Handle_;
 
-     TVkInstan( _Parent ).Handle := nil;
+     if Assigned( _Parent ) then _Parent.Handle := nil;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkInsInf<TVulkan_>.Create( const Parent_:TVkInstan_ );
+constructor TVkInsInf<TVulkan_>.Create;
 begin
      inherited Create;
 
-     _Parent := Parent_;
+     _Handle := nil;
 
      _Applic  := TVkAppInf_.Create( Self );
      _Layeres := TStringList.Create;
@@ -368,8 +375,13 @@ begin
 
      Extenss.Add( VK_KHR_SURFACE_EXTENSION_NAME       );
      Extenss.Add( VK_KHR_WIN32_SURFACE_EXTENSION_NAME );
+end;
 
-     _Handle := nil;
+constructor TVkInsInf<TVulkan_>.Create( const Parent_:TVkInstan_ );
+begin
+     Create;
+
+     _Parent := Parent_;
 end;
 
 destructor TVkInsInf<TVulkan_>.Destroy;
