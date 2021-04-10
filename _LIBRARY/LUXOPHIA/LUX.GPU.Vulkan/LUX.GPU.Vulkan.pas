@@ -29,7 +29,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
          TVkLayere                         = TVkLayere<TVulkan>;
        TVkInstans                          = TVkInstans<TVulkan>;
          TVkInstan                         = TVkInstan<TVulkan>;
-           TVkInsInf                       = TVkInsInf<TVkInstan>;
+           TVkInsInf                       = TVkInsInf<TVulkan>;
              TVkAppInf                     = TVkAppInf<TVkInsInf>;
            TVkSurfacs                      = TVkSurfacs<TVkInstan>;
              TVkSurfac                     = TVkSurfac<TVkInstan>;

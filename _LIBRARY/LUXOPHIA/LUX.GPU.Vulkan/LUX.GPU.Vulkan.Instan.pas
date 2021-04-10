@@ -12,7 +12,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TVkInstans<TVulkan_:class>        = class;
        TVkInstan<TVulkan_:class>       = class;
-         TVkInsInf<TVkInstan_:class>   = class;
+         TVkInsInf<TVulkan_:class>     = class;
            TVkAppInf<TVkInsInf_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
@@ -61,9 +61,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInsInf
 
-     TVkInsInf<TVkInstan_:class> = class
+     TVkInsInf<TVulkan_:class> = class
      private
-       type TVkAppInf_ = TVkAppInf<TVkInstan_>;
+       type TVkInstan_ = TVkInstan<TVulkan_>;
+            TVkInsInf_ = TVkInsInf<TVulkan_>;
+            TVkAppInf_ = TVkAppInf<TVkInsInf_>;
      protected
        _Parent                :TVkInstan_;
        _Inform                :VkInstanceCreateInfo;
@@ -285,39 +287,39 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkInsInf<TVkInstan_>.GetType :VkStructureType;
+function TVkInsInf<TVulkan_>.GetType :VkStructureType;
 begin
      Result := _Inform.sType;
 end;
 
-procedure TVkInsInf<TVkInstan_>.SetType( const Type_:VkStructureType );
+procedure TVkInsInf<TVulkan_>.SetType( const Type_:VkStructureType );
 begin
      _Inform.sType := Type_;  Handle := nil;
 end;
 
-function TVkInsInf<TVkInstan_>.GetNext :Pointer;
+function TVkInsInf<TVulkan_>.GetNext :Pointer;
 begin
      Result := _Inform.pNext;
 end;
 
-procedure TVkInsInf<TVkInstan_>.SetNext( const Next_:Pointer );
+procedure TVkInsInf<TVulkan_>.SetNext( const Next_:Pointer );
 begin
      _Inform.pNext := Next_;  Handle := nil;
 end;
 
-function TVkInsInf<TVkInstan_>.GetFlags :VkInstanceCreateFlags;
+function TVkInsInf<TVulkan_>.GetFlags :VkInstanceCreateFlags;
 begin
      Result := _Inform.flags;
 end;
 
-procedure TVkInsInf<TVkInstan_>.SetFlags( const Flags_:VkInstanceCreateFlags );
+procedure TVkInsInf<TVulkan_>.SetFlags( const Flags_:VkInstanceCreateFlags );
 begin
      _Inform.flags := Flags_;  Handle := nil;
 end;
 
 //------------------------------------------------------------------------------
 
-function TVkInsInf<TVkInstan_>.GetHandle :P_VkInstanceCreateInfo;
+function TVkInsInf<TVulkan_>.GetHandle :P_VkInstanceCreateInfo;
 var
    L, E :String;
    Ls, Es :TArray<PAnsiChar>;
@@ -341,7 +343,7 @@ begin
      Result := _Handle;
 end;
 
-procedure TVkInsInf<TVkInstan_>.SetHandle( const Handle_:P_VkInstanceCreateInfo );
+procedure TVkInsInf<TVulkan_>.SetHandle( const Handle_:P_VkInstanceCreateInfo );
 begin
      _Handle := Handle_;
 
@@ -350,7 +352,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkInsInf<TVkInstan_>.Create( const Parent_:TVkInstan_ );
+constructor TVkInsInf<TVulkan_>.Create( const Parent_:TVkInstan_ );
 begin
      inherited Create;
 
@@ -370,7 +372,7 @@ begin
      _Handle := nil;
 end;
 
-destructor TVkInsInf<TVkInstan_>.Destroy;
+destructor TVkInsInf<TVulkan_>.Destroy;
 begin
      Handle := nil;
 
