@@ -29,8 +29,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
          TVkLayere                         = TVkLayere<TVulkan>;
        TVkInstans                          = TVkInstans<TVulkan>;
          TVkInstan                         = TVkInstan<TVulkan>;
-           TVkInstanInform                 = TVkInstanInform<TVkInstan>;
-             TVkAppInf                     = TVkAppInf<TVkInstanInform>;
+           TVkInsInf                       = TVkInsInf<TVkInstan>;
+             TVkAppInf                     = TVkAppInf<TVkInsInf>;
            TVkSurfacs                      = TVkSurfacs<TVkInstan>;
              TVkSurfac                     = TVkSurfac<TVkInstan>;
            TVkDevices                      = TVkDevices<TVkInstan>;
