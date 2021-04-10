@@ -13,15 +13,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TVkInstans<TVulkan_:class>                    = class;
        TVkInstan<TVulkan_:class>                   = class;
          TVkInstanInform<TVkInstan_:class>         = class;
-           TVkApplicInform<TVkInstanInform_:class> = class;
+           TVkAppInf<TVkInstanInform_:class> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkApplicInform
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkAppInf
 
-     TVkApplicInform<TVkInstanInform_:class> = class
+     TVkAppInf<TVkInstanInform_:class> = class
      private
      protected
        _Parent :TVkInstanInform_;
@@ -63,11 +63,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TVkInstanInform<TVkInstan_:class> = class
      private
-       type TVkApplicInform_ = TVkApplicInform<TVkInstan_>;
+       type TVkAppInf_ = TVkAppInf<TVkInstan_>;
      protected
        _Parent                :TVkInstan_;
        _Inform                :VkInstanceCreateInfo;
-       _ApplicationInfo       :TVkApplicInform_;
+       _ApplicationInfo       :TVkAppInf_;
        _EnabledLayerNames     :TStringList;
        _EnabledExtensionNames :TStringList;
        _Handle                :P_VkInstanceCreateInfo;
@@ -88,7 +88,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Type_                  :VkStructureType        read GetType                  write SetType  ;
        property Next_                  :Pointer                read GetNext                  write SetNext  ;
        property Flags_                 :VkInstanceCreateFlags  read GetFlags                 write SetFlags ;
-       property ApplicationInfo_       :TVkApplicInform_       read   _ApplicationInfo                      ;
+       property ApplicationInfo_       :TVkAppInf_       read   _ApplicationInfo                      ;
        property EnabledLayerNames_     :TStringList            read   _EnabledLayerNames                    ;
        property EnabledExtensionNames_ :TStringList            read   _EnabledExtensionNames                ;
        property Handle                 :P_VkInstanceCreateInfo read GetHandle                write SetHandle;
@@ -157,7 +157,7 @@ uses System.AnsiStrings,
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkApplicInform
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkAppInf
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -165,86 +165,86 @@ uses System.AnsiStrings,
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkApplicInform<TVkInstanInform_>.GetType :VkStructureType;
+function TVkAppInf<TVkInstanInform_>.GetType :VkStructureType;
 begin
      Result := _Inform.sType;
 end;
 
-procedure TVkApplicInform<TVkInstanInform_>.SetType( const Type_:VkStructureType );
+procedure TVkAppInf<TVkInstanInform_>.SetType( const Type_:VkStructureType );
 begin
      _Inform.sType := Type_;  Handle := nil;
 end;
 
-function TVkApplicInform<TVkInstanInform_>.GetNext :Pointer;
+function TVkAppInf<TVkInstanInform_>.GetNext :Pointer;
 begin
      Result := _Inform.pNext;
 end;
 
-procedure TVkApplicInform<TVkInstanInform_>.SetNext( const Next_:Pointer );
+procedure TVkAppInf<TVkInstanInform_>.SetNext( const Next_:Pointer );
 begin
      _Inform.pNext := Next_;  Handle := nil;
 end;
 
-function TVkApplicInform<TVkInstanInform_>.GetApplicationName :String;
+function TVkAppInf<TVkInstanInform_>.GetApplicationName :String;
 begin
      Result := String( _Inform.pApplicationName );
 end;
 
-procedure TVkApplicInform<TVkInstanInform_>.SetApplicationName( const ApplicationName_:String );
+procedure TVkAppInf<TVkInstanInform_>.SetApplicationName( const ApplicationName_:String );
 begin
      _Inform.pApplicationName := PAnsiChar( AnsiString( ApplicationName_ ) );  Handle := nil;
 end;
 
-function TVkApplicInform<TVkInstanInform_>.GetApplicationVersion :UInt32;
+function TVkAppInf<TVkInstanInform_>.GetApplicationVersion :UInt32;
 begin
      Result := _Inform.applicationVersion;
 end;
 
-procedure TVkApplicInform<TVkInstanInform_>.SetApplicationVersion( const ApplicationVersion_:UInt32 );
+procedure TVkAppInf<TVkInstanInform_>.SetApplicationVersion( const ApplicationVersion_:UInt32 );
 begin
      _Inform.applicationVersion := ApplicationVersion_;  Handle := nil;
 end;
 
-function TVkApplicInform<TVkInstanInform_>.GetEngineName :String;
+function TVkAppInf<TVkInstanInform_>.GetEngineName :String;
 begin
      Result := String( _Inform.pEngineName );
 end;
 
-procedure TVkApplicInform<TVkInstanInform_>.SetEngineName( const EngineName_:String );
+procedure TVkAppInf<TVkInstanInform_>.SetEngineName( const EngineName_:String );
 begin
      _Inform.pEngineName := PAnsiChar( AnsiString( EngineName_ ) );  Handle := nil;
 end;
 
-function TVkApplicInform<TVkInstanInform_>.GetEngineVersion :UInt32;
+function TVkAppInf<TVkInstanInform_>.GetEngineVersion :UInt32;
 begin
      Result := _Inform.engineVersion;
 end;
 
-procedure TVkApplicInform<TVkInstanInform_>.SetEngineVersion( const EngineVersion_:UInt32 );
+procedure TVkAppInf<TVkInstanInform_>.SetEngineVersion( const EngineVersion_:UInt32 );
 begin
      _Inform.engineVersion := EngineVersion_;  Handle := nil;
 end;
 
-function TVkApplicInform<TVkInstanInform_>.GetApiVersion :UInt32;
+function TVkAppInf<TVkInstanInform_>.GetApiVersion :UInt32;
 begin
      Result := _Inform.apiVersion;
 end;
 
-procedure TVkApplicInform<TVkInstanInform_>.SetApiVersion( const ApiVersion_:UInt32 );
+procedure TVkAppInf<TVkInstanInform_>.SetApiVersion( const ApiVersion_:UInt32 );
 begin
      _Inform.apiVersion := ApiVersion_;  Handle := nil;
 end;
 
 //------------------------------------------------------------------------------
 
-function TVkApplicInform<TVkInstanInform_>.GetHandle :P_VkApplicationInfo;
+function TVkAppInf<TVkInstanInform_>.GetHandle :P_VkApplicationInfo;
 begin
      if not Assigned( _Handle ) then _Handle := @_Inform;
 
      Result := _Handle;
 end;
 
-procedure TVkApplicInform<TVkInstanInform_>.SetHandle( const Handle_:P_VkApplicationInfo );
+procedure TVkAppInf<TVkInstanInform_>.SetHandle( const Handle_:P_VkApplicationInfo );
 begin
      _Handle := Handle_;
 
@@ -253,7 +253,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkApplicInform<TVkInstanInform_>.Create( const Parent_:TVkInstanInform_ );
+constructor TVkAppInf<TVkInstanInform_>.Create( const Parent_:TVkInstanInform_ );
 begin
      inherited Create;
 
@@ -270,7 +270,7 @@ begin
      _Handle := nil;
 end;
 
-destructor TVkApplicInform<TVkInstanInform_>.Destroy;
+destructor TVkAppInf<TVkInstanInform_>.Destroy;
 begin
      Handle := nil;
 
@@ -356,7 +356,7 @@ begin
 
      _Parent := Parent_;
 
-     _ApplicationInfo       := TVkApplicInform_.Create( Self );
+     _ApplicationInfo       := TVkAppInf_.Create( Self );
      _EnabledLayerNames     := TStringList.Create;
      _EnabledExtensionNames := TStringList.Create;
 

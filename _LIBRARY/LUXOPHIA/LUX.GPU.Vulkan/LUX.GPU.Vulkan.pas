@@ -30,7 +30,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        TVkInstans                          = TVkInstans<TVulkan>;
          TVkInstan                         = TVkInstan<TVulkan>;
            TVkInstanInform                 = TVkInstanInform<TVkInstan>;
-             TVkApplicInform               = TVkApplicInform<TVkInstanInform>;
+             TVkAppInf                     = TVkAppInf<TVkInstanInform>;
            TVkSurfacs                      = TVkSurfacs<TVkInstan>;
              TVkSurfac                     = TVkSurfac<TVkInstan>;
            TVkDevices                      = TVkDevices<TVkInstan>;
