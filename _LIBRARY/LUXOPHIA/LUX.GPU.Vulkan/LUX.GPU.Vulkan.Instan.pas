@@ -67,11 +67,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        type TVkInstan_ = TVkInstan<TVulkan_>;
             TVkAppInf_ = TVkAppInf<TVulkan_>;
      protected
-       _Parent                :TVkInstan_;
-       _Inform                :VkInstanceCreateInfo;
-       _ApplicationInfo       :TVkAppInf_;
-       _EnabledLayerNames     :TStringList;
-       _EnabledExtensionNames :TStringList;
+       _Parent  :TVkInstan_;
+       _Inform  :VkInstanceCreateInfo;
+       _Applic  :TVkAppInf_;
+       _Layeres :TStringList;
+       _Extenss :TStringList;
        _Handle                :P_VkInstanceCreateInfo;
        ///// アクセス
        function GetType :VkStructureType;
@@ -86,14 +86,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Parent_:TVkInstan_ );
        destructor Destroy; override;
        ///// プロパティ
-       property Parent                 :TVkInstan_             read    _Parent                              ;
-       property Type_                  :VkStructureType        read GetType                  write SetType  ;
-       property Next_                  :Pointer                read GetNext                  write SetNext  ;
-       property Flags_                 :VkInstanceCreateFlags  read GetFlags                 write SetFlags ;
-       property ApplicationInfo_       :TVkAppInf_             read   _ApplicationInfo                      ;
-       property EnabledLayerNames_     :TStringList            read   _EnabledLayerNames                    ;
-       property EnabledExtensionNames_ :TStringList            read   _EnabledExtensionNames                ;
-       property Handle                 :P_VkInstanceCreateInfo read GetHandle                write SetHandle;
+       property Parent  :TVkInstan_             read    _Parent                ;
+       property Type_   :VkStructureType        read GetType    write SetType  ;
+       property Next    :Pointer                read GetNext    write SetNext  ;
+       property Flags   :VkInstanceCreateFlags  read GetFlags   write SetFlags ;
+       property Applic  :TVkAppInf_             read   _Applic                 ;
+       property Layeres :TStringList            read   _Layeres                ;
+       property Extenss :TStringList            read   _Extenss                ;
+       property Handle  :P_VkInstanceCreateInfo read GetHandle  write SetHandle;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInstan
@@ -326,8 +326,8 @@ var
 begin
      if not Assigned( _Handle ) then
      begin
-          for L in _EnabledLayerNames     do Ls := Ls + [ System.AnsiStrings.StrNew( PAnsiChar( AnsiString( L ) ) ) ];
-          for E in _EnabledExtensionNames do Es := Es + [ System.AnsiStrings.StrNew( PAnsiChar( AnsiString( E ) ) ) ];
+          for L in _Layeres do Ls := Ls + [ System.AnsiStrings.StrNew( PAnsiChar( AnsiString( L ) ) ) ];
+          for E in _Extenss do Es := Es + [ System.AnsiStrings.StrNew( PAnsiChar( AnsiString( E ) ) ) ];
 
           with _Inform do
           begin
@@ -358,16 +358,16 @@ begin
 
      _Parent := Parent_;
 
-     _ApplicationInfo       := TVkAppInf_.Create( Self );
-     _EnabledLayerNames     := TStringList.Create;
-     _EnabledExtensionNames := TStringList.Create;
+     _Applic  := TVkAppInf_.Create( Self );
+     _Layeres := TStringList.Create;
+     _Extenss := TStringList.Create;
 
      Type_  := VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-     Next_  := nil;
-     Flags_ := 0;
+     Next  := nil;
+     Flags := 0;
 
-     EnabledExtensionNames_.Add( VK_KHR_SURFACE_EXTENSION_NAME       );
-     EnabledExtensionNames_.Add( VK_KHR_WIN32_SURFACE_EXTENSION_NAME );
+     Extenss.Add( VK_KHR_SURFACE_EXTENSION_NAME       );
+     Extenss.Add( VK_KHR_WIN32_SURFACE_EXTENSION_NAME );
 
      _Handle := nil;
 end;
@@ -376,9 +376,9 @@ destructor TVkInsInf<TVulkan_>.Destroy;
 begin
      Handle := nil;
 
-     _ApplicationInfo      .Free;
-     _EnabledLayerNames    .Free;
-     _EnabledExtensionNames.Free;
+     _Applic .Free;
+     _Layeres.Free;
+     _Extenss.Free;
 
      inherited;
 end;
