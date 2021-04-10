@@ -29,8 +29,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Inform :VkApplicationInfo;
        _Handle :P_VkApplicationInfo;
        ///// アクセス
-       function GetType :VkStructureType;
-       procedure SetType( const Type_:VkStructureType );
+       function GetKind :VkStructureType;
+       procedure SetKind( const Kind_:VkStructureType );
        function GetNext :Pointer;
        procedure SetNext( const Next_:Pointer );
        function GetApplicationName :String;
@@ -51,7 +51,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
        ///// プロパティ
        property Parent              :TVkInsInf_          read   _Parent                                        ;
-       property Type_               :VkStructureType     read GetType               write SetType              ;
+       property Kind                :VkStructureType     read GetKind               write SetKind              ;
        property Next_               :Pointer             read GetNext               write SetNext              ;
        property ApplicationName_    :String              read GetApplicationName    write SetApplicationName   ;
        property ApplicationVersion_ :UInt32              read GetApplicationVersion write SetApplicationVersion;
@@ -75,8 +75,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Extenss :TStringList;
        _Handle                :P_VkInstanceCreateInfo;
        ///// アクセス
-       function GetType :VkStructureType;
-       procedure SetType( const Type_:VkStructureType );
+       function GetKind :VkStructureType;
+       procedure SetKind( const Kind_:VkStructureType );
        function GetNext :Pointer;
        procedure SetNext( const Next_:Pointer );
        function GetFlags :VkInstanceCreateFlags;
@@ -89,7 +89,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
        ///// プロパティ
        property Parent  :TVkInstan_             read    _Parent                ;
-       property Type_   :VkStructureType        read GetType    write SetType  ;
+       property Kind    :VkStructureType        read GetKind    write SetKind  ;
        property Next    :Pointer                read GetNext    write SetNext  ;
        property Flags   :VkInstanceCreateFlags  read GetFlags   write SetFlags ;
        property Applic  :TVkAppInf_             read   _Applic                 ;
@@ -169,14 +169,14 @@ uses System.AnsiStrings,
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkAppInf<TVulkan_>.GetType :VkStructureType;
+function TVkAppInf<TVulkan_>.GetKind :VkStructureType;
 begin
      Result := _Inform.sType;
 end;
 
-procedure TVkAppInf<TVulkan_>.SetType( const Type_:VkStructureType );
+procedure TVkAppInf<TVulkan_>.SetKind( const Kind_:VkStructureType );
 begin
-     _Inform.sType := Type_;  Handle := nil;
+     _Inform.sType := Kind_;  Handle := nil;
 end;
 
 function TVkAppInf<TVulkan_>.GetNext :Pointer;
@@ -263,7 +263,7 @@ begin
 
      _Handle := nil;
 
-     Type_               := VK_STRUCTURE_TYPE_APPLICATION_INFO;
+     Kind                := VK_STRUCTURE_TYPE_APPLICATION_INFO;
      Next_               := nil;
      ApplicationName_    := 'Application';
      ApplicationVersion_ := 1;
@@ -294,14 +294,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TVkInsInf<TVulkan_>.GetType :VkStructureType;
+function TVkInsInf<TVulkan_>.GetKind :VkStructureType;
 begin
      Result := _Inform.sType;
 end;
 
-procedure TVkInsInf<TVulkan_>.SetType( const Type_:VkStructureType );
+procedure TVkInsInf<TVulkan_>.SetKind( const Kind_:VkStructureType );
 begin
-     _Inform.sType := Type_;  Handle := nil;
+     _Inform.sType := Kind_;  Handle := nil;
 end;
 
 function TVkInsInf<TVulkan_>.GetNext :Pointer;
@@ -369,7 +369,7 @@ begin
      _Layeres := TStringList.Create;
      _Extenss := TStringList.Create;
 
-     Type_  := VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+     Kind  := VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
      Next  := nil;
      Flags := 0;
 
