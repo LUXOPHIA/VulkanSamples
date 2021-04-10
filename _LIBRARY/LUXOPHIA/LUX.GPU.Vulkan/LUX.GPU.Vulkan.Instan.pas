@@ -33,16 +33,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetKind( const Kind_:VkStructureType );
        function GetNext :Pointer;
        procedure SetNext( const Next_:Pointer );
-       function GetApplicationName :String;
-       procedure SetApplicationName( const ApplicationName_:String );
-       function GetApplicationVersion :UInt32;
-       procedure SetApplicationVersion( const ApplicationVersion_:UInt32 );
-       function GetEngineName :String;
-       procedure SetEngineName( const EngineName_:String );
-       function GetEngineVersion :UInt32;
-       procedure SetEngineVersion( const EngineVersion_:UInt32 );
-       function GetApiVersion :UInt32;
-       procedure SetApiVersion( const ApiVersion_:UInt32 );
+       function GetAppName :String;
+       procedure SetAppName( const AppName_:String );
+       function GetAppVers :UInt32;
+       procedure SetAppVers( const AppVers_:UInt32 );
+       function GetEngName :String;
+       procedure SetEngName( const EngName_:String );
+       function GetEngVers :UInt32;
+       procedure SetEngVers( const EngVers_:UInt32 );
+       function GetApiVers :UInt32;
+       procedure SetApiVers( const ApiVersion_:UInt32 );
        function GetHandle :P_VkApplicationInfo;
        procedure SetHandle( const Handle_:P_VkApplicationInfo );
      public
@@ -50,15 +50,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Parent_:TVkInsInf_ ); overload; virtual;
        destructor Destroy; override;
        ///// プロパティ
-       property Parent              :TVkInsInf_          read   _Parent                                        ;
-       property Kind                :VkStructureType     read GetKind               write SetKind              ;
-       property Next_               :Pointer             read GetNext               write SetNext              ;
-       property ApplicationName_    :String              read GetApplicationName    write SetApplicationName   ;
-       property ApplicationVersion_ :UInt32              read GetApplicationVersion write SetApplicationVersion;
-       property EngineName_         :String              read GetEngineName         write SetEngineName        ;
-       property EngineVersion_      :UInt32              read GetEngineVersion      write SetEngineVersion     ;
-       property ApiVersion_         :UInt32              read GetApiVersion         write SetApiVersion        ;
-       property Handle              :P_VkApplicationInfo read GetHandle             write SetHandle            ;
+       property Parent  :TVkInsInf_          read   _Parent                  ;
+       property Kind    :VkStructureType     read GetKind    write SetKind   ;
+       property Next    :Pointer             read GetNext    write SetNext   ;
+       property AppName :String              read GetAppName write SetAppName;
+       property AppVers :UInt32              read GetAppVers write SetAppVers;
+       property EngName :String              read GetEngName write SetEngName;
+       property EngVers :UInt32              read GetEngVers write SetEngVers;
+       property ApiVers :UInt32              read GetApiVers write SetApiVers;
+       property Handle  :P_VkApplicationInfo read GetHandle  write SetHandle ;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkInsInf
@@ -73,7 +73,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Applic  :TVkAppInf_;
        _Layeres :TStringList;
        _Extenss :TStringList;
-       _Handle                :P_VkInstanceCreateInfo;
+       _Handle  :P_VkInstanceCreateInfo;
        ///// アクセス
        function GetKind :VkStructureType;
        procedure SetKind( const Kind_:VkStructureType );
@@ -189,52 +189,52 @@ begin
      _Inform.pNext := Next_;  Handle := nil;
 end;
 
-function TVkAppInf<TVulkan_>.GetApplicationName :String;
+function TVkAppInf<TVulkan_>.GetAppName :String;
 begin
      Result := String( _Inform.pApplicationName );
 end;
 
-procedure TVkAppInf<TVulkan_>.SetApplicationName( const ApplicationName_:String );
+procedure TVkAppInf<TVulkan_>.SetAppName( const AppName_:String );
 begin
-     _Inform.pApplicationName := PAnsiChar( AnsiString( ApplicationName_ ) );  Handle := nil;
+     _Inform.pApplicationName := PAnsiChar( AnsiString( AppName_ ) );  Handle := nil;
 end;
 
-function TVkAppInf<TVulkan_>.GetApplicationVersion :UInt32;
+function TVkAppInf<TVulkan_>.GetAppVers :UInt32;
 begin
      Result := _Inform.applicationVersion;
 end;
 
-procedure TVkAppInf<TVulkan_>.SetApplicationVersion( const ApplicationVersion_:UInt32 );
+procedure TVkAppInf<TVulkan_>.SetAppVers( const AppVers_:UInt32 );
 begin
-     _Inform.applicationVersion := ApplicationVersion_;  Handle := nil;
+     _Inform.applicationVersion := AppVers_;  Handle := nil;
 end;
 
-function TVkAppInf<TVulkan_>.GetEngineName :String;
+function TVkAppInf<TVulkan_>.GetEngName :String;
 begin
      Result := String( _Inform.pEngineName );
 end;
 
-procedure TVkAppInf<TVulkan_>.SetEngineName( const EngineName_:String );
+procedure TVkAppInf<TVulkan_>.SetEngName( const EngName_:String );
 begin
-     _Inform.pEngineName := PAnsiChar( AnsiString( EngineName_ ) );  Handle := nil;
+     _Inform.pEngineName := PAnsiChar( AnsiString( EngName_ ) );  Handle := nil;
 end;
 
-function TVkAppInf<TVulkan_>.GetEngineVersion :UInt32;
+function TVkAppInf<TVulkan_>.GetEngVers :UInt32;
 begin
      Result := _Inform.engineVersion;
 end;
 
-procedure TVkAppInf<TVulkan_>.SetEngineVersion( const EngineVersion_:UInt32 );
+procedure TVkAppInf<TVulkan_>.SetEngVers( const EngVers_:UInt32 );
 begin
-     _Inform.engineVersion := EngineVersion_;  Handle := nil;
+     _Inform.engineVersion := EngVers_;  Handle := nil;
 end;
 
-function TVkAppInf<TVulkan_>.GetApiVersion :UInt32;
+function TVkAppInf<TVulkan_>.GetApiVers :UInt32;
 begin
      Result := _Inform.apiVersion;
 end;
 
-procedure TVkAppInf<TVulkan_>.SetApiVersion( const ApiVersion_:UInt32 );
+procedure TVkAppInf<TVulkan_>.SetApiVers( const ApiVersion_:UInt32 );
 begin
      _Inform.apiVersion := ApiVersion_;  Handle := nil;
 end;
@@ -263,13 +263,13 @@ begin
 
      _Handle := nil;
 
-     Kind                := VK_STRUCTURE_TYPE_APPLICATION_INFO;
-     Next_               := nil;
-     ApplicationName_    := 'Application';
-     ApplicationVersion_ := 1;
-     EngineName_         := 'Engine';
-     EngineVersion_      := 1;
-     ApiVersion_         := VK_API_VERSION_1_0;
+     Kind    := VK_STRUCTURE_TYPE_APPLICATION_INFO;
+     Next    := nil;
+     AppName := 'Application';
+     AppVers := 1;
+     EngName := 'Engine';
+     EngVers := 1;
+     ApiVers := VK_API_VERSION_1_0;
 end;
 
 constructor TVkAppInf<TVulkan_>.Create( const Parent_:TVkInsInf_ );
@@ -386,11 +386,11 @@ end;
 
 destructor TVkInsInf<TVulkan_>.Destroy;
 begin
-     Handle := nil;
-
      _Applic .Free;
      _Layeres.Free;
      _Extenss.Free;
+
+      Handle := nil;
 
      inherited;
 end;
