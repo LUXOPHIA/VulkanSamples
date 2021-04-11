@@ -361,7 +361,7 @@ end;
 
 constructor TVkInsInf<TVulkan_>.Create;
 begin
-     inherited Create;
+     inherited;
 
      _Handle := nil;
 
