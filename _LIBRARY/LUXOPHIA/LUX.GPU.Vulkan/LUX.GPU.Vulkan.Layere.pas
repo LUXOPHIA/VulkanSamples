@@ -2,8 +2,7 @@
 
 interface //#################################################################### ■
 
-uses System.Generics.Collections,
-     LUX.Data.List,
+uses LUX.Data.List,
      vulkan_core;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -59,42 +58,36 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevLay
 
-     TVkDevLay<TVkDevice_:class> = class
+     TVkDevLay<TVkDevice_:class> = class( TListChildr<TVkDevice_,TVkDevLays<TVkDevice_>> )
      private
        type TVkDevLays_ = TVkDevLays<TVkDevice_>;
      protected
-       _DevLays  :TVkDevLays_;
        _LayereI  :Integer;
        _ExtenssN :Integer;
        _Extenss  :TVkExtenss;
-       ///// アクセス
-       function GetDevice :TVkDevice_;
        ///// メソッド
        function FindExtenss :VkResult;
      public
-       constructor Create( const DevLays_:TVkDevLays_; const LayereI_:Integer );
+       constructor Create( const DevLays_:TVkDevLays_; const LayereI_:Integer ); overload; virtual;
        destructor Destroy; override;
        ///// プロパティ
-       property Device   :TVkDevice_  read GetDevice  ;
-       property DevLays  :TVkDevLays_ read   _DevLays ;
+       property Device   :TVkDevice_  read GetOwnere  ;
+       property DevLays  :TVkDevLays_ read GetParent  ;
        property ExtenssN :Integer     read   _ExtenssN;
        property Extenss  :TVkExtenss  read   _Extenss ;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkDevLays
 
-     TVkDevLays<TVkDevice_:class> = class( TObjectList<TVkDevLay<TVkDevice_>> )
+     TVkDevLays<TVkDevice_:class> = class( TListParent<TVkDevice_,TVkDevLay<TVkDevice_>> )
      private
        type TVkDevLay_ = TVkDevLay<TVkDevice_>;
      protected
-       _Device :TVkDevice_;
        ///// メソッド
        procedure FindDevLays;
      public
-       constructor Create( const Device_:TVkDevice_ );
-       destructor Destroy; override;
        ///// プロパティ
-       property Device :TVkDevice_ read _Device;
+       property Device :TVkDevice_ read GetOwnere;
        ///// メソッド
        function Add( const LayereI_:Integer ) :TVkDevLay_; overload;
      end;
@@ -223,13 +216,6 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-/////////////////////////////////////////////////////////////////////// アクセス
-
-function TVkDevLay<TVkDevice_>.GetDevice :TVkDevice_;
-begin
-     Result := _DevLays.Device;
-end;
-
 /////////////////////////////////////////////////////////////////////// メソッド
 
 function TVkDevLay<TVkDevice_>.FindExtenss :VkResult;
@@ -256,12 +242,9 @@ end;
 
 constructor TVkDevLay<TVkDevice_>.Create( const DevLays_:TVkDevLays_; const LayereI_:Integer );
 begin
-     inherited Create;
+     inherited Create( DevLays_ );
 
-     _DevLays := DevLays_;
      _LayereI := LayereI_;
-
-     _DevLays.Add( Self );
 
      FindExtenss;
 end;
@@ -285,26 +268,13 @@ var
    Ls :TVkLayeres;
    I :Integer;
 begin
-     Ls := TVkDevice( _Device ).Instan.Vulkan.Layeres;
+     Ls := TVkDevice( Device ).Instan.Vulkan.Layeres;
 
      (* query device extensions for enabled layers *)
      for I := 0 to Ls.ChildrsN-1 do Add( I );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TVkDevLays<TVkDevice_>.Create( const Device_:TVkDevice_ );
-begin
-     inherited Create;
-
-     _Device := Device_;
-end;
-
-destructor TVkDevLays<TVkDevice_>.Destroy;
-begin
-
-     inherited;
-end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
