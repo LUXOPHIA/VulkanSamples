@@ -195,7 +195,7 @@ begin
      _Vulkan  := TVulkan.Create;
      _Instan  := TVkInstan.Create( _Vulkan );  //= _Vulkan.Instans.Add;
      _Device  := _Instan.Devices[0];
-     _Surfac  := TVkSurfac.Create( _Instan, _Window );
+     _Surfac  := TVkSurfac.Create( _Instan, _Window );  //= _Instan.Surfacs.Add( _Window );
      _Device.Surfac := _Surfac;
      _Pooler  := TVkPooler.Create( _Device );
      _Comman  := TVkComman.Create( _Pooler );  //= _Pooler.Commans.Add;
