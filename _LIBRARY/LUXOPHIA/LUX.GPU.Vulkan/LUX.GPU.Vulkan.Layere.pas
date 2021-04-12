@@ -3,6 +3,7 @@
 interface //#################################################################### ■
 
 uses System.Generics.Collections,
+     LUX.Data.List,
      vulkan_core;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -19,24 +20,21 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkLayere
 
-     TVkLayere<TVulkan_:class> = class
+     TVkLayere<TVulkan_:class> = class( TListChildr<TVulkan_,TVkLayeres<TVulkan_>> )
      private
        type TVkLayeres_ = TVkLayeres<TVulkan_>;
      protected
-       _Layeres  :TVkLayeres_;
        _Inform   :VkLayerProperties;
        _ExtenssN :Integer;
        _Extenss  :TVkExtenss;
-       ///// アクセス
-       function GetVulkan :TVulkan_;
        ///// メソッド
        function FindExtenss :VkResult;
      public
-       constructor Create( const Layeres_:TVkLayeres_; const Inform_:VkLayerProperties );
+       constructor Create( const Layeres_:TVkLayeres_; const Inform_:VkLayerProperties ); overload; virtual;
        destructor Destroy; override;
        ///// プロパティ
-       property Vulkan   :TVulkan_          read GetVulkan  ;
-       property Layeres  :TVkLayeres_       read   _Layeres ;
+       property Vulkan   :TVulkan_          read GetOwnere  ;
+       property Layeres  :TVkLayeres_       read GetParent  ;
        property Inform   :VkLayerProperties read   _Inform  ;
        property ExtenssN :Integer           read   _ExtenssN;
        property Extenss  :TVkExtenss        read   _Extenss ;
@@ -44,18 +42,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkLayeres
 
-     TVkLayeres<TVulkan_:class> = class( TObjectList<TVkLayere<TVulkan_>> )
+     TVkLayeres<TVulkan_:class> = class( TListParent<TVulkan_,TVkLayere<TVulkan_>> )
      private
        type TVkLayere_ = TVkLayere<TVulkan_>;
      protected
-       _Vulkan :TVulkan_;
        ///// メソッド
        function FindLayeres :VkResult;
      public
-       constructor Create( const Vulkan_:TVulkan_ );
+       constructor Create( const Vulkan_:TVulkan_ ); override;
        destructor Destroy; override;
        ///// プロパティ
-       property Vulkan :TVulkan_ read _Vulkan;
+       property Vulkan :TVulkan_ read GetOwnere;
        ///// メソッド
        function Add( const Inform_:VkLayerProperties ) :TVkLayere_; overload;
      end;
@@ -122,13 +119,6 @@ uses LUX.GPU.Vulkan;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-/////////////////////////////////////////////////////////////////////// アクセス
-
-function TVkLayere<TVulkan_>.GetVulkan :TVulkan_;
-begin
-     Result := _Layeres.Vulkan;
-end;
-
 /////////////////////////////////////////////////////////////////////// メソッド
 
 function TVkLayere<TVulkan_>.FindExtenss :VkResult;
@@ -149,12 +139,9 @@ end;
 
 constructor TVkLayere<TVulkan_>.Create( const Layeres_:TVkLayeres_; const Inform_:VkLayerProperties );
 begin
-     inherited Create;
+     inherited Create( Layeres_ );
 
-     _Layeres := Layeres_;
      _Inform  := Inform_ ;
-
-     _Layeres.Add( Self );
 
      FindExtenss;
 end;
@@ -213,8 +200,6 @@ end;
 constructor TVkLayeres<TVulkan_>.Create( const Vulkan_:TVulkan_ );
 begin
      inherited Create;
-
-     _Vulkan := Vulkan_;
 
      FindLayeres;
 end;
@@ -303,7 +288,7 @@ begin
      Ls := TVkDevice( _Device ).Instan.Vulkan.Layeres;
 
      (* query device extensions for enabled layers *)
-     for I := 0 to Ls.Count-1 do Add( I );
+     for I := 0 to Ls.ChildrsN-1 do Add( I );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
