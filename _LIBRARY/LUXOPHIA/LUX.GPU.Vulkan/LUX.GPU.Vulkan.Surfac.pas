@@ -2,9 +2,9 @@
 
 interface //#################################################################### ■
 
-uses System.Generics.Collections,
-     WinApi.Windows,
-     vulkan_core, vulkan_win32;
+uses WinApi.Windows,
+     vulkan_core, vulkan_win32,
+     LUX.Data.List;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -15,11 +15,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkSurfac
 
-     TVkSurfac<TVkInstan_:class> = class
+     TVkSurfac<TVkInstan_:class> = class( TListChildr<TVkInstan_,TVkSurfacs<TVkInstan_>> )
      private
-       type TVkSurfac_ = TVkSurfac<TVkInstan_>;
+       type TVkSurfacs_ = TVkSurfacs<TVkInstan_>;
      protected
-       _Instan  :TVkInstan_;
        _Inform  :VkWin32SurfaceCreateInfoKHR;
        _PxSizeX :Integer;
        _PxSizeY :Integer;
@@ -35,12 +34,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure CreateHandle;
        procedure DestroHandle;
      public
-       constructor Create; overload;
-       constructor Create( const Instan_:TVkInstan_ ); overload;
-       constructor Create( const Instan_:TVkInstan_; const Window_:HWND ); overload;
+       constructor Create; override;
+       constructor Create( const Instan_:TVkInstan_ ); overload; virtual;
+       constructor Create( const Instan_:TVkInstan_; const Window_:HWND ); overload; virtual;
        destructor Destroy; override;
        ///// プロパティ
-       property Instan  :TVkInstan_                  read   _Instan ;
+       property Instan  :TVkInstan_                  read GetOwnere ;
+       property Surfacs :TVkSurfacs_                 read GetParent ;
        property Window  :HWND                        read GetWindow  write SetWindow;
        property PxSizeX :Integer                     read GetPxSizeX;
        property PxSizeY :Integer                     read GetPxSizeY;
@@ -50,17 +50,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TVkSurfacs
 
-     TVkSurfacs<TVkInstan_:class> = class( TObjectList<TVkSurfac<TVkInstan_>> )
+     TVkSurfacs<TVkInstan_:class> = class( TListParent<TVkInstan_,TVkSurfac<TVkInstan_>> )
      private
        type TVkSurfac_ = TVkSurfac<TVkInstan_>;
      protected
-       _Instan :TVkInstan_;
      public
-       constructor Create( const Instan_:TVkInstan_ );
-       destructor Destroy; override;
        ///// プロパティ
-       property Instan :TVkInstan_ read _Instan;
+       property Instan :TVkInstan_ read GetOwnere;
        ///// メソッド
+       function Add :TVkSurfac_; overload;
        function Add( const HWND_:HWND ) :TVkSurfac_; overload;
      end;
 
@@ -139,12 +137,12 @@ end;
 
 procedure TVkSurfac<TVkInstan_>.CreateHandle;
 begin
-     Assert( vkCreateWin32SurfaceKHR( TVkInstan( _Instan ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
+     Assert( vkCreateWin32SurfaceKHR( TVkInstan( Instan ).Handle, @_Inform, nil, @_Handle ) = VK_SUCCESS );
 end;
 
 procedure TVkSurfac<TVkInstan_>.DestroHandle;
 begin
-     vkDestroySurfaceKHR( TVkInstan( _Instan ).Handle, _Handle, nil );
+     vkDestroySurfaceKHR( TVkInstan( Instan ).Handle, _Handle, nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -167,11 +165,7 @@ end;
 
 constructor TVkSurfac<TVkInstan_>.Create( const Instan_:TVkInstan_ );
 begin
-     Create;
-
-     _Instan := Instan_;
-
-     TVkInstan( _Instan ).Surfacs.Add( TVkSurfac( Self ) );
+     inherited Create( TVkInstan( Instan_ ).Surfacs );
 end;
 
 constructor TVkSurfac<TVkInstan_>.Create( const Instan_:TVkInstan_; const Window_:HWND );
@@ -196,24 +190,16 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TVkSurfacs<TVkInstan_>.Create( const Instan_:TVkInstan_ );
-begin
-     inherited Create;
-
-     _Instan := Instan_;
-end;
-
-destructor TVkSurfacs<TVkInstan_>.Destroy;
-begin
-
-     inherited;
-end;
-
 /////////////////////////////////////////////////////////////////////// メソッド
+
+function TVkSurfacs<TVkInstan_>.Add :TVkSurfac_;
+begin
+     Result := TVkSurfac_.Create( Instan );
+end;
 
 function TVkSurfacs<TVkInstan_>.Add( const HWND_:HWND ) :TVkSurfac_;
 begin
-     Result := TVkSurfac_.Create( _Instan, HWND_ );
+     Result := TVkSurfac_.Create( Instan, HWND_ );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
