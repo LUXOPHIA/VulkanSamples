@@ -2,7 +2,7 @@
 
 interface //#################################################################### ■
 
-uses System.Classes, System.Generics.Collections,
+uses System.Classes,
      vulkan_core,
      LUX.Data.List,
      LUX.GPU.Vulkan.Surfac,
